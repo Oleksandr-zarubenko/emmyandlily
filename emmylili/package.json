@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "prepare": "husky install"
+    "lint": "next lint"
   },
   "dependencies": {
     "@types/node": "20.11.6",
@@ -23,8 +22,5 @@
   "devDependencies": {
     "husky": "^8.0.3",
     "prettier": "^3.2.4"
-  },
-  "lint-staged": {
-    "*.{js,ts,tsx,css,md}": "prettier --write"
   }
 }
