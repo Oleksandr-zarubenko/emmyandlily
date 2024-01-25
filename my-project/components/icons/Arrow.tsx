@@ -3,7 +3,7 @@ export const Arrow = () => (
     <path
       d="M1.33789 15.2598L15.2563 1.34137M15.2563 1.34137H2.5805M15.2563 1.34137V14.0172"
       stroke="#FFEACB"
-      stroke-width="2"
+      strokeWidth="2"
     />
   </svg>
 );
