@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Dogs from "../../public/emmy-lili-picture.png";
 import Product from "../../public/product.png";
-import { Arrow } from "../../components/icons/Arrow";
+import { Arrow } from "../components/icons/Arrow";
 import { gql } from "@apollo/client";
-import { getClient } from "../../utils/apollo-client";
+import { getClient } from "../utils/apollo-client";
+import { Markdown } from "../components/Markdown";
 
 const query = gql`
   {
@@ -44,7 +45,7 @@ export default async function Home() {
       <section className="">
         <div className="container">
           <h2>{data.aboutUsSection.heading}</h2>
-          <p>{data.aboutUsSection.text}</p>
+          <Markdown text={data.aboutUsSection.text} />
           <div className="relative h-[453px] w-[430px]">
             <Image
               src={data.aboutUsSection.image.url}

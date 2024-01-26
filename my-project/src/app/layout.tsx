@@ -1,7 +1,7 @@
 import cn from "classnames";
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
-import { Logo } from "../../components/icons/Logo";
+import { Logo } from "../components/icons/Logo";
 import "./globals.css";
 
 const roboto = Roboto({
