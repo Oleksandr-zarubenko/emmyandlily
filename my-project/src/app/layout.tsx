@@ -24,16 +24,22 @@ export default function RootLayout({
       <body
         className={cn(roboto.className, "relative flex flex-grow flex-col")}
       >
-        <header className="bg-bg_primary pt-9">
-          <div className="container flex flex-row content-center justify-between">
+        <header className="absolute inset-x-0 z-10 pt-9">
+          <div className="container flex flex-row content-center items-center justify-between">
             <div className="h-6 w-40">
               <Logo />
             </div>
-            <nav className="flex flex-row gap-10">
+            <nav className="flex flex-row items-center gap-10">
               <h2 className="sr-only">Main navigation</h2>
               <a href="">Головна</a>
               <a href="">Про нас</a>
               <a href="#contacts">Контакти</a>
+              <a
+                href="#contacts"
+                className="block rounded-xl bg-primary p-3 text-white"
+              >
+                Зв&apos;язатися
+              </a>
             </nav>
           </div>
         </header>

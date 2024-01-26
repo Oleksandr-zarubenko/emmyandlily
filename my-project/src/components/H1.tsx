@@ -6,6 +6,6 @@ type Props = {
   className?: string;
 };
 
-export const P: FC<Props> = ({ children, className }) => (
-  <p className={cn("text-t20 mb-4 text-dark", className)}>{children}</p>
+export const H1: FC<Props> = ({ children, className }) => (
+  <h1 className={cn("text-t20 mb-4 text-dark", className)}>{children}</h1>
 );

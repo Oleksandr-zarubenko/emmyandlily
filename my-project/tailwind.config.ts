@@ -26,8 +26,30 @@ const config: Config = {
         dark: "#333",
         black: "#000",
         white: "#FFF",
-        bg_primary: "#FEC3B5",
+        bg_primary: "#fad5a2",
         bg_secondary: "#FFEACB",
+      },
+      fontSize: {
+        t16: "16px",
+        t20: "20px",
+        t24: [
+          "24px",
+          {
+            fontWeight: "700",
+          },
+        ],
+        t40: [
+          "40px",
+          {
+            fontWeight: "700",
+          },
+        ],
+        t70: [
+          "70px",
+          {
+            fontWeight: "800",
+          },
+        ],
       },
     },
   },
