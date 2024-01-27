@@ -4,6 +4,7 @@ import remarkGfm from "remark-gfm";
 import { FC } from "react";
 import { P } from "./P";
 import { H1 } from "./H1";
+import { H2 } from "./H2";
 
 interface InterfaceMarkdown {
   text: string;
@@ -17,6 +18,7 @@ export const Markdown: FC<InterfaceMarkdown> = ({ text, className }) => {
       components={{
         p: (props) => <P className={className}>{props.children}</P>,
         h1: (props) => <H1 className={className}>{props.children}</H1>,
+        h2: (props) => <H2 className={className}>{props.children}</H2>,
       }}
     >
       {text}

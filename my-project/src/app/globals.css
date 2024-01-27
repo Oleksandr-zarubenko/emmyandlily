@@ -11,6 +11,7 @@ body {
 body {
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -20,4 +21,31 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+@media (min-width: 1200px) {
+  .hero {
+    background-image: url("../../public/emmy-lilly-2-dogs-bg.png");
+    background-size: cover;
+    background-position-x: right;
+  }
+
+  .paw2 {
+    position: absolute;
+    left: 75%;
+    bottom: 75%;
+  }
+}
+
+.swiper-pagination-bullet {
+  background: #ff8667 !important;
+  display: inline-block !important;
+  vertical-align: middle !important;
+  opacity: 0.5 !important;
+  height: 10px !important;
+  width: 10px !important;
+}
+
+.swiper-pagination-bullet-active {
+  opacity: 1 !important;
 }

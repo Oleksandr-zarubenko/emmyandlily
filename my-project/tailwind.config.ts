@@ -18,7 +18,7 @@ const config: Config = {
           DEFAULT: "1rem",
           sm: "1rem",
           md: "2.5rem",
-          xl: "0",
+          xl: "100px",
         },
       },
       colors: {

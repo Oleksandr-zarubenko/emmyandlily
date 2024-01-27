@@ -27,7 +27,9 @@ export default function RootLayout({
         <header className="absolute inset-x-0 z-10 pt-9">
           <div className="container flex flex-row content-center items-center justify-between">
             <div className="h-6 w-40">
-              <Logo />
+              <a href="">
+                <Logo />
+              </a>
             </div>
             <nav className="flex flex-row items-center gap-10">
               <h2 className="sr-only">Main navigation</h2>
@@ -47,7 +49,9 @@ export default function RootLayout({
         <footer className="bg-primary">
           <div className="container">
             <div className="h-12 w-80">
-              <Logo />
+              <a href="">
+                <Logo />
+              </a>
             </div>
             <nav>
               <h2 className="sr-only">Auxillary navigation</h2>
