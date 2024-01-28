@@ -23,7 +23,7 @@ export const Contacts = ({ data }: { data: any }) => {
             {data.contactssection.phone1}
           </a>
           <a
-            href={"tel:" + data.contactssection.email}
+            href={"mailto:" + data.contactssection.email}
             className="mb-4 flex gap-2 text-t20 font-semibold text-dark"
           >
             <Email className="h-5 w-5 flex-shrink-0 text-primary" />
