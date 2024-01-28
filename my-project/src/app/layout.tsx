@@ -46,18 +46,19 @@ export default function RootLayout({
           </div>
         </header>
         {children}
-        <footer className="bg-primary">
-          <div className="container">
-            <div className="h-12 w-80">
+        <footer className="bg-primary py-12">
+          <div className="container flex flex-col items-center">
+            <div className="mb-9 h-12 w-80">
               <a href="">
                 <Logo />
               </a>
             </div>
-            <nav>
+            <nav className="flex gap-10 text-t16">
               <h2 className="sr-only">Auxillary navigation</h2>
               <a>Головна</a>
               <a>Про нас</a>
               <a>Контакти</a>
+              <a>Звʼязатися</a>
             </nav>
           </div>
         </footer>
