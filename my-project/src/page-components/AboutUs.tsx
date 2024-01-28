@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export const AboutUs = ({ data }: { data: any }) => {
   return (
-    <section className="py-24" id="about-us">
+    <section className="py-24">
       <div className="container flex flex-row gap-20">
         <div className="order-1 flex flex-col">
           <Markdown text={data.aboutUsSection.heading} className="mb-10" />

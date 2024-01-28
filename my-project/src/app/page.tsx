@@ -1,15 +1,11 @@
-import Image from "next/image";
-import Product from "../../public/product.png";
-import { Arrow } from "../components/icons/Arrow";
-import { gql } from "@apollo/client";
-import { getClient } from "../utils/apollo-client";
-import { Markdown } from "../components/Markdown";
-import { Paw } from "@/components/icons/Paw";
 import { AboutUs } from "@/page-components/AboutUs";
 import { AboutUsSlider } from "@/page-components/AboutUsSlider";
 import { Contacts } from "@/page-components/Contacts";
-import { ProductsSection } from "@/page-components/ProductsSection";
 import { HeroSection } from "@/page-components/HeroSection";
+import { ProductsSection } from "@/page-components/ProductsSection";
+import { gql } from "@apollo/client";
+import { getClient } from "../utils/apollo-client";
+import dynamic from "next/dynamic";
 
 const query = gql`
   {

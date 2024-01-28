@@ -25,7 +25,7 @@ body {
 
 @media (min-width: 1200px) {
   .hero {
-    background-image: url("../../public/emmy-lilly-2-dogs-bg.png");
+    background-image: url("../../public/emmy-lilly-2-dogs-bg.webp");
     background-size: cover;
     background-position-x: right;
   }
