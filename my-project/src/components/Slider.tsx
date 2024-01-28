@@ -18,6 +18,8 @@ export const Slider = ({ sliderimages }: { sliderimages: any }) => {
       initialSlide={2}
       watchOverflow
       centeredSlides
+      autoplay={{ delay: 3000 }}
+      speed={3000}
       loop
       pagination={{
         clickable: true,
