@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export const ProductsSection = ({ data }: { data: any }) => {
   return (
-    <section className="py-16 text-center">
+    <section className="py-16 text-center" id="products">
       <div className="container">
         <div className="mb-10 flex flex-row items-center justify-center gap-4">
           <Paw className="h-11 w-11 text-primary" />
@@ -17,8 +17,8 @@ export const ProductsSection = ({ data }: { data: any }) => {
         <div className="grid grid-cols-3 text-left">
           {data.allProducts.length > 0 &&
             data.allProducts.map((product: any) => (
-              <article key={product.id}>
-                <div className="relative mb-5 w-[304px]">
+              <article key={product.id} className="w-[304px]">
+                <div className="relative mb-5">
                   <div className="product_wrapper relative h-[253px] w-[304px] overflow-hidden rounded-3xl border-2 border-primary">
                     <Image
                       src={product.productpicture.url}

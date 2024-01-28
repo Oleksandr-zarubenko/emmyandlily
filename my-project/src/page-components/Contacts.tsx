@@ -4,12 +4,10 @@ import { Instagram } from "@/components/icons/Instagram";
 import { Paw } from "@/components/icons/Paw";
 import { Phone } from "@/components/icons/Phone";
 import { TikTok } from "@/components/icons/TikTok";
-import Image from "next/image";
-import Dog from "../../public/emmy-dog-image.png";
 
 export const Contacts = ({ data }: { data: any }) => {
   return (
-    <section className="contacts pb-20 pt-16">
+    <section className="contacts pb-20 pt-16" id="contacts">
       <div className="container">
         <div className="max-w-md">
           <div className="mb-10 flex flex-row items-center gap-4">

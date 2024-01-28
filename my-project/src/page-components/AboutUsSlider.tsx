@@ -4,7 +4,7 @@ import { Paw } from "@/components/icons/Paw";
 
 export const AboutUsSlider = ({ data }: { data: any }) => {
   return (
-    <section className="py-16 text-center">
+    <section className="py-16 text-center" id="about-us">
       <div className="container">
         <div className="mb-10 flex flex-row items-center justify-center gap-4">
           <Paw className="h-11 w-11 text-primary" />
