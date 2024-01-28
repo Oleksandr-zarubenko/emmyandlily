@@ -7,7 +7,7 @@ export const AboutUs = ({ data }: { data: any }) => {
     <section className="py-24">
       <div className="container flex flex-row gap-20">
         <div className="order-1 flex flex-col">
-          <Markdown text={data.aboutUsSection.heading} />
+          <Markdown text={data.aboutUsSection.heading} className="mb-10" />
           <Markdown text={data.aboutUsSection.text} />
         </div>
         <div className="order-0 relative">

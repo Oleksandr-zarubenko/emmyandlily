@@ -7,6 +7,7 @@ import { Markdown } from "../components/Markdown";
 import { Paw } from "@/components/icons/Paw";
 import { AboutUs } from "@/page-components/AboutUs";
 import { AboutUsSlider } from "@/page-components/AboutUsSlider";
+import { Contacts } from "@/page-components/Contacts";
 
 const query = gql`
   {
@@ -31,6 +32,17 @@ const query = gql`
         alt
         url
       }
+    }
+    contactssection {
+      heading
+      text
+      phone1
+      email
+      text2
+      phone2
+      socialsphrase
+      tiktoklink
+      instagramlink
     }
   }
 `;
@@ -103,11 +115,7 @@ export default async function Home() {
         </div>
       </section>
       <AboutUsSlider data={data} />
-      <section id="contacts">
-        <div className="container">
-          <h2>Контакти</h2>
-        </div>
-      </section>
+      <Contacts data={data} />
     </div>
   );
 }

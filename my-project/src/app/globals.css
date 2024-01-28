@@ -30,6 +30,13 @@ body {
     background-position-x: right;
   }
 
+  .contacts {
+    background-image: url("../../public/emmy-dog-image.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position-x: 70%;
+  }
+
   .paw2 {
     position: absolute;
     left: 75%;
