@@ -27,6 +27,14 @@ body {
   background-size: cover;
   background-position-x: center;
 }
+@media (min-width: 768px) {
+  .contacts {
+    background-image: url("../../public/emmy-dog-image.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position-x: 85%;
+  }
+}
 
 .paw2 {
   position: absolute;

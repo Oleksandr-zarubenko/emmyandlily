@@ -14,7 +14,7 @@ export const ProductsSection = ({ data }: { data: any }) => {
         {data.productsSection.text && (
           <Markdown text={data.productsSection.text} />
         )}
-        <div className="grid gap-6 text-left xl:grid-cols-3 xl:gap-0 smOnly:grid-rows-3">
+        <div className="grid gap-6 text-left md:grid-cols-2 xl:grid-cols-3 xl:gap-0 smOnly:grid-rows-3">
           {data.allProducts.length > 0 &&
             data.allProducts.map((product: any) => (
               <article key={product.id} className="xl:w-[304px]">

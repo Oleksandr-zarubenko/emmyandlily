@@ -5,16 +5,16 @@ import Image from "next/image";
 export const AboutUs = ({ data }: { data: any }) => {
   return (
     <section className="py-12 xl:py-24">
-      <div className="container flex flex-col gap-10 xl:flex-row xl:gap-20">
+      <div className="container flex flex-col gap-10 md:flex-row md:gap-20">
         <div className="order-1 flex flex-col">
           <Markdown
             text={data.aboutUsSection.heading}
-            className="mb-5 xl:mb-10"
+            className="mb-5 md:mb-10"
           />
           <Markdown text={data.aboutUsSection.text} />
         </div>
         <div className="order-0 relative smOnly:mx-auto smOnly:w-5/6">
-          <div className="relative h-60 w-full flex-shrink-0 overflow-hidden rounded-3xl border-2 border-primary xl:h-[453px] xl:w-[430px]">
+          <div className="relative h-60 w-full flex-shrink-0 overflow-hidden rounded-3xl border-2 border-primary md:h-[300px] md:w-[300px] xl:h-[453px] xl:w-[430px]">
             <Image
               src={data.aboutUsSection.image.url}
               alt={data.aboutUsSection.image.alt}
