@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { Burger } from "./icons/Burger";
 import { BurgerCross } from "./icons/BurgerCross";
-import Link from "next/link";
 import { Logo } from "./icons/Logo";
+import Link from "next/link";
 
 export const MobileMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,12 +26,24 @@ export const MobileMenu = () => {
   }, [isOpen]);
   return (
     <>
-      <button className="ml-auto py-2 pr-4" onClick={() => setMenuOpened()}>
-        <Burger className="h-10 w-10" />
-      </button>
+      <>
+        <div className="w-1/2 p-2">
+          <Link href="/">
+            <Logo />
+          </Link>
+        </div>
+        <button className="ml-auto py-2 pr-4" onClick={() => setMenuOpened()}>
+          <Burger className="h-10 w-10" />
+        </button>
+      </>
       {isOpen && (
         <div className="fixed inset-0 z-30 h-dvh overflow-scroll bg-bg_primary">
           <div className="flex">
+            <div className="w-1/2 px-2 pb-2 pt-6">
+              <Link href="/">
+                <Logo />
+              </Link>
+            </div>
             <button
               onClick={() => setMenuClosed()}
               className="ml-auto py-2 pr-4"
@@ -39,24 +51,27 @@ export const MobileMenu = () => {
               <BurgerCross className="h-10 w-10 text-dark" />
             </button>
           </div>
-          <nav className="flex flex-col items-center gap-10 md:flex-row">
-            <h2 className="sr-only">Main navigation</h2>
-            <a onClick={() => setMenuClosed()} href="#products">
+          <nav className="flex flex-col items-center gap-10 pt-2 md:flex-row">
+            <h2 className="sr-only">Mobile navigation</h2>
+            <Link onClick={() => setMenuClosed()} href="#who-we-are">
+              Who We Are
+            </Link>
+            <Link onClick={() => setMenuClosed()} href="#products">
               Our Products
-            </a>
-            <a onClick={() => setMenuClosed()} href="#about-us">
+            </Link>
+            <Link onClick={() => setMenuClosed()} href="#about-us">
               About Us
-            </a>
-            <a onClick={() => setMenuClosed()} href="#contacts">
+            </Link>
+            <Link onClick={() => setMenuClosed()} href="#contacts">
               Contacts
-            </a>
-            <a
+            </Link>
+            <Link
               onClick={() => setMenuClosed()}
               href="#contacts"
               className="block rounded-xl bg-primary p-3 text-white"
             >
               Contact Us
-            </a>
+            </Link>
           </nav>
         </div>
       )}

@@ -54,7 +54,7 @@ export const Slider = ({ sliderimages }: { sliderimages: any }) => {
                   alt={sliderimage.alt}
                   fill
                   className="object-cover"
-                  sizes="40vw"
+                  sizes="(max-width: 768px) 100vw, 40vw"
                 />
               </div>
             )}

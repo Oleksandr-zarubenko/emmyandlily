@@ -4,6 +4,7 @@ import { Instagram } from "@/components/icons/Instagram";
 import { Paw } from "@/components/icons/Paw";
 import { Phone } from "@/components/icons/Phone";
 import { TikTok } from "@/components/icons/TikTok";
+import Link from "next/link";
 
 export const Contacts = ({ data }: { data: any }) => {
   return (
@@ -16,33 +17,33 @@ export const Contacts = ({ data }: { data: any }) => {
           </div>
           <Markdown text={data.contactssection.text} />
           {data.contactssection.phone1 && (
-            <a
+            <Link
               href={"tel:" + data.contactssection.phone1}
               className="mb-4 flex gap-2 text-t20 font-semibold text-dark"
             >
               <Phone className="h-5 w-5 flex-shrink-0 text-primary" />
               {data.contactssection.phone1}
-            </a>
+            </Link>
           )}
           {data.contactssection.email && (
-            <a
+            <Link
               href={"mailto:" + data.contactssection.email}
               className="mb-4 flex gap-2 text-t20 font-semibold text-dark"
             >
               <Email className="h-5 w-5 flex-shrink-0 text-primary" />
               {data.contactssection.email}
-            </a>
+            </Link>
           )}
           {data.contactssection.phone2 && (
             <>
               <Markdown text={data.contactssection.text2} />
-              <a
+              <Link
                 href={"tel:" + data.contactssection.phone2}
                 className="mb-8 flex gap-2 text-t20 font-semibold text-dark"
               >
                 <Phone className="h-5 w-5 flex-shrink-0 text-primary" />
                 {data.contactssection.phone2}
-              </a>
+              </Link>
             </>
           )}
           <Markdown
@@ -51,24 +52,24 @@ export const Contacts = ({ data }: { data: any }) => {
           />
           <div className="flex flex-row gap-6">
             {data.contactssection.instagramlink && (
-              <a
+              <Link
                 href={data.contactssection.tiktoklink}
                 rel="nofollow"
                 target="_blank"
                 className="flex w-max items-center gap-1 rounded-xl bg-primary px-4 py-2 text-t16 text-bg_secondary md:px-8"
               >
                 <TikTok className="h-5 w-5 flex-shrink-0" /> TikTok
-              </a>
+              </Link>
             )}
             {data.contactssection.instagramlink && (
-              <a
+              <Link
                 href={data.contactssection.instagramlink}
                 rel="nofollow"
                 target="_blank"
                 className="flex w-max items-center gap-1 rounded-xl bg-primary px-8 py-2 text-t16 text-bg_secondary"
               >
                 <Instagram className="h-5 w-5 flex-shrink-0" /> Instagram
-              </a>
+              </Link>
             )}
           </div>
         </div>

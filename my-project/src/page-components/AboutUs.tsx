@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export const AboutUs = ({ data }: { data: any }) => {
   return (
-    <section className="py-12 xl:py-24">
+    <section className="py-12 xl:py-24" id="who-we-are">
       <div className="container flex flex-col gap-10 md:flex-row md:gap-20">
         <div className="order-1 flex flex-col">
           <Markdown
@@ -20,7 +20,7 @@ export const AboutUs = ({ data }: { data: any }) => {
               alt={data.aboutUsSection.image.alt}
               fill
               className="object-cover"
-              sizes="20vw"
+              sizes="(max-width: 768px) 100vw, 40vw"
             />
           </div>
           <Paw2 className="paw2 h-44 w-44" />

@@ -4,6 +4,7 @@ import { Roboto } from "next/font/google";
 import { Logo } from "../components/icons/Logo";
 import "./globals.css";
 import { MobileMenu } from "@/components/MobileMenu";
+import Link from "next/link";
 
 const roboto = Roboto({
   weight: ["100", "300", "400", "500", "700", "900"],
@@ -32,21 +33,22 @@ export default function RootLayout({
           </div>
           <div className="container invisible content-center items-center justify-between md:visible md:flex md:flex-row smOnly:absolute">
             <div className="h-6 w-40">
-              <a href="">
+              <Link href="/">
                 <Logo />
-              </a>
+              </Link>
             </div>
-            <nav className="flex flex-col items-center gap-10 md:flex-row">
+            <nav className="flex flex-col items-center md:flex-row md:gap-4 xl:gap-10">
               <h2 className="sr-only">Main navigation</h2>
-              <a href="#products">Our Products</a>
-              <a href="#about-us">About Us</a>
-              <a href="#contacts">Contacts</a>
-              <a
+              <Link href="#who-we-are">Who We Are</Link>
+              <Link href="#products">Our Products</Link>
+              <Link href="#about-us">About Us</Link>
+              <Link href="#contacts">Contacts</Link>
+              <Link
                 href="#contacts"
                 className="block rounded-xl bg-primary p-3 text-white"
               >
                 Contact Us
-              </a>
+              </Link>
             </nav>
           </div>
         </header>
@@ -55,16 +57,16 @@ export default function RootLayout({
         <footer className="bg-primary py-12">
           <div className="container flex flex-col items-center">
             <div className="mb-4 h-12 w-60 md:mb-9 md:w-80">
-              <a href="">
+              <Link href="">
                 <Logo />
-              </a>
+              </Link>
             </div>
             <nav className="flex flex-col gap-4 text-t16 md:flex-row md:gap-10">
               <h2 className="sr-only">Auxillary navigation</h2>
-              {/* <a>Home</a> */}
-              <a href="#products">Our Products</a>
-              <a href="#about-us">About Us</a>
-              <a href="#contacts">Contacts</a>
+              <Link href="#who-we-are">Who We Are</Link>
+              <Link href="#products">Our Products</Link>
+              <Link href="#about-us">About Us</Link>
+              <Link href="#contacts">Contacts</Link>
             </nav>
           </div>
         </footer>
