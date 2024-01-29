@@ -17,15 +17,18 @@ export const MobileMenu = () => {
     setIsOpen(false);
   };
   return (
-    <button className="ml-auto pr-4 pt-4" onClick={() => setMenuOpened()}>
-      <Burger className="h-10 w-10" />
+    <>
+      <button className="ml-auto pr-4 pt-4" onClick={() => setMenuOpened()}>
+        <Burger className="h-10 w-10" />
+      </button>
       {isOpen && (
-        <div className="fixed inset-0 z-10 overflow-scroll bg-white">
+        <div className="fixed inset-0 z-30 overflow-scroll bg-white">
           <button onClick={() => setMenuClosed()} className="ml-auto pr-4 pt-4">
             <BurgerCross className="h-10 w-10 text-dark" />
+            close
           </button>
         </div>
       )}
-    </button>
+    </>
   );
 };
