@@ -14,18 +14,30 @@ export const Slider = ({ sliderimages }: { sliderimages: any }) => {
     <Swiper
       modules={[Autoplay, Navigation, Pagination]}
       spaceBetween={0}
-      slidesPerView={3}
       initialSlide={2}
       watchOverflow
       centeredSlides
-      autoplay={{ delay: 3000 }}
-      speed={3000}
+      autoplay={{ delay: 1000 }}
+      speed={2000}
       loop
       pagination={{
         clickable: true,
       }}
+      breakpoints={{
+        // when window width is >= 640px
+        640: {
+          slidesPerView: 1,
+        },
+        // when window width is >= 768px
+        768: {
+          slidesPerView: 1,
+        },
+        1200: {
+          slidesPerView: 3,
+        },
+      }}
       onSwiper={(swiper) => console.log(swiper)}
-      className="h-[400px]"
+      className="h-[300px] xl:h-[400px]"
     >
       {sliderimages &&
         sliderimages.map((sliderimage: any, index: number) => (
@@ -34,7 +46,7 @@ export const Slider = ({ sliderimages }: { sliderimages: any }) => {
               <div
                 className={cn(
                   isActive ? "" : "origin-bottom scale-90 duration-500",
-                  "relative h-[360px] w-[600px] overflow-hidden	rounded-3xl border-2 border-primary"
+                  "relative h-[250px] overflow-hidden rounded-3xl	border-2 border-primary xl:h-[360px] xl:w-[600px]"
                 )}
               >
                 <Image

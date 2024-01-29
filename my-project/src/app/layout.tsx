@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import { Logo } from "../components/icons/Logo";
 import "./globals.css";
+import { MobileMenu } from "@/components/MobileMenu";
 
 const roboto = Roboto({
   weight: ["100", "300", "400", "500", "700", "900"],
@@ -25,16 +26,18 @@ export default function RootLayout({
       <body
         className={cn(roboto.className, "relative flex flex-grow flex-col")}
       >
-        <header className="absolute inset-x-0 z-10 pt-9">
-          <div className="container flex flex-row content-center items-center justify-between">
+        <header className="absolute inset-x-0 z-10 md:pt-9">
+          <div className="ml-auto flex items-end md:hidden">
+            <MobileMenu />
+          </div>
+          <div className="container invisible content-center items-center justify-between md:visible md:flex md:flex-row smOnly:absolute">
             <div className="h-6 w-40">
               <a href="">
                 <Logo />
               </a>
             </div>
-            <nav className="flex flex-row items-center gap-10">
+            <nav className="flex flex-col items-center gap-10 md:flex-row">
               <h2 className="sr-only">Main navigation</h2>
-              {/* <a href="#home">Home</a> */}
               <a href="#products">Our Products</a>
               <a href="#about-us">About Us</a>
               <a href="#contacts">Contacts</a>
@@ -47,15 +50,16 @@ export default function RootLayout({
             </nav>
           </div>
         </header>
+
         {children}
         <footer className="bg-primary py-12">
           <div className="container flex flex-col items-center">
-            <div className="mb-9 h-12 w-80">
+            <div className="mb-4 h-12 w-60 md:mb-9 md:w-80">
               <a href="">
                 <Logo />
               </a>
             </div>
-            <nav className="flex gap-10 text-t16">
+            <nav className="flex flex-col gap-4 text-t16 md:flex-row md:gap-10">
               <h2 className="sr-only">Auxillary navigation</h2>
               {/* <a>Home</a> */}
               <a href="#products">Our Products</a>

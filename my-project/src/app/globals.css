@@ -22,6 +22,18 @@ body {
     text-wrap: balance;
   }
 }
+.hero {
+  background-image: url("../../public/emmy-lilly-2-dogs-bg.webp");
+  background-size: cover;
+  background-position-x: center;
+}
+
+.paw2 {
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  scale: 0.5;
+}
 
 @media (min-width: 1200px) {
   .hero {
@@ -41,22 +53,10 @@ body {
     position: absolute;
     left: 75%;
     bottom: 75%;
+    top: unset;
+    right: unset;
+    scale: 1;
   }
-  /* .product_wrapper {
-    clip-path: polygon(100% 0%, 0% 0%, 0% 100%, 70% 100%, 100% 70%);
-  } */
-  /* .product_wrapper:before {
-    content: "";
-    position: absolute;
-    z-index: 1;
-    bottom: -80px;
-    right: -80px;
-    border-top: 180px solid #ffeacb;
-    border-left: 180px solid #ffeacb;
-    width: 0;
-    background: #ffeacb;
-    border-radius: 100px;
-  } */
 }
 
 .swiper-pagination-bullet {

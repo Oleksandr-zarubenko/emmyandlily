@@ -27,6 +27,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/components/Slider.js",
+    "src/components/MobileMenu.tsx",
   ],
   "exclude": ["node_modules"],
 }

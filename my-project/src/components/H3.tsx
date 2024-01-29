@@ -7,5 +7,12 @@ type Props = {
 };
 
 export const H3: FC<Props> = ({ children, className }) => (
-  <h3 className={cn("text-t24 text-primary", className)}>{children}</h3>
+  <h3
+    className={cn(
+      "text-t20 text-primary xl:text-t24 smOnly:font-semibold",
+      className
+    )}
+  >
+    {children}
+  </h3>
 );
