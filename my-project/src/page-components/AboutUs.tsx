@@ -20,6 +20,7 @@ export const AboutUs = ({ data }: { data: any }) => {
               alt={data.aboutUsSection.image.alt}
               fill
               className="object-cover"
+              sizes="20vw"
             />
           </div>
           <Paw2 className="paw2 h-44 w-44" />

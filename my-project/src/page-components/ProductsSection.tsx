@@ -25,6 +25,7 @@ export const ProductsSection = ({ data }: { data: any }) => {
                       alt={product.productpicture.alt}
                       fill
                       className="object-cover"
+                      sizes="20vw"
                     />
                   </div>
                   <button className="absolute -bottom-4 -right-4 z-10 flex h-20 w-20 items-center justify-center rounded-full bg-primary duration-300 hover:scale-110">
