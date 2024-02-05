@@ -8,14 +8,14 @@ import Link from "next/link";
 
 export const Contacts = ({ data }: { data: any }) => {
   return (
-    <section className="contacts pb-10 xl:pb-20 xl:pt-16" id="contacts">
+    <section className="contacts pb-10 xl:pb-20 xl:pt-48" id="contacts">
       <div className="container">
         <div className="max-w-md">
           <div className="mb-4 flex flex-row items-center gap-4 xl:mb-10">
             <Paw className="h-11 w-11 text-primary" />
             <Markdown text={data.contactssection.heading} />
           </div>
-          <Markdown text={data.contactssection.text} />
+          <Markdown text={data.contactssection.text} className="mb-8" />
           {data.contactssection.phone1 && (
             <Link
               href={"tel:" + data.contactssection.phone1}
@@ -28,7 +28,7 @@ export const Contacts = ({ data }: { data: any }) => {
           {data.contactssection.email && (
             <Link
               href={"mailto:" + data.contactssection.email}
-              className="mb-4 flex gap-2 text-t20 font-semibold text-dark"
+              className="mb-11 flex gap-2 text-t20 font-semibold text-dark"
             >
               <Email className="h-5 w-5 flex-shrink-0 text-primary" />
               {data.contactssection.email}
@@ -48,7 +48,7 @@ export const Contacts = ({ data }: { data: any }) => {
           )}
           <Markdown
             text={data.contactssection.socialsphrase}
-            className="font-bold"
+            className="mb-8 font-bold"
           />
           <div className="flex flex-row gap-6">
             {data.contactssection.instagramlink && (

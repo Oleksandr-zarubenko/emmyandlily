@@ -23,11 +23,27 @@ body {
   }
 }
 .hero {
-  background-image: url("../../public/emmy-lilly-2-dogs-bg.webp");
-  background-size: cover;
-  background-position-x: center;
+  background-image: url("../../public/emmy-lilly-2-dogs-bg-hero.webp");
+  background-repeat: no-repeat;
+  background-size: auto 360px;
+  background-position-x: 50%;
+  background-position-y: 100%;
+}
+
+.product {
+  clip-path: url(#path);
 }
 @media (min-width: 768px) {
+  .product {
+    clip-path: url(#pathMd);
+  }
+  .hero {
+    background-image: url("../../public/emmy-lilly-2-dogs-bg-hero.webp");
+    background-repeat: no-repeat;
+    background-size: auto 640px;
+    background-position-x: 50%;
+    background-position-y: 100%;
+  }
   .contacts {
     background-image: url("../../public/emmy-dog-image.png");
     background-repeat: no-repeat;
@@ -44,10 +60,15 @@ body {
 }
 
 @media (min-width: 1200px) {
+  .product {
+    clip-path: url(#path);
+  }
   .hero {
-    background-image: url("../../public/emmy-lilly-2-dogs-bg.webp");
-    background-size: cover;
-    background-position-x: right;
+    background-image: url("../../public/emmy-lilly-2-dogs-bg-hero.webp");
+    background-repeat: no-repeat;
+    background-size: auto 90%;
+    background-position-x: 100%;
+    background-position-y: 100%;
   }
 
   .contacts {

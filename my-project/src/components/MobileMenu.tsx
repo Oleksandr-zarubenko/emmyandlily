@@ -27,13 +27,13 @@ export const MobileMenu = () => {
   return (
     <>
       <>
-        <div className="w-1/2 p-2">
+        <div className="ml-7 mt-8 h-7 w-36 md:w-44">
           <Link href="/">
             <Logo />
           </Link>
         </div>
         <button className="ml-auto py-2 pr-4" onClick={() => setMenuOpened()}>
-          <Burger className="h-10 w-10" />
+          <Burger className="h-4 w-7" />
         </button>
       </>
       {isOpen && (

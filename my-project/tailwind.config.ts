@@ -32,6 +32,7 @@ const config: Config = {
       fontSize: {
         t16: "16px",
         t20: "20px",
+        t24n: "24px",
         t24: [
           "24px",
           {
@@ -44,8 +45,14 @@ const config: Config = {
             fontWeight: "700",
           },
         ],
-        t70: [
-          "70px",
+        t50: [
+          "50px",
+          {
+            fontWeight: "800",
+          },
+        ],
+        t80: [
+          "80px",
           {
             fontWeight: "800",
           },

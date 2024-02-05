@@ -28,10 +28,10 @@ export default function RootLayout({
         className={cn(roboto.className, "relative flex flex-grow flex-col")}
       >
         <header className="absolute inset-x-0 z-20 md:pt-9">
-          <div className="bg_secondary fixed inset-x-0 top-0 ml-auto flex items-end bg-bg_primary/60 backdrop-blur md:hidden">
+          <div className="bg_secondary fixed inset-x-0 top-0 ml-auto flex items-end bg-bg_primary/60 backdrop-blur xl:hidden">
             <MobileMenu />
           </div>
-          <div className="container invisible content-center items-center justify-between md:visible md:flex md:flex-row smOnly:absolute">
+          <div className="container invisible content-center items-center justify-between md:flex md:flex-row xl:visible smOnly:absolute">
             <div className="h-6 w-40">
               <Link href="/">
                 <Logo />
