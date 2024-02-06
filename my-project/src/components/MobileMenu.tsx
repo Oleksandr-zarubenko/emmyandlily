@@ -37,38 +37,49 @@ export const MobileMenu = () => {
         </button>
       </>
       {isOpen && (
-        <div className="fixed inset-0 z-30 h-dvh overflow-scroll bg-bg_primary">
+        <div className="fixed inset-0 z-30 h-dvh overflow-scroll bg-primary">
           <div className="flex">
-            <div className="w-1/2 px-2 pb-2 pt-6">
-              <Link href="/">
-                <Logo />
-              </Link>
-            </div>
             <button
               onClick={() => setMenuClosed()}
-              className="ml-auto py-2 pr-4"
+              className="ml-auto py-8 pr-4"
             >
-              <BurgerCross className="h-10 w-10 text-dark" />
+              <BurgerCross className="h-5 w-5 text-dark" />
             </button>
           </div>
-          <nav className="flex flex-col items-center gap-10 pt-2 md:flex-row">
+          <nav className="flex flex-col items-center gap-1 pt-2 text-t20 md:flex-row">
             <h2 className="sr-only">Mobile navigation</h2>
-            <Link onClick={() => setMenuClosed()} href="#who-we-are">
+            <Link
+              onClick={() => setMenuClosed()}
+              href="#who-we-are"
+              className="black-line w-5/6 py-7 text-center"
+            >
               Who We Are
             </Link>
-            <Link onClick={() => setMenuClosed()} href="#products">
+            <Link
+              onClick={() => setMenuClosed()}
+              href="#products"
+              className="black-line w-5/6 py-7 text-center"
+            >
               Our Products
             </Link>
-            <Link onClick={() => setMenuClosed()} href="#about-us">
+            <Link
+              onClick={() => setMenuClosed()}
+              href="#about-us"
+              className="black-line w-5/6 py-7 text-center"
+            >
               About Us
             </Link>
-            <Link onClick={() => setMenuClosed()} href="#contacts">
+            <Link
+              onClick={() => setMenuClosed()}
+              href="#contacts"
+              className="black-line w-5/6 py-7 text-center"
+            >
               Contacts
             </Link>
             <Link
               onClick={() => setMenuClosed()}
               href="#contacts"
-              className="block rounded-xl bg-primary p-3 text-white"
+              className="w-5/6 py-7 text-center"
             >
               Contact Us
             </Link>

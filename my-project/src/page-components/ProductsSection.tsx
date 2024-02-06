@@ -11,14 +11,14 @@ export const ProductsSection = ({ data }: { data: any }) => {
   return (
     <section className="text-center xl:py-16" id="products">
       <div className="container">
-        <div className="mb-4 flex flex-row items-center justify-center gap-4 xl:mb-10">
-          <Paw className="h-11 w-11 text-primary" />
+        <div className="mb-4 flex flex-row items-center justify-center gap-1 md:gap-4 xl:mb-10">
+          <Paw className="h-8 w-8 text-primary md:h-11 md:w-11" />
           <Markdown text={data.productsSection.heading} className="mb-0" />
         </div>
         {data.productsSection.text && (
           <Markdown text={data.productsSection.text} />
         )}
-        <div className="grid gap-6 text-left md:grid-cols-3 xl:gap-0 smOnly:grid-rows-3">
+        <div className="grid gap-4 text-left md:grid-cols-3 md:gap-6 xl:gap-0 smOnly:grid-rows-3">
           {data.allProducts.length > 0 &&
             data.allProducts.map((product: any) => (
               <article
@@ -46,7 +46,7 @@ export const ProductsSection = ({ data }: { data: any }) => {
                   </button>
                 </div>
                 <Markdown text={product.heading} className="mb-3" />
-                <Markdown text={product.description} />
+                <Markdown text={product.description} className="!text-t16" />
               </article>
             ))}
         </div>

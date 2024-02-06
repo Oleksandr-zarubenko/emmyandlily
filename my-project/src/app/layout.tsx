@@ -28,7 +28,7 @@ export default function RootLayout({
         className={cn(roboto.className, "relative flex flex-grow flex-col")}
       >
         <header className="absolute inset-x-0 z-20 md:pt-9">
-          <div className="bg_secondary fixed inset-x-0 top-0 ml-auto flex items-end bg-bg_primary/60 backdrop-blur xl:hidden">
+          <div className="fixed inset-x-0 top-0 ml-auto flex items-end bg-bg_primary/60 backdrop-blur xl:hidden">
             <MobileMenu />
           </div>
           <div className="container invisible content-center items-center justify-between md:flex md:flex-row xl:visible smOnly:absolute">
@@ -56,12 +56,12 @@ export default function RootLayout({
         {children}
         <footer className="bg-primary py-12">
           <div className="container flex flex-col items-center">
-            <div className="mb-4 h-12 w-60 md:mb-9 md:w-80">
+            <div className="mb-4 h-6 w-40 md:mb-9 md:w-80">
               <Link href="">
                 <Logo />
               </Link>
             </div>
-            <nav className="flex flex-col gap-4 text-t16 md:flex-row md:gap-10">
+            <nav className="text-t12 mx-10 flex flex-wrap justify-between gap-4 md:flex-row md:gap-10 md:text-t16">
               <h2 className="sr-only">Auxillary navigation</h2>
               <Link href="#who-we-are">Who We Are</Link>
               <Link href="#products">Our Products</Link>

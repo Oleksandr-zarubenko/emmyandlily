@@ -1,32 +1,14 @@
 export const BurgerCross = ({ className }: { className: string }) => (
   <svg
-    className={className}
-    viewBox="0 0 40 40"
-    fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    viewBox="0 0 21 21"
+    fill="none"
   >
     <path
-      d="M15.4924 9.75781H27.9924"
-      stroke="currentColor"
-      strokeWidth="2.5"
-      strokeLinecap="round"
-    />
-    <path
-      d="M13.3606 13.876L29.6241 30.1394"
-      stroke="currentColor"
-      strokeWidth="2.5"
-      strokeLinecap="round"
-    />
-    <path
-      d="M22.3877 21.4604L13.4922 30.2423"
-      stroke="currentColor"
-      strokeWidth="2.5"
-      strokeLinecap="round"
-    />
-    <path
-      d="M27.7966 16.2642L29.5757 14.5078"
-      stroke="currentColor"
-      strokeWidth="2.5"
+      d="M1 1L20 20M20 1L1 20"
+      stroke="white"
+      strokeWidth="2"
       strokeLinecap="round"
     />
   </svg>

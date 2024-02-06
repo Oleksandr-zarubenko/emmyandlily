@@ -37,7 +37,7 @@ export const Slider = ({ sliderimages }: { sliderimages: any }) => {
         },
       }}
       onSwiper={(swiper) => console.log(swiper)}
-      className="h-[300px] xl:h-[400px]"
+      className="h-[225px] md:h-[300px] xl:h-[400px]"
     >
       {sliderimages &&
         sliderimages.map((sliderimage: any, index: number) => (
@@ -46,7 +46,7 @@ export const Slider = ({ sliderimages }: { sliderimages: any }) => {
               <div
                 className={cn(
                   isActive ? "" : "origin-bottom scale-90 duration-500",
-                  "relative h-[250px] overflow-hidden rounded-3xl	border-2 border-primary xl:h-[360px] xl:w-[600px]"
+                  "relative h-[190px] overflow-hidden rounded-3xl border-2	border-primary md:h-[250px] xl:h-[360px] xl:w-[600px]"
                 )}
               >
                 <Image

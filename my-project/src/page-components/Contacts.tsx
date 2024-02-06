@@ -28,7 +28,7 @@ export const Contacts = ({ data }: { data: any }) => {
           {data.contactssection.email && (
             <Link
               href={"mailto:" + data.contactssection.email}
-              className="mb-11 flex gap-2 text-t20 font-semibold text-dark"
+              className="mb-[152px] flex gap-2 text-t20 font-semibold text-dark md:mb-11"
             >
               <Email className="h-5 w-5 flex-shrink-0 text-primary" />
               {data.contactssection.email}
@@ -48,19 +48,9 @@ export const Contacts = ({ data }: { data: any }) => {
           )}
           <Markdown
             text={data.contactssection.socialsphrase}
-            className="mb-8 font-bold"
+            className="mb-8 font-bold smOnly:max-w-[155px] smOnly:!text-t20"
           />
-          <div className="flex flex-row gap-6">
-            {data.contactssection.instagramlink && (
-              <Link
-                href={data.contactssection.tiktoklink}
-                rel="nofollow"
-                target="_blank"
-                className="flex w-max items-center gap-1 rounded-xl bg-primary px-4 py-2 text-t16 text-bg_secondary md:px-8"
-              >
-                <TikTok className="h-5 w-5 flex-shrink-0" /> TikTok
-              </Link>
-            )}
+          <div className="flex flex-col gap-6 md:flex-row">
             {data.contactssection.instagramlink && (
               <Link
                 href={data.contactssection.instagramlink}
@@ -69,6 +59,16 @@ export const Contacts = ({ data }: { data: any }) => {
                 className="flex w-max items-center gap-1 rounded-xl bg-primary px-8 py-2 text-t16 text-bg_secondary"
               >
                 <Instagram className="h-5 w-5 flex-shrink-0" /> Instagram
+              </Link>
+            )}
+            {data.contactssection.instagramlink && (
+              <Link
+                href={data.contactssection.tiktoklink}
+                rel="nofollow"
+                target="_blank"
+                className="flex w-max items-center gap-1 rounded-xl bg-primary px-4 py-2 text-t16 text-bg_secondary md:px-8"
+              >
+                <TikTok className="h-5 w-5 flex-shrink-0" /> TikTok
               </Link>
             )}
           </div>

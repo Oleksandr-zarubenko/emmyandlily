@@ -15,9 +15,9 @@ const config: Config = {
       container: {
         center: true,
         padding: {
-          DEFAULT: "1rem",
-          sm: "1rem",
-          md: "2.5rem",
+          DEFAULT: "28px",
+          sm: "28px",
+          md: "80px",
           xl: "100px",
         },
       },
@@ -30,11 +30,19 @@ const config: Config = {
         bg_secondary: "#FFEACB",
       },
       fontSize: {
+        t12: "12px",
         t16: "16px",
+        t18: "18px",
         t20: "20px",
         t24n: "24px",
         t24: [
           "24px",
+          {
+            fontWeight: "700",
+          },
+        ],
+        t30: [
+          "30px",
           {
             fontWeight: "700",
           },
