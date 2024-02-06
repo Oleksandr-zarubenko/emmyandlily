@@ -1,11 +1,11 @@
 import { Markdown } from "@/components/Markdown";
-import { Arrow } from "@/components/icons/Arrow";
 import { Path } from "@/components/icons/Path";
 import { PathBorder } from "@/components/icons/PathBorder";
 import { PathMd } from "@/components/icons/PathMd";
 import { PathBorderMd } from "@/components/icons/PathBorderMd";
 import { Paw } from "@/components/icons/Paw";
 import Image from "next/image";
+import { ProductModal } from "@/components/ProductModal";
 
 export const ProductsSection = ({ data }: { data: any }) => {
   return (
@@ -32,18 +32,14 @@ export const ProductsSection = ({ data }: { data: any }) => {
                       src={product.productpicture.url}
                       alt={product.productpicture.alt}
                       className="product h-[253px] w-[304px] object-cover mdOnly:h-[160px] mdOnly:w-[193px]"
-                      sizes="33vw"
+                      sizes="(max-width: 768px) 100vw, 33vw"
                     />
                     <Path />
                     <PathMd />
                     <PathBorder className="absolute left-0 top-0 h-full w-full mdOnly:hidden" />
                     <PathBorderMd className="absolute left-0 top-0 hidden h-full w-full mdOnly:block" />
                   </div>
-                  <button className="absolute bottom-0 right-0 z-10 flex h-20 w-20 items-center justify-center rounded-full bg-primary duration-300 hover:scale-110 mdOnly:h-12 mdOnly:w-12">
-                    <span className="h-5 w-5">
-                      <Arrow />
-                    </span>
-                  </button>
+                  <ProductModal product={product} />
                 </div>
                 <Markdown text={product.heading} className="mb-3" />
                 <Markdown

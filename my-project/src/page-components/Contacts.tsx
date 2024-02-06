@@ -62,7 +62,7 @@ export const Contacts = ({ data }: { data: any }) => {
                 href={data.contactssection.instagramlink}
                 rel="nofollow"
                 target="_blank"
-                className="flex w-max items-center gap-1 rounded-xl bg-primary px-8 py-2 text-t16 text-bg_secondary"
+                className="flex w-max items-center gap-1 rounded-xl bg-primary px-8 py-2 text-t16 text-bg_secondary duration-300 hover:bg-dark"
               >
                 <Instagram className="h-5 w-5 flex-shrink-0" /> Instagram
               </Link>
@@ -72,7 +72,7 @@ export const Contacts = ({ data }: { data: any }) => {
                 href={data.contactssection.tiktoklink}
                 rel="nofollow"
                 target="_blank"
-                className="flex w-max items-center gap-1 rounded-xl bg-primary px-4 py-2 text-t16 text-bg_secondary md:px-8"
+                className="flex w-max items-center gap-1 rounded-xl bg-primary px-4 py-2 text-t16 text-bg_secondary duration-300 hover:bg-dark md:px-8"
               >
                 <TikTok className="h-5 w-5 flex-shrink-0" /> TikTok
               </Link>

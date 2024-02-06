@@ -43,7 +43,7 @@ export const MobileMenu = () => {
               onClick={() => setMenuClosed()}
               className="ml-auto py-8 pr-4"
             >
-              <BurgerCross className="h-5 w-5 text-dark" />
+              <BurgerCross className="h-5 w-5 text-white" />
             </button>
           </div>
           <nav className="flex flex-col items-center gap-1 pt-2 text-center text-t20 md:max-w-[300px] md:text-left">

@@ -7,7 +7,7 @@ export const BurgerCross = ({ className }: { className: string }) => (
   >
     <path
       d="M1 1L20 20M20 1L1 20"
-      stroke="white"
+      stroke="currentColor"
       strokeWidth="2"
       strokeLinecap="round"
     />

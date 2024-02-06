@@ -39,15 +39,29 @@ export default function RootLayout({
             </div>
             <nav className="flex flex-col items-center md:flex-row md:gap-4 xl:gap-10">
               <h2 className="sr-only">Main navigation</h2>
-              <Link href="#who-we-are">Who We Are</Link>
-              <Link href="#products">Our Products</Link>
-              <Link href="#about-us">About Us</Link>
-              <Link href="#contacts">Contacts</Link>
               <Link
-                href="#contacts"
-                className="block rounded-xl bg-primary p-3 text-white"
+                className="duration-300 hover:text-primary"
+                href="#who-we-are"
               >
-                Contact Us
+                Who We Are
+              </Link>
+              <Link
+                className="duration-300 hover:text-primary"
+                href="#products"
+              >
+                Our Products
+              </Link>
+              <Link
+                className="duration-300 hover:text-primary"
+                href="#about-us"
+              >
+                About Us
+              </Link>
+              <Link
+                className="duration-300 hover:text-primary"
+                href="#contacts"
+              >
+                Contacts
               </Link>
             </nav>
           </div>
@@ -63,10 +77,21 @@ export default function RootLayout({
             </div>
             <nav className="text-t12 mx-10 flex flex-wrap justify-between gap-4 md:flex-row md:gap-10 md:text-t16">
               <h2 className="sr-only">Auxillary navigation</h2>
-              <Link href="#who-we-are">Who We Are</Link>
-              <Link href="#products">Our Products</Link>
-              <Link href="#about-us">About Us</Link>
-              <Link href="#contacts">Contacts</Link>
+              <Link
+                className="duration-300 hover:text-white"
+                href="#who-we-are"
+              >
+                Who We Are
+              </Link>
+              <Link className="duration-300 hover:text-white" href="#products">
+                Our Products
+              </Link>
+              <Link className="duration-300 hover:text-white" href="#about-us">
+                About Us
+              </Link>
+              <Link className="duration-300 hover:text-white" href="#contacts">
+                Contacts
+              </Link>
             </nav>
           </div>
         </footer>
