@@ -68,9 +68,9 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: "Emmy and Lili - dog`s shampoo brand.",
       images: [
         {
-          url: `/favicon/android-chrome-512x512.png`,
-          width: 512,
-          height: 512,
+          url: `/favicon/android-chrome-256x256.png`,
+          width: 256,
+          height: 256,
         },
         {
           url: `/favicon/android-chrome-192x192.png`,
@@ -79,7 +79,7 @@ export async function generateMetadata(): Promise<Metadata> {
           alt: "Emmy and Lili - dog`s shampoo brand.",
         },
       ],
-      locale: "eng",
+      locale: "en",
       type: "website",
     },
   };
