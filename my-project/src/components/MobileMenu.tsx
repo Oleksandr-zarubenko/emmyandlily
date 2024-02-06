@@ -46,40 +46,40 @@ export const MobileMenu = () => {
               <BurgerCross className="h-5 w-5 text-dark" />
             </button>
           </div>
-          <nav className="flex flex-col items-center gap-1 pt-2 text-t20 md:flex-row">
+          <nav className="flex flex-col items-center gap-1 pt-2 text-center text-t20 md:max-w-[300px] md:text-left">
             <h2 className="sr-only">Mobile navigation</h2>
             <Link
               onClick={() => setMenuClosed()}
               href="#who-we-are"
-              className="black-line w-5/6 py-7 text-center"
+              className="black-line w-5/6 py-7"
             >
               Who We Are
             </Link>
             <Link
               onClick={() => setMenuClosed()}
               href="#products"
-              className="black-line w-5/6 py-7 text-center"
+              className="black-line w-5/6 py-7"
             >
               Our Products
             </Link>
             <Link
               onClick={() => setMenuClosed()}
               href="#about-us"
-              className="black-line w-5/6 py-7 text-center"
+              className="black-line w-5/6 py-7"
             >
               About Us
             </Link>
             <Link
               onClick={() => setMenuClosed()}
               href="#contacts"
-              className="black-line w-5/6 py-7 text-center"
+              className="black-line w-5/6 py-7"
             >
               Contacts
             </Link>
             <Link
               onClick={() => setMenuClosed()}
               href="#contacts"
-              className="w-5/6 py-7 text-center"
+              className="w-5/6 py-7"
             >
               Contact Us
             </Link>

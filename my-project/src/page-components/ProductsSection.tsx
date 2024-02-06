@@ -11,7 +11,7 @@ export const ProductsSection = ({ data }: { data: any }) => {
   return (
     <section className="text-center xl:py-16" id="products">
       <div className="container">
-        <div className="mb-4 flex flex-row items-center justify-center gap-1 md:gap-4 xl:mb-10">
+        <div className="mb-4 flex flex-row items-center gap-1 md:gap-4 xl:mb-10 xl:justify-center">
           <Paw className="h-8 w-8 text-primary md:h-11 md:w-11" />
           <Markdown text={data.productsSection.heading} className="mb-0" />
         </div>
@@ -46,7 +46,10 @@ export const ProductsSection = ({ data }: { data: any }) => {
                   </button>
                 </div>
                 <Markdown text={product.heading} className="mb-3" />
-                <Markdown text={product.description} className="!text-t16" />
+                <Markdown
+                  text={product.description}
+                  className="md:!text-t12 !text-t16"
+                />
               </article>
             ))}
         </div>

@@ -8,14 +8,20 @@ import Link from "next/link";
 
 export const Contacts = ({ data }: { data: any }) => {
   return (
-    <section className="contacts pb-10 xl:pb-20 xl:pt-48" id="contacts">
+    <section
+      className="contacts pb-10 md:pt-24 xl:pb-20 xl:pt-48"
+      id="contacts"
+    >
       <div className="container">
         <div className="max-w-md">
           <div className="mb-4 flex flex-row items-center gap-4 xl:mb-10">
             <Paw className="h-11 w-11 text-primary" />
             <Markdown text={data.contactssection.heading} />
           </div>
-          <Markdown text={data.contactssection.text} className="mb-8" />
+          <Markdown
+            text={data.contactssection.text}
+            className="mb-8 mdOnly:max-w-[310px]"
+          />
           {data.contactssection.phone1 && (
             <Link
               href={"tel:" + data.contactssection.phone1}

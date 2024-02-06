@@ -13,7 +13,7 @@ export const HeroSection = ({ data }: { data: any }) => {
           </div>
           <Markdown
             text={data.mainSection.text}
-            className="!md:text-t24n order-3 !text-t16"
+            className="order-3 !text-t16 md:!text-t24n"
           />
         </div>
       </div>

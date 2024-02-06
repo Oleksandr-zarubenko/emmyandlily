@@ -58,13 +58,22 @@ section {
   background-position-y: 100%;
 }
 
+.paw2 {
+  position: absolute;
+  top: -110px;
+  right: -100px;
+  scale: 0.5;
+}
+
 .product {
   clip-path: url(#path);
 }
+
 @media (min-width: 768px) {
   .product {
     clip-path: url(#pathMd);
   }
+
   .hero {
     background-image: url("../../public/emmy-lilly-2-dogs-bg-hero.webp");
     background-repeat: no-repeat;
@@ -72,19 +81,21 @@ section {
     background-position-x: 50%;
     background-position-y: 100%;
   }
+
   .contacts {
     background-image: url("../../public/emmy-dog-image.png");
     background-repeat: no-repeat;
     background-size: contain;
-    background-position-x: 85%;
+    background-position-x: 90%;
+    background-position-y: 100%;
   }
-}
 
-.paw2 {
-  position: absolute;
-  top: -110px;
-  right: -100px;
-  scale: 0.5;
+  .paw2 {
+    position: absolute;
+    top: -140px;
+    right: -130px;
+    scale: 0.5;
+  }
 }
 
 @media (min-width: 1200px) {
@@ -109,7 +120,7 @@ section {
   .paw2 {
     position: absolute;
     left: 75%;
-    bottom: 75%;
+    bottom: 70%;
     top: unset;
     right: unset;
     scale: 1;
