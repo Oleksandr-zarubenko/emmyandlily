@@ -23,13 +23,17 @@ const config: Config = {
       },
       colors: {
         primary: "#FF8667",
+        primary_T: "#FFF0ED",
         dark: "#333",
         black: "#000",
         white: "#FFF",
         bg_primary: "#fad5a2",
         bg_secondary: "#FFEACB",
+        border: "#DCDCDC",
       },
       fontSize: {
+        t8: "8px",
+        t10: "10px",
         t12: "12px",
         t16: "16px",
         t18: "18px",

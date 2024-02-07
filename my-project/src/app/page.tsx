@@ -54,6 +54,11 @@ const query = gql`
         alt
         url
       }
+      advantage1
+      advantage2
+      advantage3
+      activeComponents
+      composition
     }
   }
 `;
