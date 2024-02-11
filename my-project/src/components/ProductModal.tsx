@@ -56,7 +56,10 @@ export const ProductModal = ({ product }: { product: any }) => {
         </span>
       </button>
       {isOpen && (
-        <div className="fixed inset-0 z-30 flex h-dvh items-center justify-center overflow-y-auto bg-black/50">
+        <div
+          className="fixed inset-0 z-30 flex h-dvh items-center justify-center overflow-y-auto bg-black/50"
+          onClick={() => setMenuClosed()}
+        >
           <div className="relative h-full xl:h-auto">
             <button
               onClick={() => setMenuClosed()}
@@ -64,7 +67,10 @@ export const ProductModal = ({ product }: { product: any }) => {
             >
               <BurgerCross className="h-2 w-2 text-white" />
             </button>
-            <div className="productModal relative h-full overflow-y-auto bg-white xl:flex xl:h-[580px] xl:w-[1000px] xl:flex-row">
+            <div
+              className="productModal relative h-full overflow-y-auto bg-white xl:flex xl:h-[580px] xl:w-[1000px] xl:flex-row"
+              onClick={(e) => e.stopPropagation()}
+            >
               <div className="xl:flex xl:h-full xl:flex-col">
                 <div className="relative h-60 md:h-96 xl:w-[550px] xl:flex-shrink-0">
                   <Image
