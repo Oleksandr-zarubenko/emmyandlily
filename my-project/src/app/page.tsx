@@ -59,6 +59,11 @@ const query = gql`
       advantage3
       activeComponents
       composition
+      productSlider {
+        alt
+        url
+        id
+      }
     }
   }
 `;

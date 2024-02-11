@@ -18,6 +18,11 @@ section {
   scroll-margin-top: 65px;
 }
 
+* {
+  scrollbar-width: auto;
+  scrollbar-color: #ff8667 #ffffff;
+}
+
 @media (prefers-color-scheme: dark) {
 }
 
@@ -99,9 +104,14 @@ section {
 }
 
 @media (min-width: 1200px) {
+  .productModal {
+    clip-path: url(#pathModalXl);
+  }
+
   .product {
     clip-path: url(#path);
   }
+
   .hero {
     background-image: url("../../public/emmy-lilly-2-dogs-bg-hero.webp");
     background-repeat: no-repeat;
