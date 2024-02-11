@@ -114,7 +114,7 @@ export const ProductModal = ({ product }: { product: any }) => {
                   )}
                 </div>
               </div>
-              <div className="px-4 py-3 md:px-3 md:py-10">
+              <div className="px-4 py-3 md:px-3 md:py-10 xl:px-10">
                 <Markdown text={product.heading} className="my-3" />
                 <div className="mb-4 flex gap-2 md:flex-wrap md:gap-3 smOnly:flex-col">
                   {product?.advantage1 && (
