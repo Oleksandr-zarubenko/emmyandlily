@@ -76,13 +76,6 @@ export const MobileMenu = () => {
             >
               Contacts
             </Link>
-            <Link
-              onClick={() => setMenuClosed()}
-              href="#contacts"
-              className="w-5/6 py-7"
-            >
-              Contact Us
-            </Link>
           </nav>
         </div>
       )}
