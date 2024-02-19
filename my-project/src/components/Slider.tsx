@@ -36,7 +36,6 @@ export const Slider = ({ sliderimages }: { sliderimages: any }) => {
           centeredSlides: true,
         },
       }}
-      onSwiper={(swiper) => console.log(swiper)}
       className="h-[225px] md:h-[400px]"
     >
       {sliderimages &&
