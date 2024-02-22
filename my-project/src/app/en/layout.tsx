@@ -1,8 +1,8 @@
 import cn from "classnames";
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
-import { Logo } from "../components/icons/Logo";
-import "./globals.css";
+import { Logo } from "../../components/icons/Logo";
+import "../globals.css";
 import { MobileMenu } from "@/components/MobileMenu";
 import Link from "next/link";
 
@@ -94,7 +94,7 @@ export default function RootLayout({
                 <Logo />
               </Link>
             </div>
-            <nav className="text-t12 mx-10 flex flex-wrap justify-between gap-4 md:flex-row md:gap-10 md:text-t16">
+            <nav className="mx-10 flex flex-wrap justify-between gap-4 text-t12 md:flex-row md:gap-10 md:text-t16">
               <h2 className="sr-only">Auxillary navigation</h2>
               <Link
                 className="duration-300 hover:text-white"

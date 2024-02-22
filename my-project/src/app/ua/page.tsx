@@ -4,17 +4,17 @@ import { Contacts } from "@/page-components/Contacts";
 import { HeroSection } from "@/page-components/HeroSection";
 import { ProductsSection } from "@/page-components/ProductsSection";
 import { gql } from "@apollo/client";
-import { getClient } from "../utils/apollo-client";
+import { getClient } from "../../utils/apollo-client";
 import { Metadata } from "next";
 
 const query = gql`
   {
-    mainSection {
+    mainSection(locale: uk) {
       bigtext
       heading
       text
     }
-    aboutUsSection {
+    aboutUsSection(locale: uk) {
       heading
       text
       image {
@@ -23,7 +23,7 @@ const query = gql`
         url
       }
     }
-    aboutUsSlider {
+    aboutUsSlider(locale: uk) {
       text
       heading
       sliderimages {
@@ -31,7 +31,7 @@ const query = gql`
         url
       }
     }
-    contactssection {
+    contactssection(locale: uk) {
       heading
       text
       phone1
@@ -42,11 +42,11 @@ const query = gql`
       tiktoklink
       instagramlink
     }
-    productsSection {
+    productsSection(locale: uk) {
       heading
       text
     }
-    allProducts {
+    allProducts(locale: uk) {
       heading
       description
       id
