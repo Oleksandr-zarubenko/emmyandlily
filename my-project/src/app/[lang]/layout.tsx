@@ -5,6 +5,7 @@ import { Logo } from "../../components/icons/Logo";
 import "../globals.css";
 import { MobileMenu } from "@/components/MobileMenu";
 import Link from "next/link";
+import { Locale } from "../../../i18n.config";
 
 const roboto = Roboto({
   weight: ["100", "300", "400", "500", "700", "900"],
@@ -38,11 +39,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: { lang: Locale };
 }>) {
   return (
-    <html lang="en">
+    <html lang={params.lang}>
       <body
         className={cn(roboto.className, "relative flex flex-grow flex-col")}
       >

@@ -6,8 +6,70 @@ import { ProductsSection } from "@/page-components/ProductsSection";
 import { gql } from "@apollo/client";
 import { getClient } from "../../utils/apollo-client";
 import { Metadata } from "next";
+import { Locale } from "../../../i18n.config";
 
-const query = gql`
+const queryEN = gql`
+  {
+    mainSection {
+      bigtext
+      heading
+      text
+    }
+    aboutUsSection {
+      heading
+      text
+      image {
+        alt
+        author
+        url
+      }
+    }
+    aboutUsSlider {
+      text
+      heading
+      sliderimages {
+        alt
+        url
+      }
+    }
+    contactssection {
+      heading
+      text
+      phone1
+      email
+      text2
+      phone2
+      socialsphrase
+      tiktoklink
+      instagramlink
+    }
+    productsSection {
+      heading
+      text
+    }
+    allProducts {
+      heading
+      description
+      id
+      productpicture {
+        alt
+        url
+      }
+      advantage1
+      advantage2
+      advantage3
+      activeComponents
+      composition
+      productSlider {
+        alt
+        url
+        id
+      }
+    }
+  }
+`;
+
+const queryUA = gql`
   {
     mainSection(locale: uk) {
       bigtext
@@ -95,7 +157,13 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function Home() {
+export default async function Home({
+  params: { lang },
+}: {
+  params: { lang: Locale };
+}) {
+  const query = lang == "ua" ? queryUA : queryEN;
+
   const { data } = await getClient().query({
     query,
     context: {
@@ -104,6 +172,7 @@ export default async function Home() {
       },
     },
   });
+
   return (
     <div className="flex flex-grow flex-col bg-bg_secondary">
       <HeroSection data={data} />
