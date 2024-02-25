@@ -14,7 +14,7 @@ export async function POST(req: Request) {
 <b>mail</b>: ${data?.message} %0A
 <b>Created At</b>: ${data?.createdAt}
     `;
-    const id = "309818809";
+    const id = "-1001852124342";
     const ret = await fetch(
       `https://api.telegram.org/bot${tgbot}/sendMessage?chat_id=${id}&text=${messageToBot}&parse_mode=HTML`
     );
