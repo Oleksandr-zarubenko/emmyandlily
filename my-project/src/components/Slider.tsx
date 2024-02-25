@@ -50,7 +50,7 @@ export const Slider = ({ sliderimages }: { sliderimages: any }) => {
               >
                 <Image
                   src={sliderimage.url}
-                  alt={sliderimage.alt}
+                  alt={sliderimage.alt || "Emmy and Lili"}
                   fill
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, 600px"

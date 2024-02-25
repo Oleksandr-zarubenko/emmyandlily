@@ -83,7 +83,7 @@ export const ProductModal = ({
                     quality={80}
                     fill
                     src={currentImageUrl || product.productSlider[0].url}
-                    alt={product.productpicture.alt}
+                    alt={product.productpicture.alt || "Emmy and Lili"}
                     className="object-cover"
                     sizes="(max-width: 768px) 80vw, (max-width: 1200px) 50vw, 550px"
                   />
@@ -108,7 +108,7 @@ export const ProductModal = ({
                           quality={80}
                           fill
                           src={slide.url}
-                          alt={slide.alt}
+                          alt={slide.alt || "Emmy and Lili"}
                           className={cn(
                             "object-cover",
                             slide.url !== currentImageUrl ? "" : ""

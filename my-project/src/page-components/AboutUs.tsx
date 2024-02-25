@@ -17,7 +17,7 @@ export const AboutUs = ({ data }: { data: any }) => {
           <div className="relative h-[253px] w-[304px] flex-shrink-0 overflow-hidden rounded-3xl border-2 border-primary md:h-[300px] md:w-full xl:h-[453px] xl:w-[430px]">
             <Image
               src={data.aboutUsSection.image.url}
-              alt={data.aboutUsSection.image.alt}
+              alt={data.aboutUsSection.image.alt || "Emmy and Lili"}
               fill
               className="object-cover"
               sizes="(max-width: 768px) 90vw, 430px"
