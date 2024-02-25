@@ -43,7 +43,7 @@ export const ProductsSection = async ({
                       <Image
                         fill
                         src={product.productpicture.url}
-                        alt={product.productpicture.alt}
+                        alt={product.productpicture.alt || "Emmy and Lili"}
                         className="product h-[253px] w-[304px] object-cover mdOnly:h-[160px] mdOnly:w-[193px]"
                         sizes="(max-width: 768px) 90vw, 305px"
                       />
