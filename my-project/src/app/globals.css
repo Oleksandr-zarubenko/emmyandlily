@@ -135,6 +135,21 @@ section {
     right: unset;
     scale: 1;
   }
+
+  .modal {
+    background-image: url("../../public/emmy-lilly-2-dogs-bg-hero.webp");
+    background-repeat: no-repeat;
+    background-size: auto 90%;
+    background-position-x: 100%;
+    background-position-y: 100%;
+  }
+
+  .modalSuccess {
+    background-image: url("../../public/emmy-dog-image.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position-x: 90%;
+  }
 }
 
 .swiper-pagination-bullet {

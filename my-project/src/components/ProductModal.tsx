@@ -7,7 +7,6 @@ import { Arrow } from "./icons/Arrow";
 import { BurgerCross } from "./icons/BurgerCross";
 import cn from "classnames";
 import { PathModalXl } from "./icons/PathModalXl";
-import { Locale } from "@/i18n.config";
 
 export const ProductModal = ({
   product,

@@ -30,6 +30,7 @@ const config: Config = {
         bg_primary: "#fad5a2",
         bg_secondary: "#FFEACB",
         border: "#DCDCDC",
+        error: "#FF0000",
       },
       fontSize: {
         t8: "8px",

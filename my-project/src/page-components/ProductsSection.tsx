@@ -8,6 +8,7 @@ import Image from "next/image";
 import { ProductModal } from "@/components/ProductModal";
 import { Locale } from "@/i18n.config";
 import { getDictionary } from "@/lib/dictionary";
+import { FormModal } from "@/components/FormModal";
 
 export const ProductsSection = async ({
   data,
@@ -58,6 +59,7 @@ export const ProductsSection = async ({
               </article>
             ))}
         </div>
+        <FormModal />
       </div>
     </section>
   );
