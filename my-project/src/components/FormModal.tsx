@@ -53,17 +53,13 @@ export const FormModal = ({ orderForm }: { orderForm: any }) => {
       },
     },
     email: {
-      required: "Email is required",
-      pattern: {
-        value: getEmailRegex(),
-        message: "Invalid email",
-      },
+      required: "Field is required",
     },
     phone: {
       validate: (val: string) => {
         // if input is empty or contains only a country code
-        if (!val || Boolean(byDialCode[val])) {
-          return "Phone is required";
+        if (Boolean(byDialCode[val])) {
+          return "Country code is wrong";
         }
 
         return true;
@@ -153,7 +149,7 @@ export const FormModal = ({ orderForm }: { orderForm: any }) => {
               <form
                 method="post"
                 onSubmit={handleSubmit(handleSave, handleError)}
-                className="flex min-w-[300px] flex-col gap-4 p-20"
+                className="flex min-w-[300px] flex-col gap-4 p-10 md:p-20"
               >
                 <span className="text-left text-t20">{orderForm.title}</span>
                 <label className="flex flex-col items-start gap-2">
@@ -172,7 +168,7 @@ export const FormModal = ({ orderForm }: { orderForm: any }) => {
                   <input
                     {...register("email", registerOptions.email)}
                     className="w-full rounded-xl border border-primary px-4 py-2"
-                    placeholder="example@mail.com"
+                    placeholder="https://t.me/...."
                   />
                   {errors.email && (
                     <p className="text-error">{errors.email.message}</p>

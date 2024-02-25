@@ -13,9 +13,9 @@
     "buttonText": "Order",
     "title": "Fill the form and we will contact you soon!",
     "fullName": "Full name",
-    "email": "E-mail",
-    "phone": "Phone",
-    "message": "Message",
+    "email": "Instagramm or Telegramm link",
+    "phone": "Phone (optional field)",
+    "message": "Message (optional field)",
     "sendButtonText": "Send"
   }
 }
