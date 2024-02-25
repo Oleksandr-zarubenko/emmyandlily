@@ -31,34 +31,36 @@ export const ProductsSection = async ({
         )}
         <div className="grid gap-4 text-left md:grid-cols-3 md:gap-6 xl:gap-0 smOnly:grid-rows-3">
           {data.allProducts.length > 0 &&
-            data.allProducts.map((product: any) => (
-              <article
-                key={product.id}
-                className="mx-auto w-[304px] mdOnly:w-[193px]"
-              >
-                <div className="relative mb-5">
-                  <div className="product_wrapper relative h-[253px] overflow-hidden rounded-3xl xl:w-[304px] mdOnly:h-[160px] mdOnly:w-[193px]">
-                    <Image
-                      fill
-                      src={product.productpicture.url}
-                      alt={product.productpicture.alt}
-                      className="product h-[253px] w-[304px] object-cover mdOnly:h-[160px] mdOnly:w-[193px]"
-                      sizes="(max-width: 768px) 90vw, 305px"
-                    />
-                    <Path />
-                    <PathMd />
-                    <PathBorder className="absolute left-0 top-0 h-full w-full mdOnly:hidden" />
-                    <PathBorderMd className="absolute left-0 top-0 hidden h-full w-full mdOnly:block" />
+            [...data.allProducts]
+              .sort((a: any, b: any) => a.order - b.order)
+              .map((product: any) => (
+                <article
+                  key={product.id}
+                  className="mx-auto w-[304px] mdOnly:w-[193px]"
+                >
+                  <div className="relative mb-5">
+                    <div className="product_wrapper relative h-[253px] overflow-hidden rounded-3xl xl:w-[304px] mdOnly:h-[160px] mdOnly:w-[193px]">
+                      <Image
+                        fill
+                        src={product.productpicture.url}
+                        alt={product.productpicture.alt}
+                        className="product h-[253px] w-[304px] object-cover mdOnly:h-[160px] mdOnly:w-[193px]"
+                        sizes="(max-width: 768px) 90vw, 305px"
+                      />
+                      <Path />
+                      <PathMd />
+                      <PathBorder className="absolute left-0 top-0 h-full w-full mdOnly:hidden" />
+                      <PathBorderMd className="absolute left-0 top-0 hidden h-full w-full mdOnly:block" />
+                    </div>
+                    <ProductModal product={product} productT={productT} />
                   </div>
-                  <ProductModal product={product} productT={productT} />
-                </div>
-                <Markdown text={product.heading} className="mb-3" />
-                <Markdown
-                  text={product.description}
-                  className="!text-t16 md:!text-t12"
-                />
-              </article>
-            ))}
+                  <Markdown text={product.heading} className="mb-3" />
+                  <Markdown
+                    text={product.description}
+                    className="!text-t16 md:!text-t12"
+                  />
+                </article>
+              ))}
         </div>
         <FormModal orderForm={orderForm} />
       </div>

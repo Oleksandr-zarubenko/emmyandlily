@@ -65,6 +65,7 @@ const queryEN = gql`
         url
         id
       }
+      order
     }
   }
 `;
@@ -126,6 +127,7 @@ const queryUA = gql`
         url
         id
       }
+      order
     }
   }
 `;
