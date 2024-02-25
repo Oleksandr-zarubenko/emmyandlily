@@ -86,7 +86,7 @@ export const ProductModal = ({
                     src={currentImageUrl || product.productSlider[0].url}
                     alt={product.productpicture.alt}
                     className="object-cover"
-                    sizes="(max-width: 768px) 80vw, (max-width: 1200px) 50vw, 33vw"
+                    sizes="(max-width: 768px) 80vw, (max-width: 1200px) 50vw, 550px"
                   />
                 </div>
                 <div className="hidden xl:flex xl:h-full xl:w-[550px] xl:flex-row">
@@ -114,7 +114,7 @@ export const ProductModal = ({
                             "object-cover",
                             slide.url !== currentImageUrl ? "" : ""
                           )}
-                          sizes="(max-width: 768px) 20vw, (max-width: 1200px) 20vw, 33vw"
+                          sizes="(max-width: 768px) 20vw, (max-width: 1200px) 20vw, 183px"
                         />
                       </div>
                     )

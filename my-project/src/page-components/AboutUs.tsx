@@ -20,7 +20,7 @@ export const AboutUs = ({ data }: { data: any }) => {
               alt={data.aboutUsSection.image.alt}
               fill
               className="object-cover"
-              sizes="(max-width: 768px) 100vw, 40vw"
+              sizes="(max-width: 768px) 90vw, 430px"
             />
           </div>
           <Paw2 className="paw2 absolute h-64 w-64 md:h-80 md:w-80 xl:h-40 xl:w-40" />

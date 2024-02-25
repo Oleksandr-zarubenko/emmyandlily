@@ -41,7 +41,7 @@ export const ProductsSection = async ({
                       src={product.productpicture.url}
                       alt={product.productpicture.alt}
                       className="product h-[253px] w-[304px] object-cover mdOnly:h-[160px] mdOnly:w-[193px]"
-                      sizes="(max-width: 768px) 100vw, 33vw"
+                      sizes="(max-width: 768px) 90vw, 305px"
                     />
                     <Path />
                     <PathMd />
