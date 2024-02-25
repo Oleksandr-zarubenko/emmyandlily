@@ -9,7 +9,7 @@ export async function POST(req: Request) {
   try {
     const messageToBot = `
 <b>fullName</b>: ${data?.fullName} %0A
-<b>email</b>: ${data?.email} %0A
+<b>telegram or instagram</b>: ${data?.email} %0A
 <b>phone</b>: ${data?.phone} %0A
 <b>mail</b>: ${data?.message} %0A
 <b>Created At</b>: ${data?.createdAt}
