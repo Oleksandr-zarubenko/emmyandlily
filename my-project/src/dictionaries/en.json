@@ -8,5 +8,14 @@
   "product": {
     "ActiveComponents": "Active components",
     "Сomposition": "Сomposition"
+  },
+  "orderForm": {
+    "buttonText": "Order",
+    "title": "Fill the form and we will contact you soon!",
+    "fullName": "Full name",
+    "email": "E-mail",
+    "phone": "Phone",
+    "message": "Message",
+    "sendButtonText": "Send"
   }
 }

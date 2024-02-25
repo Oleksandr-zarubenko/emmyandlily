@@ -18,6 +18,7 @@ export const ProductsSection = async ({
   lang: Locale;
 }) => {
   const { product: productT } = await getDictionary(lang);
+  const { orderForm } = await getDictionary(lang);
   return (
     <section className="text-center xl:py-16" id="products">
       <div className="container">
@@ -59,7 +60,7 @@ export const ProductsSection = async ({
               </article>
             ))}
         </div>
-        <FormModal />
+        <FormModal orderForm={orderForm} />
       </div>
     </section>
   );

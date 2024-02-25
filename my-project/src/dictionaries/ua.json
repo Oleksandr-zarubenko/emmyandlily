@@ -8,5 +8,14 @@
   "product": {
     "ActiveComponents": "Активні компоненти",
     "Сomposition": "Склад"
+  },
+  "orderForm": {
+    "buttonText": "Замовити",
+    "title": "Заповніть форму і ми з вами зв`яжемося!",
+    "fullName": "Ім'я",
+    "email": "Електронна пошта",
+    "phone": "Номер телефону",
+    "message": "Повідомлення",
+    "sendButtonText": "Відправити"
   }
 }

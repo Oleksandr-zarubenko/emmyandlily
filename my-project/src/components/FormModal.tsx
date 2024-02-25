@@ -19,7 +19,7 @@ interface FormContactFields {
 const isBrowser = typeof window !== "undefined";
 const SESSION_KEY = "form";
 
-export const FormModal = () => {
+export const FormModal = ({ orderForm }: { orderForm: any }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSent, setIsSent] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -129,7 +129,7 @@ export const FormModal = () => {
         className="mx-auto rounded-xl bg-primary px-12 py-4 text-t20 text-white duration-300 hover:bg-black"
         onClick={() => setModalOpened()}
       >
-        Order
+        {orderForm.buttonText}
       </button>
       {isOpen && (
         <div
@@ -155,11 +155,9 @@ export const FormModal = () => {
                 onSubmit={handleSubmit(handleSave, handleError)}
                 className="flex min-w-[300px] flex-col gap-4 p-20"
               >
-                <span className="text-left text-t20">
-                  Fill the form and we will contact you soon!
-                </span>
+                <span className="text-left text-t20">{orderForm.title}</span>
                 <label className="flex flex-col items-start gap-2">
-                  Full name
+                  {orderForm.fullName}
                   <input
                     {...register("fullName", registerOptions.fullName)}
                     className="w-full rounded-xl border border-primary px-4 py-2"
@@ -170,7 +168,7 @@ export const FormModal = () => {
                   )}
                 </label>
                 <label className="flex flex-col items-start gap-2">
-                  E-mail
+                  {orderForm.email}
                   <input
                     {...register("email", registerOptions.email)}
                     className="w-full rounded-xl border border-primary px-4 py-2"
@@ -181,7 +179,7 @@ export const FormModal = () => {
                   )}
                 </label>
                 <label className="flex flex-col items-start gap-2">
-                  Phone
+                  {orderForm.phone}
                   <input
                     {...register("phone", registerOptions.phone)}
                     className="w-full rounded-xl border border-primary px-4 py-2"
@@ -192,7 +190,7 @@ export const FormModal = () => {
                   )}
                 </label>
                 <label className="flex flex-col items-start gap-2">
-                  Message
+                  {orderForm.message}
                   <textarea
                     {...register("message", registerOptions.message)}
                     className="w-full rounded-xl border border-primary px-4 py-2"
@@ -206,7 +204,7 @@ export const FormModal = () => {
                   type="submit"
                   className="mx-auto rounded-xl bg-primary px-12 py-4 text-t20 text-white duration-300 hover:bg-black"
                 >
-                  SEND
+                  {orderForm.sendButtonText}
                 </button>
                 {isSent && (
                   <p className="text-t30 text-primary">
