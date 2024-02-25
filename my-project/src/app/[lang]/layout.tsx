@@ -5,7 +5,9 @@ import { Logo } from "../../components/icons/Logo";
 import "../globals.css";
 import { MobileMenu } from "@/components/MobileMenu";
 import Link from "next/link";
-import { Locale } from "../../../i18n.config";
+import { Locale } from "../../i18n.config";
+import { getDictionary } from "@/lib/dictionary";
+import LocaleSwitcher from "@/components/locale-switcher";
 
 const roboto = Roboto({
   weight: ["100", "300", "400", "500", "700", "900"],
@@ -37,13 +39,15 @@ export const metadata: Metadata = {
   ],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
   params,
 }: Readonly<{
   children: React.ReactNode;
   params: { lang: Locale };
 }>) {
+  const { navigation } = await getDictionary(params.lang);
+
   return (
     <html lang={params.lang}>
       <body
@@ -51,7 +55,7 @@ export default function RootLayout({
       >
         <header className="absolute inset-x-0 z-20 md:pt-9">
           <div className="fixed inset-x-0 top-0 ml-auto flex items-end bg-bg_primary/60 backdrop-blur xl:hidden">
-            <MobileMenu />
+            <MobileMenu navigation={navigation} />
           </div>
           <div className="container invisible content-center items-center justify-between md:flex md:flex-row xl:visible smOnly:absolute">
             <div className="h-6 w-40">
@@ -65,27 +69,28 @@ export default function RootLayout({
                 className="duration-300 hover:text-primary"
                 href="#who-we-are"
               >
-                Who We Are
+                {navigation.WhoWeAre}
               </Link>
               <Link
                 className="duration-300 hover:text-primary"
                 href="#products"
               >
-                Our Products
+                {navigation.OurProducts}
               </Link>
               <Link
                 className="duration-300 hover:text-primary"
                 href="#about-us"
               >
-                About Us
+                {navigation.AboutUs}
               </Link>
               <Link
                 className="duration-300 hover:text-primary"
                 href="#contacts"
               >
-                Contacts
+                {navigation.Contacts}
               </Link>
             </nav>
+            <LocaleSwitcher />
           </div>
         </header>
 
@@ -103,16 +108,16 @@ export default function RootLayout({
                 className="duration-300 hover:text-white"
                 href="#who-we-are"
               >
-                Who We Are
+                {navigation.WhoWeAre}
               </Link>
               <Link className="duration-300 hover:text-white" href="#products">
-                Our Products
+                {navigation.OurProducts}
               </Link>
               <Link className="duration-300 hover:text-white" href="#about-us">
-                About Us
+                {navigation.AboutUs}
               </Link>
               <Link className="duration-300 hover:text-white" href="#contacts">
-                Contacts
+                {navigation.Contacts}
               </Link>
             </nav>
           </div>

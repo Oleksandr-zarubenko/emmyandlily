@@ -7,8 +7,15 @@ import { Arrow } from "./icons/Arrow";
 import { BurgerCross } from "./icons/BurgerCross";
 import cn from "classnames";
 import { PathModalXl } from "./icons/PathModalXl";
+import { Locale } from "@/i18n.config";
 
-export const ProductModal = ({ product }: { product: any }) => {
+export const ProductModal = ({
+  product,
+  productT,
+}: {
+  product: any;
+  productT: any;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"components" | "composition">(
     "components"
@@ -143,7 +150,7 @@ export const ProductModal = ({ product }: { product: any }) => {
                     )}
                     onClick={() => showComponents()}
                   >
-                    Active components
+                    {productT.ActiveComponents}
                   </button>
                   <button
                     className={cn(
@@ -154,7 +161,7 @@ export const ProductModal = ({ product }: { product: any }) => {
                     )}
                     onClick={() => showComposition()}
                   >
-                    Сomposition
+                    {productT.Сomposition}
                   </button>
                 </div>
                 <div className="overflow-y-auto pt-4 xl:h-[320px]">

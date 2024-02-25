@@ -5,8 +5,9 @@ import { Burger } from "./icons/Burger";
 import { BurgerCross } from "./icons/BurgerCross";
 import { Logo } from "./icons/Logo";
 import Link from "next/link";
+import LocaleSwitcher from "./locale-switcher";
 
-export const MobileMenu = () => {
+export const MobileMenu = ({ navigation }: { navigation: any }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const setMenuOpened = () => {
@@ -32,6 +33,7 @@ export const MobileMenu = () => {
             <Logo />
           </Link>
         </div>
+        <LocaleSwitcher className="mb-3 ml-auto" />
         <button className="ml-auto py-2 pr-4" onClick={() => setMenuOpened()}>
           <Burger className="h-4 w-7" />
         </button>
@@ -53,28 +55,28 @@ export const MobileMenu = () => {
               href="#who-we-are"
               className="black-line w-5/6 py-7"
             >
-              Who We Are
+              {navigation.WhoWeAre}
             </Link>
             <Link
               onClick={() => setMenuClosed()}
               href="#products"
               className="black-line w-5/6 py-7"
             >
-              Our Products
+              {navigation.OurProducts}
             </Link>
             <Link
               onClick={() => setMenuClosed()}
               href="#about-us"
               className="black-line w-5/6 py-7"
             >
-              About Us
+              {navigation.AboutUs}
             </Link>
             <Link
               onClick={() => setMenuClosed()}
               href="#contacts"
               className="black-line w-5/6 py-7"
             >
-              Contacts
+              {navigation.Contacts}
             </Link>
           </nav>
         </div>

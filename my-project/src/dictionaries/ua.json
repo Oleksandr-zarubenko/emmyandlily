@@ -1,0 +1,12 @@
+{
+  "navigation": {
+    "WhoWeAre": "Хто Ми",
+    "OurProducts": "Наші продукти",
+    "AboutUs": "Про нас",
+    "Contacts": "Контакти"
+  },
+  "product": {
+    "ActiveComponents": "Активні компоненти",
+    "Сomposition": "Склад"
+  }
+}

@@ -6,7 +6,7 @@ import { ProductsSection } from "@/page-components/ProductsSection";
 import { gql } from "@apollo/client";
 import { getClient } from "../../utils/apollo-client";
 import { Metadata } from "next";
-import { Locale } from "../../../i18n.config";
+import { Locale } from "../../i18n.config";
 
 const queryEN = gql`
   {
@@ -163,7 +163,6 @@ export default async function Home({
   params: { lang: Locale };
 }) {
   const query = lang == "ua" ? queryUA : queryEN;
-
   const { data } = await getClient().query({
     query,
     context: {
@@ -177,7 +176,7 @@ export default async function Home({
     <div className="flex flex-grow flex-col bg-bg_secondary">
       <HeroSection data={data} />
       <AboutUs data={data} />
-      <ProductsSection data={data} />
+      <ProductsSection data={data} lang={lang} />
       <AboutUsSlider data={data} />
       <Contacts data={data} />
     </div>

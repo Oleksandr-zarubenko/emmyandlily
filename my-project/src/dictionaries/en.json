@@ -1,0 +1,12 @@
+{
+  "navigation": {
+    "WhoWeAre": "Who We Are",
+    "OurProducts": "Our Products",
+    "AboutUs": "About Us",
+    "Contacts": "Contacts"
+  },
+  "product": {
+    "ActiveComponents": "Active components",
+    "Сomposition": "Сomposition"
+  }
+}

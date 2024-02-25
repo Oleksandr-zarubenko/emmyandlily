@@ -6,8 +6,17 @@ import { PathBorderMd } from "@/components/icons/PathBorderMd";
 import { Paw } from "@/components/icons/Paw";
 import Image from "next/image";
 import { ProductModal } from "@/components/ProductModal";
+import { Locale } from "@/i18n.config";
+import { getDictionary } from "@/lib/dictionary";
 
-export const ProductsSection = ({ data }: { data: any }) => {
+export const ProductsSection = async ({
+  data,
+  lang,
+}: {
+  data: any;
+  lang: Locale;
+}) => {
+  const { product: productT } = await getDictionary(lang);
   return (
     <section className="text-center xl:py-16" id="products">
       <div className="container">
@@ -39,12 +48,12 @@ export const ProductsSection = ({ data }: { data: any }) => {
                     <PathBorder className="absolute left-0 top-0 h-full w-full mdOnly:hidden" />
                     <PathBorderMd className="absolute left-0 top-0 hidden h-full w-full mdOnly:block" />
                   </div>
-                  <ProductModal product={product} />
+                  <ProductModal product={product} productT={productT} />
                 </div>
                 <Markdown text={product.heading} className="mb-3" />
                 <Markdown
                   text={product.description}
-                  className="md:!text-t12 !text-t16"
+                  className="!text-t16 md:!text-t12"
                 />
               </article>
             ))}
