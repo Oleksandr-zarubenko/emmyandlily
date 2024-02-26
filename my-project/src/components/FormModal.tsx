@@ -203,9 +203,7 @@ export const FormModal = ({ orderForm }: { orderForm: any }) => {
                   {orderForm.sendButtonText}
                 </button>
                 {isSent && (
-                  <p className="text-t30 text-primary">
-                    We recieved you message!
-                  </p>
+                  <p className="text-t30 text-primary">{orderForm.recieved}</p>
                 )}
               </form>
             </div>

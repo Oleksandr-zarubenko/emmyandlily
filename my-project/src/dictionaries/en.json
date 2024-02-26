@@ -16,6 +16,7 @@
     "email": "Instagram or Telegram link",
     "phone": "Phone (optional field)",
     "message": "Message (optional field)",
-    "sendButtonText": "Send"
+    "sendButtonText": "Send",
+    "recieved": "We recieved you message!"
   }
 }
