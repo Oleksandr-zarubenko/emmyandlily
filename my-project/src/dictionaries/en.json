@@ -23,7 +23,7 @@
       "name2": "Incorrect name",
       "email": "Field is required",
       "code": "Country code is wrong",
-      "phone": "Incorrect phone"
+      "phone": "Should start from + and contain a country code"
     }
   }
 }
