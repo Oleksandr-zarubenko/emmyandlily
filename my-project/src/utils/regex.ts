@@ -3,5 +3,5 @@ export const getEmailRegex = () => {
 };
 
 export const getFullNameRegex = () => {
-  return /^[A-Za-z\s]+$/;
+  return /^[A-Za-z\u0400-\u04FF\s]+$/;
 };
