@@ -17,6 +17,13 @@
     "phone": "Phone (optional field)",
     "message": "Message (optional field)",
     "sendButtonText": "Send",
-    "recieved": "We recieved you message!"
+    "recieved": "We recieved you message!",
+    "errors": {
+      "name": "Full Name is required",
+      "name2": "Incorrect name",
+      "email": "Field is required",
+      "code": "Country code is wrong",
+      "phone": "Incorrect phone"
+    }
   }
 }

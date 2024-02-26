@@ -49,24 +49,24 @@ export const FormModal = ({ orderForm }: { orderForm: any }) => {
       required: "Full Name is required",
       pattern: {
         value: getFullNameRegex(),
-        message: "Incorrect name",
+        message: orderForm.errors.name,
       },
     },
     email: {
-      required: "Field is required",
+      required: orderForm.errors.email,
     },
     phone: {
       validate: (val: string) => {
         // if input is empty or contains only a country code
         if (Boolean(byDialCode[val])) {
-          return "Country code is wrong";
+          return orderForm.errors.code;
         }
 
         return true;
       },
       pattern: {
         value: /^\+\d+$/,
-        message: "Incorrect phone",
+        message: orderForm.errors.phone,
       },
     },
     message: {},
