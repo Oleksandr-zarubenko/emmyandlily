@@ -58,7 +58,6 @@ export const FormModal = ({ orderForm }: { orderForm: any }) => {
     phone: {
       validate: (val: string) => {
         const processedPhone = "+" + val.replace(/\D/g, "");
-        console.log(processedPhone);
         // if input is empty or contains only a country code
         if (Boolean(byDialCode[processedPhone])) {
           return orderForm.errors.code;
@@ -99,7 +98,6 @@ export const FormModal = ({ orderForm }: { orderForm: any }) => {
         ...data,
         createdAt: new Date().toLocaleString(),
       };
-      console.log("save data", newData);
 
       await Promise.all([sendUserToTelegramBot(newData)]);
 
