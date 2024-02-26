@@ -46,10 +46,10 @@ export const FormModal = ({ orderForm }: { orderForm: any }) => {
 
   const registerOptions: Record<string, RegisterOptions> = {
     fullName: {
-      required: "Full Name is required",
+      required: orderForm.errors.name,
       pattern: {
         value: getFullNameRegex(),
-        message: orderForm.errors.name,
+        message: orderForm.errors.name2,
       },
     },
     email: {
