@@ -98,9 +98,7 @@ export const FormModal = ({ orderForm }: { orderForm: any }) => {
         ...data,
         createdAt: new Date().toLocaleString(),
       };
-      const googleTableResult = await sendGoogleTable(newData);
-      console.log("_________");
-      console.log("Google Table Result:", googleTableResult);
+
       await Promise.all([
         sendGoogleTable(newData),
         sendUserToTelegramBot(newData),
