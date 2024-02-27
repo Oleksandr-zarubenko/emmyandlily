@@ -46,6 +46,6 @@ export async function POST(req: Request) {
     });
     return NextResponse.json({ data: response.data });
   } catch (error) {
-    return NextResponse.json({ message: "Something went wrong" });
+    return NextResponse.json({ message: "Something went wrong", error: error });
   }
 }
