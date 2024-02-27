@@ -5,7 +5,7 @@ import { BurgerCross } from "./icons/BurgerCross";
 import { RegisterOptions, useForm } from "react-hook-form";
 import { getEmailRegex, getFullNameRegex } from "@/utils/regex";
 import { byDialCode } from "@/utils/phone/codes";
-import { sendUserToTelegramBot } from "@/utils/api";
+import { sendGoogleTable, sendUserToTelegramBot } from "@/utils/api";
 import useFormPersist from "react-hook-form-persist";
 import cn from "classnames";
 
@@ -99,7 +99,10 @@ export const FormModal = ({ orderForm }: { orderForm: any }) => {
         createdAt: new Date().toLocaleString(),
       };
 
-      await Promise.all([sendUserToTelegramBot(newData)]);
+      await Promise.all([
+        sendGoogleTable(newData),
+        sendUserToTelegramBot(newData),
+      ]);
 
       setIsSent(true);
       reset();

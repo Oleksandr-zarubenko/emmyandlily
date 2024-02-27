@@ -13,6 +13,7 @@
     "@apollo/experimental-nextjs-app-support": "^0.6.0",
     "@formatjs/intl-localematcher": "^0.5.4",
     "classnames": "^2.5.1",
+    "googleapis": "^133.0.0",
     "negotiator": "^0.6.3",
     "next": "14.1.0",
     "react": "^18",

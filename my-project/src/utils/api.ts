@@ -17,7 +17,6 @@ export interface UserProps {
 export async function sendGoogleTable(user: {
   [p: string]: any;
   createdAt: string;
-  type: string;
 }) {
   const res = await fetch("api/google-sheet-service", {
     method: "POST",
@@ -30,24 +29,24 @@ export async function sendGoogleTable(user: {
   return res.json();
 }
 
-export async function postMail(
-  name: string,
-  email: string,
-  text: string
-): Promise<Response> {
-  return await fetch("api/sendMail", {
-    method: "POST",
-    headers: {
-      Accept: "application/json, text/plain, */*",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      name,
-      email,
-      text,
-    }),
-  });
-}
+// export async function postMail(
+//   name: string,
+//   email: string,
+//   text: string
+// ): Promise<Response> {
+//   return await fetch("api/sendMail", {
+//     method: "POST",
+//     headers: {
+//       Accept: "application/json, text/plain, */*",
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify({
+//       name,
+//       email,
+//       text,
+//     }),
+//   });
+// }
 
 export async function sendUserToTelegramBot(data: {
   [p: string]: any;
