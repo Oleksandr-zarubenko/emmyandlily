@@ -13,7 +13,7 @@
     "buttonText": "Order",
     "title": "Fill the form and we will contact you soon!",
     "fullName": "Full name",
-    "email": "Instagram or Telegram link",
+    "email": "Instagram or Telegram link *",
     "phone": "Phone (optional field)",
     "message": "Message (optional field)",
     "sendButtonText": "Send",

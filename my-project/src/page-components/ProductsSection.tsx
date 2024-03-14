@@ -49,8 +49,8 @@ export const ProductsSection = async ({
                       />
                       <Path />
                       <PathMd />
-                      <PathBorder className="absolute left-0 top-0 h-full w-full mdOnly:hidden" />
-                      <PathBorderMd className="absolute left-0 top-0 hidden h-full w-full mdOnly:block" />
+                      {/* <PathBorder className="absolute left-0 top-0 h-full w-full mdOnly:hidden" />
+                      <PathBorderMd className="absolute left-0 top-0 hidden h-full w-full mdOnly:block" /> */}
                     </div>
                     <ProductModal product={product} productT={productT} />
                   </div>
