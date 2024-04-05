@@ -50,7 +50,7 @@ section {
 .hero {
   background-image: url("../../public/emmy-lilly-2-dogs-bg-hero.webp");
   background-repeat: no-repeat;
-  background-size: auto 360px;
+  background-size: auto 160px;
   background-position-x: 50%;
   background-position-y: 100%;
 }
@@ -82,7 +82,7 @@ section {
   .hero {
     background-image: url("../../public/emmy-lilly-2-dogs-bg-hero.webp");
     background-repeat: no-repeat;
-    background-size: auto 400px;
+    background-size: auto 260px;
     background-position-x: 100%;
     background-position-y: 100%;
   }

@@ -54,10 +54,13 @@ export default async function RootLayout({
         className={cn(roboto.className, "relative flex flex-grow flex-col")}
       >
         <header className="absolute inset-x-0 z-20 md:pt-9">
-          <div className="fixed inset-x-0 top-0 ml-auto flex items-end bg-bg_primary/60 backdrop-blur xl:hidden">
-            <MobileMenu navigation={navigation} />
+          <div className="fixed inset-x-0  top-0 ml-auto tems-end bg-white backdrop-blur py-4 px-6 md:hidden xl:hidden">
+            {/* <MobileMenu navigation={navigation} /> */}
+            <Logo />
+            <div className="mt-10 flex justify-center text-center">   <LocaleSwitcher /></div>
+
           </div>
-          <div className="container invisible content-center items-center justify-between md:flex md:flex-row xl:visible smOnly:absolute">
+          <div className="container invisible content-center items-center justify-between md:flex md:flex-row md:visible xl:visible smOnly:absolute">
             <div className="h-6 w-40">
               <Link href="/">
                 <Logo />
