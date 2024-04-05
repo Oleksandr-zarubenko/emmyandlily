@@ -63,7 +63,7 @@ export default async function RootLayout({
                 <Logo />
               </Link>
             </div>
-            <nav className="flex flex-col items-center md:flex-row md:gap-4 xl:gap-10">
+            {/* <nav className="flex flex-col items-center md:flex-row md:gap-4 xl:gap-10">
               <h2 className="sr-only">Main navigation</h2>
               <Link
                 className="duration-300 hover:text-primary"
@@ -89,13 +89,13 @@ export default async function RootLayout({
               >
                 {navigation.Contacts}
               </Link>
-            </nav>
+            </nav> */}
             <LocaleSwitcher />
           </div>
         </header>
 
         {children}
-        <footer className="bg-primary py-12">
+        {/* <footer className="bg-primary py-12">
           <div className="container flex flex-col items-center">
             <div className="mb-4 h-6 w-40 md:mb-9 md:w-80">
               <Link href="">
@@ -121,7 +121,7 @@ export default async function RootLayout({
               </Link>
             </nav>
           </div>
-        </footer>
+        </footer> */}
       </body>
     </html>
   );
