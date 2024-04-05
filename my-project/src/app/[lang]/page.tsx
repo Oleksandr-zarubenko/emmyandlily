@@ -7,7 +7,8 @@ import { gql } from "@apollo/client";
 import { getClient } from "../../utils/apollo-client";
 import { Metadata } from "next";
 import { Locale } from "../../i18n.config";
-
+import Link from "next/link";
+import { getDictionary } from "@/lib/dictionary";
 const queryEN = gql`
   {
     mainSection {
@@ -165,6 +166,7 @@ export default async function Home({
   params: { lang: Locale };
 }) {
   const query = lang == "ua" ? queryUA : queryEN;
+  const { Hello } = await getDictionary(lang);
   const { data } = await getClient().query({
     query,
     context: {
@@ -175,12 +177,24 @@ export default async function Home({
   });
 
   return (
-    <div className="flex flex-grow flex-col bg-bg_secondary">
-      <HeroSection data={data} />
-      <AboutUs data={data} />
-      <ProductsSection data={data} lang={lang} />
-      <AboutUsSlider data={data} />
-      <Contacts data={data} />
+    // <div className="flex flex-grow flex-col bg-bg_secondary">
+    //   <HeroSection data={data} />
+    //   <AboutUs data={data} />
+    //   <ProductsSection data={data} lang={lang} />
+    //   <AboutUsSlider data={data} />
+    //   <Contacts data={data} />
+    // </div>
+    <div className="container hero relative  flex flex-col items-center justify-center h-screen">
+
+      <h1 className="text-4xl md:text-4xl xl:text-4xl font-bold mb-6">{Hello.hi}</h1>
+      <p className="text-xl md:text-2xl xl:text-2xl text-center ">{Hello.text}</p>
+      <p className="text-xl xl:text-2xl md:text-2xl text-center mb-4">{Hello.text1}</p>
+      <p className=" text-xl text-center md:text-2xl xl:text-2xl mb-8"> {Hello.text2}</p>
+      <Link href="https://www.instagram.com/emmy_and_lily_" className="bg-blue-500 text-xl hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        {Hello.inst}
+      </Link>
+
     </div>
-  );
+
+  )
 }

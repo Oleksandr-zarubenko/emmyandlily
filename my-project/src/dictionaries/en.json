@@ -25,5 +25,12 @@
       "code": "Country code is wrong",
       "phone": "Should start from + and contain a country code"
     }
+  },
+  "Hello": {
+    "hi": "Welcome!",
+    "text": "Our website is currently undergoing maintenance to bring you even better service.",
+    "text1": "However, you can still explore our products and stay updated with the latest news through our Instagram.",
+    "text2": "Click the link below to join our community!",
+    "inst": "Go to Instagram"
   }
 }

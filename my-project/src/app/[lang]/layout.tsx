@@ -54,16 +54,19 @@ export default async function RootLayout({
         className={cn(roboto.className, "relative flex flex-grow flex-col")}
       >
         <header className="absolute inset-x-0 z-20 md:pt-9">
-          <div className="fixed inset-x-0 top-0 ml-auto flex items-end bg-bg_primary/60 backdrop-blur xl:hidden">
-            <MobileMenu navigation={navigation} />
+          <div className="fixed inset-x-0  top-0 ml-auto tems-end bg-white backdrop-blur py-4 px-6 md:hidden xl:hidden">
+            {/* <MobileMenu navigation={navigation} /> */}
+            <Logo />
+            <div className="mt-10 flex justify-center text-center">   <LocaleSwitcher /></div>
+
           </div>
-          <div className="container invisible content-center items-center justify-between md:flex md:flex-row xl:visible smOnly:absolute">
+          <div className="container invisible content-center items-center justify-between md:flex md:flex-row md:visible xl:visible smOnly:absolute">
             <div className="h-6 w-40">
               <Link href="/">
                 <Logo />
               </Link>
             </div>
-            <nav className="flex flex-col items-center md:flex-row md:gap-4 xl:gap-10">
+            {/* <nav className="flex flex-col items-center md:flex-row md:gap-4 xl:gap-10">
               <h2 className="sr-only">Main navigation</h2>
               <Link
                 className="duration-300 hover:text-primary"
@@ -89,13 +92,13 @@ export default async function RootLayout({
               >
                 {navigation.Contacts}
               </Link>
-            </nav>
+            </nav> */}
             <LocaleSwitcher />
           </div>
         </header>
 
         {children}
-        <footer className="bg-primary py-12">
+        {/* <footer className="bg-primary py-12">
           <div className="container flex flex-col items-center">
             <div className="mb-4 h-6 w-40 md:mb-9 md:w-80">
               <Link href="">
@@ -121,7 +124,7 @@ export default async function RootLayout({
               </Link>
             </nav>
           </div>
-        </footer>
+        </footer> */}
       </body>
     </html>
   );
