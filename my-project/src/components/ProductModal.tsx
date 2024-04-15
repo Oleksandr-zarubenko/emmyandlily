@@ -5,10 +5,9 @@ import { useEffect, useState } from "react";
 import { Markdown } from "./Markdown";
 import { Arrow } from "./icons/Arrow";
 import { BurgerCross } from "./icons/BurgerCross";
-import cn from "classnames"
+import cn from "classnames";
 import { PathModalXl } from "./icons/PathModalXl";
 import { Bag } from "./icons/Bag";
-
 
 export const ProductModal = ({
   product,
@@ -20,9 +19,15 @@ export const ProductModal = ({
   children: any;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<"components" | "composition" | "usage">("components");
-  const [currentImageUrl, setActiveImageUrl] = useState(product.productSlider[0].url);
-  const [quantities, setQuantities] = useState<{ [productId: string]: number }>({});
+  const [activeTab, setActiveTab] = useState<
+    "components" | "composition" | "usage"
+  >("components");
+  const [currentImageUrl, setActiveImageUrl] = useState(
+    product.productSlider[0].url
+  );
+  const [quantities, setQuantities] = useState<{ [productId: string]: number }>(
+    {}
+  );
 
   const handleQuantityChange = (capacity: string, value: number) => {
     setQuantities((prevQuantities) => ({
@@ -30,7 +35,6 @@ export const ProductModal = ({
       [capacity]: Math.max((prevQuantities[capacity] || 0) + value, 0),
     }));
   };
-
 
   const setModalOpened = () => {
     setIsOpen(true);
@@ -80,19 +84,19 @@ export const ProductModal = ({
           className="fixed inset-0 z-30 flex h-dvh items-center justify-center overflow-y-auto bg-white/50"
           onClick={() => setMenuClosed()}
         >
-          <div className="relative h-full xl:h-auto w-auto">
+          <div className="relative h-full w-auto xl:h-auto">
             <button
               onClick={() => setMenuClosed()}
-              className="fixed right-10 top-1 z-10 rounded-full mt-[10px]  p-4 duration-300  xl:absolute"
+              className="fixed right-10 top-1 z-10 mt-[10px] rounded-full  p-4 duration-300  xl:absolute"
             >
               <BurgerCross className="h-6 w-6 text-black" />
             </button>
             <div
-              className="relative h-full overflow-y-auto bg-white xl:flex xl:h-[688px] xl:w-[1280px] xl:flex-row px-[80px] py-6"
+              className="relative h-full overflow-y-auto bg-white px-[80px] py-6 xl:flex xl:h-[688px] xl:w-[1280px] xl:flex-row"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="xl:flex xl:h-full xl:flex-col mr-[90px]">
-                <div className="relative h-full md:h-96 xl:h-[380px] xl:w-[450px] xl:flex-shrink-0 mb-4">
+              <div className="mr-[90px] xl:flex xl:h-full xl:flex-col">
+                <div className="relative mb-4 h-full md:h-96 xl:h-[380px] xl:w-[450px] xl:flex-shrink-0">
                   <Image
                     quality={80}
                     fill
@@ -107,7 +111,7 @@ export const ProductModal = ({
                   {product.productSlider.map(
                     (slide: { alt: string; url: string; id: string }) => (
                       <div
-                        className="relative w-1/3 mr-2 last:mr-0"
+                        className="relative mr-2 w-1/3 last:mr-0"
                         key={slide.id}
                         onClick={() => setActiveSlideImage(slide.url)}
                       >
@@ -155,59 +159,80 @@ export const ProductModal = ({
 
               <div className="pr-[15px]">
                 <Markdown text={product.heading} className="mb-8 text-t32" />
-                <table className="w-full  mb-12">
+                <table className="mb-12  w-full">
                   <thead>
-                    <tr >
-                      <th className="py-2 text-t14 text-[#333333] opacity-60">Об'єм</th>
-                      <th className="py-2 text-t14  text-[#333333] opacity-60 text-center">Кіл-ть</th>
-                      <th className="py-2 text-t14 w-[100px] text-[#333333] opacity-60 text-center">Ціна</th>
-                      <th className="py-2 text-t14 w-[150px] text-[#333333] opacity-60 text-right">Додати у кошик</th>
+                    <tr>
+                      <th className="py-2 text-t14 text-[#333333] opacity-60">
+                        Об`єм
+                      </th>
+                      <th className="py-2 text-center  text-t14 text-[#333333] opacity-60">
+                        Кіл-ть
+                      </th>
+                      <th className="w-[100px] py-2 text-center text-t14 text-[#333333] opacity-60">
+                        Ціна
+                      </th>
+                      <th className="w-[150px] py-2 text-right text-t14 text-[#333333] opacity-60">
+                        Додати у кошик
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {product.price.products.map((ml: any) => (
-                      <tr key={ml.capacity}> {/* Додайте ключ для кожного рядка */}
-                        <td className="py-2 leading-5 text-[#333333] text-t18 ">{ml.capacity}</td>
-                        <td className="text-center py-2 leading-5 text-[#0B0605] text-t16">
+                      <tr key={ml.capacity}>
+                        {" "}
+                        {/* Додайте ключ для кожного рядка */}
+                        <td className="py-2 text-t18 leading-5 text-[#333333] ">
+                          {ml.capacity}
+                        </td>
+                        <td className="py-2 text-center text-t16 leading-5 text-[#0B0605]">
                           <div className="flex justify-evenly">
-                            <div className="border-solid border-2 border-text-[#33333399]">
+                            <div className="border-text-[#33333399] border-2 border-solid">
                               <button
-                                onClick={() => handleQuantityChange(ml.capacity, -1)}
-                                className="p-[4px] px-2 bg-white text-[#33333399] hover:text-black"
+                                onClick={() =>
+                                  handleQuantityChange(ml.capacity, -1)
+                                }
+                                className="bg-white p-[4px] px-2 text-[#33333399] hover:text-black"
                               >
                                 -
                               </button>
                               <input
                                 value={quantities[ml.capacity] || 0}
-                                onChange={(e) => handleQuantityChange(ml.capacity, parseInt(e.target.value, 10) || 0)}
-                                className="p-[4px] text-center w-10 text-[#33333399] border-gray-300"
+                                onChange={(e) =>
+                                  handleQuantityChange(
+                                    ml.capacity,
+                                    parseInt(e.target.value, 10) || 0
+                                  )
+                                }
+                                className="w-10 border-gray-300 p-[4px] text-center text-[#33333399]"
                               />
                               <button
-                                onClick={() => handleQuantityChange(ml.capacity, 1)}
-                                className="p-[4px] px-2 bg-white text-[#33333399] hover:text-black"
+                                onClick={() =>
+                                  handleQuantityChange(ml.capacity, 1)
+                                }
+                                className="bg-white p-[4px] px-2 text-[#33333399] hover:text-black"
                               >
                                 +
                               </button>
                             </div>
                           </div>
                         </td>
-                        <td className="py-2 text-center leading-5 text-[#333333] text-t18">{ml.price * (quantities[ml.capacity] || 0)} грн</td>
-                        <td className="py-2 ml-auto leading-5 text-[#333333] text-t18">
-                          <div className="bg-black w-[76px] h-10 pt-[5px] px-[22.5px] py-auto ml-auto rounded">
+                        <td className="py-2 text-center text-t18 leading-5 text-[#333333]">
+                          {ml.price * (quantities[ml.capacity] || 0)} грн
+                        </td>
+                        <td className="ml-auto py-2 text-t18 leading-5 text-[#333333]">
+                          <div className="py-auto ml-auto h-10 w-[76px] rounded bg-black px-[22.5px] pt-[5px]">
                             <Bag color="white" />
                           </div>
                         </td>
                       </tr>
                     ))}
                   </tbody>
-
-
                 </table>
 
-                <div className=" flex flex-row text-center  font-bold leading-5 text-t18">
+                <div className=" flex flex-row text-center  text-t18 font-bold leading-5">
                   <button
                     className={cn(
-                      "w-full border-solid pb-1 pt-2 text-[#33333399] mb-4",
+                      "mb-4 w-full border-solid pb-1 pt-2 text-[#33333399]",
                       activeTab === "components"
                         ? "border-b-2 border-black text-black"
                         : "border-b border-border opacity-60"
@@ -218,7 +243,7 @@ export const ProductModal = ({
                   </button>
                   <button
                     className={cn(
-                      "w-full border-solid pb-1 pt-2 text-[#33333399] mb-4",
+                      "mb-4 w-full border-solid pb-1 pt-2 text-[#33333399]",
                       activeTab === "composition"
                         ? "border-b-2 border-black text-black"
                         : "border-b border-border opacity-60"
@@ -230,7 +255,7 @@ export const ProductModal = ({
 
                   <button
                     className={cn(
-                      "w-full border-solid pb-1 pt-2 text-[#33333399] mb-4",
+                      "mb-4 w-full border-solid pb-1 pt-2 text-[#33333399]",
                       activeTab === "usage"
                         ? "border-b-2 border-black text-black"
                         : "border-b border-border opacity-60"
@@ -240,22 +265,30 @@ export const ProductModal = ({
                     {product.method}
                   </button>
                 </div>
-                <div className="overflow-y-auto pt-2  text-black xl:h-[320px] list-disc">
+                <div className="list-disc overflow-y-auto  pt-2 text-black xl:h-[320px]">
                   {activeTab === "components" && (
-                    <Markdown className="ml-2 pr-2 mb-1 text-t14 list-disc" text={product.activeComponents} />
+                    <Markdown
+                      className="mb-1 ml-2 list-disc pr-2 text-t14"
+                      text={product.activeComponents}
+                    />
                   )}
                   {activeTab === "composition" && (
-                    <Markdown className="pr-2 text-t14 list-disc" text={product.composition} />
+                    <Markdown
+                      className="list-disc pr-2 text-t14"
+                      text={product.composition}
+                    />
                   )}
                   {activeTab === "usage" && (
-                    <Markdown className="pr-2  list-disc" text={product.methodOfUse} />
+                    <Markdown
+                      className="list-disc  pr-2"
+                      text={product.methodOfUse}
+                    />
                   )}
-
                 </div>
               </div>
             </div>
           </div>
-        </div >
+        </div>
       )}
     </>
   );
