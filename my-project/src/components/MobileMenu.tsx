@@ -33,7 +33,7 @@ export const MobileMenu = ({ navigation }: { navigation: any }) => {
             <Logo />
           </Link>
         </div>
-        <LocaleSwitcher className="mb-3 ml-auto" />
+        <LocaleSwitcher className="mb-3 ml-auto" lang={""} />
         <button className="ml-auto py-2 pr-4" onClick={() => setMenuOpened()}>
           <Burger className="h-4 w-7" />
         </button>
