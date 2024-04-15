@@ -1,0 +1,8 @@
+export const EmailOrder = () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M21 5L3 5C2.44772 5 2 5.44772 2 6L2 18C2 18.5523 2.44772 19 3 19L21 19C21.5523 19 22 18.5523 22 18L22 6C22 5.44772 21.5523 5 21 5Z" fill="#FBFBFB" stroke="#292D2D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M2 6L12 14L22 6" stroke="#292D2D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+
+
+);

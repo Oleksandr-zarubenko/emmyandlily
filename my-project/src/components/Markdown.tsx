@@ -21,6 +21,8 @@ export const Markdown: FC<InterfaceMarkdown> = ({ text, className }) => {
         h1: (props) => <H1 className={className}>{props.children}</H1>,
         h2: (props) => <H2 className={className}>{props.children}</H2>,
         h3: (props) => <H3 className={className}>{props.children}</H3>,
+        li: (props) => <li className={className}>{props.children}</li>,
+        ul: (props) => <ul className={className}>{props.children}</ul>,
       }}
     >
       {text}

@@ -22,28 +22,60 @@ const config: Config = {
         },
       },
       colors: {
+        grey: "#292d2d",
         primary: "#fad5a2",
         primary_T: "#FFF0ED",
         dark: "#FFEACB",
         black: "#000",
-        white: "#FFF",
+        white: "#FBFBFB",
         bg_primary: "#FF8667",
         bg_secondary: "#333",
         border: "#DCDCDC",
-        error: "#FF0000",
+      },
+      boxShadow: {
+        custom: "0px 3px 30px 0px rgba(140, 140, 140, 0.10)",
+        order: "4px 15px 40px 0px #100E0C33",
+      },
+      letterSpacing: {
+        "1": "0em",
+        "2": "0.025em",
+        "3": "0.05em",
+        "4": "0.1em",
+        "5": "0.5%",
       },
       fontSize: {
         t8: "8px",
         t10: "10px",
         t12: "12px",
-        t16: "16px",
+        t14: [
+          "14px",
+          {
+            fontWeight: "400",
+            lineHeight: "18.2px",
+          },
+        ],
+        t16: [
+          "16px",
+          {
+            fontWeight: "400",
+            lineHeight: "20.8px",
+          },
+        ],
+        t16i: [
+          "16px",
+          {
+            fontWeight: "400",
+            lineHeight: "20.8px",
+          },
+        ],
         t18: "18px",
         t20: "20px",
         t24n: "24px",
         t24: [
           "24px",
           {
-            fontWeight: "700",
+            fontWeight: "400",
+            lineHeight: "22.8px",
           },
         ],
         t30: [
@@ -52,16 +84,31 @@ const config: Config = {
             fontWeight: "700",
           },
         ],
+        t32: [
+          "32px",
+          {
+            fontWeight: "400",
+            lineHeight: "38.4px",
+          },
+        ],
         t40: [
           "40px",
           {
             fontWeight: "700",
           },
         ],
-        t50: [
-          "50px",
+        t48: [
+          "48px",
           {
-            fontWeight: "800",
+            fontWeight: "400",
+            lineHeight: "57.6px",
+          },
+        ],
+        t53: [
+          "53px",
+          {
+            fontWeight: "400",
+            lineHeight: "63.6px",
           },
         ],
         t80: [

@@ -1,6 +1,6 @@
 export const TikTok = ({ className }: { className: string }) => (
   <svg
-    fill="#FFEACB"
+    fill="black"
     viewBox="0 0 512 512"
     id="icons"
     xmlns="http://www.w3.org/2000/svg"

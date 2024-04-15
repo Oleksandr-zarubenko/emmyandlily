@@ -3,19 +3,38 @@ import { AboutUsSlider } from "@/page-components/AboutUsSlider";
 import { Contacts } from "@/page-components/Contacts";
 import { HeroSection } from "@/page-components/HeroSection";
 import { ProductsSection } from "@/page-components/ProductsSection";
+import FreeDelivery from "@/components/FreeDelivery";
+
 import { gql } from "@apollo/client";
 import { getClient } from "../../utils/apollo-client";
-import { Metadata } from "next";
+import { Metadata } from "next/types";
 import { Locale } from "../../i18n.config";
+
+import Video from "@/page-components/Video";
+
+
 import Link from "next/link";
 import { getDictionary } from "@/lib/dictionary";
+
+
+
+
 const queryEN = gql`
+
   {
     mainSection {
       bigtext
       heading
       text
+      btn
     }
+    videosection {
+  heading
+    text1
+    text2
+    text3
+    text4
+  }
     aboutUsSection {
       heading
       text
@@ -28,6 +47,14 @@ const queryEN = gql`
     aboutUsSlider {
       text
       heading
+      name
+         name2
+            name3
+        text2
+      text3
+      text4
+      text5
+      text6
       sliderimages {
         alt
         url
@@ -56,6 +83,9 @@ const queryEN = gql`
         alt
         url
       }
+       method
+      composit
+      activecomp
       advantage1
       advantage2
       advantage3
@@ -66,21 +96,35 @@ const queryEN = gql`
         url
         id
       }
-      order
+   order
+        methodOfUse
+        price
+    discount
     }
   }
 `;
 
 const queryUA = gql`
+
   {
     mainSection(locale: uk) {
       bigtext
       heading
       text
+         btn
     }
+    videosection(locale: uk) {
+  heading
+  text1
+    text2
+    text3
+    text4
+   
+  }
     aboutUsSection(locale: uk) {
       heading
       text
+    
       image {
         alt
         author
@@ -89,6 +133,15 @@ const queryUA = gql`
     }
     aboutUsSlider(locale: uk) {
       text
+
+    text2
+    text3
+    text4
+      text5
+    text6
+        name
+         name2
+            name3
       heading
       sliderimages {
         alt
@@ -121,6 +174,9 @@ const queryUA = gql`
       advantage1
       advantage2
       advantage3
+      method
+      composit
+      activecomp
       activeComponents
       composition
       productSlider {
@@ -129,6 +185,9 @@ const queryUA = gql`
         id
       }
       order
+        methodOfUse
+        price
+    discount
     }
   }
 `;
@@ -166,7 +225,7 @@ export default async function Home({
   params: { lang: Locale };
 }) {
   const query = lang == "ua" ? queryUA : queryEN;
-  const { Hello } = await getDictionary(lang);
+
   const { data } = await getClient().query({
     query,
     context: {
@@ -177,22 +236,19 @@ export default async function Home({
   });
 
   return (
-    // <div className="flex flex-grow flex-col bg-bg_secondary">
-    //   <HeroSection data={data} />
-    //   <AboutUs data={data} />
-    //   <ProductsSection data={data} lang={lang} />
-    //   <AboutUsSlider data={data} />
-    //   <Contacts data={data} />
-    // </div>
-    <div className="container hero relative  flex flex-col items-center justify-center h-screen">
 
-      <h1 className="text-4xl md:text-4xl xl:text-4xl font-bold mb-6">{Hello.hi}</h1>
-      <p className="text-xl md:text-2xl xl:text-2xl text-center ">{Hello.text}</p>
-      <p className="text-xl xl:text-2xl md:text-2xl text-center mb-4">{Hello.text1}</p>
-      <p className=" text-xl text-center md:text-2xl xl:text-2xl mb-8"> {Hello.text2}</p>
-      <Link href="https://www.instagram.com/emmy_and_lily_" className="bg-blue-500 text-xl hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        {Hello.inst}
-      </Link>
+
+    <div className="flex flex-grow flex-col bg-bg_secondary">
+
+      <HeroSection data={data} />
+      <Video data={data} />
+      <FreeDelivery />
+      <ProductsSection data={data} lang={lang} />
+      {/* <AboutUs data={data} /> */}
+
+      <AboutUsSlider data={data} />
+      <Contacts data={data} />
+
 
     </div>
 

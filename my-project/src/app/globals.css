@@ -12,6 +12,7 @@ body {
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
+  background-color: white;
 }
 
 section {
@@ -20,7 +21,7 @@ section {
 
 * {
   scrollbar-width: auto;
-  scrollbar-color: #ff8667 #ffffff;
+  scrollbar-color: black #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -48,19 +49,26 @@ section {
 }
 
 .hero {
-  background-image: url("../../public/emmy-lilly-2-dogs-bg-hero.webp");
-  background-repeat: no-repeat;
-  background-size: auto 160px;
-  background-position-x: 50%;
-  background-position-y: 100%;
+  background-image: url("../../public/main.webp"), url("../../public/main2.png");
+
+  background-repeat: no-repeat, no-repeat;
+  background-size:
+    auto 360px,
+    auto 360px;
+  background-position-x: 50%, 50%;
+  background-position-y: 100%, 50%;
 }
 
 .contacts {
-  background-image: url("../../public/emmy-dog-image.png");
-  background-repeat: no-repeat;
-  background-size: auto 318px;
-  background-position-x: calc(100% + 60px);
-  background-position-y: 100%;
+  background-image: url("../../public/emmy-dog-image.png"),
+    url("../../public/paw.svg");
+  z-index: 2;
+  background-repeat: no-repeat, no-repeat;
+  background-size:
+    auto 318px,
+    auto 318px;
+  background-position-x: calc(100% + 60px), calc(100% + 60px);
+  background-position-y: 100%, 100%;
 }
 
 .paw2 {
@@ -87,6 +95,15 @@ section {
     background-position-y: 100%;
   }
 
+  .paw {
+    background-image: url("../../public/paw.svg");
+
+    background-repeat: no-repeat;
+    background-size: auto 548px;
+    background-position-x: 100%;
+    background-position-y: 100%;
+    z-index: 1;
+  }
   .contacts {
     background-image: url("../../public/emmy-dog-image.png");
     background-repeat: no-repeat;
@@ -111,20 +128,37 @@ section {
   .product {
     clip-path: url(#path);
   }
+  .paw {
+    background-image: url("../../public/paw.svg");
 
-  .hero {
-    background-image: url("../../public/emmy-lilly-2-dogs-bg-hero.webp");
     background-repeat: no-repeat;
+
     background-size: auto 45%;
+
     background-position-x: 100%;
     background-position-y: 100%;
   }
 
+  .hero {
+    background-image: url("../../public/main2.png"),
+      url("../../public/main.webp"), url("../../public/main.png");
+
+    background-repeat: no-repeat, no-repeat, no-repeat;
+    background-size:
+      476px 592px,
+      auto 102%,
+      auto 100%;
+    background-position-x: 0%, 35%, 100%;
+    background-position-y: 135%, 0%, 0%;
+  }
+
   .contacts {
-    background-image: url("../../public/emmy-dog-image.png");
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position-x: 70%;
+    background-image: url("../../public/emmy-dog-image.png"),
+      url("../../public/paw.svg");
+    background-repeat: no-repeat, no-repeat;
+    background-size: contain, contain;
+    background-position-x: 65%, 80%;
+    background-position-y: 0, 10%;
   }
 
   .paw2 {
@@ -163,4 +197,37 @@ section {
 
 .swiper-pagination-bullet-active {
   opacity: 1 !important;
+}
+.input-email {
+  background-image: url("../../public/emailicon.svg");
+  background-size: 20px; /* Змініть за потреби */
+  background-repeat: no-repeat;
+  background-position: 8px 50%; /* Змініть за потреби */
+  padding-left: 38px; /* Змініть за потреби (20px іконка + 12px відступ) */
+}
+.input-phone {
+  background-image: url("../../public/phoneorder.svg");
+  background-size: 20px; /* Змініть за потреби */
+  background-repeat: no-repeat;
+  background-position: 8px 50%; /* Змініть за потреби */
+  padding-left: 38px; /* Змініть за потреби (20px іконка + 12px відступ) */
+}
+/* video {
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+} */
+.video-wrapper {
+  position: relative;
+}
+
+.text-overlay {
+  background-color: rgba(0, 0, 0, 0.5); /* прозорий чорний фон */
+  padding: 20px;
+}
+.shadow-custom:hover {
+  box-shadow: 0px 3px 30px 0px #fbfbfb;
 }

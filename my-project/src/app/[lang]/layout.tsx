@@ -1,6 +1,7 @@
 import cn from "classnames";
 import type { Metadata } from "next";
-import { Roboto } from "next/font/google";
+import { Libre_Franklin, Roboto } from "next/font/google";
+import { gql } from "@apollo/client";
 import { Logo } from "../../components/icons/Logo";
 import "../globals.css";
 import { MobileMenu } from "@/components/MobileMenu";
@@ -8,11 +9,40 @@ import Link from "next/link";
 import { Locale } from "../../i18n.config";
 import { getDictionary } from "@/lib/dictionary";
 import LocaleSwitcher from "@/components/locale-switcher";
+import { Bag } from "@/components/icons/Bag";
+import { getClient } from "../../utils/apollo-client";
 
-const roboto = Roboto({
-  weight: ["100", "300", "400", "500", "700", "900"],
+const libre = Libre_Franklin({
+  weight: ["400"],
+  style: ['normal', 'italic'],
   subsets: ["latin"],
 });
+
+
+const queryEN = gql`
+{
+navigation {
+  whoweare
+  ourproducts
+  aboutus
+  contacts
+  
+}
+}
+`;
+
+const queryUA = gql`
+{
+navigation(locale: uk) {
+  whoweare
+  ourproducts
+  aboutus
+  contacts
+  
+}
+} 
+`;
+
 
 export const metadata: Metadata = {
   title: "Emmy and Lili - dog`s shampoo brand.",
@@ -42,89 +72,105 @@ export const metadata: Metadata = {
 export default async function RootLayout({
   children,
   params,
+  params: { lang },
 }: Readonly<{
   children: React.ReactNode;
   params: { lang: Locale };
 }>) {
-  const { navigation } = await getDictionary(params.lang);
 
+  const query = lang == "ua" ? queryUA : queryEN;
+  const { data } = await getClient().query({
+    query,
+    context: {
+      fetchOptions: {
+        next: { revalidate: 60 },
+      },
+    },
+  });
+  console.log(data)
   return (
     <html lang={params.lang}>
       <body
-        className={cn(roboto.className, "relative flex flex-grow flex-col")}
+        className={cn(libre.className, "relative flex flex-grow flex-col bg-white")}
       >
-        <header className="absolute inset-x-0 z-20 md:pt-9">
-          <div className="fixed inset-x-0  top-0 ml-auto tems-end bg-white backdrop-blur py-4 px-6 md:hidden xl:hidden">
-            {/* <MobileMenu navigation={navigation} /> */}
-            <Logo />
-            <div className="mt-10 flex justify-center text-center">   <LocaleSwitcher /></div>
-
-          </div>
-          <div className="container invisible content-center items-center justify-between md:flex md:flex-row md:visible xl:visible smOnly:absolute">
+        <header className=" absolute inset-x-0 z-20 pt-6 pb-4 border-black border-b-2 px-[80px]">
+          {/* <div className="fixed inset-x-0 top-0 ml-auto flex items-end bg-bg_primary/60 backdrop-blur xl:hidden">
+            <MobileMenu navigation={navigation} />
+          </div> */}
+          <div className="container   invisible content-center items-center justify-between md:flex md:flex-row xl:visible smOnly:absolute">
             <div className="h-6 w-40">
               <Link href="/">
-                <Logo />
+                <Logo color="#333333" />
               </Link>
             </div>
-            {/* <nav className="flex flex-col items-center md:flex-row md:gap-4 xl:gap-10">
+            <nav className="flex flex-col text-t16 items-center md:flex-row md:gap-4 xl:gap-10">
               <h2 className="sr-only">Main navigation</h2>
-              <Link
+              {/* <Link
                 className="duration-300 hover:text-primary"
                 href="#who-we-are"
               >
                 {navigation.WhoWeAre}
-              </Link>
+              </Link> */}
               <Link
-                className="duration-300 hover:text-primary"
+                className="duration-300 text-[#0B0605] hover:text-primary"
                 href="#products"
               >
-                {navigation.OurProducts}
+                {data.navigation.ourproducts}
               </Link>
               <Link
                 className="duration-300 hover:text-primary"
                 href="#about-us"
               >
-                {navigation.AboutUs}
+                {data.navigation.aboutus}
               </Link>
               <Link
                 className="duration-300 hover:text-primary"
                 href="#contacts"
               >
-                {navigation.Contacts}
+                {data.navigation.contacts}
               </Link>
-            </nav> */}
-            <LocaleSwitcher />
+              <LocaleSwitcher lang={lang} />
+              <Link className="duration-300 text-white hover:text-white" href="/basket">
+                <Bag color="black" />
+              </Link>
+            </nav>
+
           </div>
         </header>
 
         {children}
-        {/* <footer className="bg-primary py-12">
-          <div className="container flex flex-col items-center">
-            <div className="mb-4 h-6 w-40 md:mb-9 md:w-80">
+        <footer className="bg-black py-14 ">
+          <div className="container flex items-center justify-between">
+            <div className="mb-4 h-12 w-40 md:mb-0 md:w-[305px]">
               <Link href="">
-                <Logo />
+                <Logo color="white" />
               </Link>
             </div>
-            <nav className="mx-10 flex flex-wrap justify-between gap-4 text-t12 md:flex-row md:gap-10 md:text-t16">
-              <h2 className="sr-only">Auxillary navigation</h2>
-              <Link
-                className="duration-300 hover:text-white"
+            <div>
+              <nav className="mx-10 flex flex-wrap justify-between gap-4 text-t12 text-center md:flex-row md:gap-10 md:text-t16 ">
+                <h2 className="sr-only text-white">Auxillary navigation</h2>
+                {/* <Link
+                className="duration-300 text-white hover:text-white"
                 href="#who-we-are"
               >
                 {navigation.WhoWeAre}
-              </Link>
-              <Link className="duration-300 hover:text-white" href="#products">
-                {navigation.OurProducts}
-              </Link>
-              <Link className="duration-300 hover:text-white" href="#about-us">
-                {navigation.AboutUs}
-              </Link>
-              <Link className="duration-300 hover:text-white" href="#contacts">
-                {navigation.Contacts}
-              </Link>
-            </nav>
+              </Link> */}
+                <Link className="flex items-center duration-300 text-white hover:text-white" href="#products">
+                  {data.navigation.ourproducts}
+                </Link>
+                <Link className=" flex items-center duration-300 text-white hover:text-white" href="#about-us">
+                  {data.navigation.aboutus}
+                </Link>
+                <Link className=" flex items-center duration-300 text-white hover:text-white" href="#contacts">
+                  {data.navigation.contacts}
+                </Link>
+                <Link className="flex items-center duration-300 text-white hover:text-white" href="/basket">
+                  <Bag color="white" />
+                </Link>
+              </nav>
+            </div>
           </div>
-        </footer> */}
+        </footer>
       </body>
     </html>
   );

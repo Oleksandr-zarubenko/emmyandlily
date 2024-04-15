@@ -7,7 +7,7 @@ type Props = {
 };
 
 export const P: FC<Props> = ({ children, className }) => (
-  <p className={cn("text-t18 mb-8 text-dark md:text-t20", className)}>
+  <p className={cn("", className)}>
     {children}
   </p>
 );
