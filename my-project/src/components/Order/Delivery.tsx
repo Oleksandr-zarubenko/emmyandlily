@@ -15,6 +15,16 @@ interface DeliveryProps {
     setHouse: React.Dispatch<React.SetStateAction<string>>;
     appartment: string;
     setAppartment: React.Dispatch<React.SetStateAction<string>>;
+    country: string;
+    setCountry: React.Dispatch<React.SetStateAction<string>>;
+    city: string;
+    setCity: React.Dispatch<React.SetStateAction<string>>;
+    numnp: string;
+    setNumnp: React.Dispatch<React.SetStateAction<string>>;
+    numposhtmat: string;
+    setNumposhtmat: React.Dispatch<React.SetStateAction<string>>;
+    index: string;
+    setIndex: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const Delivery: React.FC<DeliveryProps> = ({
@@ -33,6 +43,16 @@ const Delivery: React.FC<DeliveryProps> = ({
     setHouse,
     appartment,
     setAppartment,
+    country,
+    setCountry,
+    city,
+    setCity,
+    numnp,
+    setNumnp,
+    numposhtmat,
+    setNumposhtmat,
+    index,
+    setIndex
 }) => {
     return (
         <div>
@@ -44,6 +64,30 @@ const Delivery: React.FC<DeliveryProps> = ({
                 <h3 className="text-t18 mb-6">
                     {data.order.delivery_method}
                 </h3>
+                <div className="flex mb-6 ">
+                    <div className="w-[230px] mr-1">
+
+                        <input
+                            type="text"
+                            id="country"
+                            value={country}
+                            onChange={(e) => setCountry(e.target.value)}
+                            className="text-t14 py-[10px] px-[15px]  w-full border-b-2 focus:border-black outline-none"
+                            placeholder="Країна"
+                        />
+                    </div>
+                    <div className="w-[230px]">
+
+                        <input
+                            type="text"
+                            id="city"
+                            value={city}
+                            onChange={(e) => setCity(e.target.value)}
+                            className="text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none"
+                            placeholder="Міcто"
+                        />
+                    </div>
+                </div>
                 <p className="mb-2 text-t14 text-[#C61004]">   {data.order.freeDel}</p>
                 {selectedOption === 'dhl' || selectedOption === 'ups' ? (
                     <span className="text-t14 italic">{data.order.deliveryTime2}</span>
@@ -92,12 +136,12 @@ const Delivery: React.FC<DeliveryProps> = ({
                     <label>
                         <input
                             type="radio"
-                            value="ukr'"
+                            value="ukr"
                             checked={selectedOption === 'ukr'}
                             onChange={handleOptionChange}
                             className="mr-4"
                         />
-                        Укрпошта ( Самовивіз) - При замовленні до 1000 грн вартість доставки 40 г₴
+                        Укрпошта ( Самовивіз) - При замовленні до 1000 грн вартість доставки 30 ₴
                     </label>
                 </div>
                 <div className="py-3">
@@ -126,9 +170,9 @@ const Delivery: React.FC<DeliveryProps> = ({
                     </label>
                 </div>
             </div>
-            <div className="mb-6">
+            {/* <div className="mb-6">
                 <span className="text-t18 text-red-500 ">{data.order.noDelivery}</span>
-            </div>
+            </div> */}
 
 
             {selectedOption === 'dhl' || selectedOption === 'ups' ? (
@@ -184,7 +228,7 @@ const Delivery: React.FC<DeliveryProps> = ({
             ) : selectedOption === 'np-courier' ? (
                 <div>
                     <div>
-                        <p className="text-t14 text-[#292D2D] italic mb-2">{data.order.fillInTheDetails}</p>
+                        <p className="text-t14 text-[#292D2D] italic mb-4">{data.order.fillInTheDetails}</p>
                         <div className="flex justify-between">
                             <div className="w-[230px]">
 
@@ -211,11 +255,60 @@ const Delivery: React.FC<DeliveryProps> = ({
                         </div>
                     </div>
                 </div>
-            ) : (
+            ) : selectedOption === 'novaposhta' ? (
                 <div>
-                    хей
+                    <p className="text-t14 text-[#292D2D] italic mb-4">{data.order.fillInTheDetails}</p>
+                    <div className="w-[230px] mr-1">
+
+                        <input
+                            type="text"
+                            id="numnp"
+                            value={numnp}
+                            onChange={(e) => setNumnp(e.target.value)}
+                            className="text-t14 py-[10px] px-[15px]  w-full border-b-2 focus:border-black outline-none"
+                            placeholder="Номер відділення"
+                        />
+                    </div>
+
                 </div>
-            )}
+            ) : selectedOption === 'np-poshtmat' ? (
+                <div>
+                    <p className="text-t14 text-[#292D2D] italic mb-4">{data.order.fillInTheDetails}</p>
+                    <div className="w-[230px] mr-1">
+
+                        <input
+                            type="text"
+                            id="numposhtmat"
+                            value={numposhtmat}
+                            onChange={(e) => setNumposhtmat(e.target.value)}
+                            className="text-t14 py-[10px] px-[15px]  w-full border-b-2 focus:border-black outline-none"
+                            placeholder="Номер Поштомату"
+                        />
+                    </div>
+
+                </div>
+            ) : selectedOption === 'ukr' ? (
+                <div>
+                    <p className="text-t14 text-[#292D2D] italic mb-4">{data.order.fillInTheDetails}</p>
+                    <div className="w-[230px] mr-1">
+
+                        <input
+                            type="text"
+                            id="index"
+                            value={index}
+                            onChange={(e) => setIndex(e.target.value)}
+                            className="text-t14 py-[10px] px-[15px]  w-full border-b-2 focus:border-black outline-none"
+                            placeholder="Індекс укрпошти"
+                        />
+                    </div>
+
+                </div>
+            )
+                : (
+
+                    <div className="text-t14 text-[#292D2D] italic mb-4">Вкажіть спосіб доставки</div>
+
+                )}
 
         </div>
     )

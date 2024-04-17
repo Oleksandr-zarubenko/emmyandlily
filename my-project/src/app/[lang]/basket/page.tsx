@@ -45,9 +45,14 @@ delete
         url
         id
       }
+  
    order
         methodOfUse
-        price
+      capacity {
+      price
+      ml
+      id
+    }
     discount
     }
   }
@@ -94,9 +99,14 @@ payment
         url
         id
       }
+   
       order
         methodOfUse
-        price
+        capacity {
+      price
+      ml
+      id
+    }
     discount
     }
   }
@@ -119,7 +129,7 @@ export default async function BasketPage({
 
 
   return (
-    <Basket data={data} />
+    <Basket data={data} lang={lang} />
   )
 }
 

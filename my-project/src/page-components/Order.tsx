@@ -3,15 +3,48 @@ import { useState } from 'react';
 import Personalinfo from '@/components/Order/Personalinfo';
 import YourOrder from '@/components/Order/YourOrder';
 import Delivery from '@/components/Order/Delivery';
+
 const Order = ({ data }: any) => {
-    console.log(data.order)
+    const storedDatas = localStorage.getItem('storedData');
+    const storedData = storedDatas ? JSON.parse(storedDatas) : [];
+    const quantitiesData = localStorage.getItem('quantities');
+    const quantities = quantitiesData ? JSON.parse(quantitiesData) : {};
+    console.log(quantities)
+    const [productName, setProductName] = useState(storedData)
+    console.log(productName)
     const [personalDataCompleted, setPersonalDataCompleted] = useState(false);
     const [deliveryCompleted, setDeliveryCompleted] = useState(false);
     const [paymentCompleted, setPaymentCompleted] = useState(false);
+    const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
 
     const [street, setStreet] = useState('');
     const [houseNumber, setHouseNumber] = useState('');
 
+    const [city, setCity] = useState('');
+    const [country, setCountry] = useState('');
+
+    const [numposhtmat, setNumposhtmat] = useState('');
+    const [numnp, setNumnp] = useState('');
+    const [index, setIndex] = useState('');
+
+    const [sstreet, setSstreet] = useState('');
+    const [zip, setZip] = useState('');
+    const [house, setHouse] = useState('');
+    const [appartment, setAppartment] = useState('');
+
+    const [isRecipient, setIsRecipient] = useState(false);
+    const [isDiscountsAndNews, setIsDiscountsAndNews] = useState(false);
+
+    const [deliveryActive, setDeliveryActive] = useState(false);
+    const [paymentActive, setPaymentActive] = useState(false);
+    const [personActive, setPersonActive] = useState(true);
+
+    const [selectedOption, setSelectedOption] = useState('');
+    const [deliveryPrice, setDeliveryPrice] = useState(0);
+
+
+    // форми клієнта
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
@@ -22,26 +55,123 @@ const Order = ({ data }: any) => {
     const [recipientEmail, setRecipientEmail] = useState('');
     const [recipientPhoneNumber, setRecipientPhoneNumber] = useState('');
 
-    const [sstreet, setSstreet] = useState('');
-    const [zip, setZip] = useState('');
-    const [house, setHouse] = useState('');
-    const [appartment, setAppartment] = useState('');
+
+    const products = productName.map(product => ({
+        name: product.productName.trim(),
+        capacity: product.capacity,
+        id: product.id
+    }));
+
+    const updatedProducts = products.map(product => ({
+        ...product,
+        quantity: quantities[product.id]
+    }));
+
+    console.log(updatedProducts)
 
 
+    const sendPostRequest = async () => {
+        try {
+            const response = await fetch('https://emmyandlily.salesdrive.me/handler/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    form: "XAbgwAmkIZY5cyOjuJxgGoaJ8jMkYK4yTu0ExeoGSqoUitRJQcFx",
+                    getResultData: "",
+                    fName: firstName,
+                    lName: lastName,
+                    email: email,
+                    phone: phoneNumber,
+                    company: "",
+                    products: updatedProducts,
+                    payment_method: "",
+                    shipping_method: "",
+                    shipping_address: "",
+                    comment: JSON.stringify({
+                        recipientFirstName,
+                        recipientLastName,
+                        recipientEmail,
+                        recipientPhoneNumber
+                    }),
+                    sajt: "",
+                    externalId: "",
+                    organizationId: "",
+                    stockId: "",
+                    novaposhta: {
+                        ServiceType: "",
+                        payer: "",
+                        area: "",
+                        region: "",
+                        city: city,
+                        cityNameFormat: "",
+                        WarehouseNumber: "",
+                        Street: street,
+                        BuildingNumber: houseNumber,
+                        Flat: appartment
+                    },
+                    ukrposhta: {
+                        ServiceType: index,
+                        payer: "",
+                        type: "",
+                        city: city,
+                        WarehouseNumber: "",
+                        Street: "",
+                        BuildingNumber: "",
+                        Flat: ""
+                    },
+                    prodex24source_full: "",
+                    prodex24source: "",
+                    prodex24medium: "",
+                    prodex24campaign: "",
+                    prodex24content: "",
+                    prodex24term: "",
+                    prodex24page: ""
+                })
+            });
 
-    const [isRecipient, setIsRecipient] = useState(false);
-    const [isDiscountsAndNews, setIsDiscountsAndNews] = useState(false);
+            if (response.ok) {
 
-    const [deliveryActive, setDeliveryActive] = useState(false);
-    const [paymentActive, setPaymentActive] = useState(false);
-    const [personActive, setPersonActive] = useState(true);
+                console.log('Дані успішно відправлено!');
+            } else {
 
-    const [selectedOption, setSelectedOption] = useState('');
+                console.error('Помилка при відправці даних:', response.statusText);
+            }
+        } catch (error) {
+
+            console.error('Помилка:', error);
+        }
+    };
+
+
 
 
     const handleOptionChange = (e: any) => {
         setSelectedOption(e.target.value);
+
+        switch (e.target.value) {
+            case 'np-courier':
+            case 'novaposhta':
+            case 'np-poshtmat':
+                setDeliveryPrice(40);
+                break;
+            case 'ukr':
+                setDeliveryPrice(30);
+                break;
+            case 'dhl':
+
+                setDeliveryPrice(0);
+                break;
+            case 'ups':
+
+                setDeliveryPrice(0);
+                break;
+            default:
+                break;
+        }
     };
+
     const isPersonalDataComplete = () => {
         if (isRecipient === false) {
             return (
@@ -52,17 +182,29 @@ const Order = ({ data }: any) => {
                 recipientFirstName !== '' &&
                 recipientLastName !== '' &&
                 recipientEmail !== '' &&
-                recipientPhoneNumber !== ''
+                recipientPhoneNumber !== '' &&
+                !errors.firstName &&
+                !errors.lastName &&
+                !errors.email &&
+                !errors.phoneNumber &&
+                !errors.recipientFirstName &&
+                !errors.recipientLastName &&
+                !errors.recipientEmail &&
+                !errors.recipientPhoneNumber
             );
         } else {
-            return firstName !== '' && lastName !== '' && email !== '' && phoneNumber !== '';
+            return firstName !== '' && lastName !== '' && email !== '' && phoneNumber !== '' &&
+                !errors.firstName &&
+                !errors.lastName &&
+                !errors.email &&
+                !errors.phoneNumber
         }
     }
 
 
     const saveAndProceed = () => {
         if (isPersonalDataComplete()) {
-            // Збереження даних
+
             setPersonActive(false)
             setDeliveryActive(true);
         } else {
@@ -71,27 +213,26 @@ const Order = ({ data }: any) => {
         }
     };
 
-    // Функції для перемикання між вкладками
+
     const switchToDeliveryTab = () => {
-        // Перевірка, чи всі поля на вкладці Особисті дані заповнені
+
         if (selectedOption !== '') {
-            // Перемикання на вкладку "Оплата"
+
             setPaymentActive(true);
             setPersonActive(false);
             setDeliveryActive(false);
         } else {
-            // Повідомлення про необхідність вибору варіанта доставки
+
             alert('Будь ласка, виберіть варіант доставки');
         }
     };
 
     const switchToPaymentTab = () => {
-        // Перевірка, чи всі поля на вкладці Доставка заповнені
+
         if (deliveryCompleted) {
-            // Перехід на вкладку Оплата
-            // Це може бути реалізовано, наприклад, зміною стану або використанням роутера
+
         } else {
-            // Повідомлення користувача про те, що потрібно заповнити всі поля на поточній вкладці
+
             alert('Будь ласка, заповніть всі поля на вкладці Доставка');
         }
     };
@@ -117,6 +258,8 @@ const Order = ({ data }: any) => {
                 <div className='w-[550px]'>
                     {personActive && (
                         <Personalinfo
+                            errors={errors}
+                            setErrors={setErrors}
                             data={data}
                             firstName={firstName}
                             setFirstName={setFirstName}
@@ -139,15 +282,7 @@ const Order = ({ data }: any) => {
                             isRecipient={isRecipient}
                             setIsRecipient={setIsRecipient}
                         />
-                        // <Delivery selectedOption={selectedOption} handleOptionChange={handleOptionChange} street={street} setStreet={setStreet} houseNumber={houseNumber}
-                        //     setHouseNumber={setHouseNumber} sstreet={sstreet}
-                        //     setSstreet={setSstreet}
-                        //     zip={zip}
-                        //     setZip={setZip}
-                        //     house={house}
-                        //     setHouse={setHouse}
-                        //     appartment={appartment}
-                        //     setAppartment={setAppartment} />
+
                     )}
 
 
@@ -162,7 +297,18 @@ const Order = ({ data }: any) => {
                             house={house}
                             setHouse={setHouse}
                             appartment={appartment}
-                            setAppartment={setAppartment} />
+                            setAppartment={setAppartment}
+                            country={country}
+                            setCountry={setCountry}
+                            city={city}
+                            setCity={setCity}
+                            numnp={numnp}
+                            setNumnp={setNumnp}
+                            setNumposhtmat={setNumposhtmat}
+                            numposhtmat={numposhtmat}
+                            index={index}
+                            setIndex={setIndex}
+                        />
 
                     )}
 
@@ -174,6 +320,7 @@ const Order = ({ data }: any) => {
                     )}
 
                 </div>
+
             </div>
             <YourOrder
                 data={data}
@@ -184,6 +331,7 @@ const Order = ({ data }: any) => {
                 deliveryActive={deliveryActive}
                 paymentActive={paymentActive}
                 switchToDeliveryTab={switchToDeliveryTab}
+                deliveryPrice={deliveryPrice}
             />
         </section>
     )

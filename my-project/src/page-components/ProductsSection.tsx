@@ -1,24 +1,24 @@
+
 import { Markdown } from "@/components/Markdown";
-import { Path } from "@/components/icons/Path";
-import { PathBorder } from "@/components/icons/PathBorder";
-import { PathMd } from "@/components/icons/PathMd";
-import { PathBorderMd } from "@/components/icons/PathBorderMd";
+import { i18n } from "@/i18n.config";
 import { Paw } from "@/components/icons/Paw";
 import Image from "next/image";
 import { ProductModal } from "@/components/ProductModal";
 import { Locale } from "@/i18n.config";
-import { getDictionary } from "@/lib/dictionary";
-import { FormModal } from "@/components/FormModal";
 
 export const ProductsSection = async ({
   data,
   lang,
+
 }: {
   data: any;
   lang: Locale;
+
 }) => {
-  const { product: productT } = await getDictionary(lang);
-  const { orderForm } = await getDictionary(lang);
+
+  const locales = i18n.locales;
+  const en = locales[0]
+  console.log(data)
   return (
     <section className="bg-black text-center xl:py-16" id="products">
       <div className="container">
@@ -42,7 +42,7 @@ export const ProductsSection = async ({
                   key={product.id}
                   className="mx-auto w-[304px] cursor-pointer shadow-custom mdOnly:w-[193px]"
                 >
-                  <ProductModal product={product}>
+                  <ProductModal product={product} lang={lang}>
                     <div className="product_wrapper relative mb-4 h-[253px] overflow-hidden rounded   xl:h-[344px] xl:w-[304px] mdOnly:h-[160px] mdOnly:w-[193px]">
                       <Image
                         fill
@@ -62,24 +62,22 @@ export const ProductsSection = async ({
                         className="mb-4 !text-t14 text-[#FBFBFB] opacity-80 md:!text-t12"
                       />
                       <ul className="mb-4 flex">
-                        {product.price &&
-                          product.price.products &&
-                          product.price.products.map((ml: any) => (
+                        {product.capacity &&
+                          product.capacity &&
+                          product.capacity.map((item: any) => (
                             <li
-                              key={ml.id}
+                              key={item.id}
                               className="mr-8 text-t16 italic text-white"
                             >
-                              {ml.capacity}
+                              {item.ml}
                             </li>
                           ))}
                       </ul>
-                      {product.price &&
-                        product.price.products &&
-                        product.price.products[0] && (
-                          <p className="text-t18 leading-6 text-white">
-                            від {product.price.products[0].price} ₴
-                          </p>
-                        )}
+                      {product.capacity && product.capacity[0] && (
+                        <p className="text-t18 leading-6 text-white">
+                          від {product.capacity[0].price} {lang === en ? '€' : '₴'}
+                        </p>
+                      )}
                     </div>
                   </ProductModal>
                 </article>

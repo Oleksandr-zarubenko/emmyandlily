@@ -6,10 +6,10 @@ export const HeroSection = ({ data }: { data: any }) => {
   return (
     <>
       <div className=" hero relative bg-white text-center xl:text-left">
-        <div className="container xl:min-h-[800px]">
+        <div className=" container xl:min-h-[800px]">
           {/* <div className="mx-auto mb-96 mt-32 flex flex-col md:mb-[642px] md:max-w-[416px] xl:mb-0 xl:ml-0 xl:mt-0 xl:max-w-96 smOnly:p-2"> */}
           {/* <Markdown text={data.mainSection.heading} className="order-2" /> */}
-          <div className="order-1 mb-8 text-center text-bg_secondary xl:justify-start w-[655px]">
+          <div className=" order-1 mb-8 text-center text-bg_secondary xl:justify-start w-[655px]">
             {/* <Paw className="h-12 w-12 flex-shrink-0 md:h-16 md:w-16" /> */}
             <p className="relative top-[152px] left-20 w-[655px] text-t50  md:text-t48 ">{data.mainSection.bigtext}</p>
           </div>

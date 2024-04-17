@@ -61,7 +61,11 @@ order
       }
    order
         methodOfUse
-        price
+      capacity {
+      price
+      ml
+      id
+    }
     discount
     }
   }
@@ -123,28 +127,32 @@ order
       }
       order
         methodOfUse
-        price
+      capacity {
+      price
+      ml
+      id
+    }
     discount
     }
   }
 `;
 export default async function OrderPage({
-    params: { lang },
+  params: { lang },
 }: {
-    params: { lang: Locale };
+  params: { lang: Locale };
 }) {
-    const query = lang == "ua" ? queryUA : queryEN;
-    const { data } = await getClient().query({
-        query,
-        context: {
-            fetchOptions: {
-                next: { revalidate: 60 },
-            },
-        },
-    });
+  const query = lang == "ua" ? queryUA : queryEN;
+  const { data } = await getClient().query({
+    query,
+    context: {
+      fetchOptions: {
+        next: { revalidate: 60 },
+      },
+    },
+  });
 
-    return (
-        <Order data={data} />
-    )
+  return (
+    <Order data={data} />
+  )
 }
 
