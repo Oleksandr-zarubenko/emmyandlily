@@ -56,13 +56,13 @@ const Order = ({ data }: any) => {
     const [recipientPhoneNumber, setRecipientPhoneNumber] = useState('');
 
 
-    const products = productName.map(product => ({
+    const products = productName.map((product: any) => ({
         name: product.productName.trim(),
         capacity: product.capacity,
         id: product.id
     }));
 
-    const updatedProducts = products.map(product => ({
+    const updatedProducts = products.map((product: any) => ({
         ...product,
         quantity: quantities[product.id]
     }));
