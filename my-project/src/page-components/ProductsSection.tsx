@@ -16,9 +16,9 @@ export const ProductsSection = async ({
 
 }) => {
 
-  const locales = i18n.locales;
-  const en = locales[0]
-  console.log(data)
+  // const locales = i18n.locales;
+  // const en = locales[0]
+
   return (
     <section className="bg-black text-center xl:py-16" id="products">
       <div className="container">
@@ -75,9 +75,10 @@ export const ProductsSection = async ({
                       </ul>
                       {product.capacity && product.capacity[0] && (
                         <p className="text-t18 leading-6 text-white">
-                          від {product.capacity[0].price} {lang === en ? '€' : '₴'}
+                          від {product.capacity[0].price} ₴
                         </p>
                       )}
+                      {/* {lang === en ? '€' : '₴'} */}
                     </div>
                   </ProductModal>
                 </article>

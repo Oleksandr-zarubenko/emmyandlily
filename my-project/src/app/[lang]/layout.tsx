@@ -141,7 +141,7 @@ export default async function RootLayout({
           </header>
 
           {children}
-          <footer className="bg-black py-14 ">
+          <footer className="bg-black py-14 grow">
             <div className="container flex items-center justify-between">
               <div className="mb-4 h-12 w-40 md:mb-0 md:w-[305px]">
                 <Link href="">

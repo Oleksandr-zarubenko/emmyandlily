@@ -20,8 +20,8 @@ export const ProductModal = ({
   children: any;
 
 }) => {
-  const locales = i18n.locales;
-  const en = locales[0]
+  // const locales = i18n.locales;
+  // const en = locales[0]
   const { addedToCart, setAddedToCart } = useAddedToCart();
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<
@@ -229,8 +229,9 @@ export const ProductModal = ({
                         </td>
 
                         <td className="py-2 text-center text-t18 leading-5 text-[#333333]">
-                          {item.price} {lang === en ? '€' : '₴'}
+                          {item.price} ₴
                         </td>
+                        {/* {lang === en ? '€' : '₴'} */}
                         <td className="text-end py-2 text-t18 leading-5 text-[#333333]">
                           <button
                             onClick={() => addToCart(item)}
