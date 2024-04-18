@@ -3,13 +3,22 @@ import { useState } from "react";
 import Personalinfo from "@/components/Order/Personalinfo";
 import YourOrder from "@/components/Order/YourOrder";
 import Delivery from "@/components/Order/Delivery";
-
+import Image from "next/image";
+import Mono from "../../public/mono.png"
 const Order = ({ data }: any) => {
     const storedDatas = localStorage.getItem('storedData');
     const storedData = storedDatas ? JSON.parse(storedDatas) : [];
 
+
     const quantitiesData = localStorage.getItem('quantities');
     const quantities = quantitiesData ? JSON.parse(quantitiesData) : {};
+
+    console.log(quantities)
+
+    const totalprice = localStorage.getItem('allTotal');
+    const totalpricedData = totalprice ? JSON.parse(totalprice) : [];
+
+
 
     const [productName, setProductName] = useState(storedData)
 
@@ -52,25 +61,16 @@ const Order = ({ data }: any) => {
     const [email, setEmail] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
 
-
-    // const [isRecipient, setIsRecipient] = useState(false);
-    // const [isDiscountsAndNews, setIsDiscountsAndNews] = useState(false);
-
-
-    // const [deliveryActive, setDeliveryActive] = useState(false);
-    // const [paymentActive, setPaymentActive] = useState(false);
-    // const [personActive, setPersonActive] = useState(true);
-
-
-    // const [selectedOption, setSelectedOption] = useState('');
-    // const [deliveryPrice, setDeliveryPrice] = useState(0);
-
-
     const [recipientFirstName, setRecipientFirstName] = useState("");
     const [recipientLastName, setRecipientLastName] = useState("");
     const [recipientEmail, setRecipientEmail] = useState("");
     const [recipientPhoneNumber, setRecipientPhoneNumber] = useState("");
 
+    const [paymentMonobank, setPaymentMonobank] = useState(false);
+
+    const handleMonobankChange = () => {
+        setPaymentMonobank(!paymentMonobank);
+    };
     const products = productName.map((product: any) => ({
         name: product.productName.trim(),
         capacity: product.capacity,
@@ -82,7 +82,10 @@ const Order = ({ data }: any) => {
         quantity: quantities[product.id]
     }));
 
-    console.log(updatedProducts)
+    const productNames = products.map((product: any) => ({
+        name: product.name.replace(/###\s*/, ''), // Вилучаємо символи '### ' з початку назви
+    }));
+    const productNamesString = productNames.map((product: any) => product.name).join(', ');
 
 
     const sendPostRequest = async () => {
@@ -221,123 +224,88 @@ const Order = ({ data }: any) => {
         if (isPersonalDataComplete()) {
             setPersonActive(false);
             setDeliveryActive(true);
+            setPaymentActive(false);
         } else {
             setDeliveryActive(false);
             alert("Будь ласка, заповніть всі поля");
         }
     };
 
-    // const switchToDeliveryTab = () => {
-    //     if (selectedOption !== "") {
-    //         setPaymentActive(true);
-    //         setPersonActive(false);
-    //         setDeliveryActive(false);
-    //     } else {
-    //         alert("Будь ласка, виберіть варіант доставки");
-    //     }
-    // };
+    const switchToPaymentTab = async () => {
 
-    // const switchToPaymentTab = () => {
-    //     if (deliveryCompleted) {
-    //         fetch("https://api.monobank.ua/api/merchant/invoice/create", {
-    //             method: "POST",
-    //             headers: {
-    //                 "Content-Type": "application/json",
-    //                 "X-Token": "uYUY2qndKqhDTMj5QEsUCgT6UjsEytb4BXsHduIl0EfQ",
-    //             },
-    //             body: JSON.stringify({
-    //                 amount: 4200,
-    //                 ccy: 980,
-    //                 merchantPaymInfo: {
-    //                     reference: "84d0070ee4e44667b31371d8f8813947",
-    //                     destination: "Покупка щастя",
-    //                     comment: "Покупка щастя",
-    //                     customerEmails: [],
-    //                     basketOrder: [
-    //                         {
-    //                             name: "Табуретка",
-    //                             qty: 2,
-    //                             sum: 2100,
-    //                             icon: "string",
-    //                             unit: "шт.",
-    //                             code: "d21da1c47f3c45fca10a10c32518bdeb",
-    //                             barcode: "string",
-    //                             header: "string",
-    //                             footer: "string",
-    //                             tax: [],
-    //                             uktzed: "string",
-    //                             discounts: [
-    //                                 {
-    //                                     type: "DISCOUNT",
-    //                                     mode: "PERCENT",
-    //                                     value: "PERCENT",
-    //                                 },
-    //                             ],
-    //                         },
-    //                     ],
-    //                 },
-    //                 redirectUrl: "https://example.com/your/website/result/page",
-    //                 webHookUrl:
-    //                     "https://example.com/mono/acquiring/webhook/maybesomegibberishuniquestringbutnotnecessarily",
-    //                 validity: 3600,
-    //                 paymentType: "debit",
-    //                 code: "0a8637b3bccb42aa93fdeb791b8b58e9",
-    //                 saveCardData: {
-    //                     saveCard: true,
-    //                     walletId: "69f780d841a0434aa535b08821f4822c",
-    //                 },
-    //             }),
-    //         })
-    //             .then((response) => { })
-    //             .catch((error) => {
-    //                 console.error("Error:", error);
-    //             });
-    //     } else {
-    //         alert("Будь ласка, заповніть всі поля на вкладці Доставка");
-    //     }
-    // };
+        if (deliveryCompleted && paymentMonobank === true) {
+            try {
+                const response = await fetch("https://api.monobank.ua/api/merchant/invoice/create", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-Token": "mDLjwZ7Idkxv5odecWj5ByA",
+                    },
+                    body: JSON.stringify({
+                        amount: totalpricedData * 100,
+                        ccy: 980,
+                        merchantPaymInfo: {
+                            reference: "84d0070ee4e44667b31371d8f8813947",
+                            destination: productNamesString,
+                            comment: productNamesString,
+                            customerEmails: [],
+
+                        },
+                        redirectUrl: "https://dogs-shampoo-9t4m.vercel.app/ua",
+                        webHookUrl: "https://example.com/mono/acquiring/webhook/maybesomegibberishuniquestringbutnotnecessarily",
+                        validity: 3600,
+                        paymentType: "debit",
+                        saveCardData: {
+                            saveCard: true,
+                            walletId: "69f780d841a0434aa535b08821f4822c",
+                        },
+                    }),
+                });
+
+                if (response.ok) {
+                    const jsonData = await response.json();
+                    console.log('Дані успішно відправлено:', jsonData);
+                    window.open(jsonData.pageUrl);
+                } else {
+                    console.error('Помилка при відправці даних:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Помилка:', error);
+            }
+        } else {
+            alert("Виберіть спосіб оплати")
+            alert("Будь ласка, заповніть всі поля на вкладці Доставка");
+        }
+    };
 
 
     const switchToPersonalTab = () => {
+
         setPersonActive(true);
         setDeliveryActive(false);
         setPaymentActive(false);
 
+
+
     };
 
-    // const saveAndProceed = () => {
-    //     if (isPersonalDataComplete()) {
-    //         setPersonActive(false);
-    //         setDeliveryActive(true);
-    //         setPaymentActive(false);
 
-    //     } else {
-
-    //         alert('Будь ласка, заповніть всі поля');
-    //     }
-    // };
 
     const switchToDeliveryTab = () => {
         if (selectedOption !== '' && !paymentActive) {
             setPaymentActive(true);
             setPersonActive(false);
             setDeliveryActive(false);
+            setDeliveryCompleted(true);
         } else if (paymentActive) {
+
             alert('Будь ласка, спершу завершіть оплату');
         } else {
             alert('Будь ласка, виберіть варіант доставки');
         }
     };
 
-    const switchToPaymentTab = () => {
 
-        if (deliveryCompleted) {
-
-        } else {
-
-            alert('Будь ласка, заповніть всі поля на вкладці Доставка');
-        }
-    };
 
     return (
         <section className='container py-40 flex justify-between paw'>
@@ -415,10 +383,23 @@ const Order = ({ data }: any) => {
                     )}
                     {/* Вкладка "Оплата" */}
                     {paymentActive && (
-                        <div>
-                            <button onClick={sendPostRequest}>Відправити дані</button>
+                        // <div>
+                        //     <button onClick={sendPostRequest}>Відправити дані</button>
 
+                        // </div>
+                        <div>
+                            <h3 className="text-t18 mb-8">Оберіть спосіб оплати</h3>
+                            <label className="checkbox-container">
+                                <input
+                                    type="checkbox"
+                                    checked={paymentMonobank}
+                                    onChange={handleMonobankChange}
+                                />
+                                <span className="checkmark"></span>
+                                <Image src={Mono} alt="Monobank" width={267} height={24} />
+                            </label>
                         </div>
+
                     )}
 
                 </div>
@@ -434,7 +415,7 @@ const Order = ({ data }: any) => {
                 paymentActive={paymentActive}
                 switchToDeliveryTab={switchToDeliveryTab}
                 deliveryPrice={deliveryPrice}
-
+                switchToPaymentTab={switchToPaymentTab}
             />
 
         </section>

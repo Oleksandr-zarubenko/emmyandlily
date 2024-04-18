@@ -80,6 +80,8 @@ export const ProductModal = ({
     const storedAddedToCart = localStorage.getItem('addedToCart');
     const parsedAddedToCart = storedAddedToCart ? JSON.parse(storedAddedToCart) : {};
 
+
+
     const dataToStore = {
       id: item.id,
       productName: product.heading,

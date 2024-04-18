@@ -8,7 +8,8 @@ type YourOrderProps = {
     deliveryActive: boolean;
     paymentActive: boolean;
     switchToDeliveryTab: () => void;
-    deliveryPrice: number
+    deliveryPrice: number,
+    switchToPaymentTab: () => void;
 };
 
 const YourOrder: React.FC<YourOrderProps> = ({
@@ -20,11 +21,13 @@ const YourOrder: React.FC<YourOrderProps> = ({
     deliveryActive,
     paymentActive,
     switchToDeliveryTab,
-    deliveryPrice
+    deliveryPrice,
+    switchToPaymentTab
 }) => {
     const total = localStorage.getItem('totalPrice');
     const totalPrice = total ? parseInt(total) : 0;
     const allTotal = deliveryPrice + totalPrice;
+    localStorage.setItem('allTotal', JSON.stringify(allTotal));
     return (
         <div className='w-[357px] h-[405px] py-10 px-4 border-[1px] bg-white border-[#DCDCDC] drop-shadow-[4px_15px_40px_0px_#100E0C33] rounded'>
             <h3 className='text-t24 mb-8'>{data.order.yourOrder}</h3>
@@ -59,7 +62,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
             )}
             {paymentActive && (
 
-                <button className=" relative top-20 text-t18 py-[12px] px-6 bg-black text-white rounded " onClick={switchToDeliveryTab}>{data.order.order}</button>
+                <button className=" relative top-20 text-t18 py-[12px] px-6 bg-black text-white rounded " onClick={switchToPaymentTab}>{data.order.order}</button>
             )}
         </div>
     )

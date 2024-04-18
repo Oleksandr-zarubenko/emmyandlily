@@ -11,7 +11,7 @@ import { Delivery } from "@/components/icons/Delivery";
 import { Wallet } from "@/components/icons/Wallet";
 import { Security } from "@/components/icons/Security";
 import { Lock } from "@/components/icons/Lock";
-import { i18n } from "@/i18n.config";
+
 import { useAddedToCart } from "@/components/context/addedToCart";
 
 const DropdownButton = ({ buttonText, dropdownText, icon }: { buttonText: string, dropdownText: any, icon: any }) => {
@@ -39,6 +39,7 @@ const Basket = ({ data, lang }: { data: any, lang: any }) => {
     const [totalPrice, setTotalPrice] = useState(0);
 
 
+
     const updateLocalStorage = () => {
         localStorage.setItem('storedData', JSON.stringify(tovar));
         localStorage.setItem('quantities', JSON.stringify(quantities));
@@ -48,6 +49,7 @@ const Basket = ({ data, lang }: { data: any, lang: any }) => {
     useEffect(() => {
         updateLocalStorage();
     }, [tovar, quantities, totalPrice]);
+
 
     useEffect(() => {
         let newTotalPrice = 0;
@@ -128,14 +130,15 @@ const Basket = ({ data, lang }: { data: any, lang: any }) => {
     };
 
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        const storedQuantities = localStorage.getItem('quantities');
-        if (storedQuantities) {
+    //     const storedQuantities = localStorage.getItem('quantities');
+    //     if (storedQuantities) {
 
-            setQuantities(JSON.parse(storedQuantities));
-        }
-    }, []);
+    //         setQuantities(JSON.parse(storedQuantities));
+    //     }
+    // }, []);
+
 
     // const convertToEuro = (priceInUah) => {
     //     return priceInUah / currencyRate;
@@ -177,7 +180,7 @@ const Basket = ({ data, lang }: { data: any, lang: any }) => {
                             <th className="w-[15%] text-right pb-6  py-2 text-t14 text-[#333333] opacity-60 italic"> {data.basket.delete}</th>
                         </tr>
                     </thead>
-                    {tovar.map((item: any, index: number) => (
+                    {tovar.map((item: any) => (
                         <tbody key={item.id}>
 
                             <tr className="border-b">
