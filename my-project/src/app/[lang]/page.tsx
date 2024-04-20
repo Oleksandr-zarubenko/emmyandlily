@@ -13,10 +13,6 @@ import { Locale } from "../../i18n.config";
 import Video from "@/page-components/Video";
 
 
-import Link from "next/link";
-import { getDictionary } from "@/lib/dictionary";
-
-
 
 
 const queryEN = gql`
@@ -98,8 +94,13 @@ const queryEN = gql`
       }
    order
         methodOfUse
-        price
+     
     discount
+     capacity {
+      price
+      ml
+      id
+    }
     }
   }
 `;
@@ -186,8 +187,13 @@ const queryUA = gql`
       }
       order
         methodOfUse
-        price
+    
     discount
+       capacity {
+      price
+      ml
+      id
+    }
     }
   }
 `;

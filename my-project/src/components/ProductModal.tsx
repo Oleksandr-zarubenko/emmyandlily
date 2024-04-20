@@ -1,5 +1,5 @@
 "use client";
-
+import { i18n } from "@/i18n.config";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Markdown } from "./Markdown";
@@ -8,33 +8,38 @@ import { BurgerCross } from "./icons/BurgerCross";
 import cn from "classnames";
 import { PathModalXl } from "./icons/PathModalXl";
 import { Bag } from "./icons/Bag";
-
+import { useAddedToCart } from "@/components/context/addedToCart";
 export const ProductModal = ({
   product,
-
+  lang,
   children,
+
 }: {
   product: any;
-
+  lang: any;
   children: any;
+
 }) => {
+  // const locales = i18n.locales;
+  // const en = locales[0]
+  const { addedToCart, setAddedToCart } = useAddedToCart();
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<
     "components" | "composition" | "usage"
   >("components");
+
   const [currentImageUrl, setActiveImageUrl] = useState(
     product.productSlider[0].url
   );
-  const [quantities, setQuantities] = useState<{ [productId: string]: number }>(
-    {}
-  );
 
-  const handleQuantityChange = (capacity: string, value: number) => {
-    setQuantities((prevQuantities) => ({
-      ...prevQuantities,
-      [capacity]: Math.max((prevQuantities[capacity] || 0) + value, 0),
-    }));
-  };
+
+
+  // const handleQuantityChange = (capacity: string, value: number) => {
+  //   setQuantities((prevQuantities) => ({
+  //     ...prevQuantities,
+  //     [capacity]: Math.max((prevQuantities[capacity] || 0) + value, 0),
+  //   }));
+  // };
 
   const setModalOpened = () => {
     setIsOpen(true);
@@ -67,6 +72,47 @@ export const ProductModal = ({
       document.documentElement.style.overflow = "auto";
     }
   }, [isOpen]);
+
+  const addToCart = (item: any) => {
+
+    const storedDataString = localStorage.getItem('storedData');
+    const storedData = storedDataString ? JSON.parse(storedDataString) : [];
+    const storedAddedToCart = localStorage.getItem('addedToCart');
+    const parsedAddedToCart = storedAddedToCart ? JSON.parse(storedAddedToCart) : {};
+
+
+
+    const dataToStore = {
+      id: item.id,
+      productName: product.heading,
+      price: item.price,
+      capacity: item.ml,
+      photo: product.productSlider[0].url,
+
+    };
+    const updatedAddedToCart = {
+      ...parsedAddedToCart,
+      [item.id]: true,
+    };
+    const updatedData = [...storedData, dataToStore];
+
+    localStorage.setItem('storedData', JSON.stringify(updatedData));
+    localStorage.setItem('addedToCart', JSON.stringify(updatedAddedToCart));
+
+    setAddedToCart((prevAddedToCart: any) => ({
+      ...prevAddedToCart,
+      [item.id]: true,
+    }));
+    setAddedToCart(updatedAddedToCart);
+  };
+
+  useEffect(() => {
+    const storedAddedToCart = localStorage.getItem('addedToCart');
+    if (storedAddedToCart) {
+      setAddedToCart(JSON.parse(storedAddedToCart));
+    }
+  }, []);
+
   return (
     <>
       <PathModalXl />
@@ -81,7 +127,7 @@ export const ProductModal = ({
       </button>
       {isOpen && (
         <div
-          className="fixed inset-0 z-30 flex h-dvh items-center justify-center overflow-y-auto bg-white/50"
+          className="fixed inset-0 z-30 flex h-dvh items-center justify-center overflow-y-auto bg-white/50 cursor-default"
           onClick={() => setMenuClosed()}
         >
           <div className="relative h-full w-auto xl:h-auto">
@@ -96,7 +142,7 @@ export const ProductModal = ({
               onClick={(e) => e.stopPropagation()}
             >
               <div className="mr-[90px] xl:flex xl:h-full xl:flex-col">
-                <div className="relative mb-4 h-full md:h-96 xl:h-[380px] xl:w-[450px] xl:flex-shrink-0">
+                <div className="relative mb-4 h-full md:h-96 xl:h-[380px] xl:w-[450px] xl:flex-shrink-0 ">
                   <Image
                     quality={80}
                     fill
@@ -107,11 +153,11 @@ export const ProductModal = ({
                   />
                 </div>
 
-                <div className="hidden xl:flex xl:h-full xl:w-[450px] xl:flex-row">
+                <div className="hidden xl:flex xl:h-full xl:w-[450px] xl:flex-row cursor-pointer">
                   {product.productSlider.map(
                     (slide: { alt: string; url: string; id: string }) => (
                       <div
-                        className="relative mr-2 w-1/3 last:mr-0"
+                        className="relative mr-2 w-1/3 last:mr-0 "
                         key={slide.id}
                         onClick={() => setActiveSlideImage(slide.url)}
                       >
@@ -120,7 +166,7 @@ export const ProductModal = ({
                             "absolute inset-0 z-10",
                             slide.url !== currentImageUrl
                               ? "bg-black/50"
-                              : "border-b-4 border-primary"
+                              : "border-b-4 border-black"
                           )}
                         ></div>
                         <Image
@@ -162,67 +208,40 @@ export const ProductModal = ({
                 <table className="mb-12  w-full">
                   <thead>
                     <tr>
-                      <th className="py-2 text-t14 text-[#333333] opacity-60">
+                      <th className="py-2 w-2/5 text-t14 text-[#333333] opacity-60">
                         Об`єм
                       </th>
-                      <th className="py-2 text-center  text-t14 text-[#333333] opacity-60">
+                      {/* <th className="py-2 text-center  text-t14 text-[#333333] opacity-60">
                         Кіл-ть
-                      </th>
-                      <th className="w-[100px] py-2 text-center text-t14 text-[#333333] opacity-60">
+                      </th> */}
+                      <th className=" w-1/5 py-2 text-center text-t14 text-[#333333] opacity-60">
                         Ціна
                       </th>
-                      <th className="w-[150px] py-2 text-right text-t14 text-[#333333] opacity-60">
+                      <th className="w-2/5 py-2 text-right text-t14 text-[#333333] opacity-60">
                         Додати у кошик
                       </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {product.price.products.map((ml: any) => (
-                      <tr key={ml.capacity}>
-                        {" "}
-                        {/* Додайте ключ для кожного рядка */}
+                    {product.capacity.map((item: any) => (
+
+                      <tr key={item.id}>
                         <td className="py-2 text-t18 leading-5 text-[#333333] ">
-                          {ml.capacity}
+                          {item.ml}
                         </td>
-                        <td className="py-2 text-center text-t16 leading-5 text-[#0B0605]">
-                          <div className="flex justify-evenly">
-                            <div className="border-text-[#33333399] border-2 border-solid">
-                              <button
-                                onClick={() =>
-                                  handleQuantityChange(ml.capacity, -1)
-                                }
-                                className="bg-white p-[4px] px-2 text-[#33333399] hover:text-black"
-                              >
-                                -
-                              </button>
-                              <input
-                                value={quantities[ml.capacity] || 0}
-                                onChange={(e) =>
-                                  handleQuantityChange(
-                                    ml.capacity,
-                                    parseInt(e.target.value, 10) || 0
-                                  )
-                                }
-                                className="w-10 border-gray-300 p-[4px] text-center text-[#33333399]"
-                              />
-                              <button
-                                onClick={() =>
-                                  handleQuantityChange(ml.capacity, 1)
-                                }
-                                className="bg-white p-[4px] px-2 text-[#33333399] hover:text-black"
-                              >
-                                +
-                              </button>
-                            </div>
-                          </div>
-                        </td>
+
                         <td className="py-2 text-center text-t18 leading-5 text-[#333333]">
-                          {ml.price * (quantities[ml.capacity] || 0)} грн
+                          {item.price} ₴
                         </td>
-                        <td className="ml-auto py-2 text-t18 leading-5 text-[#333333]">
-                          <div className="py-auto ml-auto h-10 w-[76px] rounded bg-black px-[22.5px] pt-[5px]">
-                            <Bag color="white" />
-                          </div>
+                        {/* {lang === en ? '€' : '₴'} */}
+                        <td className="text-end py-2 text-t18 leading-5 text-[#333333]">
+                          <button
+                            onClick={() => addToCart(item)}
+                            className={`py-auto ml-auto h-10 rounded bg-black ${addedToCart[item.id] ? 'text-white text-t18 pointer-events-none w-[172px] py-1 px-3 cursor-default' : 'py-[5px] w-[76px] px-[22.5px] '}`}
+                            disabled={addedToCart[item.id]}
+                          >
+                            {addedToCart[item.id] ? 'Товар у кошику' : <Bag color="white" />}
+                          </button>
                         </td>
                       </tr>
                     ))}
