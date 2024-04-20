@@ -1,16 +1,15 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Personalinfo from "@/components/Order/Personalinfo";
 import YourOrder from "@/components/Order/YourOrder";
 import Delivery from "@/components/Order/Delivery";
 import Image from "next/image";
 import Mono from "../../public/mono.png"
-import { useEffect } from "react";
+
 const Order = ({ data }: any) => {
 
     const [storedData, setStoredData] = useState(JSON.parse(localStorage.getItem('storedData') || '[]'));
     const [quantities, setQuantities] = useState(JSON.parse(localStorage.getItem('quantities') || '{}'));
-    const [totalpricedData, setTotalpricedData] = useState(JSON.parse(localStorage.getItem('allTotal') || '[]'));
 
     const [productName, setProductName] = useState(storedData);
 
@@ -57,6 +56,9 @@ const Order = ({ data }: any) => {
     const [recipientPhoneNumber, setRecipientPhoneNumber] = useState("");
 
     const [paymentMonobank, setPaymentMonobank] = useState(false);
+
+    const total = localStorage.getItem('allTotal');
+    const totalPrice = total ? parseInt(total) : 0;
 
 
 
@@ -230,10 +232,10 @@ const Order = ({ data }: any) => {
         }
     };
 
-    const switchToPaymentTab = async () => {
 
+
+    const switchToPaymentTab = async () => {
         if (deliveryCompleted && paymentMonobank === true) {
-            makeApiCall()
             try {
                 const response = await fetch("https://api.monobank.ua/api/merchant/invoice/create", {
                     method: "POST",
@@ -242,14 +244,13 @@ const Order = ({ data }: any) => {
                         "X-Token": "mDLjwZ7Idkxv5odecWj5ByA",
                     },
                     body: JSON.stringify({
-                        amount: totalpricedData * 100,
+                        amount: totalPrice * 100,
                         ccy: 980,
                         merchantPaymInfo: {
                             reference: "84d0070ee4e44667b31371d8f8813947",
                             destination: productNamesString,
                             comment: productNamesString,
                             customerEmails: [],
-
                         },
                         redirectUrl: "https://dogs-shampoo-9t4m.vercel.app/ua",
                         webHookUrl: "https://example.com/mono/acquiring/webhook/maybesomegibberishuniquestringbutnotnecessarily",
@@ -277,7 +278,6 @@ const Order = ({ data }: any) => {
             alert("Будь ласка, заповніть всі поля на вкладці Доставка");
         }
     };
-
 
     const switchToPersonalTab = () => {
 
