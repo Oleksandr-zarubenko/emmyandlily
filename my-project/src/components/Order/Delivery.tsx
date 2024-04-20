@@ -7,7 +7,7 @@ interface DeliveryProps {
     setStreet: React.Dispatch<React.SetStateAction<string>>;
     houseNumber: string;
     setHouseNumber: React.Dispatch<React.SetStateAction<string>>;
-    sstreet: string; // Я припускаю, що це означає "secondary street". Якщо ні, будь ласка, виправте мене.
+    sstreet: string;
     setSstreet: React.Dispatch<React.SetStateAction<string>>;
     zip: string;
     setZip: React.Dispatch<React.SetStateAction<string>>;
@@ -25,6 +25,8 @@ interface DeliveryProps {
     setNumposhtmat: React.Dispatch<React.SetStateAction<string>>;
     index: string;
     setIndex: React.Dispatch<React.SetStateAction<string>>;
+    error: any;
+    setError: any;
 }
 
 const Delivery: React.FC<DeliveryProps> = ({
@@ -52,8 +54,106 @@ const Delivery: React.FC<DeliveryProps> = ({
     numposhtmat,
     setNumposhtmat,
     index,
-    setIndex
+    setIndex,
+    error,
+    setError
 }) => {
+
+
+    const validateField = (fieldName: string, value: string) => {
+        const nameRegex = /^[\p{L}\s]+$/u;
+        const phoneRegex = /^[0-9]*$/;
+
+
+        const zipRegex = /^\d{5}(?:[-\s]\d{4})?$/;
+
+        switch (fieldName) {
+            case 'country':
+            case 'city':
+            case 'street':
+            case 'sstreet':
+                if (!value) {
+                    return `Введіть ${fieldName === 'sstreet' ? 'назву додаткової ' : ''}${fieldName}`;
+                } else if (!nameRegex.test(value)) {
+                    return `${fieldName} не повинно містити цифр`;
+                }
+                break;
+            case 'houseNumber':
+                if (!value) {
+                    return 'Введіть номер будинку';
+                } else if (!phoneRegex.test(value)) {
+                    return 'Номер будинку не повинен містити букв';
+                }
+                break;
+            case 'zip':
+                if (!value) {
+                    return 'Введіть ZIP-код';
+                } else if (!zipRegex.test(value)) {
+                    return 'Введіть коректний ZIP-код';
+                }
+                break;
+            case 'house':
+            case 'appartment':
+            case 'numnp':
+            case 'numposhtmat':
+            case 'index':
+                if (!value) {
+                    return 'Це поле є обов\'язковим';
+                } else if (!phoneRegex.test(value)) {
+                    return 'Це поле не повинно містити букв';
+                }
+                break;
+        }
+
+        return '';
+    };
+
+    const handleInputChange = (fieldName: string, value: string) => {
+        const error = validateField(fieldName, value);
+
+        setError((prevErrors: any) => ({
+            ...prevErrors,
+            [fieldName]: error,
+        }));
+        switch (fieldName) {
+            case 'country':
+                setCountry(value);
+                break;
+            case 'city':
+                setCity(value);
+                break;
+            case 'street':
+                setStreet(value);
+                break;
+            case 'houseNumber':
+                setHouseNumber(value);
+                break;
+            case 'sstreet':
+                setSstreet(value);
+                break;
+            case 'zip':
+                setZip(value);
+                break;
+            case 'house':
+                setHouse(value);
+                break;
+            case 'appartment':
+                setAppartment(value);
+                break;
+            case 'numnp':
+                setNumnp(value);
+                break;
+            case 'numposhtmat':
+                setNumposhtmat(value);
+                break;
+            case 'index':
+                setIndex(value);
+                break;
+            default:
+                break;
+        }
+    };
+
     return (
         <div>
             <h2 className="text-t14 text-[#292D2D] italic mb-2">{data.order.selectCountryAndCity}</h2>
@@ -61,7 +161,7 @@ const Delivery: React.FC<DeliveryProps> = ({
 
             </div>
             <div className="mb-6">
-                <h3 className="text-t18 mb-6">
+                <h3 className="text-t18">
                     {data.order.delivery_method}
                 </h3>
                 <div className="flex mb-6 ">
@@ -71,24 +171,25 @@ const Delivery: React.FC<DeliveryProps> = ({
                             type="text"
                             id="country"
                             value={country}
-                            onChange={(e) => setCountry(e.target.value)}
-                            className="text-t14 py-[10px] px-[15px]  w-full border-b-2 focus:border-black outline-none"
+                            onChange={(e) => handleInputChange('country', e.target.value)}
+                            className={`text-t14 py-[10px] px-[15px]  w-full border-b-2 focus:border-black outline-none  ${error.country ? ' bg-[#C61004]/[.06]' : 'bg-white'}`}
                             placeholder="Країна"
                         />
                     </div>
+
                     <div className="w-[230px]">
 
                         <input
                             type="text"
                             id="city"
                             value={city}
-                            onChange={(e) => setCity(e.target.value)}
-                            className="text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none"
+                            onChange={(e) => handleInputChange('city', e.target.value)}
+                            className={`text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none ${error.city ? ' bg-[#C61004]/[.06]' : 'bg-white'}`}
                             placeholder="Міcто"
                         />
                     </div>
                 </div>
-                <p className="mb-2 text-t14 text-[#C61004]">   {data.order.freeDel}</p>
+                <p className="mb-2 text-t14 text-[#C61004]">{data.order.freeDel}</p>
                 {selectedOption === 'dhl' || selectedOption === 'ups' ? (
                     <span className="text-t14 italic">{data.order.deliveryTime2}</span>
                 ) : (
@@ -105,19 +206,19 @@ const Delivery: React.FC<DeliveryProps> = ({
                             onChange={handleOptionChange}
                             className="mr-4"
                         />
-                        Нова пошта (Курьєр) - При замовленні до 1000 грн вартість доставки 40 ₴
+                        Нова пошта (Курьєр) - При замовленні до 1000 грн вартість доставки від 90 ₴
                     </label>
                 </div>
                 <div className="py-3">
                     <label>
                         <input
                             type="radio"
-                            value="novaposhta"
-                            checked={selectedOption === 'novaposhta'}
+                            value="novaposhta-smovuviz"
+                            checked={selectedOption === 'novaposhta-smovuviz'}
                             onChange={handleOptionChange}
                             className="mr-4"
                         />
-                        Нова пошта (Самовивіз) - При замовленні до 1000 грн вартість доставки 40 ₴
+                        Нова пошта (Самовивіз) - При замовленні до 1000 грн вартість доставки від 55 ₴
                     </label>
                 </div>
                 <div className="py-3">
@@ -129,22 +230,22 @@ const Delivery: React.FC<DeliveryProps> = ({
                             onChange={handleOptionChange}
                             className="mr-4"
                         />
-                        Нова пошта ( Поштомат) - При замовленні до 1000 грн вартість доставки 40 ₴
+                        Нова пошта ( Поштомат) - При замовленні до 1000 грн вартість доставки від 55 ₴
                     </label>
                 </div>
                 <div className="py-3">
                     <label>
                         <input
                             type="radio"
-                            value="ukr"
-                            checked={selectedOption === 'ukr'}
+                            value="ukrposhta"
+                            checked={selectedOption === 'ukrposhta'}
                             onChange={handleOptionChange}
                             className="mr-4"
                         />
-                        Укрпошта ( Самовивіз) - При замовленні до 1000 грн вартість доставки 30 ₴
+                        Укрпошта ( Самовивіз) - При замовленні до 1000 грн вартість доставки від 25 ₴
                     </label>
                 </div>
-                <div className="py-3">
+                {/* <div className="py-3">
                     <label>
                         <input
                             type="radio"
@@ -168,14 +269,14 @@ const Delivery: React.FC<DeliveryProps> = ({
                         />
                         UPS (сума доставки залежить від вашої країни та міста)
                     </label>
-                </div>
+                </div> */}
             </div>
             {/* <div className="mb-6">
                 <span className="text-t18 text-red-500 ">{data.order.noDelivery}</span>
             </div> */}
 
 
-            {selectedOption === 'dhl' || selectedOption === 'ups' ? (
+            {/* {selectedOption === 'dhl' || selectedOption === 'ups' ? (
                 <div>
                     <p className="text-t14 text-[#292D2D] italic mb-2">{data.order.fillInTheDetails}</p>
                     <div className="grid  grid-cols-2 gap-4">
@@ -183,10 +284,10 @@ const Delivery: React.FC<DeliveryProps> = ({
 
                             <input
                                 type="text"
-                                id="street"
+                                id="zip"
                                 value={zip}
-                                onChange={(e) => setZip(e.target.value)}
-                                className="text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none"
+                                onChange={(e) => handleInputChange('zip', e.target.value)}
+                                className={`text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none ${errors.zip ? ' bg-[#C61004]/[.06]' : ''}`}
                                 placeholder="Zip-CODE"
                             />
                         </div>
@@ -194,10 +295,10 @@ const Delivery: React.FC<DeliveryProps> = ({
 
                             <input
                                 type="text"
-                                id="houseNumber"
+                                id="sstreet"
                                 value={sstreet}
-                                onChange={(e) => setSstreet(e.target.value)}
-                                className="text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none"
+                                onChange={(e) => handleInputChange('sstreet', e.target.value)}
+                                className={`text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none ${errors.sstreet ? ' bg-[#C61004]/[.06]' : ''}`}
                                 placeholder="Street"
                             />
                         </div>
@@ -205,10 +306,10 @@ const Delivery: React.FC<DeliveryProps> = ({
 
                             <input
                                 type="text"
-                                id="houseNumber"
+                                id="house"
                                 value={house}
-                                onChange={(e) => setHouse(e.target.value)}
-                                className="text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none"
+                                onChange={(e) => handleInputChange('house', e.target.value)}
+                                className={`text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none ${errors.house ? ' bg-[#C61004]/[.06]' : ''}`}
                                 placeholder="House"
                             />
                         </div>
@@ -216,16 +317,17 @@ const Delivery: React.FC<DeliveryProps> = ({
 
                             <input
                                 type="text"
-                                id="houseNumber"
+                                id="appartment"
                                 value={appartment}
-                                onChange={(e) => setAppartment(e.target.value)}
-                                className="text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none"
+                                onChange={(e) => handleInputChange('appartment', e.target.value)}
+                                className={`text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none ${errors.appartment ? ' bg-[#C61004]/[.06]' : ''}`}
                                 placeholder="Appartment"
                             />
                         </div>
                     </div>
                 </div>
-            ) : selectedOption === 'np-courier' ? (
+            ) : */}
+            {selectedOption === 'np-courier' ? (
                 <div>
                     <div>
                         <p className="text-t14 text-[#292D2D] italic mb-4">{data.order.fillInTheDetails}</p>
@@ -236,26 +338,28 @@ const Delivery: React.FC<DeliveryProps> = ({
                                     type="text"
                                     id="street"
                                     value={street}
-                                    onChange={(e) => setStreet(e.target.value)}
-                                    className="text-t14 py-[10px] w-full border-b-2 focus:border-black outline-none"
+                                    onChange={(e) => handleInputChange('street', e.target.value)}
+
+                                    className={`text-t14 py-[10px] px-[15px]  w-full border-b-2 focus:border-black outline-none  ${error.street ? ' bg-[#C61004]/[.06]' : 'bg-white'}`}
                                     placeholder="Введіть вулицю"
                                 />
                             </div>
+
                             <div className="w-[230px]">
 
                                 <input
                                     type="text"
                                     id="houseNumber"
                                     value={houseNumber}
-                                    onChange={(e) => setHouseNumber(e.target.value)}
-                                    className="text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none"
+                                    onChange={(e) => handleInputChange('houseNumber', e.target.value)}
+                                    className={`text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none ${error.houseNumber ? ' bg-[#C61004]/[.06]' : 'bg-white'}`}
                                     placeholder="Введіть номер будинку"
                                 />
                             </div>
                         </div>
                     </div>
                 </div>
-            ) : selectedOption === 'novaposhta' ? (
+            ) : selectedOption === 'novaposhta-smovuviz' ? (
                 <div>
                     <p className="text-t14 text-[#292D2D] italic mb-4">{data.order.fillInTheDetails}</p>
                     <div className="w-[230px] mr-1">
@@ -264,8 +368,8 @@ const Delivery: React.FC<DeliveryProps> = ({
                             type="text"
                             id="numnp"
                             value={numnp}
-                            onChange={(e) => setNumnp(e.target.value)}
-                            className="text-t14 py-[10px] px-[15px]  w-full border-b-2 focus:border-black outline-none"
+                            onChange={(e) => handleInputChange('numnp', e.target.value)}
+                            className={`text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none ${error.numnp ? ' bg-[#C61004]/[.06]' : 'bg-white'}`}
                             placeholder="Номер відділення"
                         />
                     </div>
@@ -280,14 +384,14 @@ const Delivery: React.FC<DeliveryProps> = ({
                             type="text"
                             id="numposhtmat"
                             value={numposhtmat}
-                            onChange={(e) => setNumposhtmat(e.target.value)}
-                            className="text-t14 py-[10px] px-[15px]  w-full border-b-2 focus:border-black outline-none"
+                            onChange={(e) => handleInputChange('numposhtmat', e.target.value)}
+                            className={`text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none ${error.numposhtmat ? ' bg-[#C61004]/[.06]' : 'bg-white'}`}
                             placeholder="Номер Поштомату"
                         />
                     </div>
 
                 </div>
-            ) : selectedOption === 'ukr' ? (
+            ) : selectedOption === 'ukrposhta' ? (
                 <div>
                     <p className="text-t14 text-[#292D2D] italic mb-4">{data.order.fillInTheDetails}</p>
                     <div className="w-[230px] mr-1">
@@ -296,8 +400,8 @@ const Delivery: React.FC<DeliveryProps> = ({
                             type="text"
                             id="index"
                             value={index}
-                            onChange={(e) => setIndex(e.target.value)}
-                            className="text-t14 py-[10px] px-[15px]  w-full border-b-2 focus:border-black outline-none"
+                            onChange={(e) => handleInputChange('index', e.target.value)}
+                            className={`text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none ${error.index ? ' bg-[#C61004]/[.06]' : 'bg-white'}`}
                             placeholder="Індекс укрпошти"
                         />
                     </div>

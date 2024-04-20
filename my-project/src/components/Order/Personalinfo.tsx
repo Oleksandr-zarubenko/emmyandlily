@@ -19,8 +19,8 @@ interface PersonalInfoProps {
     setRecipientFirstName: React.Dispatch<React.SetStateAction<string>>;
     recipientLastName: string;
     setRecipientLastName: React.Dispatch<React.SetStateAction<string>>;
-    errors: any,
-    setErrors: any,
+    error: any,
+    setError: any,
 }
 
 const Personalinfo: React.FC<PersonalInfoProps> =
@@ -44,16 +44,17 @@ const Personalinfo: React.FC<PersonalInfoProps> =
         setRecipientFirstName,
         recipientLastName,
         setRecipientLastName,
-        errors,
-        setErrors
+        error,
+        setError
     }) => {
 
 
 
 
         const validateField = (fieldName: string, value: string) => {
-            const nameRegex = /^[A-Za-zА-Яа-яЁё\s]+$/;
+            const nameRegex = /^[\p{L}\s]+$/u;
             const phoneRegex = /^(\+?3?8)?(0\d{9})$/;
+
             const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
 
             switch (fieldName) {
@@ -122,7 +123,7 @@ const Personalinfo: React.FC<PersonalInfoProps> =
 
         const handleInputChange = (fieldName: string, value: string) => {
             const error = validateField(fieldName, value);
-            setErrors((prevErrors: any) => ({
+            setError((prevErrors: any) => ({
                 ...prevErrors,
                 [fieldName]: error,
             }));
@@ -167,7 +168,7 @@ const Personalinfo: React.FC<PersonalInfoProps> =
                                 id="firstName"
                                 value={firstName}
                                 onChange={(e) => handleInputChange('firstName', e.target.value)}
-                                className={`text-t14 py-[10px] px-[10px] border-b-2 focus:border-black outline-none ${errors.firstName ? ' bg-[#C61004]/[.06]' : ''}`}
+                                className={`text-t14 py-[10px] px-[10px] border-b-2 focus:border-black outline-none ${error.firstName ? ' bg-[#C61004]/[.06]' : ''}`}
                                 placeholder={data.order.yourName}
                             />
 
@@ -178,7 +179,7 @@ const Personalinfo: React.FC<PersonalInfoProps> =
                                 id="lastName"
                                 value={lastName}
                                 onChange={(e) => handleInputChange('lastName', e.target.value)}
-                                className={` text-t14  py-[10px] px-[10px] border-b-2 focus:border-black outline-none ${errors.lastName ? ' bg-[#C61004]/[.06]' : ''}`}
+                                className={` text-t14  py-[10px] px-[10px] border-b-2 focus:border-black outline-none ${error.lastName ? ' bg-[#C61004]/[.06]' : ''}`}
                                 placeholder={data.order.lastName}
                             />
 
@@ -190,7 +191,7 @@ const Personalinfo: React.FC<PersonalInfoProps> =
                                 id="email"
                                 value={email}
                                 onChange={(e) => handleInputChange('email', e.target.value)}
-                                className={`text-t14 py-[10px] px-[10px] border-b-2 focus:border-black outline-none input-email ${errors.email ? ' bg-[#C61004]/[.06]' : ''}`}
+                                className={`text-t14 py-[10px] px-[10px] border-b-2 focus:border-black outline-none input-email ${error.email ? ' bg-[#C61004]/[.06]' : ''}`}
                                 placeholder={data.order.eMail}
 
                             />
@@ -203,7 +204,7 @@ const Personalinfo: React.FC<PersonalInfoProps> =
                                 id="phoneNumber"
                                 value={phoneNumber}
                                 onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
-                                className={`text-t14 py-[10px] px-[10px] border-b-2 focus:border-black outline-none input-phone ${errors.phoneNumber ? ' bg-[#C61004]/[.06]' : ''}`}
+                                className={`text-t14 py-[10px] px-[10px] border-b-2 focus:border-black outline-none input-phone ${error.phoneNumber ? ' bg-[#C61004]/[.06]' : ''}`}
                                 placeholder={data.order.phoneNumber}
                             />
 
@@ -234,7 +235,7 @@ const Personalinfo: React.FC<PersonalInfoProps> =
                                         setRecipientFirstName(e.target.value);
                                         handleInputChange('recipientFirstName', e.target.value);
                                     }}
-                                    className={`text-t14 py-[10px] px-[10px] border-b-2 focus:border-black outline-none ${errors.recipientFirstName ? ' bg-[#C61004]/[.06]' : ''}`}
+                                    className={`text-t14 py-[10px] px-[10px] border-b-2 focus:border-black outline-none ${error.recipientFirstName ? ' bg-[#C61004]/[.06]' : ''}`}
                                     placeholder={data.order.yourName}
                                 />
 
@@ -248,7 +249,7 @@ const Personalinfo: React.FC<PersonalInfoProps> =
                                         setRecipientLastName(e.target.value);
                                         handleInputChange('recipientLastName', e.target.value);
                                     }}
-                                    className={` text-t14  py-[10px] px-[10px] border-b-2 focus:border-black outline-none ${errors.recipientLastName ? ' bg-[#C61004]/[.06]' : ''}`}
+                                    className={` text-t14  py-[10px] px-[10px] border-b-2 focus:border-black outline-none ${error.recipientLastName ? ' bg-[#C61004]/[.06]' : ''}`}
                                     placeholder={data.order.lastName}
                                 />
 
@@ -262,7 +263,7 @@ const Personalinfo: React.FC<PersonalInfoProps> =
                                         setRecipientEmail(e.target.value);
                                         handleInputChange('recipientEmail', e.target.value);
                                     }}
-                                    className={`text-t14 py-[10px] px-[10px] border-b-2 focus:border-black outline-none input-email ${errors.recipientEmail ? ' bg-[#C61004]/[.06]' : ''}`}
+                                    className={`text-t14 py-[10px] px-[10px] border-b-2 focus:border-black outline-none input-email ${error.recipientEmail ? ' bg-[#C61004]/[.06]' : ''}`}
                                     placeholder={data.order.eMail}
                                 />
 
@@ -277,7 +278,7 @@ const Personalinfo: React.FC<PersonalInfoProps> =
                                         handleInputChange('recipientPhoneNumber', e.target.value);
                                     }}
                                     className=
-                                    {`text-t14 py-[10px] px-[10px] border-b-2 text-black focus:border-black  outline-none input-phone ${errors.recipientPhoneNumber ? ' bg-[#C61004]/[.06]' : ''}`}
+                                    {`text-t14 py-[10px] px-[10px] border-b-2 text-black focus:border-black  outline-none input-phone ${error.recipientPhoneNumber ? ' bg-[#C61004]/[.06]' : ''}`}
                                     placeholder={data.order.phoneNumber}
                                 />
 

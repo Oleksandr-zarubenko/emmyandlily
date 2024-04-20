@@ -5,28 +5,18 @@ import YourOrder from "@/components/Order/YourOrder";
 import Delivery from "@/components/Order/Delivery";
 import Image from "next/image";
 import Mono from "../../public/mono.png"
+import { useEffect } from "react";
 const Order = ({ data }: any) => {
-    const storedDatas = localStorage.getItem('storedData');
-    const storedData = storedDatas ? JSON.parse(storedDatas) : [];
 
+    const [storedData, setStoredData] = useState(JSON.parse(localStorage.getItem('storedData') || '[]'));
+    const [quantities, setQuantities] = useState(JSON.parse(localStorage.getItem('quantities') || '{}'));
+    const [totalpricedData, setTotalpricedData] = useState(JSON.parse(localStorage.getItem('allTotal') || '[]'));
 
-    const quantitiesData = localStorage.getItem('quantities');
-    const quantities = quantitiesData ? JSON.parse(quantitiesData) : {};
-
-    console.log(quantities)
-
-    const totalprice = localStorage.getItem('allTotal');
-    const totalpricedData = totalprice ? JSON.parse(totalprice) : [];
-
-
-
-    const [productName, setProductName] = useState(storedData)
-
+    const [productName, setProductName] = useState(storedData);
 
     const [deliveryCompleted, setDeliveryCompleted] = useState(false);
 
-
-    const [errors, setErrors] = useState<{ [key: string]: string }>({});
+    const [error, setError] = useState<{ [key: string]: string }>({});
 
 
     const [street, setStreet] = useState("");
@@ -68,112 +58,93 @@ const Order = ({ data }: any) => {
 
     const [paymentMonobank, setPaymentMonobank] = useState(false);
 
+
+
+    const recipientData = `Дані отримувача ${recipientFirstName} ${recipientLastName} ${recipientEmail} ${recipientPhoneNumber}`;
+
     const handleMonobankChange = () => {
         setPaymentMonobank(!paymentMonobank);
     };
+
     const products = productName.map((product: any) => ({
-        name: product.productName.trim(),
+        name: product.productName.trim().replace(/###\s*/, ''),
         capacity: product.capacity,
+        price: product.price,
         id: product.id
     }));
 
     const updatedProducts = products.map((product: any) => ({
         ...product,
-        quantity: quantities[product.id]
+        quantity: quantities[product.id],
+
     }));
 
-    const productNames = products.map((product: any) => ({
-        name: product.name.replace(/###\s*/, ''), // Вилучаємо символи '### ' з початку назви
-    }));
-    const productNamesString = productNames.map((product: any) => product.name).join(', ');
-
-
-    const sendPostRequest = async () => {
-        try {
-            const response = await fetch('https://emmyandlily.salesdrive.me/handler/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    form: "XAbgwAmkIZY5cyOjuJxgGoaJ8jMkYK4yTu0ExeoGSqoUitRJQcFx",
-                    getResultData: "",
-                    fName: firstName,
-                    lName: lastName,
-                    email: email,
-                    phone: phoneNumber,
-                    company: country,
-                    products: updatedProducts,
-                    payment_method: "",
-                    shipping_method: selectedOption,
-                    shipping_address: "",
-                    comment: JSON.stringify({
-                        recipientFirstName,
-                        recipientLastName,
-                        recipientEmail,
-                        recipientPhoneNumber
-                    }),
-                    sajt: "",
-                    externalId: "",
-                    organizationId: "",
-                    stockId: "",
-                    novaposhta: {
-                        ServiceType: "",
-                        payer: "",
-                        area: "",
-                        region: "",
-                        city: city,
-                        cityNameFormat: "",
-                        WarehouseNumber: "",
-                        Street: street,
-                        BuildingNumber: houseNumber,
-                        Flat: appartment
-                    },
-                    ukrposhta: {
-                        ServiceType: index,
-                        payer: "",
-                        type: "",
-                        city: city,
-                        WarehouseNumber: "",
-                        Street: "",
-                        BuildingNumber: "",
-                        Flat: ""
-                    },
-                    prodex24source_full: "",
-                    prodex24source: "",
-                    prodex24medium: "",
-                    prodex24campaign: "",
-                    prodex24content: "",
-                    prodex24term: "",
-                    prodex24page: ""
-                })
-            });
-
-            if (response.ok) {
-
-                console.log('Дані успішно відправлено!');
-            } else {
-
-                console.error('Помилка при відправці даних:', response.statusText);
-            }
-        } catch (error) {
-
-            console.error('Помилка:', error);
-
+    function translateShippingOption(option: string) {
+        switch (option) {
+            case 'np-courier':
+                return 'Курєр Нової Пошти';
+            case 'novaposhta-smovuviz':
+                return 'Самовивіз з Нової Пошти';
+            case 'np-poshtmat':
+                return 'Поштомат Нової Пошти';
+            case 'ukrposhta':
+                return 'Укрпошта';
+            default:
+                return option;
         }
     }
+
+    const productNamesString = products.map((product: any) => product.name).join(', ');
+
+
+    const makeApiCall = async () => {
+
+        const translatedOption = translateShippingOption(selectedOption);
+        const parsedProducts = updatedProducts.map((product: any) => ({
+            id: product.id,
+            name: product.name,
+            costPerItem: product.price,
+            amount: product.quantity,
+            description: product.capacity,
+
+        }));
+        await fetch('/api/form-post', {
+            method: "POST",
+            body: JSON.stringify({
+                firstName,
+                lastName,
+                email,
+                phoneNumber,
+                updatedProducts,
+                selectedOption: translatedOption,
+                recipientData,
+                city,
+                numnp,
+                numposhtmat,
+                street,
+                houseNumber,
+                index,
+                products: parsedProducts,
+            })
+        })
+    }
+
 
     const handleOptionChange = (e: any) => {
         setSelectedOption(e.target.value);
 
         switch (e.target.value) {
             case "np-courier":
-            case "novaposhta":
-            case "np-poshtmat":
-                setDeliveryPrice(40);
+                setDeliveryPrice(90);
                 break;
-            case "ukr":
-                setDeliveryPrice(30);
+            case "novaposhta-smovuviz":
+                setDeliveryPrice(55);
+                break;
+            case "np-poshtmat":
+                setDeliveryPrice(55);
+                break;
+            case "ukrposhta":
+                setDeliveryPrice(25);
                 break;
             case "dhl":
                 setDeliveryPrice(0);
@@ -197,14 +168,14 @@ const Order = ({ data }: any) => {
                 recipientLastName !== "" &&
                 recipientEmail !== "" &&
                 recipientPhoneNumber !== "" &&
-                !errors.firstName &&
-                !errors.lastName &&
-                !errors.email &&
-                !errors.phoneNumber &&
-                !errors.recipientFirstName &&
-                !errors.recipientLastName &&
-                !errors.recipientEmail &&
-                !errors.recipientPhoneNumber
+                !error.firstName &&
+                !error.lastName &&
+                !error.email &&
+                !error.phoneNumber &&
+                !error.recipientFirstName &&
+                !error.recipientLastName &&
+                !error.recipientEmail &&
+                !error.recipientPhoneNumber
             );
         } else {
             return (
@@ -212,13 +183,41 @@ const Order = ({ data }: any) => {
                 lastName !== "" &&
                 email !== "" &&
                 phoneNumber !== "" &&
-                !errors.firstName &&
-                !errors.lastName &&
-                !errors.email &&
-                !errors.phoneNumber
+                !error.firstName &&
+                !error.lastName &&
+                !error.email &&
+                !error.phoneNumber
             );
         }
     };
+    const isDeliveryDataComplete = (selectedOption: any) => {
+        if (selectedOption === 'np-courier') {
+            return (
+                street.trim() !== '' &&
+                houseNumber.trim() !== '' &&
+                !error.street &&
+                !error.houseNumber
+            );
+        } else if (selectedOption === 'novaposhta-smovuviz') {
+            return (
+                numnp.trim() !== '' &&
+                !error.numnp
+            );
+        } else if (selectedOption === 'np-poshtmat') {
+            return (
+                numposhtmat.trim() !== '' &&
+                !error.numposhtmat
+            );
+        } else if (selectedOption === 'ukrposhta') {
+            return (
+                index.trim() !== '' &&
+                !error.index
+            );
+        } else {
+            return false;
+        }
+    };
+
 
     const saveAndProceed = () => {
         if (isPersonalDataComplete()) {
@@ -234,6 +233,7 @@ const Order = ({ data }: any) => {
     const switchToPaymentTab = async () => {
 
         if (deliveryCompleted && paymentMonobank === true) {
+            makeApiCall()
             try {
                 const response = await fetch("https://api.monobank.ua/api/merchant/invoice/create", {
                     method: "POST",
@@ -286,33 +286,64 @@ const Order = ({ data }: any) => {
         setPaymentActive(false);
 
 
-
     };
 
 
-
     const switchToDeliveryTab = () => {
-        if (selectedOption !== '' && !paymentActive) {
+        if (city.trim() === '' || country.trim() === '') {
+            alert('Будь ласка, заповніть обов\'язкове країну і місто ');
+            return;
+        }
+        if (!isDeliveryDataComplete(selectedOption)) {
+            alert('Будь ласка, заповніть всі поля правильно');
+            return;
+        }
+
+
+
+        if (selectedOption === 'np-courier') {
+            if (street.trim() === '' || houseNumber.trim() === '') {
+                alert('Будь ласка, заповніть обов\'язкове поле Адреса');
+                return;
+            }
+        } else if (selectedOption === 'novaposhta-smovuviz') {
+            if (numnp.trim() === '') {
+                alert('Будь ласка, заповніть обов\'язкове поле "Номер відділення"');
+                return;
+            }
+        } else if (selectedOption === 'np-poshtmat') {
+            if (numposhtmat.trim() === '') {
+                alert('Будь ласка, заповніть обов\'язкове поле "Номер Поштомату"');
+                return;
+            }
+        } else if (selectedOption === 'ukrposhta') {
+            if (index.trim() === '') {
+                alert('Будь ласка, заповніть обов\'язкове поле "Індекс укрпошти"');
+                return;
+            }
+        }
+
+        // Додаткові перевірки та логіка
+
+        if (selectedOption) {
             setPaymentActive(true);
             setPersonActive(false);
             setDeliveryActive(false);
             setDeliveryCompleted(true);
-        } else if (paymentActive) {
-
-            alert('Будь ласка, спершу завершіть оплату');
         } else {
             alert('Будь ласка, виберіть варіант доставки');
         }
-    };
+    }
 
 
 
     return (
         <section className='container py-40 flex justify-between paw'>
-            <div>
+            <div >
                 <h1 className='text-t32 tracking-wider mb-10'>
                     {data.order.heading}
                 </h1>
+
                 <div className='flex items-center mb-10'>
                     <button className={`mr-9 ${personActive ? 'text-black border-b-2 border-black text-t24' : 'text-[#333333] opacity-60 text-t18'}`} onClick={switchToPersonalTab}>
                         {data.order.personalData}
@@ -326,11 +357,12 @@ const Order = ({ data }: any) => {
 
                 </div>
 
-                <div className='w-[550px]'>
+
+                <div className='w-[580px]'>
                     {personActive && (
                         <Personalinfo
-                            errors={errors}
-                            setErrors={setErrors}
+                            error={error}
+                            setError={setError}
                             data={data}
                             firstName={firstName}
                             setFirstName={setFirstName}
@@ -378,15 +410,14 @@ const Order = ({ data }: any) => {
                             numposhtmat={numposhtmat}
                             index={index}
                             setIndex={setIndex}
+                            error={error}
+                            setError={setError}
                         />
 
                     )}
-                    {/* Вкладка "Оплата" */}
-                    {paymentActive && (
-                        // <div>
-                        //     <button onClick={sendPostRequest}>Відправити дані</button>
 
-                        // </div>
+                    {paymentActive && (
+
                         <div>
                             <h3 className="text-t18 mb-8">Оберіть спосіб оплати</h3>
                             <label className="checkbox-container">
