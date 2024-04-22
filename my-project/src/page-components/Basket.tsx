@@ -54,7 +54,7 @@ const Basket = ({ data, lang }: { data: any, lang: any }) => {
     useEffect(() => {
         let newTotalPrice = 0;
         tovar.forEach((item: any) => {
-            const quantity = quantities[item.id] || 0;
+            const quantity = quantities[item.id] || 1;
             newTotalPrice += item.price * quantity;
         });
         setTotalPrice(newTotalPrice);
@@ -101,7 +101,7 @@ const Basket = ({ data, lang }: { data: any, lang: any }) => {
     const handleQuantityChange = (capacity: string, value: number) => {
         const updatedQuantities = {
             ...quantities,
-            [capacity]: Math.max((quantities[capacity] || 0) + value, 0),
+            [capacity]: Math.max((quantities[capacity] || 1) + value, 0),
         };
         setQuantities(updatedQuantities);
 
@@ -201,14 +201,14 @@ const Basket = ({ data, lang }: { data: any, lang: any }) => {
                                             <button
                                                 onClick={() => handleQuantityChange(item.id, -1)}
                                                 className="p-[4px] px-2 bg-white text-[#33333399] hover:text-black"
-                                                disabled={quantities[item.id] <= 0}
+                                                disabled={quantities[item.id] <= 1}
                                             >
                                                 -
                                             </button>
                                             <input
-                                                value={quantities[item.id] || 0}
+                                                value={quantities[item.id] || 1}
                                                 onChange={(e) => {
-                                                    const value = parseInt(e.target.value, 10) || 0;
+                                                    const value = parseInt(e.target.value, 10) || 1;
                                                     setQuantities((prevQuantities) => ({
                                                         ...prevQuantities,
                                                         [item.id]: value,
@@ -227,7 +227,7 @@ const Basket = ({ data, lang }: { data: any, lang: any }) => {
                                     </div>
                                 </td>
 
-                                <td className="py-2 text-center leading-5 text-[#333333] text-t18">{item.price * (quantities[item.id] || 0)} ₴</td>
+                                <td className="py-2 text-center leading-5 text-[#333333] text-t18">{item.price * (quantities[item.id] || 1)} ₴</td>
                                 <td className="py-2 ml-auto text-right">
                                     <button
                                         onClick={() => handleRemove(item.id)}
