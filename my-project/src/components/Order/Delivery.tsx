@@ -78,13 +78,13 @@ const Delivery: React.FC<DeliveryProps> = ({
                     return `${fieldName} не повинно містити цифр`;
                 }
                 break;
-            case 'houseNumber':
-                if (!value) {
-                    return 'Введіть номер будинку';
-                } else if (!phoneRegex.test(value)) {
-                    return 'Номер будинку не повинен містити букв';
-                }
-                break;
+            // case 'houseNumber':
+            //     if (!value) {
+            //         return 'Введіть номер будинку';
+            //     } else if (!phoneRegex.test(value)) {
+            //         return 'Номер будинку не повинен містити букв';
+            //     }
+            //     break;
             case 'zip':
                 if (!value) {
                     return 'Введіть ZIP-код';
@@ -92,7 +92,7 @@ const Delivery: React.FC<DeliveryProps> = ({
                     return 'Введіть коректний ZIP-код';
                 }
                 break;
-            case 'house':
+            // case 'house':
             case 'appartment':
             case 'numnp':
             case 'numposhtmat':
