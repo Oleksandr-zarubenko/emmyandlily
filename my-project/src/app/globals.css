@@ -146,9 +146,9 @@ section {
     background-repeat: no-repeat, no-repeat, no-repeat;
     background-size:
       auto 522px,
-      88% 102%,
-      85% 100%;
-    background-position-x: 20%, 100%, 100%;
+      auto 102%,
+      auto 100%;
+    background-position-x: 20%, 0%, 100%;
     background-position-y: 135%, 0%, 0%;
   }
 
