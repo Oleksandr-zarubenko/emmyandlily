@@ -10,7 +10,7 @@ export const HeroSection = ({ data }: { data: any }) => {
         <Image
           src={HeroDog}
           alt={"Emmy Dog"}
-          className="absolute -bottom-16 -left-28 z-20 h-[360px] w-[298px] object-contain xl:-bottom-24 xl:left-0 xl:h-[584px] xl:w-[476px]"
+          className="absolute -bottom-16 -left-28 z-20 h-[360px] w-[298px] object-contain md:h-[420px] md:w-[338px] xl:-bottom-24 xl:left-0 xl:h-[584px] xl:w-[476px]"
         />
         <div className="order-1 mb-8 w-[655px] text-center text-bg_secondary xl:justify-start">
           <p className="text-t50 relative left-20 top-[152px] w-[655px]  md:text-t48 ">
