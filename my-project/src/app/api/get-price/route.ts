@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { parseString } from "xml2js";
 
-export async function GET(req: Request | NextRequest) {
+export async function GET(): Promise<void | Response> {
   try {
     const response = await fetch(
       "https://emmyandlily.salesdrive.me/export/yml/export.yml?publicKey=zalGum1W2NGfiOp_oUVyeqbAP3DkkjivuwB4xeAB7s-_PltssZ",
@@ -21,7 +21,7 @@ export async function GET(req: Request | NextRequest) {
     return NextResponse.json({ products, currencies });
   } catch (error) {
     console.error("Error fetching data:", error);
-    return NextResponse.error;
+    return NextResponse.error as any;
   }
 }
 
