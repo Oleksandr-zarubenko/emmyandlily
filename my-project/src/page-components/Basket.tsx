@@ -11,11 +11,13 @@ import { Delivery } from "@/components/icons/Delivery";
 import { Wallet } from "@/components/icons/Wallet";
 import { Security } from "@/components/icons/Security";
 import { Lock } from "@/components/icons/Lock";
-
+import { i18n } from "@/i18n.config";
 import { useAddedToCart } from "@/components/context/addedToCart";
 
 const DropdownButton = ({ buttonText, dropdownText, icon }: { buttonText: string, dropdownText: any, icon: any }) => {
     const [isOpen, setIsOpen] = useState(false);
+
+
 
     const chevron = isOpen ? <ChevronDown className="" /> : <ChevronUp className="" />;
     return (
@@ -29,12 +31,38 @@ const DropdownButton = ({ buttonText, dropdownText, icon }: { buttonText: string
 };
 
 const Basket = ({ data, lang }: { data: any, lang: any }) => {
+    const [state, setState] = useState<{ products: { id: string; price: string }[], currencies: { id: string; rate: number }[] }>({ products: [], currencies: [] });
+    const getData = async () => {
+        try {
+            const res = await fetch(`/api/get-price`, {
+                method: "GET",
+            });
+            const pos = await res.json();
+            setState(pos);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+
+    useEffect(() => {
+        getData();
+    }, []);
+
+
+
+
+    const convertPrice = (price: any, rate: any): string => {
+        const convertedPrice = parseFloat(price) / rate;
+        return convertedPrice.toFixed(2);
+    };
+    const locales = i18n.locales;
+    const en = locales[1]
     const { addedToCart, setAddedToCart } = useAddedToCart();
     const storedDatas = localStorage.getItem('storedData');
     const storedData = storedDatas ? JSON.parse(storedDatas) : [];
     const [tovar, setTovar] = useState(storedData)
     const [quantities, setQuantities] = useState<{ [productId: string]: number }>({});
-    const [totalPriceIsZero, setTotalPriceIsZero] = useState(false);
+
 
     const [totalPrice, setTotalPrice] = useState(0);
 
@@ -50,7 +78,6 @@ const Basket = ({ data, lang }: { data: any, lang: any }) => {
         updateLocalStorage();
     }, [tovar, quantities, totalPrice]);
 
-
     useEffect(() => {
         let newTotalPrice = 0;
         tovar.forEach((item: any) => {
@@ -59,8 +86,6 @@ const Basket = ({ data, lang }: { data: any, lang: any }) => {
         });
         setTotalPrice(newTotalPrice);
         localStorage.setItem('totalPrice', newTotalPrice.toString());
-
-        setTotalPriceIsZero(newTotalPrice === 0);
 
     }, [quantities, tovar]);
 
@@ -130,37 +155,6 @@ const Basket = ({ data, lang }: { data: any, lang: any }) => {
     };
 
 
-    // useEffect(() => {
-
-    //     const storedQuantities = localStorage.getItem('quantities');
-    //     if (storedQuantities) {
-
-    //         setQuantities(JSON.parse(storedQuantities));
-    //     }
-    // }, []);
-
-
-    // const convertToEuro = (priceInUah) => {
-    //     return priceInUah / currencyRate;
-    // };
-
-    // const convertToUah = (priceInEuro) => {
-    //     return priceInEuro * currencyRate;
-    // };
-
-    // const getPrice = (locale, item) => {
-
-    //     if (locale === en) {
-    //         // Конвертуємо ціну з гривень в євро
-    //         const priceInEuro = convertToEuro(item);
-    //         return priceInEuro.toFixed(2);
-    //     } else if (locale === ua) {
-    //         // Конвертуємо ціну з євро в гривні
-    //         const priceInUah = convertToUah(item);
-    //         return priceInUah.toFixed(2);
-    //     }
-
-    // };
 
 
     return (
@@ -194,7 +188,18 @@ const Basket = ({ data, lang }: { data: any, lang: any }) => {
                                         sizes="(max-width: 768px) 80vw, (max-width: 1200px) 50vw, 550px"
                                     />
                                 </div> <div><Markdown text={item.productName} className="py-2" /> <p>   {item.capacity}</p></div> </td>
-                                <td className="py-2 leading-5 text-[#333333] text-t18 text-c=left ">  {item.price}  ₴</td>
+                                <td className="py-2 leading-5 text-[#333333] text-t18 text-c=left ">
+                                    {(lang === en
+                                        ? state && state.products.find((items: any) => items.id === item.id)
+                                            ? convertPrice(
+                                                state.products.find((items: any) => items.id === item.id)!.price,
+                                                state.currencies.find((currency: any) => currency.id === "EUR")?.rate || 1
+                                            )
+                                            : 'N/A'
+                                        : state && state.products.find((items: any) => items.id === item.id)
+                                            ? state.products.find((items: any) => items.id === item.id)!.price
+                                            : 'N/A'
+                                    )} {lang === en ? '€' : '₴'}</td>
                                 <td className="text-center py-2 ">
                                     <div className="flex justify-evenly">
                                         <div className="border-solid border-2 border-text-[#33333399]">
@@ -227,7 +232,19 @@ const Basket = ({ data, lang }: { data: any, lang: any }) => {
                                     </div>
                                 </td>
 
-                                <td className="py-2 text-center leading-5 text-[#333333] text-t18">{item.price * (quantities[item.id] || 1)} ₴</td>
+                                <td className="py-2 text-center leading-5 text-[#333333] text-t18"> {lang === 'en'
+                                    ? (state && state.products.find((items: any) => items.id === item.id)
+                                        ? convertPrice(
+                                            (parseFloat(state.products.find((items: any) => items.id === item.id)!.price) || 0) * (quantities[item.id] || 1),
+                                            state.currencies.find((currency: any) => currency.id === "EUR")?.rate || 1
+                                        )
+                                        : 'N/A')
+                                    : (state && state.products.find((items: any) => items.id === item.id)
+                                        ? parseFloat(state.products.find((items: any) => items.id === item.id)!.price) * (quantities[item.id] || 1)
+                                        : 'N/A')
+                                } {lang === 'en' ? '€' : '₴'}
+
+                                </td>
                                 <td className="py-2 ml-auto text-right">
                                     <button
                                         onClick={() => handleRemove(item.id)}
@@ -243,10 +260,11 @@ const Basket = ({ data, lang }: { data: any, lang: any }) => {
                 </table>
             </div>
             <div className="justify-end flex mb-10">
-                <p className="text-t16 text-[#333333] opacity-60 italic mr-4">  {data.basket.total} :</p>  <p className="text-t18 text-black">{totalPrice}  ₴</p>
+
+                <p className="text-t18 text-black">{lang === en ? convertPrice(totalPrice, state.currencies.find((currency: any) => currency.id === "EUR")?.rate || 1) : totalPrice} {lang === en ? '€' : '₴'}</p>
             </div>
             <div className="justify-end flex mb-28">
-                <Link href="/order" className={`bg-black px-6 py-4 text-white rounded text-t18 ml-auto ${totalPriceIsZero ? 'pointer-events-none opacity-50' : ''}`}> {data.basket.toOrder}</Link>
+                <Link href={`/${lang}/order`} className={`bg-black px-6 py-4 text-white rounded text-t18 ml-auto `}> {data.basket.toOrder}</Link>
             </div>
             <div>
                 <h2 className="text-t32 -tracking-5 mb-10"> {data.basket.additionalInformation}</h2>

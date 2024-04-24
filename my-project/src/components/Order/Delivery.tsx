@@ -197,86 +197,28 @@ const Delivery: React.FC<DeliveryProps> = ({
                 )}
             </div>
             <div className="text-t14 mb-6">
-                <div className="py-3">
-                    <label>
-                        <input
-                            type="radio"
-                            value="np-courier"
-                            checked={selectedOption === 'np-courier'}
-                            onChange={handleOptionChange}
-                            className="mr-4"
-                        />
-                        Нова пошта (Курьєр) - При замовленні до 1000 грн вартість доставки від 90 ₴
-                    </label>
-                </div>
-                <div className="py-3">
-                    <label>
-                        <input
-                            type="radio"
-                            value="novaposhta-smovuviz"
-                            checked={selectedOption === 'novaposhta-smovuviz'}
-                            onChange={handleOptionChange}
-                            className="mr-4"
-                        />
-                        Нова пошта (Самовивіз) - При замовленні до 1000 грн вартість доставки від 55 ₴
-                    </label>
-                </div>
-                <div className="py-3">
-                    <label>
-                        <input
-                            type="radio"
-                            value="np-poshtmat"
-                            checked={selectedOption === 'np-poshtmat'}
-                            onChange={handleOptionChange}
-                            className="mr-4"
-                        />
-                        Нова пошта ( Поштомат) - При замовленні до 1000 грн вартість доставки від 55 ₴
-                    </label>
-                </div>
-                <div className="py-3">
-                    <label>
-                        <input
-                            type="radio"
-                            value="ukrposhta"
-                            checked={selectedOption === 'ukrposhta'}
-                            onChange={handleOptionChange}
-                            className="mr-4"
-                        />
-                        Укрпошта ( Самовивіз) - При замовленні до 1000 грн вартість доставки від 25 ₴
-                    </label>
-                </div>
-                {/* <div className="py-3">
-                    <label>
-                        <input
-                            type="radio"
-                            value="dhl"
-                            checked={selectedOption === 'dhl'}
-                            onChange={handleOptionChange}
-                            className="mr-4"
-                        />
-                        DHL (сума доставки залежить від вашої країни та міста)
+                {data.delivery.deliveryMethod.map((method: any) => (
+                    <div key={method.idD} className="py-3">
+                        <label>
+                            <input
+                                type="radio"
+                                value={method.idD}
+                                checked={selectedOption === method.idD}
+                                onChange={handleOptionChange}
+                                className="mr-4"
+                            />
+                            {method.name} - {method.description}
+                        </label>
+                    </div>
+                ))}
 
-                    </label>
-                </div>
-                <div className="py-3">
-                    <label>
-                        <input
-                            type="radio"
-                            value="ups"
-                            checked={selectedOption === 'ups'}
-                            onChange={handleOptionChange}
-                            className="mr-4"
-                        />
-                        UPS (сума доставки залежить від вашої країни та міста)
-                    </label>
-                </div> */}
             </div>
             {/* <div className="mb-6">
                 <span className="text-t18 text-red-500 ">{data.order.noDelivery}</span>
             </div> */}
 
 
-            {/* {selectedOption === 'dhl' || selectedOption === 'ups' ? (
+            {selectedOption === 'dhl' || selectedOption === 'ups' ? (
                 <div>
                     <p className="text-t14 text-[#292D2D] italic mb-2">{data.order.fillInTheDetails}</p>
                     <div className="grid  grid-cols-2 gap-4">
@@ -287,7 +229,7 @@ const Delivery: React.FC<DeliveryProps> = ({
                                 id="zip"
                                 value={zip}
                                 onChange={(e) => handleInputChange('zip', e.target.value)}
-                                className={`text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none ${errors.zip ? ' bg-[#C61004]/[.06]' : ''}`}
+                                className={`text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none ${error.zip ? ' bg-[#C61004]/[.06]' : ''}`}
                                 placeholder="Zip-CODE"
                             />
                         </div>
@@ -298,7 +240,7 @@ const Delivery: React.FC<DeliveryProps> = ({
                                 id="sstreet"
                                 value={sstreet}
                                 onChange={(e) => handleInputChange('sstreet', e.target.value)}
-                                className={`text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none ${errors.sstreet ? ' bg-[#C61004]/[.06]' : ''}`}
+                                className={`text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none ${error.sstreet ? ' bg-[#C61004]/[.06]' : ''}`}
                                 placeholder="Street"
                             />
                         </div>
@@ -309,7 +251,7 @@ const Delivery: React.FC<DeliveryProps> = ({
                                 id="house"
                                 value={house}
                                 onChange={(e) => handleInputChange('house', e.target.value)}
-                                className={`text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none ${errors.house ? ' bg-[#C61004]/[.06]' : ''}`}
+                                className={`text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none ${error.house ? ' bg-[#C61004]/[.06]' : ''}`}
                                 placeholder="House"
                             />
                         </div>
@@ -320,99 +262,99 @@ const Delivery: React.FC<DeliveryProps> = ({
                                 id="appartment"
                                 value={appartment}
                                 onChange={(e) => handleInputChange('appartment', e.target.value)}
-                                className={`text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none ${errors.appartment ? ' bg-[#C61004]/[.06]' : ''}`}
+                                className={`text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none ${error.appartment ? ' bg-[#C61004]/[.06]' : ''}`}
                                 placeholder="Appartment"
                             />
                         </div>
                     </div>
                 </div>
-            ) : */}
-            {selectedOption === 'np-courier' ? (
-                <div>
+            ) :
+                selectedOption === 'np-courier' ? (
                     <div>
-                        <p className="text-t14 text-[#292D2D] italic mb-4">{data.order.fillInTheDetails}</p>
-                        <div className="flex justify-between">
-                            <div className="w-[230px]">
+                        <div>
+                            <p className="text-t14 text-[#292D2D] italic mb-4">{data.order.fillInTheDetails}</p>
+                            <div className="flex justify-between">
+                                <div className="w-[230px]">
 
-                                <input
-                                    type="text"
-                                    id="street"
-                                    value={street}
-                                    onChange={(e) => handleInputChange('street', e.target.value)}
+                                    <input
+                                        type="text"
+                                        id="street"
+                                        value={street}
+                                        onChange={(e) => handleInputChange('street', e.target.value)}
 
-                                    className={`text-t14 py-[10px] px-[15px]  w-full border-b-2 focus:border-black outline-none  ${error.street ? ' bg-[#C61004]/[.06]' : 'bg-white'}`}
-                                    placeholder="Введіть вулицю"
-                                />
-                            </div>
+                                        className={`text-t14 py-[10px] px-[15px]  w-full border-b-2 focus:border-black outline-none  ${error.street ? ' bg-[#C61004]/[.06]' : 'bg-white'}`}
+                                        placeholder="Введіть вулицю"
+                                    />
+                                </div>
 
-                            <div className="w-[230px]">
+                                <div className="w-[230px]">
 
-                                <input
-                                    type="text"
-                                    id="houseNumber"
-                                    value={houseNumber}
-                                    onChange={(e) => handleInputChange('houseNumber', e.target.value)}
-                                    className={`text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none ${error.houseNumber ? ' bg-[#C61004]/[.06]' : 'bg-white'}`}
-                                    placeholder="Введіть номер будинку"
-                                />
+                                    <input
+                                        type="text"
+                                        id="houseNumber"
+                                        value={houseNumber}
+                                        onChange={(e) => handleInputChange('houseNumber', e.target.value)}
+                                        className={`text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none ${error.houseNumber ? ' bg-[#C61004]/[.06]' : 'bg-white'}`}
+                                        placeholder="Введіть номер будинку"
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            ) : selectedOption === 'novaposhta-smovuviz' ? (
-                <div>
-                    <p className="text-t14 text-[#292D2D] italic mb-4">{data.order.fillInTheDetails}</p>
-                    <div className="w-[230px] mr-1">
+                ) : selectedOption === 'novaposhta-smovuviz' ? (
+                    <div>
+                        <p className="text-t14 text-[#292D2D] italic mb-4">{data.order.fillInTheDetails}</p>
+                        <div className="w-[230px] mr-1">
 
-                        <input
-                            type="text"
-                            id="numnp"
-                            value={numnp}
-                            onChange={(e) => handleInputChange('numnp', e.target.value)}
-                            className={`text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none ${error.numnp ? ' bg-[#C61004]/[.06]' : 'bg-white'}`}
-                            placeholder="Номер відділення"
-                        />
+                            <input
+                                type="text"
+                                id="numnp"
+                                value={numnp}
+                                onChange={(e) => handleInputChange('numnp', e.target.value)}
+                                className={`text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none ${error.numnp ? ' bg-[#C61004]/[.06]' : 'bg-white'}`}
+                                placeholder="Номер відділення"
+                            />
+                        </div>
+
                     </div>
+                ) : selectedOption === 'np-poshtmat' ? (
+                    <div>
+                        <p className="text-t14 text-[#292D2D] italic mb-4">{data.order.fillInTheDetails}</p>
+                        <div className="w-[230px] mr-1">
 
-                </div>
-            ) : selectedOption === 'np-poshtmat' ? (
-                <div>
-                    <p className="text-t14 text-[#292D2D] italic mb-4">{data.order.fillInTheDetails}</p>
-                    <div className="w-[230px] mr-1">
+                            <input
+                                type="text"
+                                id="numposhtmat"
+                                value={numposhtmat}
+                                onChange={(e) => handleInputChange('numposhtmat', e.target.value)}
+                                className={`text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none ${error.numposhtmat ? ' bg-[#C61004]/[.06]' : 'bg-white'}`}
+                                placeholder="Номер Поштомату"
+                            />
+                        </div>
 
-                        <input
-                            type="text"
-                            id="numposhtmat"
-                            value={numposhtmat}
-                            onChange={(e) => handleInputChange('numposhtmat', e.target.value)}
-                            className={`text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none ${error.numposhtmat ? ' bg-[#C61004]/[.06]' : 'bg-white'}`}
-                            placeholder="Номер Поштомату"
-                        />
                     </div>
+                ) : selectedOption === 'ukrposhta' ? (
+                    <div>
+                        <p className="text-t14 text-[#292D2D] italic mb-4">{data.order.fillInTheDetails}</p>
+                        <div className="w-[230px] mr-1">
 
-                </div>
-            ) : selectedOption === 'ukrposhta' ? (
-                <div>
-                    <p className="text-t14 text-[#292D2D] italic mb-4">{data.order.fillInTheDetails}</p>
-                    <div className="w-[230px] mr-1">
+                            <input
+                                type="text"
+                                id="index"
+                                value={index}
+                                onChange={(e) => handleInputChange('index', e.target.value)}
+                                className={`text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none ${error.index ? ' bg-[#C61004]/[.06]' : 'bg-white'}`}
+                                placeholder="Індекс укрпошти"
+                            />
+                        </div>
 
-                        <input
-                            type="text"
-                            id="index"
-                            value={index}
-                            onChange={(e) => handleInputChange('index', e.target.value)}
-                            className={`text-t14 py-[10px]  px-[15px] w-full border-b-2 focus:border-black outline-none ${error.index ? ' bg-[#C61004]/[.06]' : 'bg-white'}`}
-                            placeholder="Індекс укрпошти"
-                        />
                     </div>
+                )
+                    : (
 
-                </div>
-            )
-                : (
+                        <div className="text-t14 text-[#292D2D] italic mb-4">Вкажіть спосіб доставки</div>
 
-                    <div className="text-t14 text-[#292D2D] italic mb-4">Вкажіть спосіб доставки</div>
-
-                )}
+                    )}
 
         </div>
     )

@@ -1,3 +1,5 @@
+"use client"
+import { useEffect, useState } from 'react';
 
 import { Markdown } from "@/components/Markdown";
 import { i18n } from "@/i18n.config";
@@ -6,22 +8,45 @@ import Image from "next/image";
 import { ProductModal } from "@/components/ProductModal";
 import { Locale } from "@/i18n.config";
 
-export const ProductsSection = async ({
+
+export const ProductsSection = ({
   data,
   lang,
-
 }: {
   data: any;
   lang: Locale;
-
 }) => {
+  const [state, setState] = useState<{ products: { id: string; price: string }[], currencies: { id: string; rate: number }[] }>({ products: [], currencies: [] });
 
-  // const locales = i18n.locales;
-  // const en = locales[0]
+  const getData = async () => {
+    try {
+      const res = await fetch(`/api/get-price`, {
+        method: "GET",
+      });
+      const pos = await res.json();
+      setState(pos);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+
+  const locales = i18n.locales;
+  const en = locales[1];
+
+  const convertPrice = (price: string, rate: number): string => {
+    const convertedPrice = parseFloat(price) / rate;
+    return convertedPrice.toFixed(2);
+  };
 
   return (
     <section className="bg-black text-center xl:py-16" id="products">
       <div className="container">
+
         <div className="xl:justify-left mb-4 flex flex-row items-center gap-1 md:gap-4 xl:mb-10">
           <Paw className="h-8 w-8 p-[4px] text-white md:h-11 md:w-11" />
           <Markdown
@@ -42,7 +67,7 @@ export const ProductsSection = async ({
                   key={product.id}
                   className="mx-auto w-[304px] cursor-pointer shadow-custom mdOnly:w-[193px]"
                 >
-                  <ProductModal product={product} lang={lang}>
+                  <ProductModal product={product} lang={lang} state={state} convertPrice={convertPrice}>
                     <div className="product_wrapper relative mb-4 h-[253px] overflow-hidden rounded   xl:h-[344px] xl:w-[304px] mdOnly:h-[160px] mdOnly:w-[193px]">
                       <Image
                         fill
@@ -61,31 +86,37 @@ export const ProductsSection = async ({
                         text={product.description}
                         className="mb-4 !text-t14 text-[#FBFBFB] opacity-80 md:!text-t12"
                       />
+
                       <ul className="mb-4 flex">
                         {product.capacity &&
                           product.capacity &&
                           product.capacity.map((item: any) => (
                             <li
-                              key={item.id}
+                              key={item.idCrm}
                               className="mr-8 text-t16 italic text-white"
                             >
                               {item.ml}
                             </li>
                           ))}
                       </ul>
+
                       {product.capacity && product.capacity[0] && (
                         <p className="text-t18 leading-6 text-white">
-                          від {product.capacity[0].price} ₴
+                          від {lang === en
+                            ? state && state.products.find((item) => item.id === product.capacity[0].idCrm)
+                              ? convertPrice(state.products.find((item) => item.id === product.capacity[0].idCrm)!.price,
+                                state.currencies.find((currency) => currency.id === "EUR")?.rate || 1)
+                              : 'N/A'
+                            : state && state.products.find((item) => item.id === product.capacity[0].idCrm)
+                              ? state.products.find((item) => item.id === product.capacity[0].idCrm)!.price
+                              : 'N/A'} {lang === en ? '€' : '₴'}
                         </p>
                       )}
-                      {/* {lang === en ? '€' : '₴'} */}
                     </div>
                   </ProductModal>
                 </article>
               ))}
         </div>
-
-        {/* <FormModal orderForm={orderForm} /> */}
       </div>
     </section>
   );

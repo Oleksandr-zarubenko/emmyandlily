@@ -6,56 +6,157 @@ import Delivery from "@/components/Order/Delivery";
 import Image from "next/image";
 import Mono from "../../public/mono.png"
 
-const Order = ({ data }: any) => {
+const Order = ({ data, lang }: any) => {
 
     const [storedData, setStoredData] = useState(JSON.parse(localStorage.getItem('storedData') || '[]'));
     const [quantities, setQuantities] = useState(JSON.parse(localStorage.getItem('quantities') || '{}'));
 
     const [productName, setProductName] = useState(storedData);
 
-    const [deliveryCompleted, setDeliveryCompleted] = useState(false);
+    const [deliveryCompleted, setDeliveryCompleted] = useState(() => {
+        const storedDeliveryCompleted = localStorage.getItem('deliveryCompleted');
+        return storedDeliveryCompleted === 'true';
+    });
 
-    const [error, setError] = useState<{ [key: string]: string }>({});
+    const [error, setError] = useState<{ [key: string]: string }>(() => {
+        const storedError = localStorage.getItem('error');
+        return storedError ? JSON.parse(storedError) : {};
+    });
 
+    const [street, setStreet] = useState(() => {
+        const storedStreet = localStorage.getItem('street');
+        return storedStreet || '';
+    });
 
-    const [street, setStreet] = useState("");
-    const [houseNumber, setHouseNumber] = useState("");
+    const [houseNumber, setHouseNumber] = useState(() => {
+        const storedHouseNumber = localStorage.getItem('houseNumber');
+        return storedHouseNumber || '';
+    });
 
-    const [city, setCity] = useState("");
-    const [country, setCountry] = useState("");
+    const [city, setCity] = useState(() => {
+        const storedCity = localStorage.getItem('city');
+        return storedCity || '';
+    });
 
-    const [numposhtmat, setNumposhtmat] = useState("");
-    const [numnp, setNumnp] = useState("");
-    const [index, setIndex] = useState("");
+    const [country, setCountry] = useState(() => {
+        const storedCountry = localStorage.getItem('country');
+        return storedCountry || '';
+    });
 
-    const [sstreet, setSstreet] = useState("");
-    const [zip, setZip] = useState("");
-    const [house, setHouse] = useState("");
-    const [appartment, setAppartment] = useState("");
+    const [numposhtmat, setNumposhtmat] = useState(() => {
+        const storedNumposhtmat = localStorage.getItem('numposhtmat');
+        return storedNumposhtmat || '';
+    });
 
-    const [isRecipient, setIsRecipient] = useState(false);
-    const [isDiscountsAndNews, setIsDiscountsAndNews] = useState(false);
+    const [numnp, setNumnp] = useState(() => {
+        const storedNumnp = localStorage.getItem('numnp');
+        return storedNumnp || '';
+    });
 
+    const [index, setIndex] = useState(() => {
+        const storedIndex = localStorage.getItem('index');
+        return storedIndex || '';
+    });
 
-    const [deliveryActive, setDeliveryActive] = useState(false);
-    const [paymentActive, setPaymentActive] = useState(false);
-    const [personActive, setPersonActive] = useState(true);
+    const [sstreet, setSstreet] = useState(() => {
+        const storedSstreet = localStorage.getItem('sstreet');
+        return storedSstreet || '';
+    });
 
-    const [selectedOption, setSelectedOption] = useState("");
-    const [deliveryPrice, setDeliveryPrice] = useState(0);
+    const [zip, setZip] = useState(() => {
+        const storedZip = localStorage.getItem('zip');
+        return storedZip || '';
+    });
+
+    const [house, setHouse] = useState(() => {
+        const storedHouse = localStorage.getItem('house');
+        return storedHouse || '';
+    });
+
+    const [appartment, setAppartment] = useState(() => {
+        const storedAppartment = localStorage.getItem('appartment');
+        return storedAppartment || '';
+    });
+
+    const [isRecipient, setIsRecipient] = useState(() => {
+        const storedIsRecipient = localStorage.getItem('isRecipient');
+        return storedIsRecipient === 'true';
+    });
+
+    const [isDiscountsAndNews, setIsDiscountsAndNews] = useState(() => {
+        const storedIsDiscountsAndNews = localStorage.getItem('isDiscountsAndNews');
+        return storedIsDiscountsAndNews === 'true';
+    });
+
+    const [deliveryActive, setDeliveryActive] = useState(() => {
+        const storedDeliveryActive = localStorage.getItem("deliveryActive");
+        return storedDeliveryActive ? JSON.parse(storedDeliveryActive) : false;
+    });
+
+    const [paymentActive, setPaymentActive] = useState(() => {
+        const storedPaymentActive = localStorage.getItem("paymentActive");
+        return storedPaymentActive ? JSON.parse(storedPaymentActive) : false;
+    });
+
+    const [personActive, setPersonActive] = useState(() => {
+        const storedPersonActive = localStorage.getItem("personActive");
+        return storedPersonActive ? JSON.parse(storedPersonActive) : true;
+    });
+
+    const [selectedOption, setSelectedOption] = useState(() => {
+        const storedSelectedOption = localStorage.getItem('selectedOption');
+        return storedSelectedOption || '';
+    });
+
+    const [deliveryPrice, setDeliveryPrice] = useState(() => {
+        const storedDeliveryPrice = localStorage.getItem('deliveryPrice');
+        return storedDeliveryPrice ? parseFloat(storedDeliveryPrice) : 0;
+    });
 
     // форми клієнта
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
+    const [firstName, setFirstName] = useState(() => {
+        const storedFirstName = localStorage.getItem('firstName');
+        return storedFirstName || '';
+    });
 
-    const [recipientFirstName, setRecipientFirstName] = useState("");
-    const [recipientLastName, setRecipientLastName] = useState("");
-    const [recipientEmail, setRecipientEmail] = useState("");
-    const [recipientPhoneNumber, setRecipientPhoneNumber] = useState("");
+    const [lastName, setLastName] = useState(() => {
+        const storedLastName = localStorage.getItem('lastName');
+        return storedLastName || '';
+    });
+    const [email, setEmail] = useState(() => {
+        const storedEmail = localStorage.getItem('email');
+        return storedEmail || '';
+    });
 
-    const [paymentMonobank, setPaymentMonobank] = useState(false);
+    const [phoneNumber, setPhoneNumber] = useState(() => {
+        const storedPhoneNumber = localStorage.getItem('phoneNumber');
+        return storedPhoneNumber || '';
+    });
+
+    const [recipientFirstName, setRecipientFirstName] = useState(() => {
+        const storedRecipientFirstName = localStorage.getItem('recipientFirstName');
+        return storedRecipientFirstName || '';
+    });
+
+    const [recipientLastName, setRecipientLastName] = useState(() => {
+        const storedRecipientLastName = localStorage.getItem('recipientLastName');
+        return storedRecipientLastName || '';
+    });
+
+    const [recipientEmail, setRecipientEmail] = useState(() => {
+        const storedRecipientEmail = localStorage.getItem('recipientEmail');
+        return storedRecipientEmail || '';
+    });
+
+    const [recipientPhoneNumber, setRecipientPhoneNumber] = useState(() => {
+        const storedRecipientPhoneNumber = localStorage.getItem('recipientPhoneNumber');
+        return storedRecipientPhoneNumber || '';
+    });
+
+    const [paymentMonobank, setPaymentMonobank] = useState(() => {
+        const storedPaymentMonobank = localStorage.getItem('paymentMonobank');
+        return storedPaymentMonobank ? JSON.parse(storedPaymentMonobank) : false;
+    });
 
     const total = localStorage.getItem('allTotal');
     const totalPrice = total ? parseInt(total) : 0;
@@ -63,6 +164,41 @@ const Order = ({ data }: any) => {
 
 
     const recipientData = `Дані отримувача ${recipientFirstName} ${recipientLastName} ${recipientEmail} ${recipientPhoneNumber}`;
+
+    useEffect(() => {
+        localStorage.setItem('selectedOption', selectedOption);
+        localStorage.setItem('paymentMonobank', JSON.stringify(paymentMonobank));
+        localStorage.setItem('deliveryPrice', deliveryPrice.toString());
+        localStorage.setItem("deliveryActive", JSON.stringify(deliveryActive));
+        localStorage.setItem("paymentActive", JSON.stringify(paymentActive));
+        localStorage.setItem("personActive", JSON.stringify(personActive));
+        localStorage.setItem("deliveryCompleted", JSON.stringify(deliveryCompleted));
+        localStorage.setItem("error", JSON.stringify(error));
+        localStorage.setItem("street", street);
+        localStorage.setItem("houseNumber", houseNumber);
+        localStorage.setItem("city", city);
+        localStorage.setItem("country", country);
+        localStorage.setItem("numposhtmat", numposhtmat);
+        localStorage.setItem("numnp", numnp);
+        localStorage.setItem("index", index);
+        localStorage.setItem("sstreet", sstreet);
+        localStorage.setItem("zip", zip);
+        localStorage.setItem("house", house);
+        localStorage.setItem("appartment", appartment);
+        localStorage.setItem("isRecipient", JSON.stringify(isRecipient));
+        localStorage.setItem("isDiscountsAndNews", JSON.stringify(isDiscountsAndNews));
+        localStorage.setItem("selectedOption", selectedOption);
+        localStorage.setItem("deliveryPrice", JSON.stringify(deliveryPrice));
+        localStorage.setItem("firstName", firstName);
+        localStorage.setItem("lastName", lastName);
+        localStorage.setItem("email", email);
+        localStorage.setItem("phoneNumber", phoneNumber);
+        localStorage.setItem("recipientFirstName", recipientFirstName);
+        localStorage.setItem("recipientLastName", recipientLastName);
+        localStorage.setItem("recipientEmail", recipientEmail);
+        localStorage.setItem("recipientPhoneNumber", recipientPhoneNumber);
+    }, [deliveryCompleted, error, street, houseNumber, city, country, numposhtmat, numnp, index, sstreet, zip, house, appartment, isRecipient, isDiscountsAndNews, selectedOption, deliveryPrice, firstName, lastName, email, phoneNumber, recipientFirstName, recipientLastName, recipientEmail, recipientPhoneNumber, deliveryActive, paymentActive, personActive, selectedOption, deliveryPrice]);
+
 
     const handleMonobankChange = () => {
         setPaymentMonobank(!paymentMonobank);
@@ -235,6 +371,7 @@ const Order = ({ data }: any) => {
 
 
     const switchToPaymentTab = async () => {
+        makeApiCall()
         if (deliveryCompleted && paymentMonobank === true) {
             try {
                 const response = await fetch("https://api.monobank.ua/api/merchant/invoice/create", {
@@ -437,6 +574,7 @@ const Order = ({ data }: any) => {
 
             </div>
             <YourOrder
+                lang={lang}
                 data={data}
                 setIsDiscountsAndNews={setIsDiscountsAndNews}
                 isDiscountsAndNews={isDiscountsAndNews}

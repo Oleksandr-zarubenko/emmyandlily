@@ -9,19 +9,23 @@ import cn from "classnames";
 import { PathModalXl } from "./icons/PathModalXl";
 import { Bag } from "./icons/Bag";
 import { useAddedToCart } from "@/components/context/addedToCart";
+
 export const ProductModal = ({
   product,
+  state,
   lang,
   children,
-
+  convertPrice
 }: {
   product: any;
   lang: any;
   children: any;
+  state: any
+  convertPrice: any
 
 }) => {
-  // const locales = i18n.locales;
-  // const en = locales[0]
+  const locales = i18n.locales;
+  const en = locales[1]
   const { addedToCart, setAddedToCart } = useAddedToCart();
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<
@@ -83,7 +87,7 @@ export const ProductModal = ({
 
 
     const dataToStore = {
-      id: item.id,
+      id: item.idCrm,
       productName: product.heading,
       price: item.price,
       capacity: item.ml,
@@ -92,7 +96,7 @@ export const ProductModal = ({
     };
     const updatedAddedToCart = {
       ...parsedAddedToCart,
-      [item.id]: true,
+      [item.idCrm]: true,
     };
     const updatedData = [...storedData, dataToStore];
 
@@ -101,7 +105,7 @@ export const ProductModal = ({
 
     setAddedToCart((prevAddedToCart: any) => ({
       ...prevAddedToCart,
-      [item.id]: true,
+      [item.idCrm]: true,
     }));
     setAddedToCart(updatedAddedToCart);
   };
@@ -225,22 +229,34 @@ export const ProductModal = ({
                   <tbody>
                     {product.capacity.map((item: any) => (
 
-                      <tr key={item.id}>
+                      <tr key={item.idCrm}>
                         <td className="py-2 text-t18 leading-5 text-[#333333] ">
                           {item.ml}
                         </td>
 
                         <td className="py-2 text-center text-t18 leading-5 text-[#333333]">
-                          {item.price} ₴
+                          {product.capacity && product.capacity[0] && (
+                            lang === en
+                              ? state && state.products.find((item: any) => item.id === product.capacity[0].idCrm)
+                                ? convertPrice(
+                                  state.products.find((item: any) => item.id === product.capacity[0].idCrm)!.price,
+                                  state.currencies.find((currency: any) => currency.id === "EUR")?.rate || 1
+                                )
+                                : 'N/A'
+                              : state && state.products.find((item: any) => item.id === product.capacity[0].idCrm)
+                                ? state.products.find((item: any) => item.id === product.capacity[0].idCrm)!.price
+                                : 'N/A'
+                          )} {lang === en ? '€' : '₴'}
                         </td>
-                        {/* {lang === en ? '€' : '₴'} */}
+
+
                         <td className="text-end py-2 text-t18 leading-5 text-[#333333]">
                           <button
                             onClick={() => addToCart(item)}
-                            className={`py-auto ml-auto h-10 rounded bg-black ${addedToCart[item.id] ? 'text-white text-t18 pointer-events-none w-[172px] py-1 px-3 cursor-default' : 'py-[5px] w-[76px] px-[22.5px] '}`}
-                            disabled={addedToCart[item.id]}
+                            className={`py-auto ml-auto h-10 rounded bg-black ${addedToCart[item.idCrm] ? 'text-white text-t18 pointer-events-none w-[172px] py-1 px-3 cursor-default' : 'py-[5px] w-[76px] px-[22.5px] '}`}
+                            disabled={addedToCart[item.idCrm]}
                           >
-                            {addedToCart[item.id] ? 'Товар у кошику' : <Bag color="white" />}
+                            {addedToCart[item.idCrm] ? lang === en ? 'item in cart' : 'Товар у кошику' : <Bag color="white" />}
                           </button>
                         </td>
                       </tr>
