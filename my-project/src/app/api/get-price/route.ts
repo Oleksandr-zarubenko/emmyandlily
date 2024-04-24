@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 import { parseString } from "xml2js";
 
-export default async function handler(req: any, res: any) {
+export async function GET(
+  req: Request,
+  res: Response
+): Promise<void | NextResponse> {
   try {
     const response = await fetch(
       "https://emmyandlily.salesdrive.me/export/yml/export.yml?publicKey=zalGum1W2NGfiOp_oUVyeqbAP3DkkjivuwB4xeAB7s-_PltssZ",
@@ -18,10 +21,10 @@ export default async function handler(req: any, res: any) {
     const products = extractProducts(parsedData);
     const currencies = extractCurrencies(parsedData);
 
-    return res.status(200).json({ products, currencies });
+    return NextResponse.json({ products, currencies });
   } catch (error) {
     console.error("Error fetching data:", error);
-    return res.status(500).json({ error: "Internal Server Error" });
+    return NextResponse.error;
   }
 }
 
