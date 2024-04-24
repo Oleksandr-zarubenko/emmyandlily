@@ -1,3 +1,4 @@
+
 import { AboutUs } from "@/page-components/AboutUs";
 import { AboutUsSlider } from "@/page-components/AboutUsSlider";
 import { Contacts } from "@/page-components/Contacts";
@@ -72,6 +73,7 @@ const queryEN = gql`
       text
     }
     allProducts {
+  
       heading
       description
       id
@@ -99,7 +101,7 @@ const queryEN = gql`
      capacity {
       price
       ml
-      id
+    idCrm
     }
     }
   }
@@ -165,6 +167,7 @@ const queryUA = gql`
       text
     }
     allProducts(locale: uk) {
+   
       heading
       description
       id
@@ -192,7 +195,7 @@ const queryUA = gql`
        capacity {
       price
       ml
-      id
+    idCrm
     }
     }
   }
@@ -224,6 +227,8 @@ export async function generateMetadata(): Promise<Metadata> {
     },
   };
 }
+
+
 
 export default async function Home({
   params: { lang },

@@ -41,33 +41,41 @@ order
       heading
       text
     }
-    allProducts {
-      heading
-      description
+   allProducts {
+    heading
+    description
+    id
+    productpicture {
+      alt
+      url
+    }
+    advantage1
+    advantage2
+    advantage3
+    activeComponents
+    composition
+    productSlider {
+      alt
+      url
       id
-      productpicture {
-        alt
-        url
-      }
-      advantage1
-      advantage2
-      advantage3
-      activeComponents
-      composition
-      productSlider {
-        alt
-        url
-        id
-      }
-   order
-        methodOfUse
-      capacity {
+    }
+    order
+    methodOfUse
+    discount
+    capacity {
       price
       ml
+      idCrm
+    }
+  }
+  delivery {
+    deliveryMethod {
+      description
       id
+       idD
+      name
     }
-    discount
-    }
+  }
   }
 `;
 
@@ -107,33 +115,41 @@ order
       heading
       text
     }
-    allProducts(locale: uk) {
-      heading
-      description
+   allProducts(locale: uk) {
+    heading
+    description
+    id
+    productpicture {
+      alt
+      url
+    }
+    advantage1
+    advantage2
+    advantage3
+    activeComponents
+    composition
+    productSlider {
+      alt
+      url
       id
-      productpicture {
-        alt
-        url
-      }
-      advantage1
-      advantage2
-      advantage3
-      activeComponents
-      composition
-      productSlider {
-        alt
-        url
-        id
-      }
-      order
-        methodOfUse
-      capacity {
+    }
+    order
+    methodOfUse
+    discount
+    capacity {
       price
       ml
+      idCrm
+    }
+  }
+  delivery(locale: uk) {
+    deliveryMethod {
+      description
       id
+       idD
+      name
     }
-    discount
-    }
+  }
   }
 `;
 export default async function OrderPage({
@@ -152,7 +168,7 @@ export default async function OrderPage({
   });
 
   return (
-    <Order data={data} />
+    <Order data={data} lang={lang} />
   )
 }
 
