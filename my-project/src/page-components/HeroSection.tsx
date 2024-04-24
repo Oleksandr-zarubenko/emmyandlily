@@ -6,11 +6,11 @@ import { AddToCartHeroBtn } from "@/components/AddToCartHeroBtn";
 export const HeroSection = ({ data }: { data: any }) => {
   return (
     <div className="hero relative bg-white text-center xl:text-left">
-      <div className="container relative xl:min-h-[680px]">
+      <div className="container relative h-[600px] xl:min-h-[680px]">
         <Image
           src={HeroDog}
           alt={"Emmy Dog"}
-          className="absolute -bottom-24 left-0 z-20 h-[584px] w-[476px] object-contain"
+          className="absolute -bottom-16 -left-28 z-20 h-[360px] w-[298px] object-contain xl:-bottom-24 xl:left-0 xl:h-[584px] xl:w-[476px]"
         />
         <div className="order-1 mb-8 w-[655px] text-center text-bg_secondary xl:justify-start">
           <p className="text-t50 relative left-20 top-[152px] w-[655px]  md:text-t48 ">
