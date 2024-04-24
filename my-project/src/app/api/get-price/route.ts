@@ -1,8 +1,7 @@
-import { NextApiRequest } from "next";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { parseString } from "xml2js";
 
-export async function GET(req: NextApiRequest) {
+export async function GET(req: Request | NextRequest) {
   try {
     const response = await fetch(
       "https://emmyandlily.salesdrive.me/export/yml/export.yml?publicKey=zalGum1W2NGfiOp_oUVyeqbAP3DkkjivuwB4xeAB7s-_PltssZ",
