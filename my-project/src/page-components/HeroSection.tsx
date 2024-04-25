@@ -1,34 +1,29 @@
 import { Markdown } from "@/components/Markdown";
-import { Paw } from "@/components/icons/Paw";
+import Image from "next/image";
+import HeroDog from "../../public/hero-dog.png";
+import { AddToCartHeroBtn } from "@/components/AddToCartHeroBtn";
 
 export const HeroSection = ({ data }: { data: any }) => {
-
   return (
-    <>
-      <div className=" hero relative bg-white text-center xl:text-left">
-        <div className=" container xl:min-h-[800px]">
-          {/* <div className="mx-auto mb-96 mt-32 flex flex-col md:mb-[642px] md:max-w-[416px] xl:mb-0 xl:ml-0 xl:mt-0 xl:max-w-96 smOnly:p-2"> */}
-          {/* <Markdown text={data.mainSection.heading} className="order-2" /> */}
-          <div className=" order-1 mb-8 text-center text-bg_secondary xl:justify-start w-[655px]">
-            {/* <Paw className="h-12 w-12 flex-shrink-0 md:h-16 md:w-16" /> */}
-            <p className="relative top-[152px] left-20 w-[655px] text-t50  md:text-t48 ">{data.mainSection.bigtext}</p>
-          </div>
-          <div className=" w-[340px] relative text-center left-[210px]  top-[252px] ">
-            <Markdown
-              text={data.mainSection.heading}
-              className="order-3 !text-t16 w-[350px] mb-4 h-10 !text-bg_secondary md:!text-t24n xl:!text-t32"
-            />
-            <div className="mx-auto px-6 py-4 text-t18 bg-black text-white rounded w-[225px] text-center">
-              {data.mainSection.btn}
-            </div>
-          </div>
-          {/* </div> */}
-        </div>
-
-      </div >
-      <div className=" w-auto h-[87px] bg-black">
-
+    <div className="hero relative bg-white text-center">
+      <div className="container relative text-grey ">
+        <Image
+          src={HeroDog}
+          alt={"Emmy Dog"}
+          className="absolute -bottom-16 -left-28 z-20 h-[360px] w-[298px] object-contain md:-bottom-20 md:-left-0 md:h-[420px] md:w-[338px] xl:-bottom-24 xl:left-0 xl:h-[584px] xl:w-[476px]"
+        />
+        <Markdown
+          text={data.mainSection.heading}
+          className="mb-10 mt-28  md:mx-auto md:max-w-[400px] xl:mb-20 xl:mt-36 xl:max-w-[655px]"
+        />
+        <p className="mb-4 font-sans  text-t24n font-bold leading-7 tracking-[0.16px] xl:mr-[180px] xl:text-t32n">
+          {data.mainSection.bigtext}
+        </p>
+        <AddToCartHeroBtn
+          text={data.mainSection.btn}
+          className="mb-[260px] xl:mr-[180px]"
+        />
       </div>
-    </>
+    </div>
   );
 };

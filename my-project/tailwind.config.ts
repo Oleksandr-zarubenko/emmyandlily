@@ -26,11 +26,16 @@ const config: Config = {
         primary: "#fad5a2",
         primary_T: "#FFF0ED",
         dark: "#FFEACB",
-        black: "#000",
+        black: "#0B0605",
         white: "#FBFBFB",
         bg_primary: "#FF8667",
         bg_secondary: "#333",
         border: "#DCDCDC",
+      },
+      fontFamily: {
+        abril: ["var(--font-abril)"],
+        sans: ["var(--font-libre)"],
+        playfair: "Georgia",
       },
       boxShadow: {
         custom: "0px 3px 30px 0px rgba(140, 140, 140, 0.10)",
@@ -91,6 +96,7 @@ const config: Config = {
             lineHeight: "38.4px",
           },
         ],
+        t32n: "32px",
         t40: [
           "40px",
           {

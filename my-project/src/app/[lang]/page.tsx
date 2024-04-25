@@ -1,4 +1,3 @@
-
 import { AboutUs } from "@/page-components/AboutUs";
 import { AboutUsSlider } from "@/page-components/AboutUsSlider";
 import { Contacts } from "@/page-components/Contacts";
@@ -13,11 +12,7 @@ import { Locale } from "../../i18n.config";
 
 import Video from "@/page-components/Video";
 
-
-
-
 const queryEN = gql`
-
   {
     mainSection {
       bigtext
@@ -26,12 +21,12 @@ const queryEN = gql`
       btn
     }
     videosection {
-  heading
-    text1
-    text2
-    text3
-    text4
-  }
+      heading
+      text1
+      text2
+      text3
+      text4
+    }
     aboutUsSection {
       heading
       text
@@ -45,9 +40,9 @@ const queryEN = gql`
       text
       heading
       name
-         name2
-            name3
-        text2
+      name2
+      name3
+      text2
       text3
       text4
       text5
@@ -73,7 +68,6 @@ const queryEN = gql`
       text
     }
     allProducts {
-  
       heading
       description
       id
@@ -81,7 +75,7 @@ const queryEN = gql`
         alt
         url
       }
-       method
+      method
       composit
       activecomp
       advantage1
@@ -94,40 +88,38 @@ const queryEN = gql`
         url
         id
       }
-   order
-        methodOfUse
-     
-    discount
-     capacity {
-      price
-      ml
-    idCrm
-    }
+      order
+      methodOfUse
+
+      discount
+      capacity {
+        price
+        ml
+        idCrm
+      }
     }
   }
 `;
 
 const queryUA = gql`
-
   {
     mainSection(locale: uk) {
       bigtext
       heading
       text
-         btn
+      btn
     }
     videosection(locale: uk) {
-  heading
-  text1
-    text2
-    text3
-    text4
-   
-  }
+      heading
+      text1
+      text2
+      text3
+      text4
+    }
     aboutUsSection(locale: uk) {
       heading
       text
-    
+
       image {
         alt
         author
@@ -137,14 +129,14 @@ const queryUA = gql`
     aboutUsSlider(locale: uk) {
       text
 
-    text2
-    text3
-    text4
+      text2
+      text3
+      text4
       text5
-    text6
-        name
-         name2
-            name3
+      text6
+      name
+      name2
+      name3
       heading
       sliderimages {
         alt
@@ -167,7 +159,6 @@ const queryUA = gql`
       text
     }
     allProducts(locale: uk) {
-   
       heading
       description
       id
@@ -189,14 +180,14 @@ const queryUA = gql`
         id
       }
       order
-        methodOfUse
-    
-    discount
-       capacity {
-      price
-      ml
-    idCrm
-    }
+      methodOfUse
+
+      discount
+      capacity {
+        price
+        ml
+        idCrm
+      }
     }
   }
 `;
@@ -228,8 +219,6 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-
-
 export default async function Home({
   params: { lang },
 }: {
@@ -247,10 +236,7 @@ export default async function Home({
   });
 
   return (
-
-
     <div className="flex flex-grow flex-col bg-bg_secondary">
-
       <HeroSection data={data} />
       <Video data={data} />
       <FreeDelivery />
@@ -259,9 +245,6 @@ export default async function Home({
 
       <AboutUsSlider data={data} />
       <Contacts data={data} />
-
-
     </div>
-
-  )
+  );
 }

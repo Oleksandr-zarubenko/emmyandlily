@@ -49,14 +49,15 @@ section {
 }
 
 .hero {
-  background-image: url("../../public/main.webp"), url("../../public/main2.png");
+  background-image: url("../../public/shampoo-bg-hero-m.png"),
+    url("../../public/main.png");
 
-  background-repeat: no-repeat, no-repeat;
+  background-repeat: no-repeat;
   background-size:
-    auto 360px,
-    auto 360px;
-  background-position-x: 50%, 50%;
-  background-position-y: 100%, 50%;
+    auto 100%,
+    auto 100%;
+  background-position-x: 80%, 100%;
+  background-position-y: 100%, 100%;
 }
 
 .contacts {
@@ -88,11 +89,15 @@ section {
   }
 
   .hero {
-    background-image: url("../../public/emmy-lilly-2-dogs-bg-hero.webp");
+    background-image: url("../../public/shampoo-bg-hero-m.png"),
+      url("../../public/main.png");
+
     background-repeat: no-repeat;
-    background-size: auto 260px;
-    background-position-x: 100%;
-    background-position-y: 100%;
+    background-size:
+      auto 120%,
+      auto 100%;
+    background-position-x: 80%, 100%;
+    background-position-y: 100%, 100%;
   }
 
   .paw {
@@ -140,16 +145,15 @@ section {
   }
 
   .hero {
-    background-image: url("../../public/main2.png"),
-      url("../../public/main.webp"), url("../../public/main.png");
+    background-image: url("../../public/main.webp"),
+      url("../../public/main.png");
 
     background-repeat: no-repeat, no-repeat, no-repeat;
     background-size:
-      auto 522px,
       auto 102%,
       auto 100%;
-    background-position-x: 20%, 0%, 100%;
-    background-position-y: 135%, 0%, 0%;
+    background-position-x: calc(50% + 100px), 100%;
+    background-position-y: 0%, 0%;
   }
 
   .contacts {
@@ -183,6 +187,20 @@ section {
     background-repeat: no-repeat;
     background-size: contain;
     background-position-x: 90%;
+  }
+}
+
+@media (min-width: 1890px) {
+  .hero {
+    background-image: url("../../public/main.webp"),
+      url("../../public/main.png");
+
+    background-repeat: no-repeat, no-repeat, no-repeat;
+    background-size:
+      auto 102%,
+      auto 100%;
+    background-position-x: 110%, 100%;
+    background-position-y: 0%, 0%;
   }
 }
 
