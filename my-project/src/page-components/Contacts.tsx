@@ -6,29 +6,30 @@ import { Phone } from "@/components/icons/Phone";
 import { TikTok } from "@/components/icons/TikTok";
 import Link from "next/link";
 
-
 export const Contacts = ({ data }: { data: any }) => {
-
   return (
     <section
-      className="contacts paw pb-10 bg-white  md:pt-24 xl:pb-20 xl:pt-48"
+      className="contacts paw bg-white pb-10  md:pt-24 xl:pb-20 xl:pt-48"
       id="contacts"
     >
       <div className="container">
         <div className="max-w-[29rem]">
           <div className="mb-4 flex flex-row items-center gap-4 xl:mb-10">
             <Paw className="h-12 w-12 p-1 text-black" />
-            <Markdown className="text-black text-t32" text={data.contactssection.heading} />
+            <Markdown
+              className="text-t32 text-black"
+              text={data.contactssection.heading}
+            />
           </div>
           <Markdown
             text={data.contactssection.text}
-            className="mb-8 text-t18 leading-6 mdOnly:max-w-[310px] max-w-[450px]"
+            className="mb-8 max-w-[450px] text-t18 leading-6 mdOnly:max-w-[310px]"
           />
           <div className="flex">
             {data.contactssection.phone1 && (
               <Link
                 href={"tel:" + data.contactssection.phone1}
-                className="mb-4 flex gap-2 text-t16  text-black mr-8"
+                className="mb-4 mr-8 flex gap-2  text-t16 text-black"
               >
                 <Phone className="h-5 w-5 flex-shrink-0 text-black" />
                 {data.contactssection.phone1}
@@ -46,10 +47,13 @@ export const Contacts = ({ data }: { data: any }) => {
           </div>
           {data.contactssection.phone2 && (
             <>
-              <Markdown className="text-t18 mb-4" text={data.contactssection.text2} />
+              <Markdown
+                className="mb-4 text-t18"
+                text={data.contactssection.text2}
+              />
               <Link
                 href={"tel:" + data.contactssection.phone2}
-                className="mb-8 flex gap-2  text-t16 ont-semibold text-black"
+                className="ont-semibold mb-8 flex  gap-2 text-t16 text-black"
               >
                 <Phone className="h-5 w-5 flex-shrink-0 text-black" />
                 {data.contactssection.phone2}
@@ -68,7 +72,7 @@ export const Contacts = ({ data }: { data: any }) => {
                 target="_blank"
                 className="flex w-max items-center gap-1 rounded-xl py-2 text-t24 text-black duration-300 hover:bg-white"
               >
-                <TikTok className="h-5 w-5 flex-shrink-0 mr-2" /> TikTok
+                <TikTok className="mr-2 h-5 w-5 flex-shrink-0" /> TikTok
               </Link>
             )}
             {data.contactssection.instagramlink && (
@@ -78,10 +82,9 @@ export const Contacts = ({ data }: { data: any }) => {
                 target="_blank"
                 className="flex w-max items-center gap-1 rounded-xl px-8 py-2 text-t24 text-[#0B0605] duration-300 hover:bg-white"
               >
-                <Instagram className="h-5 w-5 flex-shrink-0 mr-2" /> Instagram
+                <Instagram className="mr-2 h-5 w-5 flex-shrink-0" /> Instagram
               </Link>
             )}
-
           </div>
         </div>
       </div>

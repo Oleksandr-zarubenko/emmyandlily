@@ -15,17 +15,16 @@ export const ProductModal = ({
   state,
   lang,
   children,
-  convertPrice
+  convertPrice,
 }: {
   product: any;
   lang: any;
   children: any;
-  state: any
-  convertPrice: any
-
+  state: any;
+  convertPrice: any;
 }) => {
   const locales = i18n.locales;
-  const en = locales[1]
+  const en = locales[1];
   const { addedToCart, setAddedToCart } = useAddedToCart();
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<
@@ -35,8 +34,6 @@ export const ProductModal = ({
   const [currentImageUrl, setActiveImageUrl] = useState(
     product.productSlider[0].url
   );
-
-
 
   // const handleQuantityChange = (capacity: string, value: number) => {
   //   setQuantities((prevQuantities) => ({
@@ -78,13 +75,12 @@ export const ProductModal = ({
   }, [isOpen]);
 
   const addToCart = (item: any) => {
-
-    const storedDataString = localStorage.getItem('storedData');
+    const storedDataString = localStorage.getItem("storedData");
     const storedData = storedDataString ? JSON.parse(storedDataString) : [];
-    const storedAddedToCart = localStorage.getItem('addedToCart');
-    const parsedAddedToCart = storedAddedToCart ? JSON.parse(storedAddedToCart) : {};
-
-
+    const storedAddedToCart = localStorage.getItem("addedToCart");
+    const parsedAddedToCart = storedAddedToCart
+      ? JSON.parse(storedAddedToCart)
+      : {};
 
     const dataToStore = {
       id: item.idCrm,
@@ -92,7 +88,6 @@ export const ProductModal = ({
       price: item.price,
       capacity: item.ml,
       photo: product.productSlider[0].url,
-
     };
     const updatedAddedToCart = {
       ...parsedAddedToCart,
@@ -100,8 +95,8 @@ export const ProductModal = ({
     };
     const updatedData = [...storedData, dataToStore];
 
-    localStorage.setItem('storedData', JSON.stringify(updatedData));
-    localStorage.setItem('addedToCart', JSON.stringify(updatedAddedToCart));
+    localStorage.setItem("storedData", JSON.stringify(updatedData));
+    localStorage.setItem("addedToCart", JSON.stringify(updatedAddedToCart));
 
     setAddedToCart((prevAddedToCart: any) => ({
       ...prevAddedToCart,
@@ -111,7 +106,7 @@ export const ProductModal = ({
   };
 
   useEffect(() => {
-    const storedAddedToCart = localStorage.getItem('addedToCart');
+    const storedAddedToCart = localStorage.getItem("addedToCart");
     if (storedAddedToCart) {
       setAddedToCart(JSON.parse(storedAddedToCart));
     }
@@ -131,7 +126,7 @@ export const ProductModal = ({
       </button>
       {isOpen && (
         <div
-          className="fixed inset-0 z-30 flex h-dvh items-center justify-center overflow-y-auto bg-white/50 cursor-default"
+          className="fixed inset-0 z-30 flex h-dvh cursor-default items-center justify-center overflow-y-auto bg-white/50"
           onClick={() => setMenuClosed()}
         >
           <div className="relative h-full w-auto xl:h-auto">
@@ -157,7 +152,7 @@ export const ProductModal = ({
                   />
                 </div>
 
-                <div className="hidden xl:flex xl:h-full xl:w-[450px] xl:flex-row cursor-pointer">
+                <div className="hidden cursor-pointer xl:flex xl:h-full xl:w-[450px] xl:flex-row">
                   {product.productSlider.map(
                     (slide: { alt: string; url: string; id: string }) => (
                       <div
@@ -212,7 +207,7 @@ export const ProductModal = ({
                 <table className="mb-12  w-full">
                   <thead>
                     <tr>
-                      <th className="py-2 w-2/5 text-t14 text-[#333333] opacity-60">
+                      <th className="w-2/5 py-2 text-t14 text-[#333333] opacity-60">
                         Об`єм
                       </th>
                       {/* <th className="py-2 text-center  text-t14 text-[#333333] opacity-60">
@@ -228,35 +223,58 @@ export const ProductModal = ({
                   </thead>
                   <tbody>
                     {product.capacity.map((item: any) => (
-
                       <tr key={item.idCrm}>
                         <td className="py-2 text-t18 leading-5 text-[#333333] ">
                           {item.ml}
                         </td>
 
                         <td className="py-2 text-center text-t18 leading-5 text-[#333333]">
-                          {product.capacity && product.capacity[0] && (
-                            lang === en
-                              ? state && state.products.find((item: any) => item.id === product.capacity[0].idCrm)
-                                ? convertPrice(
-                                  state.products.find((item: any) => item.id === product.capacity[0].idCrm)!.price,
-                                  state.currencies.find((currency: any) => currency.id === "EUR")?.rate || 1
+                          {product.capacity &&
+                            product.capacity[0] &&
+                            (lang === en
+                              ? state &&
+                                state.products.find(
+                                  (item: any) =>
+                                    item.id === product.capacity[0].idCrm
                                 )
-                                : 'N/A'
-                              : state && state.products.find((item: any) => item.id === product.capacity[0].idCrm)
-                                ? state.products.find((item: any) => item.id === product.capacity[0].idCrm)!.price
-                                : 'N/A'
-                          )} {lang === en ? '€' : '₴'}
+                                ? convertPrice(
+                                    state.products.find(
+                                      (item: any) =>
+                                        item.id === product.capacity[0].idCrm
+                                    )!.price,
+                                    state.currencies.find(
+                                      (currency: any) => currency.id === "EUR"
+                                    )?.rate || 1
+                                  )
+                                : "N/A"
+                              : state &&
+                                  state.products.find(
+                                    (item: any) =>
+                                      item.id === product.capacity[0].idCrm
+                                  )
+                                ? state.products.find(
+                                    (item: any) =>
+                                      item.id === product.capacity[0].idCrm
+                                  )!.price
+                                : "N/A")}{" "}
+                          {lang === en ? "€" : "₴"}
                         </td>
 
-
-                        <td className="text-end py-2 text-t18 leading-5 text-[#333333]">
+                        <td className="py-2 text-end text-t18 leading-5 text-[#333333]">
                           <button
                             onClick={() => addToCart(item)}
-                            className={`py-auto ml-auto h-10 rounded bg-black ${addedToCart[item.idCrm] ? 'text-white text-t18 pointer-events-none w-[172px] py-1 px-3 cursor-default' : 'py-[5px] w-[76px] px-[22.5px] '}`}
+                            className={`py-auto ml-auto h-10 rounded bg-black ${addedToCart[item.idCrm] ? "pointer-events-none w-[172px] cursor-default px-3 py-1 text-t18 text-white" : "w-[76px] px-[22.5px] py-[5px] "}`}
                             disabled={addedToCart[item.idCrm]}
                           >
-                            {addedToCart[item.idCrm] ? lang === en ? 'item in cart' : 'Товар у кошику' : <Bag color="white" />}
+                            {addedToCart[item.idCrm] ? (
+                              lang === en ? (
+                                "item in cart"
+                              ) : (
+                                "Товар у кошику"
+                              )
+                            ) : (
+                              <Bag color="white" />
+                            )}
                           </button>
                         </td>
                       </tr>
