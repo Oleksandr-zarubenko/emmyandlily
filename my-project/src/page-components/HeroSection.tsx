@@ -10,13 +10,13 @@ export const HeroSection = ({ data }: { data: any }) => {
         <Image
           src={HeroDog}
           alt={"Emmy Dog"}
-          className="absolute -bottom-16 -left-28 z-20 h-[360px] w-[298px] object-contain md:-bottom-20 md:-left-0 md:h-[420px] md:w-[338px] xl:-bottom-24 xl:left-0 xl:h-[584px] xl:w-[476px]"
+          className="absolute -bottom-16 -left-28 z-20 h-[360px] w-[298px] object-contain md:-bottom-20 md:-left-0 md:h-[420px] md:w-[338px] xl:-bottom-[110px] xl:left-0 xl:h-[584px] xl:w-[476px]"
         />
         <Markdown
           text={data.mainSection.heading}
-          className="mb-10 mt-28  md:mx-auto md:max-w-[400px] xl:mb-20 xl:mt-36 xl:max-w-[655px]"
+          className="mb-10 mt-28 md:mx-auto md:max-w-[400px] xl:mb-20 xl:mr-[280px] xl:mt-36 xl:max-w-[655px]"
         />
-        <p className="mb-4 font-sans  text-t24n font-bold leading-7 tracking-[0.16px] xl:mr-[180px] xl:text-t32n">
+        <p className="xl:text-t32n mb-4  font-sans text-t24n font-bold leading-7 tracking-[0.16px] xl:mr-[180px]">
           {data.mainSection.bigtext}
         </p>
         <AddToCartHeroBtn

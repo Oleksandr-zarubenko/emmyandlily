@@ -190,17 +190,17 @@ section {
   }
 }
 
-@media (min-width: 1890px) {
+@media (min-width: 1895px) {
   .hero {
     background-image: url("../../public/main.webp"),
       url("../../public/main.png");
 
     background-repeat: no-repeat, no-repeat, no-repeat;
     background-size:
-      auto 102%,
-      auto 100%;
-    background-position-x: 110%, 100%;
-    background-position-y: 0%, 0%;
+      94% auto,
+      70% auto;
+    background-position-x: 125%, 100%;
+    background-position-y: 94%, 0%;
   }
 }
 
