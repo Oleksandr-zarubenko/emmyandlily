@@ -200,7 +200,7 @@ section {
       94% auto,
       70% auto;
     background-position-x: 125%, 100%;
-    background-position-y: 94%, 0%;
+    background-position-y: calc(94% + 20px), 0%;
   }
 }
 
