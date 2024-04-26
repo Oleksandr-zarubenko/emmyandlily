@@ -2,26 +2,35 @@ export const Burger = ({ className }: { className: string }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}
-    viewBox="0 0 30 20"
+    viewBox="0 0 52 52"
     fill="none"
   >
-    <path
-      d="M2 2H27.5"
-      stroke="#FF8667"
-      strokeWidth="4"
-      strokeLinecap="square"
+    <line
+      x1="11.5"
+      y1="16.5"
+      x2="40.5"
+      y2="16.5"
+      stroke="#0B0605"
+      stroke-width="3"
+      stroke-linecap="round"
     />
-    <path
-      d="M2 10H27.5"
-      stroke="#FF8667"
-      strokeWidth="4"
-      strokeLinecap="square"
+    <line
+      x1="11.5"
+      y1="26.5"
+      x2="40.5"
+      y2="26.5"
+      stroke="#0B0605"
+      stroke-width="3"
+      stroke-linecap="round"
     />
-    <path
-      d="M2 18H27.5"
-      stroke="#FF8667"
-      strokeWidth="4"
-      strokeLinecap="square"
+    <line
+      x1="11.5"
+      y1="36.5"
+      x2="40.5"
+      y2="36.5"
+      stroke="#0B0605"
+      stroke-width="3"
+      stroke-linecap="round"
     />
   </svg>
 );

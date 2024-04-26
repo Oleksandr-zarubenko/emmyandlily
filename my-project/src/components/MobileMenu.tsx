@@ -1,13 +1,20 @@
 "use client";
-
+import Logo from "../../public/logo.png";
 import { useEffect, useState } from "react";
 import { Burger } from "./icons/Burger";
 import { BurgerCross } from "./icons/BurgerCross";
-import { Logo } from "./icons/Logo";
 import Link from "next/link";
 import LocaleSwitcher from "./locale-switcher";
+import Image from "next/image";
+import { Bag } from "./icons/Bag";
 
-export const MobileMenu = ({ navigation }: { navigation: any }) => {
+export const MobileMenu = ({
+  navigation,
+  lang,
+}: {
+  navigation: any;
+  lang: any;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const setMenuOpened = () => {
@@ -27,58 +34,54 @@ export const MobileMenu = ({ navigation }: { navigation: any }) => {
   }, [isOpen]);
   return (
     <>
-      <>
-        <div className="ml-7 mt-8 h-7 w-36 md:w-44">
-          <Link href="/">
-            <Logo />
-          </Link>
-        </div>
-        <LocaleSwitcher className="mb-3 ml-auto" lang={""} />
-        <button className="ml-auto py-2 pr-4" onClick={() => setMenuOpened()}>
-          <Burger className="h-4 w-7" />
-        </button>
-      </>
+      <button onClick={() => setMenuOpened()}>
+        <Burger className="h-14 w-14" />
+      </button>
       {isOpen && (
-        <div className="fixed inset-0 z-30 h-dvh overflow-scroll bg-primary">
-          <div className="flex">
-            <button
-              onClick={() => setMenuClosed()}
-              className="ml-auto py-8 pr-4"
-            >
-              <BurgerCross className="h-5 w-5 text-white" />
-            </button>
+        <div className="bg-bg_transparent fixed inset-0 h-dvh overflow-scroll">
+          <div className="bg-white">
+            <div className="border-b-2 border-black ">
+              <div className="container flex flex-row items-center justify-between py-2">
+                <Link href={`/${lang}`}>
+                  <Image src={Logo} alt="logo" width={158} height={32} />
+                </Link>
+                <h2 className="sr-only">Mobile Menu</h2>
+                <div className="flex flex-row items-center gap-3">
+                  <Link
+                    className="text-white duration-300 hover:text-white"
+                    href={`/${lang}/basket`}
+                  >
+                    <Bag color="black" />
+                  </Link>
+                  <button onClick={() => setMenuClosed()} className="">
+                    <BurgerCross className="h-14 w-14 text-white" />
+                  </button>
+                </div>
+              </div>
+            </div>
+            <nav className="flex flex-col items-center gap-3 px-5 pb-20 pt-10 text-center">
+              <h2 className="sr-only">Mobile navigation</h2>
+              <Link
+                className="border-1 w-full border-b border-border pb-4 pt-2 text-t16 text-[#0B0605] duration-300 hover:text-primary"
+                href={`/${lang}/#products`}
+              >
+                {navigation.ourproducts}
+              </Link>
+              <Link
+                className="border-1 w-full border-b border-border pb-4 pt-2 text-t16 duration-300 hover:text-primary"
+                href={`/${lang}/#about-us`}
+              >
+                {navigation.aboutus}
+              </Link>
+              <Link
+                className="border-1 mb-10 w-full border-b border-border pb-4 pt-2 text-t16 duration-300 hover:text-primary"
+                href={`/${lang}/#contacts`}
+              >
+                {navigation.contacts}
+              </Link>
+              <LocaleSwitcher lang={lang} />
+            </nav>
           </div>
-          <nav className="flex flex-col items-center gap-1 pt-2 text-center text-t20 md:max-w-[300px] md:text-left">
-            <h2 className="sr-only">Mobile navigation</h2>
-            <Link
-              onClick={() => setMenuClosed()}
-              href="#who-we-are"
-              className="black-line w-5/6 py-7"
-            >
-              {navigation.WhoWeAre}
-            </Link>
-            <Link
-              onClick={() => setMenuClosed()}
-              href="#products"
-              className="black-line w-5/6 py-7"
-            >
-              {navigation.OurProducts}
-            </Link>
-            <Link
-              onClick={() => setMenuClosed()}
-              href="#about-us"
-              className="black-line w-5/6 py-7"
-            >
-              {navigation.AboutUs}
-            </Link>
-            <Link
-              onClick={() => setMenuClosed()}
-              href="#contacts"
-              className="black-line w-5/6 py-7"
-            >
-              {navigation.Contacts}
-            </Link>
-          </nav>
         </div>
       )}
     </>
