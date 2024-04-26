@@ -62,19 +62,19 @@ export const MobileMenu = ({
             <nav className="flex flex-col items-center gap-3 px-5 pb-20 pt-10 text-center">
               <h2 className="sr-only">Mobile navigation</h2>
               <Link
-                className="border-1 w-full border-b border-border pb-4 pt-2 text-t16 text-[#0B0605] duration-300 hover:text-primary"
+                className="border-1 w-full border-b border-border pb-4 pt-2 text-t16 text-[#0B0605] duration-300 hover:italic"
                 href={`/${lang}/#products`}
               >
                 {navigation.ourproducts}
               </Link>
               <Link
-                className="border-1 w-full border-b border-border pb-4 pt-2 text-t16 duration-300 hover:text-primary"
+                className="border-1 w-full border-b border-border pb-4 pt-2 text-t16 duration-300 hover:italic"
                 href={`/${lang}/#about-us`}
               >
                 {navigation.aboutus}
               </Link>
               <Link
-                className="border-1 mb-10 w-full border-b border-border pb-4 pt-2 text-t16 duration-300 hover:text-primary"
+                className="border-1 mb-10 w-full border-b border-border pb-4 pt-2 text-t16 duration-300 hover:italic"
                 href={`/${lang}/#contacts`}
               >
                 {navigation.contacts}

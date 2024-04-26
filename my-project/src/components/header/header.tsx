@@ -33,19 +33,19 @@ const Header = ({ lang, data }: any) => {
         <nav className="flex flex-col items-center text-t16 md:flex-row md:gap-4 xl:gap-10">
           <h2 className="sr-only">Main navigation</h2>
           <Link
-            className="text-[#0B0605] duration-300 hover:text-primary"
+            className="text-[#0B0605] duration-300 hover:italic"
             href={`/${lang}/#products`}
           >
             {data.navigation.ourproducts}
           </Link>
           <Link
-            className="duration-300 hover:text-primary"
+            className="duration-300 hover:italic"
             href={`/${lang}/#about-us`}
           >
             {data.navigation.aboutus}
           </Link>
           <Link
-            className="duration-300 hover:text-primary"
+            className="duration-300 hover:italic"
             href={`/${lang}/#contacts`}
           >
             {data.navigation.contacts}
