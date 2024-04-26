@@ -49,8 +49,8 @@ section {
 }
 
 .hero {
-  background-image: url("../../public/shampoo-bg-hero-m.png"),
-    url("../../public/main.png");
+  background-image: url("../../public/shampoo-bg-hero-m.webp"),
+    url("../../public/bg-tranparent-bottles.webp");
 
   background-repeat: no-repeat;
   background-size:
@@ -61,7 +61,7 @@ section {
 }
 
 .contacts {
-  background-image: url("../../public/emmy-dog-image.png"),
+  background-image: url("../../public/emmy-dog-image.webp"),
     url("../../public/paw.svg");
   z-index: 2;
   background-repeat: no-repeat, no-repeat;
@@ -89,8 +89,8 @@ section {
   }
 
   .hero {
-    background-image: url("../../public/shampoo-bg-hero-m.png"),
-      url("../../public/main.png");
+    background-image: url("../../public/shampoo-bg-hero-m.webp"),
+      url("../../public/bg-tranparent-bottles.webp");
 
     background-repeat: no-repeat;
     background-size:
@@ -110,7 +110,7 @@ section {
     z-index: 1;
   }
   .contacts {
-    background-image: url("../../public/emmy-dog-image.png");
+    background-image: url("../../public/emmy-dog-image.webp");
     background-repeat: no-repeat;
     background-size: contain;
     background-position-x: 90%;
@@ -146,7 +146,7 @@ section {
 
   .hero {
     background-image: url("../../public/main.webp"),
-      url("../../public/main.png");
+      url("../../public/bg-tranparent-bottles.webp");
 
     background-repeat: no-repeat, no-repeat, no-repeat;
     background-size:
@@ -157,7 +157,7 @@ section {
   }
 
   .contacts {
-    background-image: url("../../public/emmy-dog-image.png"),
+    background-image: url("../../public/emmy-dog-image.webp"),
       url("../../public/paw.svg");
     background-repeat: no-repeat, no-repeat;
     background-size: contain, contain;
@@ -183,7 +183,7 @@ section {
   }
 
   .modalSuccess {
-    background-image: url("../../public/emmy-dog-image.png");
+    background-image: url("../../public/emmy-dog-image.webp");
     background-repeat: no-repeat;
     background-size: contain;
     background-position-x: 90%;
@@ -193,7 +193,7 @@ section {
 @media (min-width: 1895px) {
   .hero {
     background-image: url("../../public/main.webp"),
-      url("../../public/main.png");
+      url("../../public/bg-tranparent-bottles.webp");
 
     background-repeat: no-repeat, no-repeat, no-repeat;
     background-size:
