@@ -11,8 +11,8 @@ export const Burger = ({ className }: { className: string }) => (
       x2="40.5"
       y2="16.5"
       stroke="#0B0605"
-      stroke-width="3"
-      stroke-linecap="round"
+      strokeWidth="3"
+      strokeLinecap="round"
     />
     <line
       x1="11.5"
@@ -20,8 +20,8 @@ export const Burger = ({ className }: { className: string }) => (
       x2="40.5"
       y2="26.5"
       stroke="#0B0605"
-      stroke-width="3"
-      stroke-linecap="round"
+      strokeWidth="3"
+      strokeLinecap="round"
     />
     <line
       x1="11.5"
@@ -29,8 +29,8 @@ export const Burger = ({ className }: { className: string }) => (
       x2="40.5"
       y2="36.5"
       stroke="#0B0605"
-      stroke-width="3"
-      stroke-linecap="round"
+      strokeWidth="3"
+      strokeLinecap="round"
     />
   </svg>
 );

@@ -11,7 +11,7 @@ export const BurgerCross = ({ className }: { className: string }) => (
       x2="37.0416"
       y2="36.9618"
       stroke="#0B0605"
-      stroke-width="3"
+      strokeWidth="3"
       stroke-linecap="round"
     />
     <line
@@ -20,7 +20,7 @@ export const BurgerCross = ({ className }: { className: string }) => (
       x2="36.9203"
       y2="14.9999"
       stroke="#0B0605"
-      stroke-width="3"
+      strokeWidth="3"
       stroke-linecap="round"
     />
   </svg>

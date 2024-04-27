@@ -27,7 +27,7 @@ const Video = ({ data }: { data: any }) => {
                 {data.videosection.text1}
               </p>
             </li>
-            <li className="mx-auto mb-14  w-[234px] text-center">
+            <li className="mx-auto mb-14 w-[234px] text-center">
               <p className="mx-auto mb-4 text-t53">100+</p>
               <p className="mx-auto w-[224x] text-t18 leading-6">
                 {data.videosection.text2}
