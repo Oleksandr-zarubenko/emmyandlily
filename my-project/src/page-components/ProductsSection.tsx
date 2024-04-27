@@ -73,7 +73,7 @@ export const ProductsSection = ({
                     state={state}
                     convertPrice={convertPrice}
                   >
-                    <div className="product_wrapper relative mb-4 h-[253px] overflow-hidden rounded   xl:h-[344px] xl:w-[304px] mdOnly:h-[160px] mdOnly:w-[193px]">
+                    <div className="relative mb-4 h-[253px] overflow-hidden rounded xl:h-[344px] xl:w-[304px] mdOnly:h-[160px] mdOnly:w-[193px]">
                       <Image
                         fill
                         src={product.productpicture.url}
