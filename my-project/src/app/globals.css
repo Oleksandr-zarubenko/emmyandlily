@@ -230,22 +230,7 @@ section {
   background-position: 8px 50%; /* Змініть за потреби */
   padding-left: 38px; /* Змініть за потреби (20px іконка + 12px відступ) */
 }
-/* video {
-  object-fit: cover;
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-} */
-.video-wrapper {
-  position: relative;
-}
 
-.text-overlay {
-  background-color: rgba(0, 0, 0, 0.5); /* прозорий чорний фон */
-  padding: 20px;
-}
 .shadow-custom:hover {
   box-shadow: 0px 3px 30px 0px #fbfbfb;
 }
