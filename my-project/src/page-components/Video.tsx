@@ -37,13 +37,13 @@ const Video = ({ data }: { data: any }) => {
             </p>
           </li>
           <li className="mx-auto text-center">
-            <Dog className="mx-auto mb-4" />
+            <Dog className="mx-auto mb-4 h-12 w-12 xl:h-16 xl:w-16" />
             <p className="mx-auto text-t16 leading-6 xl:text-t18">
               {data.videosection.text3}
             </p>
           </li>
           <li className="mx-auto text-center">
-            <Earth className="mx-auto mb-5" />
+            <Earth className="mx-auto mb-4 h-12 w-12 xl:h-16 xl:w-16" />
             <p className="mx-auto text-t16 leading-6 xl:text-t18">
               {data.videosection.text4}
             </p>

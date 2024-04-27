@@ -1,5 +1,4 @@
 import { AboutUs } from "@/page-components/AboutUs";
-import { AboutUsSlider } from "@/page-components/AboutUsSlider";
 import { Contacts } from "@/page-components/Contacts";
 import { HeroSection } from "@/page-components/HeroSection";
 import { ProductsSection } from "@/page-components/ProductsSection";
@@ -29,25 +28,18 @@ const queryEN = gql`
     }
     aboutUsSection {
       heading
-      text
-      image {
+      text3
+      text2
+      text1
+      image3 {
         alt
-        author
         url
       }
-    }
-    aboutUsSlider {
-      text
-      heading
-      name
-      name2
-      name3
-      text2
-      text3
-      text4
-      text5
-      text6
-      sliderimages {
+      image2 {
+        alt
+        url
+      }
+      image1 {
         alt
         url
       }
@@ -118,27 +110,18 @@ const queryUA = gql`
     }
     aboutUsSection(locale: uk) {
       heading
-      text
-
-      image {
+      text3
+      text2
+      text1
+      image3 {
         alt
-        author
         url
       }
-    }
-    aboutUsSlider(locale: uk) {
-      text
-
-      text2
-      text3
-      text4
-      text5
-      text6
-      name
-      name2
-      name3
-      heading
-      sliderimages {
+      image2 {
+        alt
+        url
+      }
+      image1 {
         alt
         url
       }
@@ -241,9 +224,7 @@ export default async function Home({
       <Video data={data} />
       <FreeDelivery />
       <ProductsSection data={data} lang={lang} />
-      {/* <AboutUs data={data} /> */}
-
-      <AboutUsSlider data={data} />
+      <AboutUs data={data} />
       <Contacts data={data} />
     </div>
   );
