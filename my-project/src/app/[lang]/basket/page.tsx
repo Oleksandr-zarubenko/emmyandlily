@@ -55,6 +55,9 @@ delete
     }
     discount
     }
+     promocod {
+    promo
+  }
   }
 `;
 
@@ -109,6 +112,9 @@ payment
     }
     discount
     }
+     promocod(locale: uk) {
+    promo
+  }
   }
 `;
 

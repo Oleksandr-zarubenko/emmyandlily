@@ -8,6 +8,7 @@ import { BurgerCross } from "./icons/BurgerCross";
 import cn from "classnames";
 import { PathModalXl } from "./icons/PathModalXl";
 import { Bag } from "./icons/Bag";
+import CartModal from "./CartModal";
 import { useAddedToCart } from "@/components/context/addedToCart";
 
 export const ProductModal = ({
@@ -28,6 +29,8 @@ export const ProductModal = ({
   const en = locales[1]
   const { addedToCart, setAddedToCart } = useAddedToCart();
   const [isOpen, setIsOpen] = useState(false);
+  const [cartModalOpen, setCartModalOpen] = useState(false);
+  const [additionalModalOpen, setAdditionalModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<
     "components" | "composition" | "usage"
   >("components");
@@ -78,7 +81,10 @@ export const ProductModal = ({
   }, [isOpen]);
 
   const addToCart = (item: any) => {
+    setCartModalOpen(true); // Open the cart modal
 
+    // Open the additional modal after adding the item to the cart
+    setAdditionalModalOpen(true);
     const storedDataString = localStorage.getItem('storedData');
     const storedData = storedDataString ? JSON.parse(storedDataString) : [];
     const storedAddedToCart = localStorage.getItem('addedToCart');
@@ -108,6 +114,8 @@ export const ProductModal = ({
       [item.idCrm]: true,
     }));
     setAddedToCart(updatedAddedToCart);
+
+
   };
 
   useEffect(() => {
@@ -129,6 +137,8 @@ export const ProductModal = ({
         </span> */}
         {children}
       </button>
+      {/* {cartModalOpen && <CartModal setCartModalOpen={setCartModalOpen} />} */}
+      {additionalModalOpen && <CartModal onClose={() => setAdditionalModalOpen(false)} lang={lang} />}
       {isOpen && (
         <div
           className="fixed inset-0 z-30 flex h-dvh items-center justify-center overflow-y-auto bg-white/50 cursor-default"

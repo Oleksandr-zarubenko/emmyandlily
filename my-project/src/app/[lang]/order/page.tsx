@@ -76,6 +76,9 @@ order
       name
     }
   }
+    promocod {
+    promo
+  }
   }
 `;
 
@@ -149,6 +152,9 @@ order
        idD
       name
     }
+  }
+    promocod(locale: uk) {
+    promo
   }
   }
 `;

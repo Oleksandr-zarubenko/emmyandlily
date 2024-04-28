@@ -52,12 +52,20 @@ const YourOrder: React.FC<YourOrderProps> = ({
     const en = locales[1];
 
     const convertPrice = (price: any, rate: number): string => {
+
         const convertedPrice = parseFloat(price) / rate;
         return convertedPrice.toFixed(2);
     };
 
     const total = localStorage.getItem('totalPrice');
     const totalPrice = total ? parseInt(total) : 0;
+    const freeDelivery = (deliveryPrice: any) => {
+        if (totalPrice >= 1000) {
+            return lang === 'en' ? deliveryPrice : deliveryPrice = 0;
+        }
+        return deliveryPrice
+
+    }
     const allTotal = deliveryPrice + totalPrice;
     localStorage.setItem('allTotal', JSON.stringify(allTotal));
     return (
@@ -70,8 +78,8 @@ const YourOrder: React.FC<YourOrderProps> = ({
                 }
                 </p></li>
                 <li className='mb-2 flex justify-between'><p className='text-t16'> {data.order.delivery}</p> <p className='text-t18'>  {lang === en
-                    ? convertPrice(deliveryPrice, state.currencies.find((currency: any) => currency.id === "EUR")?.rate || 1) + ' €'
-                    : deliveryPrice + ' ₴'
+                    ? convertPrice(freeDelivery(deliveryPrice), state.currencies.find((currency: any) => currency.id === "EUR")?.rate || 1) + ' €'
+                    : freeDelivery(deliveryPrice) + ' ₴'
                 }</p></li>
                 <li className='mb-2 flex justify-between'><p className='text-t16'>{data.order.discount}</p> <p className='text-t18'>- 0  {lang === en ? '€' : '₴'}</p></li>
             </ul>

@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Markdown } from "@/components/Markdown";
+import { useRouter } from "next/navigation";
 
 import { BurgerCross } from "@/components/icons/BurgerCross";
 import { ChevronDown } from "@/components/icons/Chevron-down";
@@ -44,11 +45,19 @@ const Basket = ({ data, lang }: { data: any, lang: any }) => {
         }
     };
 
+
+    const router = useRouter();
+
+    const handleOrderClick = () => {
+
+        if (!isButtonDisabled) {
+
+            router.push(`/${lang}/order`);
+        }
+    };
     useEffect(() => {
         getData();
     }, []);
-
-
 
 
     const convertPrice = (price: any, rate: any): string => {
@@ -61,11 +70,95 @@ const Basket = ({ data, lang }: { data: any, lang: any }) => {
     const storedDatas = localStorage.getItem('storedData');
     const storedData = storedDatas ? JSON.parse(storedDatas) : [];
     const [tovar, setTovar] = useState(storedData)
-    const [quantities, setQuantities] = useState<{ [productId: string]: number }>({});
+    const [quantities, setQuantities] = useState<{ [productId: string]: number }>(() => {
+        const storedQuantities = localStorage.getItem('quantities');
+        return storedQuantities ? JSON.parse(storedQuantities) : {};
+    });
+
+    const [totalPrice, setTotalPrice] = useState<number>(() => {
+        const storedTotalPrice = localStorage.getItem('totalPrice');
+        return storedTotalPrice ? parseFloat(storedTotalPrice) : 0;
+    });
+
+    const [promoCode, setPromoCode] = useState(() => {
+        const storedpromoCode = localStorage.getItem('promoCode');
+        return storedpromoCode || '';
+    });
+    const [isValid, setIsValid] = useState(() => {
+        const storedIsValid = localStorage.getItem('isValid');
+        return storedIsValid ? storedIsValid === 'true' : false;
+    });
+
+    const [isInputOpen, setIsInputOpen] = useState(() => {
+        const storedIsInputOpen = localStorage.getItem('isInputOpen');
+        return storedIsInputOpen ? storedIsInputOpen === 'true' : false;
+    });
+
+    const [isButtonClicked, setIsButtonClicked] = useState(() => {
+        const storedIsButtonClicked = localStorage.getItem('isButtonClicked');
+        return storedIsButtonClicked ? storedIsButtonClicked === 'true' : false;
+    });
+
+    const [discountAmount, setDiscountAmount] = useState(() => {
+        // Спробуємо отримати значення з localStorage, якщо воно там є
+        const storedValue = localStorage.getItem('discountAmount');
+        // Парсимо значення з localStorage або встановлюємо значення за замовчуванням (0)
+        return storedValue ? parseInt(storedValue, 10) : 0;
+    });
+
+    const [isPromoCodeValid, setIsPromoCodeValid] = useState(false);
+
+    useEffect(() => {
+        // localStorage.setItem('discountAmount', discountAmount.toString());
+
+        localStorage.setItem('promoCode', promoCode);
+        localStorage.setItem('quantities', JSON.stringify(quantities));
+        localStorage.setItem('totalPrice', totalPrice.toString());
+        localStorage.setItem('isInputOpen', isInputOpen.toString());
+        localStorage.setItem('isButtonClicked', isButtonClicked.toString());
+    }, [quantities, totalPrice, isValid, isInputOpen, isButtonClicked, promoCode]);
+
+    const handlePromoCodeChange = (event: any) => {
+        const inputPromoCode = event.target.value;
+        setPromoCode(inputPromoCode);
 
 
-    const [totalPrice, setTotalPrice] = useState(0);
+        const isValidPromo = inputPromoCode.trim() === data.promocod.promo;
 
+
+        if (isValidPromo) {
+            setIsValid(true);
+            setIsButtonClicked(true);
+        } else {
+            setIsValid(false);
+            setIsButtonClicked(false);
+        }
+    };
+    const handleVerifyPromoCode = () => {
+        const inputField = document.getElementById("promoCodeInput");
+        if (promoCode.trim() === data.promocod.promo) {
+            setIsPromoCodeValid(true);
+            if (inputField) {
+                inputField.classList.add("bg-white");
+            }
+            const discountedPrice = totalPrice * 0.85;
+            setDiscountAmount(totalPrice * 0.15);
+            setTotalPrice(discountedPrice);
+        } else {
+
+            if (inputField) {
+                inputField.classList.add("bg-[#C61004]/[.06]");
+            }
+            setIsPromoCodeValid(false);
+            setDiscountAmount(0);
+
+        }
+    };
+
+
+    const handleToggleInput = () => {
+        setIsInputOpen(!isInputOpen);
+    };
 
 
     const updateLocalStorage = () => {
@@ -89,9 +182,12 @@ const Basket = ({ data, lang }: { data: any, lang: any }) => {
 
     }, [quantities, tovar]);
 
-    const dropdownText = `
+
+
+
+    const dropdownText = ` 
     
-   <ul style="width: 662px; list-style-type: disc; font-size: 18px;">
+    <ul style="width: 662px; list-style-type: disc; font-size: 18px;">
                 <li style="margin:0 0 20px 0">Нова пошта (Курьєр) - При сумі замовлення до 600 грн вартість доставки 40 грн, при сумі замовлення вище 600 грн доставка безкоштовна.</li>
                 <li>Нова пошта (Поштомат) - При сумі замовлення до 600 грн вартість доставки 40 грн, при сумі замовлення вище 600 грн доставка безкоштовна.</li>
 
@@ -108,7 +204,7 @@ const Basket = ({ data, lang }: { data: any, lang: any }) => {
     const dropdownText3 = `
     
    <ul style="width: 662px; list-style-type: disc; font-size: 18px;">
-                <li style="margin:0 0 20px 0">Якщо товар не відкритий, а цілісність упаковки не порушена, протягом 14 днів з моменту придбання ви можете повернути продукт. </li>
+                <li style="margin:0 0 20px 0">Якщо товар не відкритий, а цілісність упаковки не порушена, протягом 14 днів з моменту придбання ви можете повернути продукт. </li>
                 <li>З усіх питань Ви можете зв'язатися з нами за номером +38 067 245 14 52</li>
 
             </ul>
@@ -156,7 +252,7 @@ const Basket = ({ data, lang }: { data: any, lang: any }) => {
 
 
 
-
+    const isButtonDisabled = totalPrice === 0;
     return (
         <section className='container py-40'>
             <h1 className='text-t32 tracking-wider mb-10'>
@@ -232,7 +328,7 @@ const Basket = ({ data, lang }: { data: any, lang: any }) => {
                                     </div>
                                 </td>
 
-                                <td className="py-2 text-center leading-5 text-[#333333] text-t18"> {lang === 'en'
+                                <td className="py-2 text-center leading-5 text-[#333333] text-t18">  {lang === 'en'
                                     ? (state && state.products.find((items: any) => items.id === item.id)
                                         ? convertPrice(
                                             (parseFloat(state.products.find((items: any) => items.id === item.id)!.price) || 0) * (quantities[item.id] || 1),
@@ -259,12 +355,50 @@ const Basket = ({ data, lang }: { data: any, lang: any }) => {
                     ))}
                 </table>
             </div>
-            <div className="justify-end flex mb-10">
+            <div className="text-end mb-8">
 
-                <p className="text-t18 text-black">{lang === en ? convertPrice(totalPrice, state.currencies.find((currency: any) => currency.id === "EUR")?.rate || 1) : totalPrice} {lang === en ? '€' : '₴'}</p>
+                <button className="ml-auto mb-6 text-black w-[225px] text-t16 flex justify-between" onClick={handleToggleInput}>Додати промокод    <BurgerCross className="w-4 h-4 origin-center rotate-45" /></button>
+
+                {isInputOpen && (
+                    <div className="relative">
+                        <input
+                            id="promoCodeInput"
+                            type="text"
+                            value={promoCode}
+                            onChange={handlePromoCodeChange}
+                            placeholder="Введіть промокод"
+                            className={`text-t16   p-2 border border-gray-300 w-[225px] }`}
+                        />
+                        <button
+
+                            onClick={handleVerifyPromoCode}
+                            disabled={isPromoCodeValid}
+                            className="absolute top-0 right-0 w-10  px-2 mt-[3px] py-2 border-none bg-black text-white"
+                        >
+                            {isPromoCodeValid ? '✔' : '➜'}
+                        </button>
+                    </div>
+                )}
             </div>
+            <div className="ml-auto mb-8 flex w-52 justify-between text-t16" >
+                <p>
+                    Знижка</p> <p>- {lang === en ? convertPrice(discountAmount, state.currencies.find((currency: any) => currency.id === "EUR")?.rate || 1) : discountAmount} {lang === en ? '€' : '₴'}
+                </p>
+            </div>
+            <div className="ml-auto flex w-52 justify-between text-t16 mb-10">
+                <p>
+                    {data.basket.total}</p> <p>{lang === en ? convertPrice(totalPrice, state.currencies.find((currency: any) => currency.id === "EUR")?.rate || 1) : totalPrice} {lang === en ? '€' : '₴'}
+                </p>
+
+            </div>
+
             <div className="justify-end flex mb-28">
-                <Link href={`/${lang}/order`} className={`bg-black px-6 py-4 text-white rounded text-t18 ml-auto `}> {data.basket.toOrder}</Link>
+                <button
+                    onClick={handleOrderClick}
+                    className={`bg-black px-6 py-4 text-white rounded text-t18 ml-auto ${isButtonDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                >
+                    {data.basket.toOrder}
+                </button>
             </div>
             <div>
                 <h2 className="text-t32 -tracking-5 mb-10"> {data.basket.additionalInformation}</h2>

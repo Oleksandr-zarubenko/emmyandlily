@@ -51,6 +51,7 @@ function extractProducts(xmlData: any) {
     const extractedProducts = offers.map((offer: any) => ({
       id: offer.$.id,
       price: offer.price[0],
+      available: offer.$.available,
     }));
     return extractedProducts;
   } else {

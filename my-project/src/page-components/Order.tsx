@@ -10,6 +10,13 @@ const Order = ({ data, lang }: any) => {
 
     const [storedData, setStoredData] = useState(JSON.parse(localStorage.getItem('storedData') || '[]'));
     const [quantities, setQuantities] = useState(JSON.parse(localStorage.getItem('quantities') || '{}'));
+    const [apiPromocod, setapipromoCod] = useState(() => {
+        // Отримання даних з локального сховища
+        const storedData = localStorage.getItem('promoCode');
+        // Перевірка наявності даних у локальному сховищі
+        return storedData || '';
+    });
+    console.log(apiPromocod)
 
     const [productName, setProductName] = useState(storedData);
 
@@ -158,6 +165,8 @@ const Order = ({ data, lang }: any) => {
         return storedPaymentMonobank ? JSON.parse(storedPaymentMonobank) : false;
     });
 
+
+
     const total = localStorage.getItem('allTotal');
     const totalPrice = total ? parseInt(total) : 0;
 
@@ -257,6 +266,7 @@ const Order = ({ data, lang }: any) => {
                 selectedOption: translatedOption,
                 recipientData,
                 city,
+                apiPromocod,
                 numnp,
                 numposhtmat,
                 street,
@@ -372,6 +382,7 @@ const Order = ({ data, lang }: any) => {
 
     const switchToPaymentTab = async () => {
         makeApiCall()
+        localStorage.clear();
         if (deliveryCompleted && paymentMonobank === true) {
             try {
                 const response = await fetch("https://api.monobank.ua/api/merchant/invoice/create", {
@@ -404,9 +415,12 @@ const Order = ({ data, lang }: any) => {
                     const jsonData = await response.json();
                     console.log('Дані успішно відправлено:', jsonData);
                     window.open(jsonData.pageUrl);
+
                 } else {
                     console.error('Помилка при відправці даних:', response.statusText);
                 }
+
+
             } catch (error) {
                 console.error('Помилка:', error);
             }
@@ -436,8 +450,6 @@ const Order = ({ data, lang }: any) => {
             return;
         }
 
-
-
         if (selectedOption === 'np-courier') {
             if (street.trim() === '' || houseNumber.trim() === '') {
                 alert('Будь ласка, заповніть обов\'язкове поле Адреса');
@@ -460,7 +472,7 @@ const Order = ({ data, lang }: any) => {
             }
         }
 
-        // Додаткові перевірки та логіка
+
 
         if (selectedOption) {
             setPaymentActive(true);

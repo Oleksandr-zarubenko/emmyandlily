@@ -15,7 +15,31 @@ import Video from "@/page-components/Video";
 
 
 
-
+// aboutUsSection {
+//   heading
+//   text
+//   image {
+//     alt
+//     author
+//     url
+//   }
+// }
+// aboutUsSlider {
+//   text
+//   heading
+//   name
+//      name2
+//         name3
+//     text2
+//   text3
+//   text4
+//   text5
+//   text6
+//   sliderimages {
+//     alt
+//     url
+//   }
+// }
 const queryEN = gql`
 
   {
@@ -32,31 +56,7 @@ const queryEN = gql`
     text3
     text4
   }
-    aboutUsSection {
-      heading
-      text
-      image {
-        alt
-        author
-        url
-      }
-    }
-    aboutUsSlider {
-      text
-      heading
-      name
-         name2
-            name3
-        text2
-      text3
-      text4
-      text5
-      text6
-      sliderimages {
-        alt
-        url
-      }
-    }
+  
     contactssection {
       heading
       text
@@ -73,7 +73,7 @@ const queryEN = gql`
       text
     }
     allProducts {
-  
+    idAvailable
       heading
       description
       id
@@ -124,33 +124,7 @@ const queryUA = gql`
     text4
    
   }
-    aboutUsSection(locale: uk) {
-      heading
-      text
     
-      image {
-        alt
-        author
-        url
-      }
-    }
-    aboutUsSlider(locale: uk) {
-      text
-
-    text2
-    text3
-    text4
-      text5
-    text6
-        name
-         name2
-            name3
-      heading
-      sliderimages {
-        alt
-        url
-      }
-    }
     contactssection(locale: uk) {
       heading
       text
@@ -167,7 +141,7 @@ const queryUA = gql`
       text
     }
     allProducts(locale: uk) {
-   
+     idAvailable
       heading
       description
       id
@@ -200,6 +174,35 @@ const queryUA = gql`
     }
   }
 `;
+
+
+// aboutUsSection(locale: uk) {
+//   heading
+//   text
+
+//       image {
+//     alt
+//     author
+//     url
+//   }
+// }
+// aboutUsSlider(locale: uk) {
+//   text
+
+//   text2
+//   text3
+//   text4
+//   text5
+//   text6
+//   name
+//   name2
+//   name3
+//   heading
+//       sliderimages {
+//     alt
+//     url
+//   }
+// }
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -256,8 +259,8 @@ export default async function Home({
       <FreeDelivery />
       <ProductsSection data={data} lang={lang} />
       {/* <AboutUs data={data} /> */}
-
-      <AboutUsSlider data={data} />
+      {/* 
+      <AboutUsSlider data={data} /> */}
       <Contacts data={data} />
 
 
