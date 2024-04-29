@@ -7,6 +7,7 @@ import { Paw } from "@/components/icons/Paw";
 import Image from "next/image";
 import { ProductModal } from "@/components/ProductModal";
 import { Locale } from "@/i18n.config";
+import { stat } from 'fs';
 
 export const ProductsSection = ({
   data,
@@ -15,10 +16,9 @@ export const ProductsSection = ({
   data: any;
   lang: Locale;
 }) => {
-  const [state, setState] = useState<{
-    products: { id: string; price: string }[];
-    currencies: { id: string; rate: number }[];
-  }>({ products: [], currencies: [] });
+
+  const [state, setState] = useState<{ products: { id: string; price: string; available: string }[], currencies: { id: string; rate: number }[] }>({ products: [], currencies: [] });
+
 
   const getData = async () => {
     try {
@@ -43,6 +43,11 @@ export const ProductsSection = ({
     const convertedPrice = parseFloat(price) / rate;
     return convertedPrice.toFixed(2);
   };
+  const availableProducts = data.allProducts.filter((product: any) => {
+    const correspondingProduct = state.products.find((p) => p.id === product.idAvailable);
+    return correspondingProduct && correspondingProduct.available === 'true';
+  });
+
 
   return (
     <section className="bg-black text-center xl:py-16" id="products">
@@ -57,28 +62,32 @@ export const ProductsSection = ({
         {data.productsSection.text && (
           <Markdown text={data.productsSection.text} />
         )}
-
-        <div className="grid gap-4 rounded  bg-black text-left md:grid-cols-3 md:gap-6 smOnly:grid-rows-3 ">
-          {data.allProducts.length > 0 &&
-            [...data.allProducts]
+        <div className="grid gap-4 rounded bg-black text-left md:grid-cols-3 md:gap-6 smOnly:grid-rows-3 ">
+          {availableProducts.length > 0 &&
+            availableProducts
               .sort((a: any, b: any) => a.order - b.order)
               .map((product: any) => (
                 <article
                   key={product.id}
                   className="mx-auto w-[304px] cursor-pointer shadow-custom mdOnly:w-[193px]"
                 >
+
+                  <ProductModal product={product} lang={lang} state={state} convertPrice={convertPrice}>
+                    <div className="product_wrapper relative mb-4 h-[253px] overflow-hidden rounded xl:h-[344px] xl:w-[304px] mdOnly:h-[160px] mdOnly:w-[193px]">
+                      {/* 
                   <ProductModal
                     product={product}
                     lang={lang}
                     state={state}
                     convertPrice={convertPrice}
                   >
-                    <div className="relative mb-4 h-[253px] overflow-hidden rounded xl:h-[344px] xl:w-[304px] mdOnly:h-[160px] mdOnly:w-[193px]">
+                    <div className="relative mb-4 h-[253px] overflow-hidden rounded xl:h-[344px] xl:w-[304px] mdOnly:h-[160px] mdOnly:w-[193px]"> */}
+
                       <Image
                         fill
                         src={product.productpicture.url}
                         alt={product.productpicture.alt || "Emmy and Lili"}
-                        className="product h-[253px] w-[304px]  object-cover xl:h-[344px] mdOnly:h-[160px] mdOnly:w-[193px]"
+                        className="product h-[253px] w-[304px] object-cover xl:h-[344px] mdOnly:h-[160px] mdOnly:w-[193px]"
                         sizes="(max-width: 768px) 90vw, 305px"
                       />
                     </div>
@@ -91,7 +100,6 @@ export const ProductsSection = ({
                         text={product.description}
                         className="mb-4 !text-t14 text-[#FBFBFB] opacity-80 md:!text-t12"
                       />
-
                       <ul className="mb-4 flex">
                         {product.capacity &&
                           product.capacity &&
@@ -104,79 +112,55 @@ export const ProductsSection = ({
                             </li>
                           ))}
                       </ul>
-
                       {product.capacity && product.capacity[0] && (
                         <p className="text-t18 leading-6 text-white">
-                          від{" "}
-                          {lang === en
-                            ? state &&
-                              state.products.find(
-                                (item) => item.id === product.capacity[0].idCrm
-                              )
-                              ? convertPrice(
-                                  state.products.find(
-                                    (item) =>
-                                      item.id === product.capacity[0].idCrm
-                                  )!.price,
-                                  state.currencies.find(
-                                    (currency) => currency.id === "EUR"
-                                  )?.rate || 1
-                                )
-                              : "N/A"
-                            : state &&
-                                state.products.find(
-                                  (item) =>
-                                    item.id === product.capacity[0].idCrm
-                                )
-                              ? state.products.find(
-                                  (item) =>
-                                    item.id === product.capacity[0].idCrm
-                                )!.price
-                              : "N/A"}{" "}
-                          {lang === en ? "€" : "₴"}
-                        </p>
+
+                          від {
+                            lang === en
+                              ? state && state.products.find((item) => item.id === product.capacity[0].idCrm)
+                                ? convertPrice(state.products.find((item) => item.id === product.capacity[0].idCrm)!.price, state.currencies.find((currency) => currency.id === "EUR")?.rate || 1)
+                                : 'N/A'
+                              : state && state.products.find((item) => item.id === product.capacity[0].idCrm)
+                                ? state.products.find((item) => item.id === product.capacity[0].idCrm)!.price
+                                : 'N/A'
+                          } {lang === en ? '€' : '₴'}
+
+                        </p >
                       )}
-                    </div>
-                  </ProductModal>
-                </article>
+                    </div >
+                  </ProductModal >
+                </article >
               ))}
-        </div>
-      </div>
-    </section>
+        </div >
+      </div >
+    </section >
   );
 };
-{
-  /* <div className="grid gap-4 text-left md:grid-cols-3 md:gap-6 xl:gap-0 smOnly:grid-rows-3">
-  {data.allProducts.length > 0 &&
-    [...data.allProducts]
-      .sort((a: any, b: any) => a.order - b.order)
-      .map((product: any) => (
-        <article
-          key={product.id}
-          className="mx-auto w-[304px] mdOnly:w-[193px]"
-        >
-          <div className="relative mb-5">
-            <div className="product_wrapper relative h-[253px] overflow-hidden rounded-3xl xl:w-[304px] mdOnly:h-[160px] mdOnly:w-[193px]">
-              <Image
-                fill
-                src={product.productpicture.url}
-                alt={product.productpicture.alt || "Emmy and Lili"}
-                className="product h-[253px] w-[304px] object-cover mdOnly:h-[160px] mdOnly:w-[193px]"
-                sizes="(max-width: 768px) 90vw, 305px"
-              />
-              <Path />
-              <PathMd />
-              <PathBorder className="absolute left-0 top-0 h-full w-full mdOnly:hidden" />
-                      <PathBorderMd className="absolute left-0 top-0 hidden h-full w-full mdOnly:block" />
-            </div>
-            <ProductModal product={product} productT={productT} />
-          </div>
-          <Markdown text={product.heading} className="mb-3" />
-          <Markdown
-            text={product.description}
-            className="!text-t16 md:!text-t12"
-          />
-        </article>
-      ))}
-</div> */
-}
+
+// від{" "}
+// {lang === en
+//   ? state &&
+//     state.products.find(
+//       (item) => item.id === product.capacity[0].idCrm
+//     )
+//     ? convertPrice(
+//         state.products.find(
+//           (item) =>
+//             item.id === product.capacity[0].idCrm
+//         )!.price,
+//         state.currencies.find(
+//           (currency) => currency.id === "EUR"
+//         )?.rate || 1
+//       )
+//     : "N/A"
+//   : state &&
+//       state.products.find(
+//         (item) =>
+//           item.id === product.capacity[0].idCrm
+//       )
+//     ? state.products.find(
+//         (item) =>
+//           item.id === product.capacity[0].idCrm
+//       )!.price
+//     : "N/A"}{" "}
+// {lang === en ? "€" : "₴"}

@@ -53,6 +53,9 @@ const queryEN = gql`
       }
       discount
     }
+     promocod {
+    promo
+  }
   }
 `;
 
@@ -107,6 +110,9 @@ const queryUA = gql`
       }
       discount
     }
+     promocod(locale: uk) {
+    promo
+  }
   }
 `;
 

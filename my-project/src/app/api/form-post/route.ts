@@ -28,6 +28,7 @@ export async function POST(req: Request) {
       shipping_address: rawBody.street,
       comment: rawBody.recipientData,
       sajt: "",
+      promokod: rawBody.apiPromocod,
       externalId: "",
       organizationId: "",
       stockId: "",

@@ -11,6 +11,35 @@ import { Locale } from "../../i18n.config";
 
 import Video from "@/page-components/Video";
 
+
+
+
+// aboutUsSection {
+//   heading
+//   text
+//   image {
+//     alt
+//     author
+//     url
+//   }
+// }
+// aboutUsSlider {
+//   text
+//   heading
+//   name
+//      name2
+//         name3
+//     text2
+//   text3
+//   text4
+//   text5
+//   text6
+//   sliderimages {
+//     alt
+//     url
+//   }
+// }
+
 const queryEN = gql`
   {
     mainSection {
@@ -20,6 +49,9 @@ const queryEN = gql`
       btn
     }
     videosection {
+
+  
+
       heading
       text1
       text2
@@ -44,6 +76,7 @@ const queryEN = gql`
         url
       }
     }
+
     contactssection {
       heading
       text
@@ -60,6 +93,9 @@ const queryEN = gql`
       text
     }
     allProducts {
+
+    idAvailable
+
       heading
       description
       id
@@ -126,6 +162,7 @@ const queryUA = gql`
         url
       }
     }
+
     contactssection(locale: uk) {
       heading
       text
@@ -142,6 +179,9 @@ const queryUA = gql`
       text
     }
     allProducts(locale: uk) {
+
+     idAvailable
+
       heading
       description
       id
@@ -174,6 +214,35 @@ const queryUA = gql`
     }
   }
 `;
+
+
+// aboutUsSection(locale: uk) {
+//   heading
+//   text
+
+//       image {
+//     alt
+//     author
+//     url
+//   }
+// }
+// aboutUsSlider(locale: uk) {
+//   text
+
+//   text2
+//   text3
+//   text4
+//   text5
+//   text6
+//   name
+//   name2
+//   name3
+//   heading
+//       sliderimages {
+//     alt
+//     url
+//   }
+// }
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -224,7 +293,13 @@ export default async function Home({
       <Video data={data} />
       <FreeDelivery />
       <ProductsSection data={data} lang={lang} />
+
+      {/* <AboutUs data={data} /> */}
+      {/* 
+      <AboutUsSlider data={data} /> */}
+
       <AboutUs data={data} />
+
       <Contacts data={data} />
     </div>
   );

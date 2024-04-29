@@ -7,6 +7,13 @@ import Image from "next/image";
 import { MobileMenu } from "../MobileMenu";
 
 const Header = ({ lang, data }: any) => {
+
+  // const [storedDataLength, setStoredDataLength] = useState(0);
+  // const storedData = JSON.parse(localStorage.getItem('storedData') || '[]');
+
+  // useEffect(() => {
+  //     setStoredDataLength(storedData.length);
+  // }, [storedData]);
   return (
     <header className="absolute inset-x-0 z-30 border-b-2 border-black py-2 xl:px-20 xl:pb-4 xl:pt-6">
       <div className="container flex flex-row items-center justify-between xl:hidden">
@@ -60,7 +67,7 @@ const Header = ({ lang, data }: any) => {
         </nav>
       </div>
     </header>
-  );
-};
+  )
+}
 
 export default Header;

@@ -73,6 +73,12 @@ const queryEN = gql`
         name
       }
     }
+
+  
+    promocod {
+    promo
+  }
+
   }
 `;
 
@@ -146,6 +152,12 @@ const queryUA = gql`
         name
       }
     }
+
+  
+    promocod(locale: uk) {
+    promo
+  }
+
   }
 `;
 export default async function OrderPage({
