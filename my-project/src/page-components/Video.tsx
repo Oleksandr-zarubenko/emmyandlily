@@ -1,29 +1,57 @@
-import { Formula } from "@/components/icons/Formula"
-import { Dog } from "@/components/icons/Dogvideo"
-import { Earth } from "@/components/icons/Earth"
+import { Formula } from "@/components/icons/Formula";
+import { Dog } from "@/components/icons/Dogvideo";
+import { Earth } from "@/components/icons/Earth";
 
 const Video = ({ data }: { data: any }) => {
-    return (
-        <section className='relative w-full  h-[779px] bg-black pb-24 pt-14' >
-            <div className="video-wrapper">
-                <video className="w-full h-[623px] object-cover" autoPlay muted loop preload="none">
-                    <source src="https://res.cloudinary.com/dg6fnnbpd/video/upload/v1711999849/xk7tihwmrpfrglqk3ekl.mp4" type="video/mp4" />
-                </video>
-                <div className=" text-overlay absolute top-0  left-0 w-full h-full flex flex-col justify-center items-center text-white z-10">
-                    <h1 className="text-t53 mb-16 ">{data.videosection.heading}</h1>
-                    <ul className="container grid grid-cols-2 gap-4  mt-4 text-t18">
-                        <li className="text-center mb-14  w-[188px] mx-auto"><Formula className="mx-auto mb-4" /> <p className="w-[81px] leading-6 text-t18 mx-auto ">{data.videosection.text1}</p> </li>
-                        <li className="text-center mb-14  w-[234px] mx-auto"> <p className="text-t53 mx-auto mb-4">100+</p> <p className="w-[224x] leading-6 text-t18 mx-auto">{data.videosection.text2}</p>
-                        </li>
-                        <li className="text-center w-[218px] mx-auto"><Dog className="mb-4 mx-auto" /> <p className="w-[198x] leading-6 text-t18 mx-auto">{data.videosection.text3}</p> </li>
-                        <li className="text-center w-[224px] mx-auto">< Earth className="mx-auto mb-5" /><p className="w-[172px] leading-6 text-t18 mx-auto">{data.videosection.text4}</p></li>
-                    </ul>
-                </div>
-            </div>
-        </section>
+  return (
+    <section className="relative w-full bg-black py-24">
+      <div className="absolute bottom-24 left-0 right-0 top-24">
+        <video
+          className="h-full w-full object-cover"
+          autoPlay
+          muted
+          loop
+          preload="none"
+        >
+          <source
+            src="https://res.cloudinary.com/dg6fnnbpd/video/upload/v1711999849/xk7tihwmrpfrglqk3ekl.mp4"
+            type="video/mp4"
+          />
+        </video>
+      </div>
+      <div className="bg-video_overlay relative z-10 flex h-full w-full flex-col items-center justify-center text-center text-white">
+        <h2 className="mb-10 mt-8 text-t32 xl:mb-16 xl:mt-[108px] xl:text-t53 notXl:max-w-[340px]">
+          {data.videosection.heading}
+        </h2>
+        <ul className="container mb-10 mt-4 grid grid-cols-1 gap-6 text-t18 xl:grid-cols-2 xl:gap-x-[180px] xl:gap-y-14 xl:px-[224px]">
+          <li className="mx-auto text-center">
+            <Formula className="mx-auto mb-4 h-12 w-12 xl:h-16 xl:w-16" />
+            <p className="mx-auto text-t16 leading-6 xl:text-t18 ">
+              {data.videosection.text1}
+            </p>
+          </li>
+          <li className="mx-auto text-center">
+            <p className="mx-auto mb-4 font-abril text-t53">100+</p>
+            <p className="mx-auto text-t16 leading-6 xl:text-t18">
+              {data.videosection.text2}
+            </p>
+          </li>
+          <li className="mx-auto text-center">
+            <Dog className="mx-auto mb-4 h-12 w-12 xl:h-16 xl:w-16" />
+            <p className="mx-auto text-t16 leading-6 xl:text-t18">
+              {data.videosection.text3}
+            </p>
+          </li>
+          <li className="mx-auto text-center">
+            <Earth className="mx-auto mb-4 h-12 w-12 xl:h-16 xl:w-16" />
+            <p className="mx-auto text-t16 leading-6 xl:text-t18">
+              {data.videosection.text4}
+            </p>
+          </li>
+        </ul>
+      </div>
+    </section>
+  );
+};
 
-
-    )
-}
-
-export default Video
+export default Video;

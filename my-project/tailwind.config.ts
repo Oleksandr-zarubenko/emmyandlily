@@ -25,12 +25,19 @@ const config: Config = {
         grey: "#292d2d",
         primary: "#fad5a2",
         primary_T: "#FFF0ED",
-        dark: "#FFEACB",
-        black: "#000",
+        dark: "#33333399",
+        black: "#0B0605",
         white: "#FBFBFB",
         bg_primary: "#FF8667",
         bg_secondary: "#333",
         border: "#DCDCDC",
+        bg_transparent: "rgba(51, 51, 51, 0.60)",
+        video_overlay: "rgba(11, 6, 5, 0.60)",
+      },
+      fontFamily: {
+        abril: ["var(--font-abril)"],
+        sans: ["var(--font-libre)"],
+        playfair: "Georgia",
       },
       boxShadow: {
         custom: "0px 3px 30px 0px rgba(140, 140, 140, 0.10)",
@@ -91,6 +98,7 @@ const config: Config = {
             lineHeight: "38.4px",
           },
         ],
+        t32n: "32px",
         t40: [
           "40px",
           {

@@ -10,16 +10,21 @@ import { H3 } from "./H3";
 interface InterfaceMarkdown {
   text: string;
   className?: string;
+  paw?: boolean;
 }
 
-export const Markdown: FC<InterfaceMarkdown> = ({ text, className }) => {
+export const Markdown: FC<InterfaceMarkdown> = ({ text, className, paw }) => {
   return (
     <ReactMarkdown
       remarkPlugins={[remarkGfm]}
       components={{
         p: (props) => <P className={className}>{props.children}</P>,
         h1: (props) => <H1 className={className}>{props.children}</H1>,
-        h2: (props) => <H2 className={className}>{props.children}</H2>,
+        h2: (props) => (
+          <H2 className={className} paw={paw}>
+            {props.children}
+          </H2>
+        ),
         h3: (props) => <H3 className={className}>{props.children}</H3>,
         li: (props) => <li className={className}>{props.children}</li>,
         ul: (props) => <ul className={className}>{props.children}</ul>,

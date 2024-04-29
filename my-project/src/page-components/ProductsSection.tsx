@@ -1,5 +1,5 @@
-"use client"
-import { useEffect, useState } from 'react';
+"use client";
+import { useEffect, useState } from "react";
 
 import { Markdown } from "@/components/Markdown";
 import { i18n } from "@/i18n.config";
@@ -9,7 +9,6 @@ import { ProductModal } from "@/components/ProductModal";
 import { Locale } from "@/i18n.config";
 import { stat } from 'fs';
 
-
 export const ProductsSection = ({
   data,
   lang,
@@ -17,6 +16,7 @@ export const ProductsSection = ({
   data: any;
   lang: Locale;
 }) => {
+
   const [state, setState] = useState<{ products: { id: string; price: string; available: string }[], currencies: { id: string; rate: number }[] }>({ products: [], currencies: [] });
 
 
@@ -36,7 +36,6 @@ export const ProductsSection = ({
     getData();
   }, []);
 
-
   const locales = i18n.locales;
   const en = locales[1];
 
@@ -48,7 +47,7 @@ export const ProductsSection = ({
     const correspondingProduct = state.products.find((p) => p.id === product.idAvailable);
     return correspondingProduct && correspondingProduct.available === 'true';
   });
-  console.log(state)
+
 
   return (
     <section className="bg-black text-center xl:py-16" id="products">
@@ -72,8 +71,18 @@ export const ProductsSection = ({
                   key={product.id}
                   className="mx-auto w-[304px] cursor-pointer shadow-custom mdOnly:w-[193px]"
                 >
+
                   <ProductModal product={product} lang={lang} state={state} convertPrice={convertPrice}>
                     <div className="product_wrapper relative mb-4 h-[253px] overflow-hidden rounded xl:h-[344px] xl:w-[304px] mdOnly:h-[160px] mdOnly:w-[193px]">
+                      {/* 
+                  <ProductModal
+                    product={product}
+                    lang={lang}
+                    state={state}
+                    convertPrice={convertPrice}
+                  >
+                    <div className="relative mb-4 h-[253px] overflow-hidden rounded xl:h-[344px] xl:w-[304px] mdOnly:h-[160px] mdOnly:w-[193px]"> */}
+
                       <Image
                         fill
                         src={product.productpicture.url}
@@ -105,21 +114,53 @@ export const ProductsSection = ({
                       </ul>
                       {product.capacity && product.capacity[0] && (
                         <p className="text-t18 leading-6 text-white">
-                          від {lang === en
-                            ? state && state.products.find((item) => item.id === product.capacity[0].idCrm)
-                              ? convertPrice(state.products.find((item) => item.id === product.capacity[0].idCrm)!.price, state.currencies.find((currency) => currency.id === "EUR")?.rate || 1)
-                              : 'N/A'
-                            : state && state.products.find((item) => item.id === product.capacity[0].idCrm)
-                              ? state.products.find((item) => item.id === product.capacity[0].idCrm)!.price
-                              : 'N/A'} {lang === en ? '€' : '₴'}
-                        </p>
+
+                          від {
+                            lang === en
+                              ? state && state.products.find((item) => item.id === product.capacity[0].idCrm)
+                                ? convertPrice(state.products.find((item) => item.id === product.capacity[0].idCrm)!.price, state.currencies.find((currency) => currency.id === "EUR")?.rate || 1)
+                                : 'N/A'
+                              : state && state.products.find((item) => item.id === product.capacity[0].idCrm)
+                                ? state.products.find((item) => item.id === product.capacity[0].idCrm)!.price
+                                : 'N/A'
+                          } {lang === en ? '€' : '₴'}
+
+                        </p >
                       )}
-                    </div>
-                  </ProductModal>
-                </article>
+                    </div >
+                  </ProductModal >
+                </article >
               ))}
-        </div>
-      </div>
-    </section>
+        </div >
+      </div >
+    </section >
   );
 };
+
+// від{" "}
+// {lang === en
+//   ? state &&
+//     state.products.find(
+//       (item) => item.id === product.capacity[0].idCrm
+//     )
+//     ? convertPrice(
+//         state.products.find(
+//           (item) =>
+//             item.id === product.capacity[0].idCrm
+//         )!.price,
+//         state.currencies.find(
+//           (currency) => currency.id === "EUR"
+//         )?.rate || 1
+//       )
+//     : "N/A"
+//   : state &&
+//       state.products.find(
+//         (item) =>
+//           item.id === product.capacity[0].idCrm
+//       )
+//     ? state.products.find(
+//         (item) =>
+//           item.id === product.capacity[0].idCrm
+//       )!.price
+//     : "N/A"}{" "}
+// {lang === en ? "€" : "₴"}

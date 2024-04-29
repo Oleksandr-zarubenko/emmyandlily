@@ -1,6 +1,4 @@
-
 import { AboutUs } from "@/page-components/AboutUs";
-import { AboutUsSlider } from "@/page-components/AboutUsSlider";
 import { Contacts } from "@/page-components/Contacts";
 import { HeroSection } from "@/page-components/HeroSection";
 import { ProductsSection } from "@/page-components/ProductsSection";
@@ -12,6 +10,7 @@ import { Metadata } from "next/types";
 import { Locale } from "../../i18n.config";
 
 import Video from "@/page-components/Video";
+
 
 
 
@@ -40,8 +39,8 @@ import Video from "@/page-components/Video";
 //     url
 //   }
 // }
-const queryEN = gql`
 
+const queryEN = gql`
   {
     mainSection {
       bigtext
@@ -50,13 +49,34 @@ const queryEN = gql`
       btn
     }
     videosection {
-  heading
-    text1
-    text2
-    text3
-    text4
-  }
+
   
+
+      heading
+      text1
+      text2
+      text3
+      text4
+    }
+    aboutUsSection {
+      heading
+      text3
+      text2
+      text1
+      image3 {
+        alt
+        url
+      }
+      image2 {
+        alt
+        url
+      }
+      image1 {
+        alt
+        url
+      }
+    }
+
     contactssection {
       heading
       text
@@ -73,7 +93,9 @@ const queryEN = gql`
       text
     }
     allProducts {
+
     idAvailable
+
       heading
       description
       id
@@ -81,7 +103,7 @@ const queryEN = gql`
         alt
         url
       }
-       method
+      method
       composit
       activecomp
       advantage1
@@ -94,37 +116,53 @@ const queryEN = gql`
         url
         id
       }
-   order
-        methodOfUse
-     
-    discount
-     capacity {
-      price
-      ml
-    idCrm
-    }
+      order
+      methodOfUse
+
+      discount
+      capacity {
+        price
+        ml
+        idCrm
+      }
     }
   }
 `;
 
 const queryUA = gql`
-
   {
     mainSection(locale: uk) {
       bigtext
       heading
       text
-         btn
+      btn
     }
     videosection(locale: uk) {
-  heading
-  text1
-    text2
-    text3
-    text4
-   
-  }
-    
+      heading
+      text1
+      text2
+      text3
+      text4
+    }
+    aboutUsSection(locale: uk) {
+      heading
+      text3
+      text2
+      text1
+      image3 {
+        alt
+        url
+      }
+      image2 {
+        alt
+        url
+      }
+      image1 {
+        alt
+        url
+      }
+    }
+
     contactssection(locale: uk) {
       heading
       text
@@ -141,7 +179,9 @@ const queryUA = gql`
       text
     }
     allProducts(locale: uk) {
+
      idAvailable
+
       heading
       description
       id
@@ -163,14 +203,14 @@ const queryUA = gql`
         id
       }
       order
-        methodOfUse
-    
-    discount
-       capacity {
-      price
-      ml
-    idCrm
-    }
+      methodOfUse
+
+      discount
+      capacity {
+        price
+        ml
+        idCrm
+      }
     }
   }
 `;
@@ -231,8 +271,6 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-
-
 export default async function Home({
   params: { lang },
 }: {
@@ -250,21 +288,19 @@ export default async function Home({
   });
 
   return (
-
-
     <div className="flex flex-grow flex-col bg-bg_secondary">
-
       <HeroSection data={data} />
       <Video data={data} />
       <FreeDelivery />
       <ProductsSection data={data} lang={lang} />
+
       {/* <AboutUs data={data} /> */}
       {/* 
       <AboutUsSlider data={data} /> */}
+
+      <AboutUs data={data} />
+
       <Contacts data={data} />
-
-
     </div>
-
-  )
+  );
 }

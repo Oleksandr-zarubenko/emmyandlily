@@ -1,28 +1,26 @@
-
 import { gql } from "@apollo/client";
-;
 import Basket from "@/page-components/Basket";
 import { getClient } from "@/utils/apollo-client";
 import { Locale } from "@/i18n.config";
 const queryEN = gql`
   {
-     basket{
-    additionalInformation
-payment
-    delivery
-    guarantee
-    heading
-    name
-    number
-    payment
-    price
-    privacy
-    sum
-delete
-    toOrder
-    total
-  }
-  
+    basket {
+      additionalInformation
+      payment
+      delivery
+      guarantee
+      heading
+      name
+      number
+      payment
+      price
+      privacy
+      sum
+      delete
+      toOrder
+      total
+    }
+
     productsSection {
       heading
       text
@@ -45,15 +43,15 @@ delete
         url
         id
       }
-  
-   order
-        methodOfUse
+
+      order
+      methodOfUse
       capacity {
-      price
-      ml
-      id
-    }
-    discount
+        price
+        ml
+        id
+      }
+      discount
     }
      promocod {
     promo
@@ -63,23 +61,23 @@ delete
 
 const queryUA = gql`
   {
-   basket(locale: uk) {
-    additionalInformation
-    delete
-    delivery
-    guarantee
-    heading
-    name
-    number
-payment
-    price
-    privacy
-    sum
- 
-    toOrder
-    total
-  }
- 
+    basket(locale: uk) {
+      additionalInformation
+      delete
+      delivery
+      guarantee
+      heading
+      name
+      number
+      payment
+      price
+      privacy
+      sum
+
+      toOrder
+      total
+    }
+
     productsSection(locale: uk) {
       heading
       text
@@ -102,15 +100,15 @@ payment
         url
         id
       }
-   
+
       order
-        methodOfUse
-        capacity {
-      price
-      ml
-      id
-    }
-    discount
+      methodOfUse
+      capacity {
+        price
+        ml
+        id
+      }
+      discount
     }
      promocod(locale: uk) {
     promo
@@ -133,9 +131,5 @@ export default async function BasketPage({
     },
   });
 
-
-  return (
-    <Basket data={data} lang={lang} />
-  )
+  return <Basket data={data} lang={lang} />;
 }
-

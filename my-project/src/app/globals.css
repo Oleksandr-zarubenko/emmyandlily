@@ -49,18 +49,19 @@ section {
 }
 
 .hero {
-  background-image: url("../../public/main.webp"), url("../../public/main2.png");
+  background-image: url("../../public/shampoo-bg-hero-m.webp"),
+    url("../../public/bg-tranparent-bottles.webp");
 
-  background-repeat: no-repeat, no-repeat;
+  background-repeat: no-repeat;
   background-size:
-    auto 360px,
-    auto 360px;
-  background-position-x: 50%, 50%;
-  background-position-y: 100%, 50%;
+    auto 100%,
+    auto 100%;
+  background-position-x: 80%, 100%;
+  background-position-y: 100%, 100%;
 }
 
 .contacts {
-  background-image: url("../../public/emmy-dog-image.png"),
+  background-image: url("../../public/emmy-dog-image.webp"),
     url("../../public/paw.svg");
   z-index: 2;
   background-repeat: no-repeat, no-repeat;
@@ -88,11 +89,15 @@ section {
   }
 
   .hero {
-    background-image: url("../../public/emmy-lilly-2-dogs-bg-hero.webp");
+    background-image: url("../../public/shampoo-bg-hero-m.webp"),
+      url("../../public/bg-tranparent-bottles.webp");
+
     background-repeat: no-repeat;
-    background-size: auto 260px;
-    background-position-x: 100%;
-    background-position-y: 100%;
+    background-size:
+      auto 120%,
+      auto 100%;
+    background-position-x: 80%, 100%;
+    background-position-y: 100%, 100%;
   }
 
   .paw {
@@ -105,7 +110,7 @@ section {
     z-index: 1;
   }
   .contacts {
-    background-image: url("../../public/emmy-dog-image.png");
+    background-image: url("../../public/emmy-dog-image.webp");
     background-repeat: no-repeat;
     background-size: contain;
     background-position-x: 90%;
@@ -140,20 +145,19 @@ section {
   }
 
   .hero {
-    background-image: url("../../public/main2.png"),
-      url("../../public/main.webp"), url("../../public/main.png");
+    background-image: url("../../public/main.webp"),
+      url("../../public/bg-tranparent-bottles.webp");
 
     background-repeat: no-repeat, no-repeat, no-repeat;
     background-size:
-      auto 522px,
       auto 102%,
       auto 100%;
-    background-position-x: 20%, 0%, 100%;
-    background-position-y: 135%, 0%, 0%;
+    background-position-x: calc(50% + 100px), 100%;
+    background-position-y: 0%, 0%;
   }
 
   .contacts {
-    background-image: url("../../public/emmy-dog-image.png"),
+    background-image: url("../../public/emmy-dog-image.webp"),
       url("../../public/paw.svg");
     background-repeat: no-repeat, no-repeat;
     background-size: contain, contain;
@@ -179,10 +183,24 @@ section {
   }
 
   .modalSuccess {
-    background-image: url("../../public/emmy-dog-image.png");
+    background-image: url("../../public/emmy-dog-image.webp");
     background-repeat: no-repeat;
     background-size: contain;
     background-position-x: 90%;
+  }
+}
+
+@media (min-width: 1895px) {
+  .hero {
+    background-image: url("../../public/main.webp"),
+      url("../../public/bg-tranparent-bottles.webp");
+
+    background-repeat: no-repeat, no-repeat, no-repeat;
+    background-size:
+      94% auto,
+      70% auto;
+    background-position-x: 125%, 100%;
+    background-position-y: calc(94% + 20px), 0%;
   }
 }
 
@@ -212,22 +230,7 @@ section {
   background-position: 8px 50%; /* Змініть за потреби */
   padding-left: 38px; /* Змініть за потреби (20px іконка + 12px відступ) */
 }
-/* video {
-  object-fit: cover;
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-} */
-.video-wrapper {
-  position: relative;
-}
 
-.text-overlay {
-  background-color: rgba(0, 0, 0, 0.5); /* прозорий чорний фон */
-  padding: 20px;
-}
 .shadow-custom:hover {
   box-shadow: 0px 3px 30px 0px #fbfbfb;
 }

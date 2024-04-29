@@ -2,6 +2,7 @@ import cn from "classnames";
 import type { Metadata } from "next";
 import Footer from "@/components/footer/footer";
 import { Open_Sans } from "next/font/google";
+import { Abril_Fatface } from "next/font/google";
 import { gql } from "@apollo/client";
 
 import "../globals.css";
@@ -13,35 +14,38 @@ import Header from "@/components/header/header";
 
 const libre = Open_Sans({
   weight: ["400"],
-  style: ['normal', 'italic'],
+  style: ["normal", "italic"],
   subsets: ["latin"],
+  variable: "--font-libre",
 });
 
+const abril = Abril_Fatface({
+  weight: ["400"],
+  subsets: ["latin-ext"],
+  variable: "--font-abril",
+});
 
 const queryEN = gql`
-{
-navigation {
-  whoweare
-  ourproducts
-  aboutus
-  contacts
-  
-}
-}
+  {
+    navigation {
+      whoweare
+      ourproducts
+      aboutus
+      contacts
+    }
+  }
 `;
 
 const queryUA = gql`
-{
-navigation(locale: uk) {
-  whoweare
-  ourproducts
-  aboutus
-  contacts
-  
-}
-} 
+  {
+    navigation(locale: uk) {
+      whoweare
+      ourproducts
+      aboutus
+      contacts
+    }
+  }
 `;
-
 
 export const metadata: Metadata = {
   title: "Emmy and Lili - dog`s shampoo brand.",
@@ -76,7 +80,6 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: { lang: Locale };
 }>) {
-
   const query = lang == "ua" ? queryUA : queryEN;
   const { data } = await getClient().query({
     query,
@@ -88,19 +91,20 @@ export default async function RootLayout({
   });
 
   return (
-
-    <html lang={lang}>
+    <html lang={lang} className={`${abril.variable} ${libre.variable}`}>
       <body
-        className={cn(libre.className, "relative flex flex-grow flex-col bg-white")}
+        className={cn(
+          libre.className,
+          "relative flex flex-grow flex-col bg-white"
+        )}
       >
-        < AddedToCartProvider >
+        <AddedToCartProvider>
           <Header data={data} lang={lang} />
 
           {children}
           <Footer data={data} lang={lang} />
-        </ AddedToCartProvider >
+        </AddedToCartProvider>
       </body>
     </html>
-
   );
 }

@@ -1,18 +1,18 @@
-"use client"
+"use client";
 import { i18n } from "@/i18n.config";
 import { useState, useEffect } from "react";
 
 type YourOrderProps = {
-    lang: any,
-    data: any,
-    setIsDiscountsAndNews: any
+    lang: any;
+    data: any;
+    setIsDiscountsAndNews: any;
     isDiscountsAndNews: boolean;
     saveAndProceed: () => void;
     personActive: boolean;
     deliveryActive: boolean;
     paymentActive: boolean;
     switchToDeliveryTab: () => void;
-    deliveryPrice: number,
+    deliveryPrice: number;
     switchToPaymentTab: () => void;
 };
 
@@ -27,9 +27,12 @@ const YourOrder: React.FC<YourOrderProps> = ({
     paymentActive,
     switchToDeliveryTab,
     deliveryPrice,
-    switchToPaymentTab
+    switchToPaymentTab,
 }) => {
-    const [state, setState] = useState<{ products: { id: string; price: string }[], currencies: { id: string; rate: number }[] }>({ products: [], currencies: [] });
+    const [state, setState] = useState<{
+        products: { id: string; price: string }[];
+        currencies: { id: string; rate: number }[];
+    }>({ products: [], currencies: [] });
 
     const getData = async () => {
         try {
@@ -47,9 +50,9 @@ const YourOrder: React.FC<YourOrderProps> = ({
         getData();
     }, []);
 
-
     const locales = i18n.locales;
     const en = locales[1];
+
 
     const convertPrice = (price: any, rate: number): string => {
 
@@ -117,7 +120,9 @@ const YourOrder: React.FC<YourOrderProps> = ({
                 <button className=" relative top-20 text-t18 py-[12px] px-6 bg-black text-white rounded " onClick={switchToPaymentTab}>{data.order.order}</button>
             )}
         </div>
-    )
-}
 
-export default YourOrder
+
+    );
+};
+
+export default YourOrder;

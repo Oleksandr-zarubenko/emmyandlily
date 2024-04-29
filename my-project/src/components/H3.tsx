@@ -8,10 +8,7 @@ type Props = {
 
 export const H3: FC<Props> = ({ children, className }) => (
   <h3
-    className={cn(
-      "",
-      className
-    )}
+    className={cn("mb-4 text-t18 font-bold leading-6 xl:text-t24n", className)}
   >
     {children}
   </h3>

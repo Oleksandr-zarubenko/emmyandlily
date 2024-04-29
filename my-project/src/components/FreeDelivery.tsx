@@ -1,9 +1,11 @@
-import React from 'react'
+import React from "react";
 
 const FreeDelivery = () => {
-    return (
-        <div className="w-auto py-[16px] bg-white text-black text-t32 text-center flex items-center justify-center">Безкоштовна доставка по Україні від 1000  ₴</div>
-    )
-}
+  return (
+    <div className="flex w-auto items-center justify-center bg-white py-[16px] text-center text-t32 text-black">
+      Безкоштовна доставка по Україні від 1000 ₴
+    </div>
+  );
+};
 
-export default FreeDelivery
+export default FreeDelivery;

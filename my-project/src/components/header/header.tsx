@@ -1,57 +1,73 @@
-
 import Link from "next/link";
 
-import { Logo } from "../../components/icons/Logo";
+import Logo from "../../../public/logo.png";
 import LocaleSwitcher from "@/components/locale-switcher";
 import { Bag } from "@/components/icons/Bag";
+import Image from "next/image";
+import { MobileMenu } from "../MobileMenu";
+
 const Header = ({ lang, data }: any) => {
-    // const [storedDataLength, setStoredDataLength] = useState(0);
-    // const storedData = JSON.parse(localStorage.getItem('storedData') || '[]');
 
-    // useEffect(() => {
-    //     setStoredDataLength(storedData.length);
-    // }, [storedData]);
-    return (
-        <header className="absolute inset-x-0 z-20 pt-6 pb-4 border-black border-b-2 px-[80px]">
-            <div className="container invisible content-center items-center justify-between md:flex md:flex-row xl:visible smOnly:absolute">
-                <div className="h-6 w-40">
-                    <Link href={`/${lang}`}>
-                        <Logo color="#333333" />
-                    </Link>
-                </div>
-                <nav className="flex flex-col text-t16 items-center md:flex-row md:gap-4 xl:gap-10">
-                    <h2 className="sr-only">Main navigation</h2>
+  // const [storedDataLength, setStoredDataLength] = useState(0);
+  // const storedData = JSON.parse(localStorage.getItem('storedData') || '[]');
 
-                    <Link
-                        className="duration-300 text-[#0B0605] hover:text-primary"
-                        href={`/${lang}/#products`}
-
-                    >
-                        {data.navigation.ourproducts}
-                    </Link>
-                    <Link
-                        className="duration-300 hover:text-primary"
-                        href={`/${lang}/#about-us`}
-
-                    >
-                        {data.navigation.aboutus}
-                    </Link>
-                    <Link
-                        className="duration-300 hover:text-primary"
-                        href={`/${lang}/#contacts`}
-
-                    >
-                        {data.navigation.contacts}
-                    </Link>
-                    <LocaleSwitcher lang={lang} />
-                    <Link className="duration-300 text-white hover:text-white flex" href={`/${lang}/basket`} >
-                        {/* {storedDataLength > 0 && (<p className="relative left-[35px] w-5 h-5 text-t14 bg-white text-center text-black rounded-3xl border-solid border-2 border-black">{storedData.length}</p>)} */}
-                        <Bag color="black" />
-                    </Link>
-                </nav>
-            </div>
-        </header>
-    )
+  // useEffect(() => {
+  //     setStoredDataLength(storedData.length);
+  // }, [storedData]);
+  return (
+    <header className="absolute inset-x-0 z-30 border-b-2 border-black py-2 xl:px-20 xl:pb-4 xl:pt-6">
+      <div className="container flex flex-row items-center justify-between xl:hidden">
+        <Link href={`/${lang}`}>
+          <Image src={Logo} alt="logo" width={158} height={32} className="" />
+        </Link>
+        <h2 className="sr-only">Mobile Menu</h2>
+        <div className="flex flex-row items-center gap-3">
+          <Link
+            className="text-white duration-300 hover:text-white"
+            href={`/${lang}/basket`}
+          >
+            <Bag color="black" />
+          </Link>
+          <MobileMenu navigation={data.navigation} lang={lang} />
+        </div>
+      </div>
+      <div className="container invisible h-0 content-center items-center justify-between md:flex md:flex-row xl:visible xl:h-auto smOnly:absolute">
+        <div className="h-8 w-40">
+          <Link href={`/${lang}`}>
+            <Image src={Logo} alt="logo" className="" />
+          </Link>
+        </div>
+        <nav className="flex flex-col items-center text-t16 md:flex-row md:gap-4 xl:gap-10">
+          <h2 className="sr-only">Main navigation</h2>
+          <Link
+            className="text-[#0B0605] duration-300 hover:italic"
+            href={`/${lang}/#products`}
+          >
+            {data.navigation.ourproducts}
+          </Link>
+          <Link
+            className="duration-300 hover:italic"
+            href={`/${lang}/#about-us`}
+          >
+            {data.navigation.aboutus}
+          </Link>
+          <Link
+            className="duration-300 hover:italic"
+            href={`/${lang}/#contacts`}
+          >
+            {data.navigation.contacts}
+          </Link>
+          <LocaleSwitcher lang={lang} />
+          <Link
+            className="text-white duration-300 hover:text-white"
+            href={`/${lang}/basket`}
+          >
+            <Bag color="black" />
+          </Link>
+        </nav>
+      </div>
+    </header>
+  )
 }
 
 export default Header;
