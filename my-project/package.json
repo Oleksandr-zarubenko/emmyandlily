@@ -24,6 +24,7 @@
     "react-hook-form": "7.43.9",
     "react-hook-form-persist": "^3.0.0",
     "server-only": "^0.0.1",
+    "sharp": "^0.33.3",
     "swiper": "^11.0.5",
     "xml2js": "^0.6.2"
   },

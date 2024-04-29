@@ -11,7 +11,7 @@ type Props = {
 export const H2: FC<Props> = ({ children, className, paw }) => (
   <h2
     className={cn(
-      "mb-4 items-center text-t24 font-bold leading-7 tracking-[0.12px] xl:text-t32n xl:leading-9 xl:tracking-[0.16px]",
+      "items-center text-t24 font-bold leading-7 tracking-[0.12px] xl:text-t32n xl:leading-9 xl:tracking-[0.16px]",
       className
     )}
   >
