@@ -6,57 +6,14 @@ import { Markdown } from "@/components/Markdown";
 import { useRouter } from "next/navigation";
 
 import { BurgerCross } from "@/components/icons/BurgerCross";
-import { ChevronDown } from "@/components/icons/Chevron-down";
-import { ChevronUp } from "@/components/icons/ChevronUp";
-import { Delivery } from "@/components/icons/Delivery";
-import { Wallet } from "@/components/icons/Wallet";
-import { Security } from "@/components/icons/Security";
-import { Lock } from "@/components/icons/Lock";
+
 import { i18n } from "@/i18n.config";
 import { useAddedToCart } from "@/components/context/addedToCart";
 
-const DropdownButton = ({
-    buttonText,
-    dropdownText,
-    icon,
-}: {
-    buttonText: string;
-    dropdownText: any;
-    icon: any;
-}) => {
-    const [isOpen, setIsOpen] = useState(false);
-
-    const chevron = isOpen ? (
-        <ChevronDown className="" />
-    ) : (
-        <ChevronUp className="" />
-    );
-    return (
-        <>
-            <button
-                className="mb-6 h-10 w-full border-b-[1px] border-[#DCDCDC] text-left text-t18"
-                onClick={() => setIsOpen(!isOpen)}
-            >
-                <div className="flex items-center justify-between">
-                    {" "}
-                    <div className="flex items-center">
-                        {" "}
-                        {icon} <p className="ml-2"> {buttonText}</p>
-                    </div>{" "}
-                    {chevron}
-                </div>
-            </button>
-            {isOpen && (
-                <div
-                    className="mb-6 flex justify-end pb-4"
-                    dangerouslySetInnerHTML={{ __html: dropdownText }}
-                />
-            )}
-        </>
-    );
-};
+import DropDown from "@/components/basket/DropdownButton";
 
 const Basket = ({ data, lang }: { data: any; lang: any }) => {
+
     const locales = i18n.locales;
     const en = locales[1]
     const { addedToCart, setAddedToCart } = useAddedToCart();
@@ -212,42 +169,6 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
     }, [quantities, tovar]);
 
 
-    const dropdownText = `
-
-
-
-        <ul style= "width: 662px; list-style-type: disc; font-size: 18px;" >
-                <li style="margin:0 0 20px 0">Нова пошта (Курьєр) - При сумі замовлення до 600 грн вартість доставки 40 грн, при сумі замовлення вище 600 грн доставка безкоштовна.</li>
-                <li>Нова пошта (Поштомат) - При сумі замовлення до 600 грн вартість доставки 40 грн, при сумі замовлення вище 600 грн доставка безкоштовна.</li>
-
-            </ul >
-    `;
-
-    const dropdownText2 = `
-
-    < ul ul style = "width: 662px; list-style-type: disc; font-size: 18px;" >
-        <li>Оплата карткою Visa/MasterCard, Apple Pay, LiqPay</li>
-            </ >
-    `;
-
-    const dropdownText3 = `
-
-    < ul ul style = "width: 662px; list-style-type: disc; font-size: 18px;" >
-                <li style="margin:0 0 20px 0">Якщо товар не відкритий, а цілісність упаковки не порушена, протягом 14 днів з моменту придбання ви можете повернути продукт. </li>
-                <li>З усіх питань Ви можете зв'язатися з нами за номером +38 067 245 14 52</li>
-
-            </ >
-    `;
-
-    const dropdownText4 = `
-
-    < ul ul style = "width: 662px; list-style-type: disc; font-size: 18px;" >
-                <li style="margin:0 0 20px 0">Інформація, надана Користувачем (Покупцем) є конфіденційною. Адміністрація сайту використовує інформацію про Користувача (Покупця) з метою виконання Замовлень Відвідувача (Покупця), якщо інших цілей не вказано в цій Угоді.</li>
-                <li >Відвідувач (Покупець) дає згоду на використання Адміністрацією технології cookie. Файли cookie не містять особистої інформації та не можуть жодним чином зчитувати інформацію жорсткого диска Відвідувача (Покупця). Файли cookie використовують для того, щоб підвищувати якість послуг, що надаються, зокрема для швидкої ідентифікації Відвідувача (Покупця), збереження налаштувань Відвідувача (Покупця), його персональних уподобань, відстеження стану сесії доступу Відвідувача (Покупця) і характерних для нього тенденцій. Адміністрація також використовує файли cookie в рекламних цілях, зокрема щоб керувати оголошеннями на сайтах у мережі Інтернет. Після вимкнення технології cookie Відвідувачем (Покупцем), Адміністрація не гарантує повної працездатності веб-сайту www.emmyandlily.com/</li>
-
-            </ >
-    `;
-
     const handleQuantityChange = (capacity: string, value: number) => {
         const updatedQuantities = {
             ...quantities,
@@ -386,7 +307,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
             </div>
             <div className="text-end mb-8">
 
-                <button className="ml-auto mb-6 text-black w-[225px] text-t16 flex justify-between" onClick={handleToggleInput}>Додати промокод    <BurgerCross className="w-4 h-4 origin-center rotate-45" /></button>
+                <button className="ml-auto mb-6 text-black w-[225px] text-t16 flex justify-between" onClick={handleToggleInput}> {lang === en ? 'Add promo code' : 'Додати промокод '}   <BurgerCross className="w-4 h-4 origin-center rotate-45" /></button>
 
                 {isInputOpen && (
                     <div className="relative">
@@ -395,7 +316,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                             type="text"
                             value={promoCode}
                             onChange={handlePromoCodeChange}
-                            placeholder="Введіть промокод"
+                            placeholder={lang === en ? 'Enter the promo code ' : 'Введіть промокод '}
                             className={`text-t16  p-2 border-gray-300 w-[225px] }`}
                         />
                         <button
@@ -411,7 +332,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
             </div>
             <div className="ml-auto mb-8 flex w-52 justify-between text-t16" >
                 <p>
-                    Знижка</p> <p>- {lang === en ? convertPrice(discountAmount, state.currencies.find((currency: any) => currency.id === "EUR")?.rate || 1) : discountAmount} {lang === en ? '€' : '₴'}
+                    {lang === en ? 'Discount' : 'Знижка'}  </p> <p>- {lang === en ? convertPrice(discountAmount, state.currencies.find((currency: any) => currency.id === "EUR")?.rate || 1) : discountAmount} {lang === en ? '€' : '₴'}
                 </p>
             </div>
             <div className="ml-auto flex w-52 justify-between text-t16 mb-10">
@@ -429,13 +350,9 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                     {data.basket.toOrder}
                 </button>
             </div>
-            <div>
-                <h2 className="text-t32 -tracking-5 mb-10"> {data.basket.additionalInformation}</h2>
-                <DropdownButton icon={<Delivery />} buttonText={data.basket.delivery} dropdownText={dropdownText} />
-                <DropdownButton icon={<Wallet />} buttonText={data.basket.payment} dropdownText={dropdownText2} />
-                <DropdownButton icon={<Security />} buttonText={data.basket.guarantee} dropdownText={dropdownText3} />
-                <DropdownButton icon={<Lock />} buttonText={data.basket.privacy} dropdownText={dropdownText4} />
-            </div>
+
+            <DropDown data={data} />
+
 
         </section >
     );

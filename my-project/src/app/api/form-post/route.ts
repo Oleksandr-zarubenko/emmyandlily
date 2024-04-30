@@ -54,6 +54,7 @@ export async function POST(req: Request) {
         BuildingNumber: "",
         Flat: "",
       },
+      con_conzgodaNaOtrimannaPromoMaterialiv: rawBody.isDiscountsAndNews,
       prodex24source_full: "",
       prodex24source: "",
       prodex24medium: "",

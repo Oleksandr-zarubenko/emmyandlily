@@ -6,6 +6,7 @@ import { P } from "./P";
 import { H1 } from "./H1";
 import { H2 } from "./H2";
 import { H3 } from "./H3";
+import cn from "classnames"
 
 interface InterfaceMarkdown {
   text: string;
@@ -26,7 +27,7 @@ export const Markdown: FC<InterfaceMarkdown> = ({ text, className, paw }) => {
           </H2>
         ),
         h3: (props) => <H3 className={className}>{props.children}</H3>,
-        li: (props) => <li className={className}>{props.children}</li>,
+        li: (props) => <li className={cn(className, 'mb-2')}>{props.children}</li>,
         ul: (props) => <ul className={className}>{props.children}</ul>,
       }}
     >

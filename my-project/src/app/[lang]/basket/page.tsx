@@ -19,6 +19,10 @@ const queryEN = gql`
       delete
       toOrder
       total
+      dropdown
+    dropdown1
+    dropdown2
+    dropdown3
     }
 
     productsSection {
@@ -73,7 +77,10 @@ const queryUA = gql`
       price
       privacy
       sum
-
+dropdown
+    dropdown1
+    dropdown2
+    dropdown3
       toOrder
       total
     }

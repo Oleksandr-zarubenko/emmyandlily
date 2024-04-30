@@ -142,7 +142,7 @@ export const ProductsSection = ({
                         fill
                         src={product.productpicture.url}
                         alt={product.productpicture.alt || "Emmy and Lili"}
-                        className="product h-[253px] w-[304px] object-cover xl:h-[344px] mdOnly:h-[160px] mdOnly:w-full"
+                        className="product  object-cover "
                         sizes="(max-width: 768px) 90vw, 305px"
                       />
                     </div>
@@ -170,7 +170,9 @@ export const ProductsSection = ({
                       {product.capacity && product.capacity[0] && (
                         <p className="text-t16 xl:text-t18 leading-6 text-white">
 
-                          від {
+                          {product.capacity && product.capacity.length > 1 && (
+                            lang === en ? 'from' : 'від'
+                          )} {
                             lang === en
                               ? state && state.products.find((item) => item.id === product.capacity[0].idCrm)
                                 ? convertPrice(state.products.find((item) => item.id === product.capacity[0].idCrm)!.price, state.currencies.find((currency) => currency.id === "EUR")?.rate || 1)

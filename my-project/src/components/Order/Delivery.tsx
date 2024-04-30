@@ -26,6 +26,7 @@ interface DeliveryProps {
   setIndex: React.Dispatch<React.SetStateAction<string>>;
   error: any;
   setError: any;
+  lang: any;
 }
 
 const Delivery: React.FC<DeliveryProps> = ({
@@ -55,6 +56,7 @@ const Delivery: React.FC<DeliveryProps> = ({
   index,
   setIndex,
   error,
+  lang,
   setError,
 }) => {
   const validateField = (fieldName: string, value: string) => {
@@ -181,7 +183,11 @@ const Delivery: React.FC<DeliveryProps> = ({
             />
           </div>
         </div>
-        <p className="mb-2 text-t14 text-[#C61004]">{data.order.freeDel}</p>
+        {lang !== 'en' && (
+          <p className="mb-2 text-t14 text-[#C61004]">{data.order.freeDel}</p>
+        )}
+
+
         {selectedOption === "dhl" || selectedOption === "ups" ? (
           <span className="text-t14 italic">{data.order.deliveryTime2}</span>
         ) : (

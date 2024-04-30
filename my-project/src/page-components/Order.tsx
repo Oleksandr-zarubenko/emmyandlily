@@ -273,6 +273,7 @@ const Order = ({ data, lang }: any) => {
         houseNumber,
         index,
         products: parsedProducts,
+        isDiscountsAndNews
       })
     })
   }
@@ -561,6 +562,7 @@ const Order = ({ data, lang }: any) => {
               setIndex={setIndex}
               error={error}
               setError={setError}
+              lang={lang}
             />
 
           )}

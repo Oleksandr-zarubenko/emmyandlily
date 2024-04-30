@@ -291,7 +291,11 @@ export default async function Home({
     <div className="flex flex-grow flex-col bg-bg_secondary">
       <HeroSection data={data} />
       <Video data={data} />
-      <FreeDelivery />
+      {lang !== 'en' && (
+        <FreeDelivery />
+
+      )}
+
       <ProductsSection data={data} lang={lang} />
 
       {/* <AboutUs data={data} /> */}
