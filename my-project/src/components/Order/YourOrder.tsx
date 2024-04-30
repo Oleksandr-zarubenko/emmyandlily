@@ -63,7 +63,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
     const total = localStorage.getItem('totalPrice');
     const totalPrice = total ? parseInt(total) : 0;
     const freeDelivery = (deliveryPrice: any) => {
-        if (totalPrice >= 1000) {
+        if (totalPrice >= 600) {
             return lang === 'en' ? deliveryPrice : deliveryPrice = 0;
         }
         return deliveryPrice
