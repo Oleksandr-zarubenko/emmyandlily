@@ -4,9 +4,9 @@ import { Logo } from "../../components/icons/Logo";
 import { Bag } from "@/components/icons/Bag";
 const Footer = ({ data, lang }: any) => {
   return (
-    <footer className="grow bg-black py-14">
-      <div className="md:container block xl:flex items-center justify-between">
-        <div className="  notXl:mb-5  notXl:ml-auto   notXl:mr-auto mb-4 h-12 w-40 md:mb-0 md:w-[305px]">
+    <footer className="bg-black py-14">
+      <div className="block items-center justify-between md:container xl:flex">
+        <div className="  mb-4  h-12   w-40 md:mb-0 md:w-[305px] notXl:mb-5 notXl:ml-auto notXl:mr-auto">
           <Link href="">
             <Logo color="white" />
           </Link>

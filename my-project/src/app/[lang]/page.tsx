@@ -11,9 +11,6 @@ import { Locale } from "../../i18n.config";
 
 import Video from "@/page-components/Video";
 
-
-
-
 // aboutUsSection {
 //   heading
 //   text
@@ -49,9 +46,6 @@ const queryEN = gql`
       btn
     }
     videosection {
-
-  
-
       heading
       text1
       text2
@@ -93,8 +87,7 @@ const queryEN = gql`
       text
     }
     allProducts {
-
-    idAvailable
+      idAvailable
 
       heading
       description
@@ -179,8 +172,7 @@ const queryUA = gql`
       text
     }
     allProducts(locale: uk) {
-
-     idAvailable
+      idAvailable
 
       heading
       description
@@ -214,7 +206,6 @@ const queryUA = gql`
     }
   }
 `;
-
 
 // aboutUsSection(locale: uk) {
 //   heading
@@ -254,9 +245,9 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: "Emmy and Lili - dog`s shampoo brand.",
       images: [
         {
-          url: `${process.env.HOSTNAME}/favicon/android-chrome-256x256.png`,
-          width: 256,
-          height: 256,
+          url: `${process.env.HOSTNAME}/favicon/android-chrome-512x512.png`,
+          width: 512,
+          height: 512,
         },
         {
           url: `${process.env.HOSTNAME}/favicon/android-chrome-192x192.png`,
@@ -291,10 +282,7 @@ export default async function Home({
     <div className="flex flex-grow flex-col bg-bg_secondary">
       <HeroSection data={data} />
       <Video data={data} />
-      {lang !== 'en' && (
-        <FreeDelivery />
-
-      )}
+      {lang !== "en" && <FreeDelivery />}
 
       <ProductsSection data={data} lang={lang} />
 
