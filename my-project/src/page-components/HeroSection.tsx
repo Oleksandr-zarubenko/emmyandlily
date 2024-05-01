@@ -1,9 +1,59 @@
+"use client"
 import { Markdown } from "@/components/Markdown";
 import Image from "next/image";
 import HeroDog from "../../public/hero-dog.webp";
 import { AddToCartHeroBtn } from "@/components/AddToCartHeroBtn";
+import { useAddedToCart } from "@/components/context/addedToCart";
 
 export const HeroSection = ({ data }: { data: any }) => {
+  const trevelSet = data.allProducts
+  const { addedToCart, setAddedToCart } = useAddedToCart();
+
+
+  const addToCart = () => {
+    const storedDataString = localStorage.getItem('storedData');
+    const storedData = storedDataString ? JSON.parse(storedDataString) : [];
+    const storedAddedToCart = localStorage.getItem("addedToCart");
+    const parsedAddedToCart = storedAddedToCart ? JSON.parse(storedAddedToCart) : {};
+    const productToAdd = trevelSet.find((product: any) => product.idAvailable === "id_12");
+
+    if (productToAdd) {
+      if (productToAdd.capacity && productToAdd.capacity.length > 0) {
+        const firstCapacity = productToAdd.capacity[0];
+        const { price, ml } = firstCapacity;
+        const dataToStore = {
+          id: productToAdd.idAvailable,
+          productName: productToAdd.heading,
+          price: price,
+          capacity: ml,
+          photo: productToAdd.productSlider[0].url,
+        };
+
+        const updatedAddedToCart = {
+          ...parsedAddedToCart,
+          [productToAdd.idAvailable]: true,
+        };
+        const updatedData = [...storedData, dataToStore];
+        localStorage.setItem("storedData", JSON.stringify(updatedData));
+        localStorage.setItem("addedToCart", JSON.stringify(updatedAddedToCart));
+
+        setAddedToCart(updatedAddedToCart);
+      } else {
+        console.error('Product capacity is not available.');
+      }
+    }
+  };
+
+
+  // useEffect(() => {
+  //   const storedAddedToCart = localStorage.getItem("addedToCart");
+  //   if (storedAddedToCart) {
+  //     setAddedToCart(JSON.parse(storedAddedToCart));
+  //   }
+  // }, [setAddedToCart]);
+
+  const productToAdd = trevelSet.find((product: any) => product.idAvailable === "id_12");
+
   return (
     <div className="hero relative bg-white text-center">
       <div className="container relative text-grey ">
@@ -21,6 +71,10 @@ export const HeroSection = ({ data }: { data: any }) => {
           {data.mainSection.bigtext}
         </p>
         <AddToCartHeroBtn
+          id={productToAdd.idAvailable}
+          addedToCart={addedToCart}
+
+          addToCart={addToCart}
           text={data.mainSection.btn}
           className="mb-[260px] xl:mr-[180px]"
         />
