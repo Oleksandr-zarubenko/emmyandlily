@@ -1,7 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import autoAnimate from "@formkit/auto-animate";
 
 import { i18n } from "@/i18n.config";
 
@@ -14,6 +15,7 @@ export default function LocaleSwitcher({
 }) {
   const pathName = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const parent = useRef(null);
 
   const openDropdown = () => {
     setIsOpen(true);
@@ -31,8 +33,12 @@ export default function LocaleSwitcher({
 
   const langText = lang === "en" ? "Eng" : lang === "ua" ? "Укр" : lang;
 
+  useEffect(() => {
+    parent.current && autoAnimate(parent.current);
+  }, [parent]);
+
   return (
-    <div className="relative">
+    <div className="relative" ref={parent}>
       <button
         onClick={isOpen ? closeDropdown : openDropdown}
         className="w-[56.8px] rounded-md border-2 border-black px-3 py-2 text-black duration-300 hover:border-black hover:text-black"

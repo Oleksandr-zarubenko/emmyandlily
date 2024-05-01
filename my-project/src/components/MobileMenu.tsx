@@ -1,12 +1,13 @@
 "use client";
 import Logo from "../../public/logo.png";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Burger } from "./icons/Burger";
 import { BurgerCross } from "./icons/BurgerCross";
 import Link from "next/link";
 import LocaleSwitcher from "./locale-switcher";
 import Image from "next/image";
 import { Bag } from "./icons/Bag";
+import autoAnimate from "@formkit/auto-animate";
 
 export const MobileMenu = ({
   navigation,
@@ -16,6 +17,7 @@ export const MobileMenu = ({
   lang: any;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const parent = useRef(null);
 
   const setMenuOpened = () => {
     setIsOpen(true);
@@ -32,13 +34,18 @@ export const MobileMenu = ({
       document.documentElement.style.overflow = "auto";
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    parent.current && autoAnimate(parent.current);
+  }, [parent]);
+
   return (
-    <>
+    <div ref={parent}>
       <button onClick={() => setMenuOpened()}>
         <Burger className="h-14 w-14" />
       </button>
       {isOpen && (
-        <div className="bg-bg_transparent fixed inset-0 h-dvh overflow-scroll">
+        <div className="fixed inset-0 h-dvh overflow-scroll bg-bg_transparent">
           <div className="bg-white">
             <div className="border-b-2 border-black ">
               <div className="container flex flex-row items-center justify-between py-2">
@@ -84,6 +91,6 @@ export const MobileMenu = ({
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
