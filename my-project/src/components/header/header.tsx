@@ -7,7 +7,6 @@ import Image from "next/image";
 import { MobileMenu } from "../MobileMenu";
 
 const Header = ({ lang, data }: any) => {
-
   // const [storedDataLength, setStoredDataLength] = useState(0);
   // const storedData = JSON.parse(localStorage.getItem('storedData') || '[]');
 
@@ -40,19 +39,19 @@ const Header = ({ lang, data }: any) => {
         <nav className="flex flex-col items-center text-t16 md:flex-row md:gap-4 xl:gap-10">
           <h2 className="sr-only">Main navigation</h2>
           <Link
-            className="text-[#0B0605] duration-300 hover:italic"
+            className="text-[#0B0605] duration-300 hover:opacity-50"
             href={`/${lang}/#products`}
           >
             {data.navigation.ourproducts}
           </Link>
           <Link
-            className="duration-300 hover:italic"
+            className="duration-300 hover:opacity-50"
             href={`/${lang}/#about-us`}
           >
             {data.navigation.aboutus}
           </Link>
           <Link
-            className="duration-300 hover:italic"
+            className="duration-300 hover:opacity-50"
             href={`/${lang}/#contacts`}
           >
             {data.navigation.contacts}
@@ -67,7 +66,7 @@ const Header = ({ lang, data }: any) => {
         </nav>
       </div>
     </header>
-  )
-}
+  );
+};
 
 export default Header;
