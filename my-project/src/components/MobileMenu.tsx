@@ -71,18 +71,21 @@ export const MobileMenu = ({
               <Link
                 className="border-1 w-full border-b border-border pb-4 pt-2 text-t16 text-[#0B0605] duration-300 hover:italic"
                 href={`/${lang}/#products`}
+                onClick={() => setMenuClosed()}
               >
                 {navigation.ourproducts}
               </Link>
               <Link
                 className="border-1 w-full border-b border-border pb-4 pt-2 text-t16 duration-300 hover:italic"
                 href={`/${lang}/#about-us`}
+                onClick={() => setMenuClosed()}
               >
                 {navigation.aboutus}
               </Link>
               <Link
                 className="border-1 mb-10 w-full border-b border-border pb-4 pt-2 text-t16 duration-300 hover:italic"
                 href={`/${lang}/#contacts`}
+                onClick={() => setMenuClosed()}
               >
                 {navigation.contacts}
               </Link>
