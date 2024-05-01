@@ -124,12 +124,10 @@ export const ProductModal = ({
         className="relative mb-5 text-left"
         onClick={() => setModalOpened()}
       >
-        {/* <span className="h-5 w-5">
-          <Arrow />
-        </span> */}
+
         {children}
       </button>
-      {/* {cartModalOpen && <CartModal setCartModalOpen={setCartModalOpen} />} */}
+
       {additionalModalOpen && <CartModal onClose={() => setAdditionalModalOpen(false)} lang={lang} en={en} />}
       {isOpen && (
         <div
@@ -224,9 +222,7 @@ export const ProductModal = ({
                       <th className="w-2/5  smOnly:w-1/5 py-2 text-t14 text-[#333333] opacity-60">
                         {lang === en ? 'Capacity' : 'Об`єм'}
                       </th>
-                      {/* <th className="py-2 text-center  text-t14 text-[#333333] opacity-60">
-                        Кіл-ть
-                      </th> */}
+
                       <th className=" w-1/5 smOnly:w-2/5  py-2 text-left smOnly:text-center xl:text-center text-t14 text-[#333333] opacity-60">
                         {lang === en ? 'Price' : 'Ціна '}
                       </th>

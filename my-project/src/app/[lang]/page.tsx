@@ -11,31 +11,6 @@ import { Locale } from "../../i18n.config";
 
 import Video from "@/page-components/Video";
 
-// aboutUsSection {
-//   heading
-//   text
-//   image {
-//     alt
-//     author
-//     url
-//   }
-// }
-// aboutUsSlider {
-//   text
-//   heading
-//   name
-//      name2
-//         name3
-//     text2
-//   text3
-//   text4
-//   text5
-//   text6
-//   sliderimages {
-//     alt
-//     url
-//   }
-// }
 
 const queryEN = gql`
   {
@@ -207,33 +182,7 @@ const queryUA = gql`
   }
 `;
 
-// aboutUsSection(locale: uk) {
-//   heading
-//   text
 
-//       image {
-//     alt
-//     author
-//     url
-//   }
-// }
-// aboutUsSlider(locale: uk) {
-//   text
-
-//   text2
-//   text3
-//   text4
-//   text5
-//   text6
-//   name
-//   name2
-//   name3
-//   heading
-//       sliderimages {
-//     alt
-//     url
-//   }
-// }
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
