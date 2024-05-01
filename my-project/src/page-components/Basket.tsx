@@ -312,7 +312,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
 
                                 <tr className="border-b">
                                     <td className="flex">
-                                        <div className="relative w-[71px] h-[88px]  mr-4">
+                                        <div className="relative w-[51px] h-[58px]  mr-4">
                                             <Image
                                                 quality={80}
                                                 fill

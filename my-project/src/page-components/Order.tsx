@@ -501,32 +501,32 @@ const Order = ({ data, lang }: any) => {
   };
 
   return (
-    <section className="paw container flex justify-between py-40">
-      <div>
-        <h1 className="mb-10 text-t32 tracking-wider">{data.order.heading}</h1>
+    <section className="paw container md:flex justify-between py-40">
+      <div className="smOnly:w-full mdOnly:w-[55%]">
+        <h1 className="mb-6 mdOnly:mb-8 xl:mb-10 text-t18 mdOnly:text-t24 xl:text-t32 font-bold r">{data.order.heading}</h1>
 
-        <div className="mb-10 flex items-center">
+        <div className=" mb-6 mdOnly:mb-6 xl:mb-10 flex smOnly:justify-between items-center">
           <button
-            className={`mr-9 ${personActive ? "border-b-2 border-black text-t24 text-black" : "text-t18 text-[#333333] opacity-60"}`}
+            className={`mdOnly:mr-5 xl:mr-9 ${personActive ? "border-b-2 border-black  xl:text-t18 text-black font-bold" : "mdOnly:text-t16 xl:text-t18 text-[#333333] opacity-60"}`}
             onClick={switchToPersonalTab}
           >
             {data.order.personalData}
           </button>
           <button
-            className={`mr-9 ${deliveryActive ? "border-b-2 border-black text-t24 text-black" : "text-t18 text-[#333333] opacity-60"}`}
+            className={`mdOnly:mr-5 xl:mr-9 ${deliveryActive ? "border-b-2 border-black  xl:text-t18 text-black  font-bold" : "mdOnly:text-t16 xl:text-t18 text-[#333333] opacity-60"}`}
             onClick={saveAndProceed}
           >
             {data.order.delivery}
           </button>
           <button
-            className={`mr-9 ${paymentActive ? "border-b-2 border-black text-t24 text-black" : "text-t18 text-[#333333] opacity-60"}`}
+            className={`mdOnly:mr-5 xl:mr-9 ${paymentActive ? "border-b-2 border-black  xl:text-t18 text-black  font-bold" : "mdOnly:text-t16 xl:text-t18 text-[#333333] opacity-60"}`}
             onClick={switchToDeliveryTab}
           >
             {data.order.payment}
           </button>
         </div>
 
-        <div className="w-[580px]">
+        <div className="mdOnly:w-[100%]">
           {personActive && (
             <Personalinfo
               error={error}
