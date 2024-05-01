@@ -40,60 +40,62 @@ export const MobileMenu = ({
   }, [parent]);
 
   return (
-    <div ref={parent}>
+    <div>
       <button onClick={() => setMenuOpened()}>
         <Burger className="h-14 w-14" />
       </button>
-      {isOpen && (
-        <div className="fixed inset-0 h-dvh overflow-scroll bg-bg_transparent">
-          <div className="bg-white">
-            <div className="border-b-2 border-black ">
-              <div className="container flex flex-row items-center justify-between py-2">
-                <Link href={`/${lang}`}>
-                  <Image src={Logo} alt="logo" width={158} height={32} />
-                </Link>
-                <h2 className="sr-only">Mobile Menu</h2>
-                <div className="flex flex-row items-center gap-3">
-                  <Link
-                    className="text-white duration-300 hover:text-white"
-                    href={`/${lang}/basket`}
-                  >
-                    <Bag color="black" />
+      <div ref={parent}>
+        {isOpen && (
+          <div className="fixed inset-0 h-dvh overflow-scroll bg-bg_transparent">
+            <div className="bg-white">
+              <div className="border-b-2 border-black ">
+                <div className="container flex flex-row items-center justify-between py-2">
+                  <Link href={`/${lang}`}>
+                    <Image src={Logo} alt="logo" width={158} height={32} />
                   </Link>
-                  <button onClick={() => setMenuClosed()} className="">
-                    <BurgerCross className="h-14 w-14 text-white" />
-                  </button>
+                  <h2 className="sr-only">Mobile Menu</h2>
+                  <div className="flex flex-row items-center gap-3">
+                    <Link
+                      className="text-white duration-300 hover:text-white"
+                      href={`/${lang}/basket`}
+                    >
+                      <Bag color="black" />
+                    </Link>
+                    <button onClick={() => setMenuClosed()} className="">
+                      <BurgerCross className="h-14 w-14 text-white" />
+                    </button>
+                  </div>
                 </div>
               </div>
+              <nav className="flex flex-col items-center gap-3 px-5 pb-20 pt-10 text-center">
+                <h2 className="sr-only">Mobile navigation</h2>
+                <Link
+                  className="border-1 w-full border-b border-border pb-4 pt-2 text-t16 text-[#0B0605] duration-300 hover:italic"
+                  href={`/${lang}/#products`}
+                  onClick={() => setMenuClosed()}
+                >
+                  {navigation.ourproducts}
+                </Link>
+                <Link
+                  className="border-1 w-full border-b border-border pb-4 pt-2 text-t16 duration-300 hover:italic"
+                  href={`/${lang}/#about-us`}
+                  onClick={() => setMenuClosed()}
+                >
+                  {navigation.aboutus}
+                </Link>
+                <Link
+                  className="border-1 mb-10 w-full border-b border-border pb-4 pt-2 text-t16 duration-300 hover:italic"
+                  href={`/${lang}/#contacts`}
+                  onClick={() => setMenuClosed()}
+                >
+                  {navigation.contacts}
+                </Link>
+                <LocaleSwitcher lang={lang} />
+              </nav>
             </div>
-            <nav className="flex flex-col items-center gap-3 px-5 pb-20 pt-10 text-center">
-              <h2 className="sr-only">Mobile navigation</h2>
-              <Link
-                className="border-1 w-full border-b border-border pb-4 pt-2 text-t16 text-[#0B0605] duration-300 hover:italic"
-                href={`/${lang}/#products`}
-                onClick={() => setMenuClosed()}
-              >
-                {navigation.ourproducts}
-              </Link>
-              <Link
-                className="border-1 w-full border-b border-border pb-4 pt-2 text-t16 duration-300 hover:italic"
-                href={`/${lang}/#about-us`}
-                onClick={() => setMenuClosed()}
-              >
-                {navigation.aboutus}
-              </Link>
-              <Link
-                className="border-1 mb-10 w-full border-b border-border pb-4 pt-2 text-t16 duration-300 hover:italic"
-                href={`/${lang}/#contacts`}
-                onClick={() => setMenuClosed()}
-              >
-                {navigation.contacts}
-              </Link>
-              <LocaleSwitcher lang={lang} />
-            </nav>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

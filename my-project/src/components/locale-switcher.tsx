@@ -38,7 +38,7 @@ export default function LocaleSwitcher({
   }, [parent]);
 
   return (
-    <div className="relative" ref={parent}>
+    <div className="relative">
       <button
         onClick={isOpen ? closeDropdown : openDropdown}
         className="w-[56.8px] rounded-md border-2 border-black px-3 py-2 text-black duration-300 hover:border-black hover:text-black"
@@ -46,24 +46,26 @@ export default function LocaleSwitcher({
         {langText}
       </button>
 
-      {isOpen && (
-        <ul className="absolute left-0 top-full mt-4 w-max rounded-md  py-1 backdrop-opacity-0">
-          {i18n.locales.map((locale) => (
-            <li
-              key={locale}
-              className={`mb-2  flex h-10 w-[56.8px] items-center justify-center rounded-md border-2 border-black text-black duration-300 hover:border-black ${lang === locale ? "bg-black text-white hover:bg-black hover:text-white" : "hover:bg-gray-200"}`}
-            >
-              <Link
-                className="px-4 py-2"
-                href={redirectedPathName(locale)}
-                locale={locale}
+      <div ref={parent}>
+        {isOpen && (
+          <ul className="absolute left-0 top-full mt-4 w-max rounded-md  py-1 backdrop-opacity-0">
+            {i18n.locales.map((locale) => (
+              <li
+                key={locale}
+                className={`mb-2  flex h-10 w-[56.8px] items-center justify-center rounded-md border-2 border-black text-black duration-300 hover:border-black ${lang === locale ? "bg-black text-white hover:bg-black hover:text-white" : "hover:bg-gray-200"}`}
               >
-                {locale === "en" ? "Eng" : locale === "ua" ? "Укр" : locale}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
+                <Link
+                  className="px-4 py-2"
+                  href={redirectedPathName(locale)}
+                  locale={locale}
+                >
+                  {locale === "en" ? "Eng" : locale === "ua" ? "Укр" : locale}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
 }
