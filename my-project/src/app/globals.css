@@ -113,7 +113,7 @@ section {
     background-image: url("../../public/emmy-dog-image.webp");
     background-repeat: no-repeat;
     background-size: contain;
-    background-position-x: 90%;
+    background-position-x: 110%;
     background-position-y: 100%;
   }
 
@@ -133,16 +133,16 @@ section {
   .product {
     clip-path: url(#path);
   }
-  .paw {
+  /* .paw {
     background-image: url("../../public/paw.svg");
 
     background-repeat: no-repeat;
 
     background-size: auto 45%;
 
-    background-position-x: 100%;
+    background-position-x: 120%;
     background-position-y: 100%;
-  }
+  } */
 
   .hero {
     background-image: url("../../public/main.webp"),
@@ -161,8 +161,8 @@ section {
       url("../../public/paw.svg");
     background-repeat: no-repeat, no-repeat;
     background-size: contain, contain;
-    background-position-x: 65%, 80%;
-    background-position-y: 0, 10%;
+    background-position-x: 95%, 80%;
+    background-position-y: 20%, 20%;
   }
 
   .paw2 {

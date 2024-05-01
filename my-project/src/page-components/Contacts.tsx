@@ -9,11 +9,11 @@ import Link from "next/link";
 export const Contacts = ({ data }: { data: any }) => {
   return (
     <section
-      className="contacts paw bg-white py-12 pb-10 md:pt-24 xl:pb-20 xl:pt-48"
+      className="contacts bg-white py-12 pb-10 md:pt-24 xl:pb-20 xl:pt-48"
       id="contacts"
     >
       <div className="container">
-        <div className="max-w-[29rem]">
+        <div className="md:max-w-[50%] xl:max-w-[29rem]">
           <div className="mb-4 flex flex-row items-center gap-4 xl:mb-10">
             <Paw className="h-12 w-12 p-1 text-black" />
             <Markdown
