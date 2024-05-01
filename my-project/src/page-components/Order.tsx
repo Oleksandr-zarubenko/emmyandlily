@@ -501,25 +501,27 @@ const Order = ({ data, lang }: any) => {
   };
 
   return (
-    <section className="paw container md:flex justify-between py-40">
+    <section className="paw container grow justify-between py-40 md:flex">
       <div className="smOnly:w-full mdOnly:w-[55%]">
-        <h1 className="mb-6 mdOnly:mb-8 xl:mb-10 text-t18 mdOnly:text-t24 xl:text-t32 font-bold r">{data.order.heading}</h1>
+        <h1 className="r mb-6 text-t18 font-bold xl:mb-10 xl:text-t32 mdOnly:mb-8 mdOnly:text-t24">
+          {data.order.heading}
+        </h1>
 
-        <div className=" mb-6 mdOnly:mb-6 xl:mb-10 flex smOnly:justify-between items-center">
+        <div className=" mb-6 flex items-center xl:mb-10 smOnly:justify-between mdOnly:mb-6">
           <button
-            className={`mdOnly:mr-5 xl:mr-9 ${personActive ? "border-b-2 border-black  xl:text-t18 text-black font-bold" : "mdOnly:text-t16 xl:text-t18 text-[#333333] opacity-60"}`}
+            className={`xl:mr-9 mdOnly:mr-5 ${personActive ? "border-b-2 border-black  font-bold text-black xl:text-t18" : "text-[#333333] opacity-60 xl:text-t18 mdOnly:text-t16"}`}
             onClick={switchToPersonalTab}
           >
             {data.order.personalData}
           </button>
           <button
-            className={`mdOnly:mr-5 xl:mr-9 ${deliveryActive ? "border-b-2 border-black  xl:text-t18 text-black  font-bold" : "mdOnly:text-t16 xl:text-t18 text-[#333333] opacity-60"}`}
+            className={`xl:mr-9 mdOnly:mr-5 ${deliveryActive ? "border-b-2 border-black  font-bold text-black  xl:text-t18" : "text-[#333333] opacity-60 xl:text-t18 mdOnly:text-t16"}`}
             onClick={saveAndProceed}
           >
             {data.order.delivery}
           </button>
           <button
-            className={`mdOnly:mr-5 xl:mr-9 ${paymentActive ? "border-b-2 border-black  xl:text-t18 text-black  font-bold" : "mdOnly:text-t16 xl:text-t18 text-[#333333] opacity-60"}`}
+            className={`xl:mr-9 mdOnly:mr-5 ${paymentActive ? "border-b-2 border-black  font-bold text-black  xl:text-t18" : "text-[#333333] opacity-60 xl:text-t18 mdOnly:text-t16"}`}
             onClick={switchToDeliveryTab}
           >
             {data.order.payment}
