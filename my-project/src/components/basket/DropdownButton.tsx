@@ -31,18 +31,18 @@ const DropdownButton = ({
                 onClick={() => setIsOpen(!isOpen)}
             >
                 <div className="flex items-center justify-between">
-                    {" "}
+
                     <div className="flex items-center">
-                        {" "}
-                        {icon} <p className="ml-2"> {buttonText}</p>
+
+                        {icon} <p className="ml-2 text-t16 xl:text-t18 font-bold"> {buttonText}</p>
                     </div>{" "}
                     {chevron}
                 </div>
             </button>
             {isOpen && (
-                <div className="mb-6 flex  pb-4 ">
+                <div className="mb-6 flex pb-4 ">
 
-                    <Markdown text={dropdownText} className="text-left list-disc ml-[200px]" />
+                    <Markdown text={dropdownText} className="text-left mdOnly:ml-12 list-disc ml-4 xl:ml-24 " />
 
                 </div>
             )}
@@ -54,7 +54,7 @@ const DropdownButton = ({
 const DropDown = ({ data }: any) => {
     return (
         <div>
-            <h2 className="text-t32 -tracking-5 mb-10"> {data.basket.additionalInformation}</h2>
+            <h2 className="text-t24 xl:text-t32 -tracking-5 mb-8 xl:mb-10"> {data.basket.additionalInformation}</h2>
 
             <DropdownButton icon={<Delivery />} buttonText={data.basket.delivery} dropdownText={data.basket.dropdown} />
             <DropdownButton icon={<Wallet />} buttonText={data.basket.payment} dropdownText={data.basket.dropdown1} />
