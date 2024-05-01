@@ -160,8 +160,8 @@ const Delivery: React.FC<DeliveryProps> = ({
       <div className="mb-8"></div>
       <div className="mb-6">
         <h3 className="text-t18">{data.order.delivery_method}</h3>
-        <div className="mb-6 flex ">
-          <div className="mr-1 w-[230px]">
+        <div className="mb-6 xl:flex ">
+          <div className="mb-2 xl:mb-0 xl:mr-1 w-full xl:w-[230px]">
             <input
               type="text"
               id="country"
@@ -172,7 +172,7 @@ const Delivery: React.FC<DeliveryProps> = ({
             />
           </div>
 
-          <div className="w-[230px]">
+          <div className=" w-full xl:w-[230px]">
             <input
               type="text"
               id="city"
@@ -219,8 +219,8 @@ const Delivery: React.FC<DeliveryProps> = ({
           <p className="mb-2 text-t14 italic text-[#292D2D]">
             {data.order.fillInTheDetails}
           </p>
-          <div className="grid  grid-cols-2 gap-4">
-            <div className="w-[250px]">
+          <div className="grid grid-cols-1  xl:grid-cols-2 gap-4">
+            <div className="xl:w-[250px]">
               <input
                 type="text"
                 id="zip"
@@ -230,7 +230,7 @@ const Delivery: React.FC<DeliveryProps> = ({
                 placeholder="Zip-CODE"
               />
             </div>
-            <div className="w-[250px]">
+            <div className="xl:w-[250px]">
               <input
                 type="text"
                 id="sstreet"
@@ -240,7 +240,7 @@ const Delivery: React.FC<DeliveryProps> = ({
                 placeholder="Street"
               />
             </div>
-            <div className="w-[250px]">
+            <div className="xl:w-[250px]">
               <input
                 type="text"
                 id="house"
@@ -250,7 +250,7 @@ const Delivery: React.FC<DeliveryProps> = ({
                 placeholder="House"
               />
             </div>
-            <div className="w-[250px]">
+            <div className="xl:w-[250px]">
               <input
                 type="text"
                 id="appartment"
@@ -270,8 +270,8 @@ const Delivery: React.FC<DeliveryProps> = ({
             <p className="mb-4 text-t14 italic text-[#292D2D]">
               {data.order.fillInTheDetails}
             </p>
-            <div className="flex justify-between">
-              <div className="w-[230px]">
+            <div className="xl:flex justify-between">
+              <div className="xl:w-[230px] mb-2 xl:mb-0">
                 <input
                   type="text"
                   id="street"
@@ -282,7 +282,7 @@ const Delivery: React.FC<DeliveryProps> = ({
                 />
               </div>
 
-              <div className="w-[230px]">
+              <div className=" xl:w-[230px]">
                 <input
                   type="text"
                   id="houseNumber"
@@ -302,7 +302,7 @@ const Delivery: React.FC<DeliveryProps> = ({
           <p className="mb-4 text-t14 italic text-[#292D2D]">
             {data.order.fillInTheDetails}
           </p>
-          <div className="mr-1 w-[230px]">
+          <div className="mr-1 xl:w-[230px]">
             <input
               type="text"
               id="numnp"
@@ -318,7 +318,7 @@ const Delivery: React.FC<DeliveryProps> = ({
           <p className="mb-4 text-t14 italic text-[#292D2D]">
             {data.order.fillInTheDetails}
           </p>
-          <div className="mr-1 w-[230px]">
+          <div className="mr-1 xl:w-[230px]">
             <input
               type="text"
               id="numposhtmat"
@@ -334,7 +334,7 @@ const Delivery: React.FC<DeliveryProps> = ({
           <p className="mb-4 text-t14 italic text-[#292D2D]">
             {data.order.fillInTheDetails}
           </p>
-          <div className="mr-1 w-[230px]">
+          <div className="mr-1 xl:w-[230px]">
             <input
               type="text"
               id="index"

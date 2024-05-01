@@ -150,15 +150,15 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
         break;
     }
   };
-
+  console.log(data.order)
   return (
     <>
-      <div className="mb-14">
-        <h2 className="mb-6 text-t18 text-[#292D2D]">
-          {data.order.enter_your_details}
+      <div className="mb-14 ">
+        <h2 className="mb-6 text-t16 xl:text-t18 font-bold text-[#292D2D]">
+          {data.order.enterYourDetails}
         </h2>
-        <div className="grid grid-cols-2">
-          <div className="mb-4 mr-8 flex flex-col">
+        <div className="xl:grid xl:grid-cols-2">
+          <div className="mb-2 xl:mb-4 xl:mr-8 flex flex-col">
             <input
               type="text"
               id="firstName"
@@ -168,7 +168,7 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
               placeholder={data.order.yourName}
             />
           </div>
-          <div className="mb-4 flex flex-col">
+          <div className="mb-2 xl:mb-4 flex flex-col">
             <input
               type="text"
               id="lastName"
@@ -179,7 +179,7 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
             />
           </div>
 
-          <div className="mr-8 flex  flex-col ">
+          <div className="mb-2 xl:mb-0 xl:mr-8 flex  flex-col ">
             <input
               type="email"
               id="email"
@@ -189,7 +189,7 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
               placeholder={data.order.eMail}
             />
           </div>
-          <div className="flex flex-col">
+          <div className="mb-2 xl:mb-0 flex flex-col">
             <input
               type="tel"
               id="phoneNumber"
@@ -202,8 +202,10 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
         </div>
       </div>
       <div>
-        <h2 className="mb-6 text-t18 text-[#292D2D]">
-          {data.order.recipient_data}
+        <h2 className="mb-6 text-t16 xl:text-t18 font-bold text-[#292D2D]">
+          {data.order.
+            recipientData
+          }
         </h2>
         <div className="mb-6 flex items-center">
           <input
@@ -215,14 +217,14 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
           />
           <label
             htmlFor="recipientCheckbox"
-            className="ml-2 text-t16 italic text-[#292D2D]"
+            className="ml-2 text-t14 xl:text-t16 italic text-[#292D2D]"
           >
             {data.order.receiver}
           </label>
         </div>
         {isRecipient ? null : (
-          <div className="grid grid-cols-2">
-            <div className="mb-4 mr-8 flex flex-col">
+          <div className="xl:grid xl:grid-cols-2">
+            <div className="mb-2  xl:mb-4 xl:mr-8 flex flex-col">
               <input
                 type="text"
                 id="firstName"
@@ -235,7 +237,7 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
                 placeholder={data.order.yourName}
               />
             </div>
-            <div className="mb-4 flex flex-col">
+            <div className="mb-2  xl:mb-4 flex flex-col">
               <input
                 type="text"
                 id="lastName"
@@ -248,7 +250,7 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
                 placeholder={data.order.lastName}
               />
             </div>
-            <div className="mr-8 flex  flex-col">
+            <div className="mb-2 xl:mb-0 xl:mr-8 flex  flex-col">
               <input
                 type="email"
                 id="email"
@@ -261,7 +263,7 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
                 placeholder={data.order.eMail}
               />
             </div>
-            <div className="flex flex-col">
+            <div className="mb-2 xl:mb-0 flex flex-col">
               <input
                 type="tel"
                 id="phoneNumber"
