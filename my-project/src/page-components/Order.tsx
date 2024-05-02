@@ -429,7 +429,7 @@ const Order = ({ data, lang }: any) => {
 
   const switchToPaymentTab = async () => {
     makeApiCall();
-    // localStorage.clear();
+    localStorage.clear();
     if (deliveryCompleted && paymentMonobank === true) {
       try {
         const response = await fetch(
