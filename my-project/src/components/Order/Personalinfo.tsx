@@ -47,7 +47,7 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
 }) => {
   const validateField = (fieldName: string, value: string) => {
     const nameRegex = /^[\p{L}\s]+$/u;
-    const phoneRegex = /^(\+?3?8)?(0\d{9})$/;
+    const phoneRegex = /^[0-9]*$/;
 
     const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
 

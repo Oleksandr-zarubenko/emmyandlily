@@ -36,11 +36,18 @@ const Order = ({ data, lang }: any) => {
     JSON.parse(localStorage.getItem("quantities") || "{}")
   );
   const [apiPromocod, setapipromoCod] = useState(() => {
-    // Отримання даних з локального сховища
+
     const storedData = localStorage.getItem("promoCode");
-    // Перевірка наявності даних у локальному сховищі
+
     return storedData || "";
   });
+  const [apiPromocodPartner, setapipromoCodPartner] = useState(() => {
+
+    const storedData = localStorage.getItem("promoCodePartner");
+
+    return storedData || "";
+  });
+
 
   const [productName, setProductName] = useState(storedData);
 
@@ -328,36 +335,25 @@ const Order = ({ data, lang }: any) => {
         index,
         products: parsedProducts,
         isDiscountsAndNews,
+        apiPromocodPartner
       }),
     });
   };
+  console.log(data.delivery)
 
   const handleOptionChange = (e: any) => {
     setSelectedOption(e.target.value);
 
-    switch (e.target.value) {
-      case "np-courier":
-        setDeliveryPrice(90);
-        break;
-      case "novaposhta-smovuviz":
-        setDeliveryPrice(55);
-        break;
-      case "np-poshtmat":
-        setDeliveryPrice(55);
-        break;
-      case "ukrposhta":
-        setDeliveryPrice(25);
-        break;
-      case "dhl":
-        setDeliveryPrice(0);
-        break;
-      case "ups":
-        setDeliveryPrice(0);
-        break;
-      default:
-        break;
+    const deliveryMethod = data.delivery.deliveryMethod.find((method: any) => method.idD === e.target.value);
+
+    if (deliveryMethod) {
+      setDeliveryPrice(parseInt(deliveryMethod.price));
+    } else {
+
+      setDeliveryPrice(0);
     }
   };
+
 
   const isPersonalDataComplete = () => {
     if (isRecipient === false) {
@@ -412,10 +408,16 @@ const Order = ({ data, lang }: any) => {
   };
 
   const saveAndProceed = () => {
+
     if (isPersonalDataComplete()) {
       setPersonActive(false);
       setDeliveryActive(true);
       setPaymentActive(false);
+      window.scrollTo({
+        top: 100,
+        left: 100,
+        behavior: "smooth",
+      });
     } else {
       setDeliveryActive(false);
       alert("Будь ласка, заповніть всі поля");
@@ -485,6 +487,7 @@ const Order = ({ data, lang }: any) => {
   };
 
   const switchToDeliveryTab = () => {
+
     if (city.trim() === "" || country.trim() === "") {
       alert("Будь ласка, заповніть обов'язкове країну і місто ");
       return;
@@ -517,6 +520,11 @@ const Order = ({ data, lang }: any) => {
     }
 
     if (selectedOption) {
+      window.scrollTo({
+        top: 100,
+        left: 100,
+        behavior: "smooth",
+      });
       setPaymentActive(true);
       setPersonActive(false);
       setDeliveryActive(false);
@@ -611,6 +619,7 @@ const Order = ({ data, lang }: any) => {
               error={error}
               setError={setError}
               lang={lang}
+              en={en}
             />
           )}
 

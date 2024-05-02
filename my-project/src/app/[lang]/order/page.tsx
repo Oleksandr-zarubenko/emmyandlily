@@ -71,15 +71,20 @@ const queryEN = gql`
         id
         idD
         name
+        price
       }
     }
 
   
-    promocod {
-    promo
-  }
+   allPromocods {
+    promoCodName {
+      promocod
+      namePartner
+        discount
+    }
 
   }
+}
 `;
 
 const queryUA = gql`
@@ -150,15 +155,20 @@ const queryUA = gql`
         id
         idD
         name
+        price
       }
     }
 
   
-    promocod(locale: uk) {
-    promo
-  }
+    allPromocods(locale: uk) {
+    promoCodName {
+      promocod
+      namePartner
+        discount
+    }
 
   }
+}
 `;
 export default async function OrderPage({
   params: { lang },

@@ -27,6 +27,7 @@ interface DeliveryProps {
   error: any;
   setError: any;
   lang: any;
+  en: any;
 }
 
 const Delivery: React.FC<DeliveryProps> = ({
@@ -58,6 +59,7 @@ const Delivery: React.FC<DeliveryProps> = ({
   error,
   lang,
   setError,
+  en
 }) => {
   const validateField = (fieldName: string, value: string) => {
     const nameRegex = /^[\p{L}\s]+$/u;
@@ -188,7 +190,7 @@ const Delivery: React.FC<DeliveryProps> = ({
         )}
 
 
-        {selectedOption === "dhl" || selectedOption === "ups" ? (
+        {selectedOption === "dhl" || selectedOption === "ups" || selectedOption === "novaposhta-smovuviz-euro" ? (
           <span className="text-t14 italic">{data.order.deliveryTime2}</span>
         ) : (
           <span className="text-t14 italic">{data.order.deliveryTime}</span>
@@ -297,7 +299,7 @@ const Delivery: React.FC<DeliveryProps> = ({
             </div>
           </div>
         </div>
-      ) : selectedOption === "novaposhta-smovuviz" ? (
+      ) : selectedOption === "novaposhta-smovuviz" || selectedOption === "novaposhta-smovuviz-euro" ? (
         <div>
           <p className="mb-4 text-t14 italic text-[#292D2D]">
             {data.order.fillInTheDetails}

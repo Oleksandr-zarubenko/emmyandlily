@@ -62,10 +62,14 @@ const queryEN = gql`
         idCrm
       }
     }
-     promocod {
-    promo
+   allPromocods {
+    promoCodName {
+      promocod
+      namePartner
+        discount
+    }
   }
-  }
+}
 `;
 
 const queryUA = gql`
@@ -127,10 +131,14 @@ dropdown
         idCrm
       }
     }
-     promocod(locale: uk) {
-    promo
+      allPromocods(locale: uk) {
+    promoCodName {
+      promocod
+      namePartner
+        discount
+    }
   }
-  }
+}
 `;
 
 export default async function BasketPage({
