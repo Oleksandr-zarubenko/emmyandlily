@@ -30,6 +30,8 @@ const queryEN = gql`
       text
     }
     allProducts {
+      idAvailable
+
       heading
       description
       id
@@ -37,6 +39,9 @@ const queryEN = gql`
         alt
         url
       }
+      method
+      composit
+      activecomp
       advantage1
       advantage2
       advantage3
@@ -47,15 +52,15 @@ const queryEN = gql`
         url
         id
       }
-
       order
       methodOfUse
+
+      discount
       capacity {
         price
         ml
-        id
+        idCrm
       }
-      discount
     }
      promocod {
     promo
@@ -89,7 +94,9 @@ dropdown
       heading
       text
     }
-    allProducts(locale: uk) {
+    allProducts(locale: uk)   {
+      idAvailable
+
       heading
       description
       id
@@ -97,6 +104,9 @@ dropdown
         alt
         url
       }
+      method
+      composit
+      activecomp
       advantage1
       advantage2
       advantage3
@@ -107,15 +117,15 @@ dropdown
         url
         id
       }
-
       order
       methodOfUse
+
+      discount
       capacity {
         price
         ml
-        id
+        idCrm
       }
-      discount
     }
      promocod(locale: uk) {
     promo
