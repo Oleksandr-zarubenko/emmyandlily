@@ -29,6 +29,7 @@ export async function POST(req: Request) {
       comment: rawBody.recipientData,
       sajt: "",
       promokod: rawBody.apiPromocod,
+      partnerPoPromokodu: rawBody.apiPromocodPartner,
       externalId: "",
       organizationId: "",
       stockId: "",

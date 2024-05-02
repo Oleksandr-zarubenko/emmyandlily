@@ -148,7 +148,7 @@ export const ProductModal = ({
             </button>
 
             <div
-              className="relative h-full w-full overflow-y-auto bg-white px-5 py-6 xl:mr-8 xl:flex xl:h-[688px] xl:w-[1280px] xl:flex-row xl:px-[80px] mdOnly:px-[48px]"
+              className="relative h-full w-full overflow-y-auto bg-white px-5 py-6 xl:mr-8 xl:flex xl:h-[698px] xl:w-[1280px] xl:flex-row xl:px-[80px] mdOnly:px-[48px]"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="xl:mr-[80px]  xl:flex xl:h-full xl:flex-col">
@@ -213,7 +213,7 @@ export const ProductModal = ({
                     </p>
                   )}
                   {product?.advantage3 && (
-                    <p className="w-full rounded   bg-[#DCDCDC] px-3 py-2 text-t14 text-black md:text-t16 xl:text-t16 mdOnly:w-[436px]">
+                    <p className=" w-full rounded   bg-[#DCDCDC] px-3 py-2 text-t14 text-black md:text-t16 xl:text-t16 mdOnly:w-[436px]">
                       {product.advantage3}
                     </p>
                   )}

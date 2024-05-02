@@ -51,10 +51,13 @@ const YourOrder: React.FC<YourOrderProps> = ({
     const locales = i18n.locales;
     const en = locales[1];
 
-
-
     const total = localStorage.getItem('totalPrice');
     const totalPrice = total ? parseInt(total) : 0;
+
+
+    const discountAmount = localStorage.getItem('discountAmount');
+    const totaldiscountAmount = discountAmount ? parseInt(discountAmount) : 0;
+
     const freeDelivery = (deliveryPrice: any) => {
         if (totalPrice >= 600) {
             return lang === 'en' ? deliveryPrice : deliveryPrice = 0;
@@ -62,7 +65,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
         return deliveryPrice
 
     }
-    const allTotal = deliveryPrice + totalPrice;
+    const allTotal = freeDelivery(deliveryPrice) + totalPrice;
     localStorage.setItem('allTotal', JSON.stringify(allTotal));
     return (
         <div className='smOnly:mt-[56px] w-full px-4 py-7 smOnly:h-[360px] mdOnly:w-[255px] mdOnly:h-[353px]  xl:w-[357px] h-[405px] mdOnly:py-6 xl:py-10 mdOnly:px-4 xl:px-4 border-[1px] bg-white border-[#DCDCDC] drop-shadow-[4px_15px_40px_0px_#100E0C33] rounded'>
@@ -70,14 +73,18 @@ const YourOrder: React.FC<YourOrderProps> = ({
             <ul className='border-b-[1px] border-[#292D2D] mb-6'>
                 <li className='mb-2 flex justify-between'><p className='text-t14 xl:text-t16'>{data.order.total}</p> <p className='text-t16 xl:text-t18'>{lang === en
                     ? convertPrice(totalPrice, state.currencies.find((currency: any) => currency.id === "EUR")?.rate || 1) + ' €'
-                    : totalPrice + ' ₴'
+                    : totalPrice + totaldiscountAmount + ' ₴'
                 }
                 </p></li>
                 <li className='mb-2 flex justify-between'><p className='text-t14 xl:text-t16'> {data.order.delivery}</p> <p className='text-t16 xl:text-t18'>  {lang === en
-                    ? convertPrice(freeDelivery(deliveryPrice), state.currencies.find((currency: any) => currency.id === "EUR")?.rate || 1) + ' €'
+                    ? deliveryPrice + ' €'
                     : freeDelivery(deliveryPrice) + ' ₴'
                 }</p></li>
-                <li className='mb-2 flex justify-between'><p className='text-t14 xl:text-t16'>{data.order.discount}</p> <p className='text-t16 xl:text-t18'>- 0  {lang === en ? '€' : '₴'}</p></li>
+                <li className='mb-2 flex justify-between'><p className='text-t14 xl:text-t16'>{data.order.discount}</p> <p className='text-t16 xl:text-t18'> <p className='text-t16 xl:text-t18'>{lang === en
+                    ? "- " + convertPrice(totaldiscountAmount, state.currencies.find((currency: any) => currency.id === "EUR")?.rate || 1) + ' €'
+                    : "- " + totaldiscountAmount + ' ₴'
+                }
+                </p></p></li>
             </ul>
             <div className='flex justify-between mb-8'> <p className='text-t12 xl:text-t18'>{data.order.totalAmountToBePaid}</p>    <p className='text-t16 xl:text-t18'>
                 {lang === en

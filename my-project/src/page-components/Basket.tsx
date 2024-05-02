@@ -62,6 +62,11 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
     const storedpromoCode = localStorage.getItem("promoCode");
     return storedpromoCode || "";
   });
+  const [promoCodePartner, setPromoCodePartner] = useState(() => {
+    const storedpromoCodePartner = localStorage.getItem("promoCodePartner");
+    return storedpromoCodePartner || "";
+  });
+
   const [isValid, setIsValid] = useState(() => {
     const storedIsValid = localStorage.getItem("isValid");
     return storedIsValid ? storedIsValid === "true" : false;
@@ -82,11 +87,16 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
 
     return storedValue ? parseInt(storedValue, 10) : 0;
   });
+  const [isPromoCodeValid, setIsPromoCodeValid] = useState(() => {
+    const storeisPromoCodeValid = localStorage.getItem("isPromoCodeValid");
+    return storeisPromoCodeValid ? storeisPromoCodeValid === "true" : false;
+  });
 
-  const [isPromoCodeValid, setIsPromoCodeValid] = useState(false);
 
   useEffect(() => {
-    // localStorage.setItem('discountAmount', discountAmount.toString());
+    localStorage.setItem("isPromoCodeValid", isPromoCodeValid.toString());
+    localStorage.setItem('discountAmount', discountAmount.toString());
+    localStorage.setItem("promoCodePartner", promoCodePartner);
     localStorage.setItem("storedData", JSON.stringify(tovar));
     localStorage.setItem("promoCode", promoCode);
     localStorage.setItem("quantities", JSON.stringify(quantities));
@@ -95,6 +105,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
     localStorage.setItem("isButtonClicked", isButtonClicked.toString());
     localStorage.setItem("totalPrice", totalPrice.toString());
   }, [
+    discountAmount,
     quantities,
     isValid,
     isInputOpen,
@@ -102,7 +113,10 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
     promoCode,
     tovar,
     totalPrice,
+    promoCodePartner,
+    isPromoCodeValid
   ]);
+
 
   const handlePromoCodeChange = (event: any) => {
     const inputPromoCode = event.target.value;
@@ -116,8 +130,11 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
 
     setTotalPrice(newTotalPrice);
     localStorage.setItem("totalPrice", newTotalPrice.toString());
-
-    const isValidPromo = inputPromoCode.trim() === data.promocod.promo;
+    const isValidPromo = data.allPromocods.some((promo: any) => {
+      return promo.promoCodName.some((code: any) => {
+        return code.promocod === inputPromoCode.trim();
+      });
+    });
 
     if (isValidPromo) {
       setIsValid(true);
@@ -130,13 +147,30 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
 
   const handleVerifyPromoCode = () => {
     const inputField = document.getElementById("promoCodeInput");
-    if (promoCode.trim() === data.promocod.promo) {
+    const isValidPromo = data.allPromocods.some((promo: any) => {
+      return promo.promoCodName.some((code: any) => {
+        if (code.promocod === promoCode.trim()) {
+          setPromoCodePartner(code.namePartner)
+
+          return true;
+        }
+        return false;
+      });
+    });
+    if (isValidPromo) {
       setIsPromoCodeValid(true);
       if (inputField) {
         inputField.classList.add("bg-white");
       }
-      const discountedPrice = totalPrice * 0.85;
-      setDiscountAmount(totalPrice * 0.15);
+      const discountObject = data.allPromocods.find((promo: any) => {
+        return promo.promoCodName.some((code: any) => code.promocod === promoCode.trim());
+      });
+
+      const discountValue = discountObject ? discountObject.promoCodName.find((code: any) => code.promocod === promoCode.trim()).discount : 0;
+
+      console.log("Discount Value:", discountValue);
+      const discountedPrice = totalPrice * (1 - discountValue / 100);
+      setDiscountAmount(totalPrice * (discountValue / 100));
       setTotalPrice(discountedPrice);
     } else {
       if (inputField) {
@@ -146,6 +180,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
       setDiscountAmount(0);
     }
   };
+
 
   const handleToggleInput = () => {
     setIsInputOpen(!isInputOpen);
@@ -157,7 +192,15 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
       const quantity = quantities[item.id] || 1;
       newTotalPrice += item.price * quantity;
     });
-    setTotalPrice(newTotalPrice);
+
+    const discountObject = data.allPromocods.find((promo: any) => {
+      return promo.promoCodName.some((code: any) => code.promocod === promoCode.trim());
+    });
+    const discountValue = discountObject ? discountObject.promoCodName.find((code: any) => code.promocod === promoCode.trim()).discount : 0;
+    const discountedPrice = newTotalPrice * (1 - discountValue / 100);
+    setDiscountAmount(newTotalPrice * (discountValue / 100));
+    setTotalPrice(discountedPrice);
+
     localStorage.setItem("totalPrice", newTotalPrice.toString());
   }, [quantities, tovar]);
 
@@ -200,8 +243,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
       (product.idAvailable === "id_5" || product.idAvailable === "id_4" || product.idAvailable === "id_6")
     );
   });
-  console.log(data.allProducts)
-  console.log(TogetherProducts)
+
   return (
     <section className="container justify-between py-40 xl:flex">
       <div className="w-full xl:w-[750px]">
@@ -484,7 +526,6 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
             className="mb-6 ml-auto flex w-[225px] justify-between text-t14 text-black xl:text-t16"
             onClick={handleToggleInput}
           >
-            {" "}
             {lang === en ? "Add promo code" : "Додати промокод "}{" "}
             <BurgerCross className="h-4 w-4 origin-center rotate-45" />
           </button>
