@@ -125,14 +125,14 @@ export const FormModal = ({ orderForm }: { orderForm: any }) => {
   return (
     <>
       <button
-        className="mx-auto rounded-xl bg-primary px-12 py-4 text-t20 text-white duration-300 hover:bg-black"
+        className="mx-auto rounded-xl  px-12 py-4 text-t20 text-white duration-300 hover:bg-black"
         onClick={() => setModalOpened()}
       >
         {orderForm.buttonText}
       </button>
       {isOpen && (
         <div
-          className="fixed inset-0 z-30 flex h-dvh items-center justify-center overflow-y-auto bg-black/50"
+          className="fixed inset-0 z-30 flex h-dvh items-center justify-center md:overflow-y-auto bg-black/50"
           onClick={() => setMenuClosed()}
         >
           <div className="relative h-full xl:h-auto">

@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-
+import { convertPrice } from "@/utils/convertPrice/convertPrice";
 import { Markdown } from "@/components/Markdown";
 import { useRouter } from "next/navigation";
 
@@ -11,6 +11,7 @@ import { i18n } from "@/i18n.config";
 import { useAddedToCart } from "@/components/context/addedToCart";
 import CheaperTogether from "@/components/basket/cheaperTogether";
 import DropDown from "@/components/basket/DropdownButton";
+import getData from "@/utils/api/api";
 
 const Basket = ({ data, lang }: { data: any; lang: any }) => {
   const locales = i18n.locales;
@@ -18,23 +19,20 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
   const { addedToCart, setAddedToCart } = useAddedToCart();
 
   const [state, setState] = useState<{
-    products: { id: string; price: string }[];
+    products: { id: string; price: string; available: string }[];
     currencies: { id: string; rate: number }[];
   }>({ products: [], currencies: [] });
 
-  const getData = async () => {
+  const fetchData = async () => {
     try {
-      const res = await fetch(`/api/get-price`, {
-        method: "GET",
-      });
-      const pos = await res.json();
-      setState(pos);
+      const data = await getData();
+      setState(data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
   useEffect(() => {
-    getData();
+    fetchData();
   }, []);
 
   const router = useRouter();
@@ -44,12 +42,6 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
       router.push(`/${lang}/order`);
     }
   };
-
-  const convertPrice = (price: any, rate: any): string => {
-    const convertedPrice = parseFloat(price) / rate;
-    return convertedPrice.toFixed(2);
-  };
-
   const storedDatas = localStorage.getItem("storedData");
   const storedData = storedDatas ? JSON.parse(storedDatas) : [];
   const [tovar, setTovar] = useState(storedData);
@@ -198,7 +190,18 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
   };
 
   const isButtonDisabled = totalPrice === 0;
-
+  const TogetherProducts = data.allProducts.filter((product: any) => {
+    const correspondingProduct = state.products.find(
+      (p) => p.id === product.idAvailable
+    );
+    return (
+      correspondingProduct &&
+      correspondingProduct.available === "true" &&
+      (product.idAvailable === "id_5" || product.idAvailable === "id_4" || product.idAvailable === "id_6")
+    );
+  });
+  console.log(data.allProducts)
+  console.log(TogetherProducts)
   return (
     <section className="container justify-between py-40 xl:flex">
       <div className="w-full xl:w-[750px]">
@@ -210,23 +213,23 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
           <table className="w-full ">
             <thead>
               <tr className="smOnly:hidden mdOnly:hidden">
-                <th className="w-[30%] py-2 pb-6 text-left text-t14 italic text-[#333333] opacity-60">
+                <th className="w-[30%] mdOnly:w-[20%] py-2 pb-6 text-left text-t14 italic text-[#333333] opacity-60">
                   {" "}
                   {data.basket.name}
                 </th>
-                <th className="w-[10%] py-2 pb-6  text-left text-t14 italic text-[#333333] opacity-60">
+                <th className="w-[10%] mdOnly:w-[20%] py-2 pb-6  text-left text-t14 italic text-[#333333] opacity-60">
                   {" "}
                   {data.basket.price}
                 </th>
-                <th className="w-[25%]  py-2 pb-6  text-center text-t14 italic text-[#333333] opacity-60">
+                <th className="w-[25%] mdOnly:w-[30%] py-2 pb-6  text-center text-t14 italic text-[#333333] opacity-60">
                   {" "}
                   {data.basket.number}
                 </th>
-                <th className="w-[20%] py-2 pb-6 text-t14 italic text-[#333333] opacity-60">
+                <th className="w-[20%]  py-2 pb-6 text-t14 italic text-[#333333] opacity-60">
                   {" "}
                   {data.basket.sum}
                 </th>
-                <th className="w-[15%] py-2 pb-6  text-right text-t14 italic text-[#333333] opacity-60">
+                <th className="w-[15%] mdOnly:w-[10%] py-2 pb-6  text-right text-t14 italic text-[#333333] opacity-60">
                   {" "}
                   {data.basket.delete}
                 </th>
@@ -235,7 +238,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
             {tovar.map((item: any) => (
               <tbody key={item.id} className="smOnly:hidden">
                 <tr className="border-b">
-                  <td className="flex ">
+                  <td className="flex">
                     <div className="relative mr-4 h-[80px] w-[71px] xl:flex-shrink-0">
                       <Image
                         quality={80}
@@ -253,34 +256,34 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                       <p className="text-t14 text-dark/60"> {item.capacity}</p>
                     </div>{" "}
                   </td>
-                  <td className="text-c=left py-2 leading-5 text-[#333333] xl:text-t18 mdOnly:text-t16 ">
+                  <td className=" mdOnly:w-14 text-left py-2 leading-5 text-[#333333] xl:text-t18 mdOnly:text-t16 ">
                     {lang === en
                       ? state &&
                         state.products.find(
                           (items: any) => items.id === item.id
                         )
                         ? convertPrice(
-                            state.products.find(
-                              (items: any) => items.id === item.id
-                            )!.price,
-                            state.currencies.find(
-                              (currency: any) => currency.id === "EUR"
-                            )?.rate || 1
-                          )
-                        : "N/A"
-                      : state &&
                           state.products.find(
                             (items: any) => items.id === item.id
-                          )
+                          )!.price,
+                          state.currencies.find(
+                            (currency: any) => currency.id === "EUR"
+                          )?.rate || 1
+                        )
+                        : "N/A"
+                      : state &&
+                        state.products.find(
+                          (items: any) => items.id === item.id
+                        )
                         ? state.products.find(
-                            (items: any) => items.id === item.id
-                          )!.price
+                          (items: any) => items.id === item.id
+                        )!.price
                         : "N/A"}{" "}
                     {lang === en ? "€" : "₴"}
                   </td>
                   <td className="py-2 text-center ">
-                    <div className="flex justify-evenly">
-                      <div className="border-text-[#33333399] border-2 border-solid">
+                    <div className="flex justify-evenly mdOnly:px-3">
+                      <div className=" mdOnly:w-24 border-text-[#33333399] border-2 border-solid">
                         <button
                           onClick={() => handleQuantityChange(item.id, -1)}
                           className="bg-white p-[4px] px-2 text-[#33333399] hover:text-black"
@@ -309,7 +312,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                     </div>
                   </td>
 
-                  <td className="py-2 text-center text-t18 leading-5 text-[#333333]">
+                  <td className="py-2 text-center mdOnly:w-16 mdOnly:text-t16 xl:text-t18 leading-5 text-[#333333]">
                     {" "}
                     {lang === "en"
                       ? state &&
@@ -317,25 +320,25 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                           (items: any) => items.id === item.id
                         )
                         ? convertPrice(
-                            (parseFloat(
-                              state.products.find(
-                                (items: any) => items.id === item.id
-                              )!.price
-                            ) || 0) * (quantities[item.id] || 1),
-                            state.currencies.find(
-                              (currency: any) => currency.id === "EUR"
-                            )?.rate || 1
-                          )
-                        : "N/A"
-                      : state &&
-                          state.products.find(
-                            (items: any) => items.id === item.id
-                          )
-                        ? parseFloat(
+                          (parseFloat(
                             state.products.find(
                               (items: any) => items.id === item.id
                             )!.price
-                          ) * (quantities[item.id] || 1)
+                          ) || 0) * (quantities[item.id] || 1),
+                          state.currencies.find(
+                            (currency: any) => currency.id === "EUR"
+                          )?.rate || 1
+                        )
+                        : "N/A"
+                      : state &&
+                        state.products.find(
+                          (items: any) => items.id === item.id
+                        )
+                        ? parseFloat(
+                          state.products.find(
+                            (items: any) => items.id === item.id
+                          )!.price
+                        ) * (quantities[item.id] || 1)
                         : "N/A"}{" "}
                     {lang === "en" ? "€" : "₴"}
                   </td>
@@ -407,28 +410,27 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                   <td className="py-2 leading-5 text-[#333333]">
                     <ul className="text-left">
                       <li className="mb-4 whitespace-nowrap text-t16">
-                        {" "}
                         {lang === en
                           ? state &&
                             state.products.find(
                               (items: any) => items.id === item.id
                             )
                             ? convertPrice(
-                                state.products.find(
-                                  (items: any) => items.id === item.id
-                                )!.price,
-                                state.currencies.find(
-                                  (currency: any) => currency.id === "EUR"
-                                )?.rate || 1
-                              )
-                            : "N/A"
-                          : state &&
                               state.products.find(
                                 (items: any) => items.id === item.id
-                              )
+                              )!.price,
+                              state.currencies.find(
+                                (currency: any) => currency.id === "EUR"
+                              )?.rate || 1
+                            )
+                            : "N/A"
+                          : state &&
+                            state.products.find(
+                              (items: any) => items.id === item.id
+                            )
                             ? state.products.find(
-                                (items: any) => items.id === item.id
-                              )!.price
+                              (items: any) => items.id === item.id
+                            )!.price
                             : "N/A"}{" "}
                         {lang === en ? "€" : "₴"}
                       </li>
@@ -440,25 +442,25 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                               (items: any) => items.id === item.id
                             )
                             ? convertPrice(
-                                (parseFloat(
-                                  state.products.find(
-                                    (items: any) => items.id === item.id
-                                  )!.price
-                                ) || 0) * (quantities[item.id] || 1),
-                                state.currencies.find(
-                                  (currency: any) => currency.id === "EUR"
-                                )?.rate || 1
-                              )
-                            : "N/A"
-                          : state &&
-                              state.products.find(
-                                (items: any) => items.id === item.id
-                              )
-                            ? parseFloat(
+                              (parseFloat(
                                 state.products.find(
                                   (items: any) => items.id === item.id
                                 )!.price
-                              ) * (quantities[item.id] || 1)
+                              ) || 0) * (quantities[item.id] || 1),
+                              state.currencies.find(
+                                (currency: any) => currency.id === "EUR"
+                              )?.rate || 1
+                            )
+                            : "N/A"
+                          : state &&
+                            state.products.find(
+                              (items: any) => items.id === item.id
+                            )
+                            ? parseFloat(
+                              state.products.find(
+                                (items: any) => items.id === item.id
+                              )!.price
+                            ) * (quantities[item.id] || 1)
                             : "N/A"}{" "}
                         {lang === "en" ? "€" : "₴"}
                       </li>
@@ -510,16 +512,16 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
           )}
         </div>
         <div className="mb-8 ml-auto flex w-52 justify-between text-t14 xl:text-t16 ">
-          <p>{lang === en ? "Discount" : "Знижка"} </p>{" "}
+          <p>{lang === en ? "Discount" : "Знижка"} </p>
           <p>
-            -{" "}
+            -
             {lang === en
               ? convertPrice(
-                  discountAmount,
-                  state.currencies.find(
-                    (currency: any) => currency.id === "EUR"
-                  )?.rate || 1
-                )
+                discountAmount,
+                state.currencies.find(
+                  (currency: any) => currency.id === "EUR"
+                )?.rate || 1
+              )
               : discountAmount}{" "}
             {lang === en ? "€" : "₴"}
           </p>
@@ -529,11 +531,11 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
           <p className="text-t16 font-bold">
             {lang === en
               ? convertPrice(
-                  totalPrice,
-                  state.currencies.find(
-                    (currency: any) => currency.id === "EUR"
-                  )?.rate || 1
-                )
+                totalPrice,
+                state.currencies.find(
+                  (currency: any) => currency.id === "EUR"
+                )?.rate || 1
+              )
               : totalPrice}{" "}
             {lang === en ? "€" : "₴"}
           </p>
@@ -547,105 +549,16 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
             {data.basket.toOrder}
           </button>
         </div>
-        {/* <div className="xl:hidden mb-[66px]">
-                    <CheaperTogether />
-                </div> */}
+        <div className="xl:hidden mb-[66px]">
+          <CheaperTogether data={TogetherProducts} state={state} setState={setState} lang={lang} en={en} />
+        </div>
         <DropDown data={data} />
       </div>
-      {/* <div className="smOnly:hidden mdOnly:hidden">
-                <CheaperTogether />
-            </div> */}
+      <div className="smOnly:hidden mdOnly:hidden">
+        <CheaperTogether data={TogetherProducts} state={state} setState={setState} lang={lang} en={en} />
+      </div>
     </section>
   );
-
-  //                 <td className="py-2 text-center text-t18 leading-5 text-[#333333]">
-  //                   {" "}
-  //                   {lang === "en"
-  //                     ? state &&
-  //                       state.products.find((items: any) => items.id === item.id)
-  //                       ? convertPrice(
-  //                           (parseFloat(
-  //                             state.products.find(
-  //                               (items: any) => items.id === item.id
-  //                             )!.price
-  //                           ) || 0) * (quantities[item.id] || 1),
-  //                           state.currencies.find(
-  //                             (currency: any) => currency.id === "EUR"
-  //                           )?.rate || 1
-  //                         )
-  //                       : "N/A"
-  //                     : state &&
-  //                         state.products.find(
-  //                           (items: any) => items.id === item.id
-  //                         )
-  //                       ? parseFloat(
-  //                           state.products.find(
-  //                             (items: any) => items.id === item.id
-  //                           )!.price
-  //                         ) * (quantities[item.id] || 1)
-  //                       : "N/A"}{" "}
-  //                   {lang === "en" ? "€" : "₴"}
-  //                 </td>
-  //                 <td className="ml-auto py-2 text-right">
-  //                   <button
-  //                     onClick={() => handleRemove(item.id)}
-  //                     className=" px-4 py-2 text-black "
-  //                   >
-  //                     <BurgerCross className="h-6 w-6 text-black" />
-  //                   </button>
-  //                 </td>
-  //               </tr>
-  //             </tbody>
-  //           ))}
-  //         </table>
-  //       </div>
-  //       <div className="mb-10 flex justify-end">
-  //         <p className="text-t18 text-black">
-  //           {lang === en
-  //             ? convertPrice(
-  //                 totalPrice,
-  //                 state.currencies.find((currency: any) => currency.id === "EUR")
-  //                   ?.rate || 1
-  //               )
-  //             : totalPrice}{" "}
-  //           {lang === en ? "€" : "₴"}
-  //         </p>
-  //       </div>
-  //       <div className="mb-28 flex justify-end">
-  //         <Link
-  //           href={`/ ${ lang } /order`}
-  // className = {`ml-auto rounded bg-black px-6 py-4 text-t18 text-white `}
-  //         >
-  //     { " "}
-  // { data.basket.toOrder }
-  //         </Link >
-  //       </div >
-  //     <div>
-  //         <h2 className="mb-10 text-t32 -tracking-5">
-  //             {" "}
-  //             {data.basket.additionalInformation}
-  //         </h2>
-  //         <DropdownButton
-  //             icon={<Delivery />}
-  //             buttonText={data.basket.delivery}
-  //             dropdownText={dropdownText}
-  //         />
-  //         <DropdownButton
-  //             icon={<Wallet />}
-  //             buttonText={data.basket.payment}
-  //             dropdownText={dropdownText2}
-  //         />
-  //         <DropdownButton
-  //             icon={<Security />}
-  //             buttonText={data.basket.guarantee}
-  //             dropdownText={dropdownText3}
-  //         />
-  //         <DropdownButton
-  //             icon={<Lock />}
-  //             buttonText={data.basket.privacy}
-  //             dropdownText={dropdownText4}
-  //         />
-  //     </div>
 };
 
 export default Basket;

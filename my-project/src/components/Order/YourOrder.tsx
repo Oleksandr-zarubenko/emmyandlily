@@ -1,6 +1,8 @@
 "use client";
 import { i18n } from "@/i18n.config";
 import { useState, useEffect } from "react";
+import { convertPrice } from "@/utils/convertPrice/convertPrice";
+import getData from "@/utils/api/api";
 
 type YourOrderProps = {
     lang: any;
@@ -34,31 +36,22 @@ const YourOrder: React.FC<YourOrderProps> = ({
         currencies: { id: string; rate: number }[];
     }>({ products: [], currencies: [] });
 
-    const getData = async () => {
+    const fetchData = async () => {
         try {
-            const res = await fetch(`/api/get-price`, {
-                method: "GET",
-            });
-            const pos = await res.json();
-            setState(pos);
+            const data = await getData();
+            setState(data);
         } catch (error) {
             console.error("Error fetching data:", error);
         }
     };
-
     useEffect(() => {
-        getData();
+        fetchData();
     }, []);
 
     const locales = i18n.locales;
     const en = locales[1];
 
 
-    const convertPrice = (price: any, rate: number): string => {
-
-        const convertedPrice = parseFloat(price) / rate;
-        return convertedPrice.toFixed(2);
-    };
 
     const total = localStorage.getItem('totalPrice');
     const totalPrice = total ? parseInt(total) : 0;

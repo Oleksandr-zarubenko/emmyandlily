@@ -284,3 +284,6 @@ section {
 .checkbox-container input:checked ~ .checkmark:after {
   display: block;
 }
+.shadow-basket {
+  box-shadow: 4px 15px 40px 0px #100e0c33;
+}

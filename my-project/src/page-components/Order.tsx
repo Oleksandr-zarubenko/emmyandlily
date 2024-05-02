@@ -5,8 +5,30 @@ import YourOrder from "@/components/Order/YourOrder";
 import Delivery from "@/components/Order/Delivery";
 import Image from "next/image";
 import Mono from "../../public/mono.png";
+import { i18n } from "@/i18n.config";
+import getData from "@/utils/api/api";
+import { convertPrice } from "@/utils/convertPrice/convertPrice";
 
 const Order = ({ data, lang }: any) => {
+  const locales = i18n.locales;
+  const en = locales[1];
+  const [state, setState] = useState<{
+
+    currencies: { id: string; rate: number }[];
+  }>({ currencies: [] });
+
+  const fetchData = async () => {
+    try {
+      const data = await getData();
+      setState(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   const [storedData, setStoredData] = useState(
     JSON.parse(localStorage.getItem("storedData") || "[]")
   );
@@ -400,9 +422,14 @@ const Order = ({ data, lang }: any) => {
     }
   };
 
+  const numberValute = lang === en ? 978 : 980
+  const amount = lang === en
+    ? parseInt(convertPrice(Math.round(totalPrice * 100), state.currencies.find((currency: any) => currency.id === "EUR")?.rate)) : totalPrice * 100
+
+
   const switchToPaymentTab = async () => {
     makeApiCall();
-    localStorage.clear();
+    // localStorage.clear();
     if (deliveryCompleted && paymentMonobank === true) {
       try {
         const response = await fetch(
@@ -414,16 +441,15 @@ const Order = ({ data, lang }: any) => {
               "X-Token": "mDLjwZ7Idkxv5odecWj5ByA",
             },
             body: JSON.stringify({
-              amount: totalPrice * 100,
-              ccy: 980,
+              amount: amount,
+              ccy: numberValute,
               merchantPaymInfo: {
                 reference: "84d0070ee4e44667b31371d8f8813947",
                 destination: productNamesString,
                 comment: productNamesString,
                 customerEmails: [],
               },
-              redirectUrl: `http://emmyandlily.com/
-              /${lang}/thank-you`,
+              redirectUrl: `http://emmyandlily.com/${lang}/thank-you`,
               webHookUrl:
                 "https://example.com/mono/acquiring/webhook/maybesomegibberishuniquestringbutnotnecessarily",
               validity: 3600,

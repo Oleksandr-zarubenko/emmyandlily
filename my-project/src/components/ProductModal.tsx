@@ -151,13 +151,13 @@ export const ProductModal = ({
               className="relative h-full w-full overflow-y-auto bg-white px-5 py-6 xl:mr-8 xl:flex xl:h-[688px] xl:w-[1280px] xl:flex-row xl:px-[80px] mdOnly:px-[48px]"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="xl:mr-[90px]  xl:flex xl:h-full xl:flex-col">
+              <div className="xl:mr-[80px]  xl:flex xl:h-full xl:flex-col">
                 <Markdown
                   text={product.heading}
                   className="mb-8 text-t24 xl:hidden"
                 />
 
-                <div className="flex xl:block">
+                <div className="notXl:flex">
                   <div className="relative mb-4  mr-4 h-52 w-[200px]  md:h-96 xl:mr-0 xl:h-[380px] xl:w-[450px] xl:flex-shrink-0 mdOnly:h-52   mdOnly:w-[312px] ">
                     <Image
                       quality={80}
@@ -201,9 +201,9 @@ export const ProductModal = ({
                     )}
                   </div>
                 </div>
-                <div className="mb-8 mt-6 gap-2 md:flex-wrap md:gap-3 xl:mb-0 xl:flex smOnly:flex-col">
+                <div className="mb-8 mt-6 gap-2 md:flex-wrap md:gap-3 xl:mb-0 xl:flex smOnly:flex-col xl:w-[450px]">
                   {product?.advantage1 && (
-                    <p className="mb-2 w-full rounded bg-[#DCDCDC] px-3 py-2 text-t14 text-black md:text-t16 xl:mb-0 xl:text-t16 mdOnly:w-[436px]">
+                    <p className="mb-2 w-full  rounded bg-[#DCDCDC] px-3 py-2 text-t14 text-black md:text-t16 xl:mb-0 xl:text-t16 mdOnly:w-[436px]">
                       {product.advantage1}
                     </p>
                   )}
@@ -213,7 +213,7 @@ export const ProductModal = ({
                     </p>
                   )}
                   {product?.advantage3 && (
-                    <p className="w-full rounded bg-[#DCDCDC] px-3 py-2 text-t14 text-black md:text-t16 xl:text-t16 mdOnly:w-[436px]">
+                    <p className="w-full rounded   bg-[#DCDCDC] px-3 py-2 text-t14 text-black md:text-t16 xl:text-t16 mdOnly:w-[436px]">
                       {product.advantage3}
                     </p>
                   )}
@@ -225,7 +225,7 @@ export const ProductModal = ({
                   text={product.heading}
                   className=" mb-8 text-t32 smOnly:hidden mdOnly:hidden"
                 />
-                <table className="mb-12    xl:w-full smOnly:w-[100%] mdOnly:w-[436px]">
+                <table className="mb-12 xl:w-full smOnly:w-[100%] mdOnly:w-[436px]">
                   <thead>
                     <tr>
                       <th className="w-2/5  py-2 text-t14 text-[#333333] opacity-60 smOnly:w-1/5">
@@ -257,24 +257,24 @@ export const ProductModal = ({
                                     item.id === product.capacity[0].idCrm
                                 )
                                 ? convertPrice(
-                                    state.products.find(
-                                      (item: any) =>
-                                        item.id === product.capacity[0].idCrm
-                                    )!.price,
-                                    state.currencies.find(
-                                      (currency: any) => currency.id === "EUR"
-                                    )?.rate || 1
-                                  )
-                                : "N/A"
-                              : state &&
                                   state.products.find(
                                     (item: any) =>
                                       item.id === product.capacity[0].idCrm
-                                  )
+                                  )!.price,
+                                  state.currencies.find(
+                                    (currency: any) => currency.id === "EUR"
+                                  )?.rate || 1
+                                )
+                                : "N/A"
+                              : state &&
+                                state.products.find(
+                                  (item: any) =>
+                                    item.id === product.capacity[0].idCrm
+                                )
                                 ? state.products.find(
-                                    (item: any) =>
-                                      item.id === product.capacity[0].idCrm
-                                  )!.price
+                                  (item: any) =>
+                                    item.id === product.capacity[0].idCrm
+                                )!.price
                                 : "N/A")}{" "}
                           {lang === en ? "€" : "₴"}
                         </td>
@@ -337,7 +337,7 @@ export const ProductModal = ({
                     {product.method}
                   </button>
                 </div>
-                <div className="list-disc overflow-y-auto pt-2 text-black xl:h-[320px]">
+                <div className="list-disc smOnly:overflow-hidden md:overflow-y-auto pt-2 text-black xl:h-[320px]">
                   {activeTab === "components" && (
                     <Markdown
                       className="mb-1 ml-3 max-w-max list-disc pr-2 text-t14"

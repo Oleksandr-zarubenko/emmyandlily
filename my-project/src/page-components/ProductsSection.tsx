@@ -7,8 +7,8 @@ import { Paw } from "@/components/icons/Paw";
 import Image from "next/image";
 import { ProductModal } from "@/components/ProductModal";
 import { Locale } from "@/i18n.config";
-import { stat } from "fs";
-
+import { convertPrice } from "@/utils/convertPrice/convertPrice";
+import getData from "@/utils/api/api";
 export const ProductsSection = ({
   data,
   lang,
@@ -21,29 +21,22 @@ export const ProductsSection = ({
     currencies: { id: string; rate: number }[];
   }>({ products: [], currencies: [] });
 
-  const getData = async () => {
+  const fetchData = async () => {
     try {
-      const res = await fetch(`/api/get-price`, {
-        method: "GET",
-      });
-      const pos = await res.json();
-      setState(pos);
+      const data = await getData();
+      setState(data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
-
   useEffect(() => {
-    getData();
+    fetchData();
   }, []);
 
   const locales = i18n.locales;
   const en = locales[1];
 
-  const convertPrice = (price: string, rate: number): string => {
-    const convertedPrice = parseFloat(price) / rate;
-    return convertedPrice.toFixed(2);
-  };
+
   const availableProducts = data.allProducts.filter((product: any) => {
     const correspondingProduct = state.products.find(
       (p) => p.id === product.idAvailable
@@ -121,24 +114,24 @@ export const ProductsSection = ({
                                 (item) => item.id === product.capacity[0].idCrm
                               )
                               ? convertPrice(
-                                  state.products.find(
-                                    (item) =>
-                                      item.id === product.capacity[0].idCrm
-                                  )!.price,
-                                  state.currencies.find(
-                                    (currency) => currency.id === "EUR"
-                                  )?.rate || 1
-                                )
-                              : "N/A"
-                            : state &&
                                 state.products.find(
                                   (item) =>
                                     item.id === product.capacity[0].idCrm
-                                )
+                                )!.price,
+                                state.currencies.find(
+                                  (currency) => currency.id === "EUR"
+                                )?.rate || 1
+                              )
+                              : "N/A"
+                            : state &&
+                              state.products.find(
+                                (item) =>
+                                  item.id === product.capacity[0].idCrm
+                              )
                               ? state.products.find(
-                                  (item) =>
-                                    item.id === product.capacity[0].idCrm
-                                )!.price
+                                (item) =>
+                                  item.id === product.capacity[0].idCrm
+                              )!.price
                               : "N/A"}{" "}
                           {lang === en ? "€" : "₴"}
                         </p>
@@ -153,39 +146,3 @@ export const ProductsSection = ({
   );
 };
 
-{
-  /* <ProductModal
-  product={product}
-  lang={lang}
-  state={state}
-  convertPrice={convertPrice}
->
-  <div className="relative mb-4 h-[253px] overflow-hidden rounded xl:h-[344px] xl:w-[304px] mdOnly:h-[160px] mdOnly:w-[193px]"> */
-}
-// від{" "}
-// {lang === en
-//   ? state &&
-//     state.products.find(
-//       (item) => item.id === product.capacity[0].idCrm
-//     )
-//     ? convertPrice(
-//         state.products.find(
-//           (item) =>
-//             item.id === product.capacity[0].idCrm
-//         )!.price,
-//         state.currencies.find(
-//           (currency) => currency.id === "EUR"
-//         )?.rate || 1
-//       )
-//     : "N/A"
-//   : state &&
-//       state.products.find(
-//         (item) =>
-//           item.id === product.capacity[0].idCrm
-//       )
-//     ? state.products.find(
-//         (item) =>
-//           item.id === product.capacity[0].idCrm
-//       )!.price
-//     : "N/A"}{" "}
-// {lang === en ? "€" : "₴"}
