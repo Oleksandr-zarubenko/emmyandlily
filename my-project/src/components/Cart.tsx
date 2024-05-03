@@ -18,7 +18,7 @@ export const Cart = ({ lang, color }: any) => {
     return () => clearInterval(interval);
   }, []);
   return (
-    <Link className={cn(`relative duration-300`)} href={`/${lang}/basket`}>
+    <Link className={cn(`relative z-50 duration-300`)} href={`/${lang}/basket`}>
       <div className="relative">
         <Bag
           className={cn(
