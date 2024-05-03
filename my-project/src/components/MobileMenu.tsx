@@ -1,8 +1,7 @@
 "use client";
-import autoAnimate from "@formkit/auto-animate";
 import Hamburger from "hamburger-react";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import LocaleSwitcher from "./locale-switcher";
 
 export const MobileMenu = ({

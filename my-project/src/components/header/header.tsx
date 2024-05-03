@@ -1,19 +1,13 @@
 import Link from "next/link";
-
 import Logo from "../../../public/logo.png";
 import LocaleSwitcher from "@/components/locale-switcher";
 import { Bag } from "@/components/icons/Bag";
 import Image from "next/image";
 import { MobileMenu } from "../MobileMenu";
 import cn from "classnames";
+import { Cart } from "../Cart";
 
 const Header = ({ lang, data }: any) => {
-  // const [storedDataLength, setStoredDataLength] = useState(0);
-  // const storedData = JSON.parse(localStorage.getItem('storedData') || '[]');
-
-  // useEffect(() => {
-  //     setStoredDataLength(storedData.length);
-  // }, [storedData]);
   return (
     <header className="absolute inset-x-0 z-30 border-b-2 border-black py-2 xl:px-20 xl:pb-4 xl:pt-6">
       <div className="container flex flex-row items-center justify-between xl:hidden">
@@ -26,7 +20,7 @@ const Header = ({ lang, data }: any) => {
             className="relative z-50 text-white duration-300 hover:text-white "
             href={`/${lang}/basket`}
           >
-            <Bag color="black" />
+            <Cart color="black" lang={lang} />
           </Link>
           <MobileMenu navigation={data.navigation} lang={lang} />
         </div>
@@ -58,16 +52,7 @@ const Header = ({ lang, data }: any) => {
             {data.navigation.contacts}
           </Link>
           <LocaleSwitcher lang={lang} />
-          <Link
-            className="text-white duration-300 hover:text-white"
-            href={`/${lang}/basket`}
-          >
-            <Bag
-              className={cn(
-                "rounded fill-black p-[2px] duration-300 hover:bg-black hover:fill-white"
-              )}
-            />
-          </Link>
+          <Cart lang={lang} color="black" />
         </nav>
       </div>
     </header>

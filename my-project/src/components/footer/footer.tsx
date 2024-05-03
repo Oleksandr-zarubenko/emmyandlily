@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { Logo } from "../../components/icons/Logo";
 import { Bag } from "@/components/icons/Bag";
+import { Cart } from "../Cart";
 const Footer = ({ data, lang }: any) => {
   return (
     <footer className="bg-black py-14">
@@ -14,7 +15,6 @@ const Footer = ({ data, lang }: any) => {
         <div>
           <nav className="mx-10 flex flex-wrap justify-between gap-4 text-center text-t12 md:flex-row md:gap-10 md:text-t16 ">
             <h2 className="sr-only text-white">Auxillary navigation</h2>
-
             <Link
               className="flex items-center text-white duration-300 hover:text-white"
               href={`/${lang}/#products`}
@@ -33,12 +33,7 @@ const Footer = ({ data, lang }: any) => {
             >
               {data.navigation.contacts}
             </Link>
-            <Link
-              className="flex items-center text-white duration-300 hover:text-white"
-              href={`/${lang}/basket`}
-            >
-              <Bag color="white" />
-            </Link>
+            <Cart lang={lang} color="white" />
           </nav>
         </div>
       </div>
