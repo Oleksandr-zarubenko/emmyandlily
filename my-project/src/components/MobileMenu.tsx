@@ -44,6 +44,7 @@ export const MobileMenu = ({
       <div ref={parent}>
         {isOpen && (
           <div className="fixed inset-0 h-dvh bg-bg_transparent">
+            <div className="absolute inset-x-0 top-[74px] h-[2px] bg-black"></div>
             <div className="bg-white">
               <nav className="flex flex-col items-center gap-3 px-5 pb-20 pt-32 text-center">
                 <h2 className="sr-only">Mobile navigation</h2>
