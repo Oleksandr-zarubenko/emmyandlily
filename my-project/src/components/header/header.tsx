@@ -5,6 +5,7 @@ import LocaleSwitcher from "@/components/locale-switcher";
 import { Bag } from "@/components/icons/Bag";
 import Image from "next/image";
 import { MobileMenu } from "../MobileMenu";
+import cn from "classnames";
 
 const Header = ({ lang, data }: any) => {
   // const [storedDataLength, setStoredDataLength] = useState(0);
@@ -61,7 +62,11 @@ const Header = ({ lang, data }: any) => {
             className="text-white duration-300 hover:text-white"
             href={`/${lang}/basket`}
           >
-            <Bag color="black" />
+            <Bag
+              className={cn(
+                "rounded fill-black p-[2px] duration-300 hover:bg-black hover:fill-white"
+              )}
+            />
           </Link>
         </nav>
       </div>
