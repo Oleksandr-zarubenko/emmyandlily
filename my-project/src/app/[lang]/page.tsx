@@ -19,6 +19,7 @@ const queryEN = gql`
       heading
       text
       btn
+       inCart
     }
     videosection {
       heading
@@ -104,6 +105,7 @@ const queryUA = gql`
       heading
       text
       btn
+       inCart
     }
     videosection(locale: uk) {
       heading
