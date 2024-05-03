@@ -16,12 +16,7 @@ const Header = ({ lang, data }: any) => {
         </Link>
         <h2 className="sr-only">Mobile Menu</h2>
         <div className="flex flex-row items-center gap-3">
-          <Link
-            className="relative z-50 text-white duration-300 hover:text-white "
-            href={`/${lang}/basket`}
-          >
-            <Cart color="black" lang={lang} />
-          </Link>
+          <Cart color="black" lang={lang} />
           <MobileMenu navigation={data.navigation} lang={lang} />
         </div>
       </div>
