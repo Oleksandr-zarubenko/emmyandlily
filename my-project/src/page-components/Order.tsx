@@ -339,7 +339,7 @@ const Order = ({ data, lang }: any) => {
       }),
     });
   };
-  console.log(data.delivery)
+
 
   const handleOptionChange = (e: any) => {
     setSelectedOption(e.target.value);

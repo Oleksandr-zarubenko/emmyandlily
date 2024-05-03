@@ -58,7 +58,7 @@ const queryEN = gql`
       }
       order
       methodOfUse
-      discount
+    
       capacity {
         price
         ml
@@ -142,7 +142,7 @@ const queryUA = gql`
       }
       order
       methodOfUse
-      discount
+  
       capacity {
         price
         ml

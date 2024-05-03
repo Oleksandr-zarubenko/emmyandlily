@@ -19,6 +19,7 @@ const queryEN = gql`
       heading
       text
       btn
+       inCart
     }
     videosection {
       heading
@@ -86,8 +87,6 @@ const queryEN = gql`
       }
       order
       methodOfUse
-
-      discount
       capacity {
         price
         ml
@@ -104,6 +103,7 @@ const queryUA = gql`
       heading
       text
       btn
+       inCart
     }
     videosection(locale: uk) {
       heading
@@ -171,8 +171,6 @@ const queryUA = gql`
       }
       order
       methodOfUse
-
-      discount
       capacity {
         price
         ml

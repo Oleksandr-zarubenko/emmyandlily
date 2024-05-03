@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-
 import { Markdown } from "@/components/Markdown";
 import { i18n } from "@/i18n.config";
 import { Paw } from "@/components/icons/Paw";
@@ -9,6 +8,7 @@ import { ProductModal } from "@/components/ProductModal";
 import { Locale } from "@/i18n.config";
 import { convertPrice } from "@/utils/convertPrice/convertPrice";
 import getData from "@/utils/api/api";
+import { Discount } from "@/components/icons/Discount";
 export const ProductsSection = ({
   data,
   lang,
@@ -17,7 +17,7 @@ export const ProductsSection = ({
   lang: Locale;
 }) => {
   const [state, setState] = useState<{
-    products: { id: string; price: string; available: string }[];
+    products: { id: string; price: string; available: string, oldprice: any }[];
     currencies: { id: string; rate: number }[];
   }>({ products: [], currencies: [] });
 
@@ -81,6 +81,12 @@ export const ProductsSection = ({
                         className="product object-cover duration-1000 group-hover:scale-105"
                         sizes="(max-width: 768px) 90vw, 305px"
                       />
+
+                      {state.products.map((prod) => (
+                        prod.id === product.capacity[0].idCrm && (
+                          <span key={prod.id} className="text-black right-2 xl:right-4  absolute w-8 h-8">{prod.oldprice ? <Discount className="bg-red-600 px-[3px] py-[3px] rounded mt-3 xl:mt-6 " /> : ''}</span>
+                        )
+                      ))}
                     </div>
                     <div className="px-3 xl:px-4">
                       <Markdown
@@ -104,45 +110,52 @@ export const ProductsSection = ({
                           ))}
                       </ul>
                       {product.capacity && product.capacity[0] && (
-                        <p className="text-t16 leading-6 text-white xl:text-t18">
-                          {product.capacity &&
-                            product.capacity.length > 1 &&
-                            (lang === en ? "from" : "від")}{" "}
-                          {lang === en
-                            ? state &&
-                              state.products.find(
-                                (item) => item.id === product.capacity[0].idCrm
-                              )
-                              ? convertPrice(
+                        <>
+                          <p className="text-t16 leading-6 text-white xl:text-t18">
+                            {product.capacity &&
+                              product.capacity.length > 1 &&
+                              (lang === en ? "from" : "від")}{" "}
+                            {lang === en
+                              ? state &&
+                                state.products.find(
+                                  (item) => item.id === product.capacity[0].idCrm
+                                )
+                                ? convertPrice(
+                                  state.products.find(
+                                    (item) =>
+                                      item.id === product.capacity[0].idCrm
+                                  )!.price,
+                                  state.currencies.find(
+                                    (currency) => currency.id === "EUR"
+                                  )?.rate || 1
+                                )
+                                : "N/A"
+                              : state &&
                                 state.products.find(
                                   (item) =>
                                     item.id === product.capacity[0].idCrm
-                                )!.price,
-                                state.currencies.find(
-                                  (currency) => currency.id === "EUR"
-                                )?.rate || 1
-                              )
-                              : "N/A"
-                            : state &&
-                              state.products.find(
-                                (item) =>
-                                  item.id === product.capacity[0].idCrm
-                              )
-                              ? state.products.find(
-                                (item) =>
-                                  item.id === product.capacity[0].idCrm
-                              )!.price
-                              : "N/A"}{" "}
-                          {lang === en ? "€" : "₴"}
-                        </p>
+                                )
+                                ? state.products.find(
+                                  (item) =>
+                                    item.id === product.capacity[0].idCrm
+                                )!.price
+                                : "N/A"}{" "}
+                            {lang === en ? "€" : "₴"}
+                          </p>
+
+                        </>
+
                       )}
+
+
+
                     </div>
                   </ProductModal>
                 </article>
               ))}
         </div>
       </div>
-    </section>
+    </section >
   );
 };
 

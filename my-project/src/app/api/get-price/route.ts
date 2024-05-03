@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { off } from "process";
 import { parseString } from "xml2js";
 
 export async function GET(): Promise<void | Response> {
@@ -51,6 +52,7 @@ function extractProducts(xmlData: any) {
     const extractedProducts = offers.map((offer: any) => ({
       id: offer.$.id,
       price: offer.price[0],
+      oldprice: offer.oldprice,
       available: offer.$.available,
     }));
     return extractedProducts;
