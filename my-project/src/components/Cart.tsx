@@ -22,8 +22,10 @@ export const Cart = ({ lang, color }: any) => {
       <div className="relative">
         <Bag
           className={cn(
-            `fill-${color1} hover:bg-${color1} h-8 w-8 rounded p-[2px] duration-300`,
-            color === "black" ? "hover:fill-white" : "hover:fill-black"
+            `hover:bg-${color1} h-8 w-8 rounded p-[2px] duration-300`,
+            color === "black"
+              ? "fill-black hover:fill-white"
+              : "fill-white hover:fill-black"
           )}
         />
         {storedDataLength ? (
