@@ -55,7 +55,7 @@ const queryEN = gql`
       order
       methodOfUse
 
-      discount
+
       capacity {
         price
         ml
@@ -124,7 +124,7 @@ dropdown
       order
       methodOfUse
 
-      discount
+   
       capacity {
         price
         ml

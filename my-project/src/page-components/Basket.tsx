@@ -20,7 +20,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const [state, setState] = useState<{
-    products: { id: string; price: string; available: string }[];
+    products: { id: string; price: string; available: string, oldprice: any }[];
     currencies: { id: string; rate: number }[];
   }>({ products: [], currencies: [] });
 
@@ -169,7 +169,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
 
       const discountValue = discountObject ? discountObject.promoCodName.find((code: any) => code.promocod === promoCode.trim()).discount : 0;
 
-      console.log("Discount Value:", discountValue);
+
       const discountedPrice = totalPrice * (1 - discountValue / 100);
       setDiscountAmount(totalPrice * (discountValue / 100));
       setTotalPrice(discountedPrice);
@@ -257,23 +257,18 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
             <thead>
               <tr className="smOnly:hidden mdOnly:hidden">
                 <th className="w-[30%] mdOnly:w-[20%] py-2 pb-6 text-left text-t14 italic text-[#333333] opacity-60">
-                  {" "}
                   {data.basket.name}
                 </th>
                 <th className="w-[10%] mdOnly:w-[20%] py-2 pb-6  text-left text-t14 italic text-[#333333] opacity-60">
-                  {" "}
                   {data.basket.price}
                 </th>
                 <th className="w-[25%] mdOnly:w-[30%] py-2 pb-6  text-center text-t14 italic text-[#333333] opacity-60">
-                  {" "}
                   {data.basket.number}
                 </th>
                 <th className="w-[20%]  py-2 pb-6 text-t14 italic text-[#333333] opacity-60">
-                  {" "}
                   {data.basket.sum}
                 </th>
                 <th className="w-[15%] mdOnly:w-[10%] py-2 pb-6  text-right text-t14 italic text-[#333333] opacity-60">
-                  {" "}
                   {data.basket.delete}
                 </th>
               </tr>
@@ -297,33 +292,36 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                         {item.productName.replace(/#/g, "")}
                       </p>
                       <p className="text-t14 text-dark/60"> {item.capacity}</p>
-                    </div>{" "}
+                    </div>
                   </td>
-                  <td className=" mdOnly:w-14 text-left py-2 leading-5 text-[#333333] xl:text-t18 mdOnly:text-t16 ">
-                    {lang === en
-                      ? state &&
-                        state.products.find(
-                          (items: any) => items.id === item.id
-                        )
-                        ? convertPrice(
-                          state.products.find(
-                            (items: any) => items.id === item.id
-                          )!.price,
-                          state.currencies.find(
-                            (currency: any) => currency.id === "EUR"
-                          )?.rate || 1
-                        )
-                        : "N/A"
-                      : state &&
-                        state.products.find(
-                          (items: any) => items.id === item.id
-                        )
-                        ? state.products.find(
-                          (items: any) => items.id === item.id
-                        )!.price
-                        : "N/A"}{" "}
-                    {lang === en ? "€" : "₴"}
+                  <td className="mdOnly:w-14 text-left py-2 leading-5 text-[#333333] xl:text-t18 mdOnly:text-t16 relative">
+                    {state &&
+                      state.products.find((items: any) => items.id === item.id) ? (
+                      <>
+                        {lang === 'en' ? (
+                          <span className={`${state.products.find((items: any) => items.id === item.id)!.oldprice ? 'text-red-500' : ''}`}>
+                            {convertPrice(
+                              state.products.find((items: any) => items.id === item.id)!.price,
+                              state.currencies.find((currency: any) => currency.id === 'EUR')?.rate || 1
+                            )}   {lang === 'en' ? ' €' : ' ₴'}
+                          </span>
+                        ) : (
+                          <span className={`${state.products.find((items: any) => items.id === item.id)!.oldprice ? 'text-red-500' : ''}`}>
+                            {state.products.find((items: any) => items.id === item.id)!.price}  {lang === 'en' ? ' €' : ' ₴'}
+                          </span>
+                        )}
+                      </>
+                    ) : 'N/A'}
+
+                    {state.products.map((prod: any) => (
+                      prod.id === item.id && prod.oldprice && (
+                        <p key={prod.id} className={`absolute right-4 w-10 text-sm top-0 mdOnly:mr-0 xl:mr-4 mt-14 line-through h-8 `}>
+                          {prod.oldprice ? convertPrice(prod.oldprice[0], state.currencies.find((currency: any) => currency.id === 'EUR')?.rate || 1) + (lang === 'en' ? ' €' : ' ₴') : ''}
+                        </p>
+                      )
+                    ))}
                   </td>
+
                   <td className="py-2 text-center ">
                     <div className="flex justify-evenly mdOnly:px-3">
                       <div className=" mdOnly:w-24 border-text-[#33333399] border-2 border-solid">
@@ -416,7 +414,6 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                         {item.productName.replace(/#/g, "")}
                       </p>
                       <p className="mb-1 text-t14 text-dark/60">
-                        {" "}
                         {item.capacity}
                       </p>
                       <div className="flex ">
@@ -450,33 +447,36 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                     </div>{" "}
                   </td>
 
-                  <td className="py-2 leading-5 text-[#333333]">
-                    <ul className="text-left">
+                  <td className="px-1 py-2 leading-5 text-[#333333]">
+                    <ul className="text-left ">
                       <li className="mb-4 whitespace-nowrap text-t16">
-                        {lang === en
-                          ? state &&
-                            state.products.find(
-                              (items: any) => items.id === item.id
-                            )
-                            ? convertPrice(
-                              state.products.find(
-                                (items: any) => items.id === item.id
-                              )!.price,
-                              state.currencies.find(
-                                (currency: any) => currency.id === "EUR"
-                              )?.rate || 1
-                            )
-                            : "N/A"
-                          : state &&
-                            state.products.find(
-                              (items: any) => items.id === item.id
-                            )
-                            ? state.products.find(
-                              (items: any) => items.id === item.id
-                            )!.price
-                            : "N/A"}{" "}
-                        {lang === en ? "€" : "₴"}
+                        {state &&
+                          state.products.find((items: any) => items.id === item.id) ? (
+                          <>
+                            {lang === 'en' ? (
+                              <span className={`${state.products.find((items: any) => items.id === item.id)!.oldprice !== undefined ? 'text-red-500' : ''}`}>
+                                {convertPrice(
+                                  state.products.find((items: any) => items.id === item.id)!.price,
+                                  state.currencies.find((currency: any) => currency.id === 'EUR')?.rate || 1
+                                )}   {lang === 'en' ? ' €' : ' ₴'}
+                              </span>
+                            ) : (
+                              <span className={`${state.products.find((items: any) => items.id === item.id)!.oldprice !== undefined ? 'text-red-500' : ''}`}>
+                                {state.products.find((items: any) => items.id === item.id)!.price}  {lang === 'en' ? ' €' : ' ₴'}
+                              </span>
+                            )}
+                          </>
+                        ) : 'N/A'}
                       </li>
+
+
+                      {state.products.map((prod: any) => (
+                        prod.id === item.id && prod.oldprice && (
+                          <li key={prod.id} className={` right-4 h-2 text-sm top-0 mdOnly:mr-0 line-through mt-[-12px] mb-4`}>
+                            {prod.oldprice ? convertPrice(prod.oldprice[0], state.currencies.find((currency: any) => currency.id === 'EUR')?.rate || 1) + (lang === 'en' ? ' €' : ' ₴') : ''}
+                          </li>
+                        )
+                      ))}
 
                       <li className="whitespace-nowrap text-t18">
                         {lang === "en"
@@ -508,6 +508,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                         {lang === "en" ? "€" : "₴"}
                       </li>
                     </ul>
+
                   </td>
                   <td className="ml-auto py-2 text-right">
                     <button

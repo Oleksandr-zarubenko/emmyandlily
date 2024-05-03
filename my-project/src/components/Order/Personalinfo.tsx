@@ -150,7 +150,7 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
         break;
     }
   };
-  console.log(data.order)
+
   return (
     <>
       <div className="mb-14 ">

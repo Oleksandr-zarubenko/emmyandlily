@@ -8,7 +8,7 @@ const CheaperTogether = ({ data, state, setState, lang, en }: any) => {
 
 
     return (
-        <div className="mt-[83px]">
+        <div className="mt-[83px] ">
             <h3 className='text-t18 font-bold mb-6 xl:text-center text-black'>{lang === en ? 'Together cheaper' : 'Разом дешевше'}</h3>
             <div className='smOnly:px-2 smOnly:w-full smOnly:overflow-x-auto h-auto xl:w-44 mdOnly:w-full bg-white smOnly:flex mdOnly:flex'>
 
