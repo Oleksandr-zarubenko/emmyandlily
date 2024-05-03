@@ -287,3 +287,20 @@ section {
 .shadow-basket {
   box-shadow: 4px 15px 40px 0px #100e0c33;
 }
+
+@keyframes scaleIn {
+  0% {
+    transform: scaleY(0.4);
+    transform-origin: top;
+    top: -100%;
+  }
+  100% {
+    transform: scaleY(1);
+    transform-origin: top;
+    top: 0;
+  }
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.3s ease forwards;
+}

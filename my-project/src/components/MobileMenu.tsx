@@ -1,11 +1,9 @@
 "use client";
 import autoAnimate from "@formkit/auto-animate";
+import Hamburger from "hamburger-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { Burger } from "./icons/Burger";
-import { BurgerCross } from "./icons/BurgerCross";
 import LocaleSwitcher from "./locale-switcher";
-import Hamburger from "hamburger-react";
 
 export const MobileMenu = ({
   navigation,
@@ -15,7 +13,6 @@ export const MobileMenu = ({
   lang: any;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const parent = useRef(null);
 
   const setMenuClosed = () => {
     setIsOpen(false);
@@ -24,6 +21,7 @@ export const MobileMenu = ({
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+
   useEffect(() => {
     if (isOpen) {
       document.documentElement.style.overflow = "hidden";
@@ -32,20 +30,16 @@ export const MobileMenu = ({
     }
   }, [isOpen]);
 
-  useEffect(() => {
-    parent.current && autoAnimate(parent.current, { duration: 500 });
-  }, [parent]);
-
   return (
     <div>
       <button onClick={() => toggleMenu()} className="relative z-50 h-14 w-14">
         <Hamburger toggled={isOpen} toggle={setIsOpen} rounded />
       </button>
-      <div ref={parent}>
+      <div>
         {isOpen && (
           <div className="fixed inset-0 h-dvh bg-bg_transparent">
-            <div className="absolute inset-x-0 top-[74px] h-[2px] bg-black"></div>
-            <div className="bg-white">
+            <div className="absolute inset-x-0 top-[72px] z-50 h-[2px] bg-black"></div>
+            <div className="animate-scaleIn bg-white">
               <nav className="flex flex-col items-center gap-3 px-5 pb-20 pt-32 text-center">
                 <h2 className="sr-only">Mobile navigation</h2>
                 <Link
