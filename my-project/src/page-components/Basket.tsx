@@ -17,6 +17,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
   const locales = i18n.locales;
   const en = locales[1];
   const { addedToCart, setAddedToCart } = useAddedToCart();
+  const [isHovered, setIsHovered] = useState(false);
 
   const [state, setState] = useState<{
     products: { id: string; price: string; available: string }[];
@@ -103,7 +104,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
     localStorage.setItem("totalPrice", totalPrice.toString());
     localStorage.setItem("isInputOpen", isInputOpen.toString());
     localStorage.setItem("isButtonClicked", isButtonClicked.toString());
-    localStorage.setItem("totalPrice", totalPrice.toString());
+
   }, [
     discountAmount,
     quantities,
@@ -532,25 +533,67 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
 
           {isInputOpen && (
             <div className="relative">
-              <input
-                id="promoCodeInput"
-                type="text"
-                value={promoCode}
-                onChange={handlePromoCodeChange}
-                placeholder={
-                  lang === en ? "Enter the promo code " : "Введіть промокод "
-                }
-                className={`} w-[225px]   border-gray-300 p-2 text-t14 xl:text-t16`}
-              />
-              <button
-                onClick={handleVerifyPromoCode}
-                disabled={isPromoCodeValid}
-                className="absolute right-0 top-0 mt-[3px]  w-10 border-none bg-black px-2 py-2 text-white"
-              >
-                {isPromoCodeValid ? "✔" : "➜"}
-              </button>
+              {isPromoCodeValid ? (
+
+                <>
+                  <input
+
+                    id="promoCodeInput"
+                    type="text"
+                    value={promoCode}
+                    disabled={true}
+                    placeholder={
+                      lang === en ? "Enter the promo code " : "Введіть промокод "
+                    }
+                    className="w-[225px] border-gray-300 p-2 text-t14 xl:text-t16"
+                  />
+                  <button
+                    onClick={() => {
+
+                      setTotalPrice(totalPrice + discountAmount)
+                      localStorage.removeItem("promoCode");
+                      setPromoCode("");
+                      setPromoCodePartner("");
+                      setIsPromoCodeValid(false);
+                      setDiscountAmount(0)
+                    }} onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                    className="absolute right-0 top-0 mt-[3px] w-10 border-none bg-black px-2 py-2 text-white "
+                  >
+
+                    {isHovered ? (
+
+                      "✖"
+
+                    ) : (
+                      "✔"
+                    )}
+                  </button>
+                </>
+              ) : (
+                <>
+                  <input
+                    id="promoCodeInput"
+                    type="text"
+                    value={promoCode}
+                    onChange={handlePromoCodeChange}
+                    placeholder={
+                      lang === en ? "Enter the promo code " : "Введіть промокод "
+                    }
+                    className="w-[225px] border-gray-300 p-2 text-t14 xl:text-t16"
+                  />
+                  <button
+                    onClick={handleVerifyPromoCode}
+                    disabled={isPromoCodeValid}
+                    className="absolute right-0 top-0 mt-[3px] w-10 border-none bg-black px-2 py-2 text-white"
+                  >
+                    ➜
+                  </button>
+                </>
+              )}
             </div>
           )}
+
         </div>
         <div className="mb-8 ml-auto flex w-52 justify-between text-t14 xl:text-t16 ">
           <p>{lang === en ? "Discount" : "Знижка"} </p>
@@ -563,7 +606,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                   (currency: any) => currency.id === "EUR"
                 )?.rate || 1
               )
-              : discountAmount}{" "}
+              : discountAmount}
             {lang === en ? "€" : "₴"}
           </p>
         </div>
