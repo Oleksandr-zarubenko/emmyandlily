@@ -82,7 +82,15 @@ section {
 .product {
   clip-path: url(#path);
 }
+.paw {
+  background-image: url("../../public/paw.svg");
 
+  background-repeat: no-repeat;
+  background-size: auto 548px;
+  background-position-x: 100%;
+  background-position-y: 100%;
+  z-index: 1;
+}
 @media (min-width: 768px) {
   .product {
     clip-path: url(#pathMd);
@@ -286,4 +294,7 @@ section {
 }
 .shadow-basket {
   box-shadow: 4px 15px 40px 0px #100e0c33;
+}
+.input-error {
+  background-color: rgb(198 16 4 / 0.06);
 }

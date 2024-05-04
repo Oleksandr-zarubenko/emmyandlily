@@ -9,6 +9,7 @@ export async function POST(req: Request) {
     amount: product.amount,
     description: product.description,
   }));
+
   const res = await fetch(`https://emmyandlily.salesdrive.me/handler/`, {
     headers: {
       "Content-Type": "application/json",
@@ -17,6 +18,7 @@ export async function POST(req: Request) {
     body: JSON.stringify({
       form: "XAbgwAmkIZY5cyOjuJxgGoaJ8jMkYK4yTu0ExeoGSqoUitRJQcFx",
       getResultData: "",
+      con_conzgodaNaOtrimannaPromoMaterialiv: rawBody.isDiscountsAndNews,
       fName: rawBody.firstName,
       lName: rawBody.lastName,
       email: rawBody.email,
@@ -55,7 +57,7 @@ export async function POST(req: Request) {
         BuildingNumber: "",
         Flat: "",
       },
-      con_conzgodaNaOtrimannaPromoMaterialiv: rawBody.isDiscountsAndNews,
+
       prodex24source_full: "",
       prodex24source: "",
       prodex24medium: "",
