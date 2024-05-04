@@ -1,13 +1,8 @@
 "use client";
-import Logo from "../../public/logo.png";
-import { useEffect, useState, useRef } from "react";
-import { Burger } from "./icons/Burger";
-import { BurgerCross } from "./icons/BurgerCross";
+import Hamburger from "hamburger-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import LocaleSwitcher from "./locale-switcher";
-import Image from "next/image";
-import { Bag } from "./icons/Bag";
-import autoAnimate from "@formkit/auto-animate";
 
 export const MobileMenu = ({
   navigation,
@@ -17,14 +12,13 @@ export const MobileMenu = ({
   lang: any;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const parent = useRef(null);
-
-  const setMenuOpened = () => {
-    setIsOpen(true);
-  };
 
   const setMenuClosed = () => {
     setIsOpen(false);
+  };
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
   };
 
   useEffect(() => {
@@ -35,39 +29,17 @@ export const MobileMenu = ({
     }
   }, [isOpen]);
 
-  useEffect(() => {
-    parent.current && autoAnimate(parent.current);
-  }, [parent]);
-
   return (
     <div>
-      <button onClick={() => setMenuOpened()}>
-        <Burger className="h-14 w-14" />
+      <button onClick={() => toggleMenu()} className="relative z-50 h-14 w-14">
+        <Hamburger toggled={isOpen} toggle={setIsOpen} rounded />
       </button>
-      <div ref={parent}>
+      <div>
         {isOpen && (
-          <div className="fixed inset-0 h-dvh overflow-scroll bg-bg_transparent">
-            <div className="bg-white">
-              <div className="border-b-2 border-black ">
-                <div className="container flex flex-row items-center justify-between py-2">
-                  <Link href={`/${lang}`}>
-                    <Image src={Logo} alt="logo" width={158} height={32} />
-                  </Link>
-                  <h2 className="sr-only">Mobile Menu</h2>
-                  <div className="flex flex-row items-center gap-3">
-                    <Link
-                      className="text-white duration-300 hover:text-white"
-                      href={`/${lang}/basket`}
-                    >
-                      <Bag color="black" />
-                    </Link>
-                    <button onClick={() => setMenuClosed()} className="">
-                      <BurgerCross className="h-14 w-14 text-white" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <nav className="flex flex-col items-center gap-3 px-5 pb-20 pt-10 text-center">
+          <div className="fixed inset-0 h-dvh bg-bg_transparent">
+            <div className="absolute inset-x-0 top-[72px] z-50 h-[2px] bg-black"></div>
+            <div className="animate-scaleIn bg-white">
+              <nav className="flex flex-col items-center gap-3 px-5 pb-20 pt-32 text-center">
                 <h2 className="sr-only">Mobile navigation</h2>
                 <Link
                   className="border-1 w-full border-b border-border pb-4 pt-2 text-t16 text-[#0B0605]"

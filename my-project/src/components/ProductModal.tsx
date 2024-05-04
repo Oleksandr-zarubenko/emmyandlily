@@ -201,7 +201,7 @@ export const ProductModal = ({
                     )}
                   </div>
                 </div>
-                <div className="mb-8 mt-6 gap-2 md:flex-wrap md:gap-3 xl:mb-0 xl:flex smOnly:flex-col xl:w-[450px]">
+                <div className="mb-8 mt-6 gap-2 md:flex-wrap md:gap-3 xl:mb-0 xl:flex xl:w-[450px] smOnly:flex-col">
                   {product?.advantage1 && (
                     <p className="mb-2 w-full  rounded bg-[#DCDCDC] px-3 py-2 text-t14 text-black md:text-t16 xl:mb-0 xl:text-t16 mdOnly:w-[436px]">
                       {product.advantage1}
@@ -257,24 +257,24 @@ export const ProductModal = ({
                                     item.id === product.capacity[0].idCrm
                                 )
                                 ? convertPrice(
+                                    state.products.find(
+                                      (item: any) =>
+                                        item.id === product.capacity[0].idCrm
+                                    )!.price,
+                                    state.currencies.find(
+                                      (currency: any) => currency.id === "EUR"
+                                    )?.rate || 1
+                                  )
+                                : "N/A"
+                              : state &&
                                   state.products.find(
                                     (item: any) =>
                                       item.id === product.capacity[0].idCrm
-                                  )!.price,
-                                  state.currencies.find(
-                                    (currency: any) => currency.id === "EUR"
-                                  )?.rate || 1
-                                )
-                                : "N/A"
-                              : state &&
-                                state.products.find(
-                                  (item: any) =>
-                                    item.id === product.capacity[0].idCrm
-                                )
+                                  )
                                 ? state.products.find(
-                                  (item: any) =>
-                                    item.id === product.capacity[0].idCrm
-                                )!.price
+                                    (item: any) =>
+                                      item.id === product.capacity[0].idCrm
+                                  )!.price
                                 : "N/A")}{" "}
                           {lang === en ? "€" : "₴"}
                         </td>
@@ -337,7 +337,7 @@ export const ProductModal = ({
                     {product.method}
                   </button>
                 </div>
-                <div className="list-disc smOnly:overflow-hidden md:overflow-y-auto pt-2 text-black xl:h-[320px]">
+                <div className="list-disc pt-2 text-black md:overflow-y-auto xl:h-[320px] smOnly:overflow-hidden">
                   {activeTab === "components" && (
                     <Markdown
                       className="mb-1 ml-3 max-w-max list-disc pr-2 text-t14"

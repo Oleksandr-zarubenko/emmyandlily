@@ -18,6 +18,7 @@
     "axios": "^1.6.8",
     "classnames": "^2.5.1",
     "googleapis": "^133.0.0",
+    "hamburger-react": "^2.5.0",
     "negotiator": "^0.6.3",
     "next": "14.1.0",
     "react": "^18",
