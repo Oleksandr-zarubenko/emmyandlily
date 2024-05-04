@@ -72,6 +72,11 @@ const queryEN = gql`
         idD
         name
         price
+          img {
+        alt
+        url
+        width
+      }
       }
     }
 
@@ -156,6 +161,11 @@ const queryUA = gql`
         idD
         name
         price
+          img {
+        alt
+        url
+          width
+      }
       }
     }
 

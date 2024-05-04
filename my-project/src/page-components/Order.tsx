@@ -121,9 +121,16 @@ const Order = ({ data, lang }: any) => {
     return storedIsRecipient === "true";
   });
 
+
   const [isDiscountsAndNews, setIsDiscountsAndNews] = useState(() => {
     const storedIsDiscountsAndNews = localStorage.getItem("isDiscountsAndNews");
-    return storedIsDiscountsAndNews === "true";
+    return storedIsDiscountsAndNews ? storedIsDiscountsAndNews === "true" : false;
+  });
+
+  const [privacypolicy, setPrivacypolicy] = useState(() => {
+    const storedIsprivacypolicy = localStorage.getItem("privacypolicy");
+    return storedIsprivacypolicy ? JSON.parse(storedIsprivacypolicy) : false;
+
   });
 
   const [deliveryActive, setDeliveryActive] = useState(() => {
@@ -150,6 +157,7 @@ const Order = ({ data, lang }: any) => {
     const storedDeliveryPrice = localStorage.getItem("deliveryPrice");
     return storedDeliveryPrice ? parseFloat(storedDeliveryPrice) : 0;
   });
+
 
   // форми клієнта
   const [firstName, setFirstName] = useState(() => {
@@ -201,11 +209,15 @@ const Order = ({ data, lang }: any) => {
   const total = localStorage.getItem("allTotal");
   const totalPrice = total ? parseInt(total) : 0;
 
+  const totalEn = localStorage.getItem("totalPriceEn");
+  const totalPriceEn = totalEn ? parseInt(totalEn) : 0;
+
   const recipientData = `Дані отримувача ${recipientFirstName} ${recipientLastName} ${recipientEmail} ${recipientPhoneNumber}`;
 
   useEffect(() => {
     localStorage.setItem("selectedOption", selectedOption);
     localStorage.setItem("paymentMonobank", JSON.stringify(paymentMonobank));
+    localStorage.setItem("privacypolicy", JSON.stringify(privacypolicy));
     localStorage.setItem("deliveryPrice", deliveryPrice.toString());
     localStorage.setItem("deliveryActive", JSON.stringify(deliveryActive));
     localStorage.setItem("paymentActive", JSON.stringify(paymentActive));
@@ -232,6 +244,7 @@ const Order = ({ data, lang }: any) => {
       JSON.stringify(isDiscountsAndNews)
     );
 
+
     localStorage.setItem("firstName", firstName);
     localStorage.setItem("lastName", lastName);
     localStorage.setItem("email", email);
@@ -241,6 +254,7 @@ const Order = ({ data, lang }: any) => {
     localStorage.setItem("recipientEmail", recipientEmail);
     localStorage.setItem("recipientPhoneNumber", recipientPhoneNumber);
   }, [
+    privacypolicy,
     deliveryCompleted,
     error,
     street,
@@ -316,6 +330,28 @@ const Order = ({ data, lang }: any) => {
       amount: product.quantity,
       description: product.capacity,
     }));
+
+    // Відображення значень у консолі
+    console.log("Data before sending:", {
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      updatedProducts,
+      selectedOption: translatedOption,
+      recipientData,
+      city,
+      apiPromocod,
+      numnp,
+      numposhtmat,
+      street,
+      houseNumber,
+      index,
+      products: parsedProducts,
+      isDiscountsAndNews,
+      apiPromocodPartner
+    });
+
     await fetch("/api/form-post", {
       method: "POST",
       body: JSON.stringify({
@@ -356,6 +392,7 @@ const Order = ({ data, lang }: any) => {
 
 
   const isPersonalDataComplete = () => {
+
     if (isRecipient === false) {
       return (
         firstName !== "" &&
@@ -374,6 +411,7 @@ const Order = ({ data, lang }: any) => {
         !error.recipientLastName &&
         !error.recipientEmail &&
         !error.recipientPhoneNumber
+
       );
     } else {
       return (
@@ -388,6 +426,7 @@ const Order = ({ data, lang }: any) => {
       );
     }
   };
+
   const isDeliveryDataComplete = (selectedOption: any) => {
     if (selectedOption === "np-courier") {
       return (
@@ -402,13 +441,33 @@ const Order = ({ data, lang }: any) => {
       return numposhtmat.trim() !== "" && !error.numposhtmat;
     } else if (selectedOption === "ukrposhta") {
       return index.trim() !== "" && !error.index;
-    } else {
+    }
+    else if (selectedOption === "dhl") {
+      return sstreet.trim() !== "" &&
+        house.trim() !== "" &&
+        zip.trim() !== "" &&
+        appartment.trim() !== "" &&
+        !error.sstreet &&
+        !error.house &&
+        !error.zip &&
+        !error.appartment
+    }
+    else if (selectedOption === "ups") {
+      return sstreet.trim() !== "" &&
+        house.trim() !== "" &&
+        zip.trim() !== "" &&
+        appartment.trim() !== "" &&
+        !error.sstreet &&
+        !error.house &&
+        !error.zip &&
+        !error.appartment
+    }
+    else {
       return false;
     }
   };
 
   const saveAndProceed = () => {
-
     if (isPersonalDataComplete()) {
       setPersonActive(false);
       setDeliveryActive(true);
@@ -420,19 +479,108 @@ const Order = ({ data, lang }: any) => {
       });
     } else {
       setDeliveryActive(false);
-      alert("Будь ласка, заповніть всі поля");
+
+      if (!isRecipient) { // Якщо не є отримувачем
+        if (firstName.trim() === '') {
+          //@ts-ignore
+          document.getElementById('firstName').classList.add('input-error');
+        } else {
+          //@ts-ignore
+          document.getElementById('firstName').classList.remove('input-error');
+        }
+        if (lastName.trim() === '') {
+          //@ts-ignore
+          document.getElementById('lastName').classList.add('input-error');
+        } else {
+          //@ts-ignore
+          document.getElementById('lastName').classList.remove('input-error');
+        }
+        if (email.trim() === '') {
+          //@ts-ignore
+          document.getElementById('email').classList.add('input-error');
+        } else {
+          //@ts-ignore
+          document.getElementById('email').classList.remove('input-error');
+        }
+        if (phoneNumber.trim() === '') {
+          //@ts-ignore
+          document.getElementById('phoneNumber').classList.add('input-error');
+        } else {
+          //@ts-ignore
+          document.getElementById('phoneNumber').classList.remove('input-error');
+        }
+        if (recipientFirstName.trim() === '') {
+          //@ts-ignore
+          document.getElementById('recipientFirstName').classList.add('input-error');
+        } else {
+          //@ts-ignore
+          document.getElementById('recipientFirstName').classList.remove('input-error');
+        }
+        if (recipientLastName.trim() === '') {
+          //@ts-ignore
+          document.getElementById('recipientLastName').classList.add('input-error');
+        } else {
+          //@ts-ignore
+          document.getElementById('recipientLastName').classList.remove('input-error');
+        }
+        if (recipientEmail.trim() === '') {
+          //@ts-ignore
+          document.getElementById('recipientEmail').classList.add('input-error');
+        } else {
+          //@ts-ignore
+          document.getElementById('recipientEmail').classList.remove('input-error');
+        }
+        if (recipientPhoneNumber.trim() === '') {
+          //@ts-ignore
+          document.getElementById('recipientPhoneNumber').classList.add('input-error');
+        } else {
+          //@ts-ignore
+          document.getElementById('recipientPhoneNumber').classList.remove('input-error');
+        }
+      } else { // Якщо є отримувачем
+        if (firstName.trim() === '') {
+          //@ts-ignore
+          document.getElementById('firstName').classList.add('input-error');
+        } else {
+          //@ts-ignore
+          document.getElementById('firstName').classList.remove('input-error');
+        }
+        if (lastName.trim() === '') {
+          //@ts-ignore
+          document.getElementById('lastName').classList.add('input-error');
+        } else {
+          //@ts-ignore
+          document.getElementById('lastName').classList.remove('input-error');
+        }
+        if (email.trim() === '') {
+          //@ts-ignore
+          document.getElementById('email').classList.add('input-error');
+        } else {
+          //@ts-ignore
+          document.getElementById('email').classList.remove('input-error');
+        }
+        if (phoneNumber.trim() === '') {
+          //@ts-ignore
+          document.getElementById('phoneNumber').classList.add('input-error');
+        } else {
+          //@ts-ignore
+          document.getElementById('phoneNumber').classList.remove('input-error');
+        }
+      }
     }
   };
 
+
+
   const numberValute = lang === en ? 978 : 980
-  const amount = lang === en
-    ? parseInt(convertPrice(Math.round(totalPrice * 100), state.currencies.find((currency: any) => currency.id === "EUR")?.rate)) : totalPrice * 100
+  const amount = lang === en ? Math.round(totalPriceEn * 100) : totalPrice * 100
 
 
   const switchToPaymentTab = async () => {
-    makeApiCall();
-    localStorage.clear();
-    if (deliveryCompleted && paymentMonobank === true) {
+
+    if (deliveryCompleted && privacypolicy === true && paymentMonobank === true) {
+      makeApiCall();
+      localStorage.clear();
       try {
         const response = await fetch(
           "https://api.monobank.ua/api/merchant/invoice/create",
@@ -466,7 +614,7 @@ const Order = ({ data, lang }: any) => {
 
         if (response.ok) {
           const jsonData = await response.json();
-          console.log("Дані успішно відправлено:", jsonData);
+
           window.open(jsonData.pageUrl);
         } else {
           console.error("Помилка при відправці даних:", response.statusText);
@@ -474,9 +622,13 @@ const Order = ({ data, lang }: any) => {
       } catch (error) {
         console.error("Помилка:", error);
       }
-    } else {
+    } else if (privacypolicy === false) {
+      alert("Підтвреді");
+
+    }
+    else {
       alert("Виберіть спосіб оплати");
-      alert("Будь ласка, заповніть всі поля на вкладці Доставка");
+
     }
   };
 
@@ -489,34 +641,78 @@ const Order = ({ data, lang }: any) => {
   const switchToDeliveryTab = () => {
 
     if (city.trim() === "" || country.trim() === "") {
-      alert("Будь ласка, заповніть обов'язкове країну і місто ");
+      //@ts-ignore
+      document.getElementById('city').classList.add('input-error')
+      //@ts-ignore
+      document.getElementById('country').classList.add('input-error')
       return;
+
+    }
+    else {
+      //@ts-ignore
+      document.getElementById('city').classList.remove('input-error');
+      //@ts-ignore
+      document.getElementById('country').classList.remove('input-error');
     }
     if (!isDeliveryDataComplete(selectedOption)) {
-      alert("Будь ласка, заповніть всі поля правильно");
-      return;
-    }
+      if (selectedOption === "np-courier") {
 
-    if (selectedOption === "np-courier") {
-      if (street.trim() === "" || houseNumber.trim() === "") {
-        alert("Будь ласка, заповніть обов'язкове поле Адреса");
-        return;
+        if (street.trim() === "" || houseNumber.trim() === "") {
+          //@ts-ignore
+          document.getElementById('street').classList.add('input-error');
+          //@ts-ignore
+          document.getElementById('houseNumber').classList.add('input-error');
+          return;
+        }
+      } else if (selectedOption === "novaposhta-smovuviz") {
+        if (numnp.trim() === "") {
+          //@ts-ignore
+          document.getElementById('numnp').classList.add('input-error');
+          return;
+        }
+      } else if (selectedOption === "np-poshtmat") {
+        if (numposhtmat.trim() === "") {
+          //@ts-ignore
+          document.getElementById('numposhtmat').classList.add('input-error');
+          return;
+        }
+      } else if (selectedOption === "ukrposhta") {
+        if (index.trim() === "") {
+          //@ts-ignore
+          document.getElementById('index').classList.add('input-error');
+          return;
+        }
       }
-    } else if (selectedOption === "novaposhta-smovuviz") {
-      if (numnp.trim() === "") {
-        alert('Будь ласка, заповніть обов\'язкове поле "Номер відділення"');
-        return;
+      else if (selectedOption === "dhl") {
+        if (sstreet.trim() === "" || zip.trim() === "" || house.trim() === "" || appartment.trim() === "") {
+          //@ts-ignore
+          document.getElementById('sstreet').classList.add('input-error');
+          //@ts-ignore
+          document.getElementById('zip').classList.add('input-error');
+          //@ts-ignore
+          document.getElementById('house').classList.add('input-error');
+
+          //@ts-ignore
+          document.getElementById('appartment').classList.add('input-error');
+          return;
+        }
       }
-    } else if (selectedOption === "np-poshtmat") {
-      if (numposhtmat.trim() === "") {
-        alert('Будь ласка, заповніть обов\'язкове поле "Номер Поштомату"');
-        return;
+      else if (selectedOption === "ups") {
+        if (sstreet.trim() === "" || zip.trim() === "" || house.trim() === "" || appartment.trim() === "") {
+          //@ts-ignore
+          document.getElementById('sstreet').classList.add('input-error');
+          //@ts-ignore
+          document.getElementById('zip').classList.add('input-error');
+          //@ts-ignore
+          document.getElementById('house').classList.add('input-error');
+
+          //@ts-ignore
+          document.getElementById('appartment').classList.add('input-error');
+          return;
+        }
       }
-    } else if (selectedOption === "ukrposhta") {
-      if (index.trim() === "") {
-        alert('Будь ласка, заповніть обов\'язкове поле "Індекс укрпошти"');
-        return;
-      }
+
+      return;
     }
 
     if (selectedOption) {
@@ -626,13 +822,14 @@ const Order = ({ data, lang }: any) => {
           {paymentActive && (
             <div>
               <h3 className="mb-8 text-t18">Оберіть спосіб оплати</h3>
-              <label className="checkbox-container">
+              <label className="flex">
                 <input
-                  type="checkbox"
+                  type="radio"
                   checked={paymentMonobank}
                   onChange={handleMonobankChange}
+                  className="accent-black mr-2"
                 />
-                <span className="checkmark"></span>
+
                 <Image src={Mono} alt="Monobank" width={267} height={24} />
               </label>
             </div>
@@ -642,6 +839,8 @@ const Order = ({ data, lang }: any) => {
       <YourOrder
         lang={lang}
         data={data}
+        privacypolicy={privacypolicy}
+        setPrivacypolicy={setPrivacypolicy}
         setIsDiscountsAndNews={setIsDiscountsAndNews}
         isDiscountsAndNews={isDiscountsAndNews}
         saveAndProceed={saveAndProceed}

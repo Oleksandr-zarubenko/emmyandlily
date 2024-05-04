@@ -1,3 +1,4 @@
+
 interface PersonalInfoProps {
   data: any;
   firstName: string;
@@ -208,6 +209,7 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
           }
         </h2>
         <div className="mb-6 flex items-center">
+
           <input
             type="checkbox"
             id="recipientCheckbox"
@@ -227,7 +229,7 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
             <div className="mb-2  xl:mb-4 xl:mr-8 flex flex-col">
               <input
                 type="text"
-                id="firstName"
+                id="recipientFirstName"
                 value={recipientFirstName}
                 onChange={(e) => {
                   setRecipientFirstName(e.target.value);
@@ -240,7 +242,7 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
             <div className="mb-2  xl:mb-4 flex flex-col">
               <input
                 type="text"
-                id="lastName"
+                id="recipientLastName"
                 value={recipientLastName}
                 onChange={(e) => {
                   setRecipientLastName(e.target.value);
@@ -253,7 +255,7 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
             <div className="mb-2 xl:mb-0 xl:mr-8 flex  flex-col">
               <input
                 type="email"
-                id="email"
+                id="recipientEmail"
                 value={recipientEmail}
                 onChange={(e) => {
                   setRecipientEmail(e.target.value);
@@ -266,7 +268,7 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
             <div className="mb-2 xl:mb-0 flex flex-col">
               <input
                 type="tel"
-                id="phoneNumber"
+                id="recipientPhoneNumber"
                 value={recipientPhoneNumber}
                 onChange={(e) => {
                   setRecipientPhoneNumber(e.target.value);
