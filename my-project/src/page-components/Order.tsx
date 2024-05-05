@@ -8,15 +8,15 @@ import Mono from "../../public/mono.png";
 import { i18n } from "@/i18n.config";
 import getData from "@/utils/api/api";
 import { convertPrice } from "@/utils/convertPrice/convertPrice";
-
+import { useRouter } from 'next/navigation'
 const Order = ({ data, lang }: any) => {
   const locales = i18n.locales;
   const en = locales[1];
   const [state, setState] = useState<{
-
+    products: { id: string; price: string }[];
     currencies: { id: string; rate: number }[];
-  }>({ currencies: [] });
-
+  }>({ products: [], currencies: [] });
+  const router = useRouter()
   const fetchData = async () => {
     try {
       const data = await getData();
@@ -29,187 +29,260 @@ const Order = ({ data, lang }: any) => {
     fetchData();
   }, []);
 
-  const [storedData, setStoredData] = useState(
-    JSON.parse(localStorage.getItem("storedData") || "[]")
-  );
-  const [quantities, setQuantities] = useState(
-    JSON.parse(localStorage.getItem("quantities") || "{}")
-  );
-  const [apiPromocod, setapipromoCod] = useState(() => {
-
-    const storedData = localStorage.getItem("promoCode");
-
-    return storedData || "";
-  });
-  const [apiPromocodPartner, setapipromoCodPartner] = useState(() => {
-
-    const storedData = localStorage.getItem("promoCodePartner");
-
-    return storedData || "";
+  const [storedData, setStoredData] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return JSON.parse(localStorage.getItem("storedData") || "[]");
+    }
+    return [];
   });
 
+  const [quantities, setQuantities] = useState<{ [productId: string]: number }>(() => {
+    if (typeof window !== 'undefined') {
+      return JSON.parse(localStorage.getItem("quantities") || "{}");
+    }
+    return {};
+  });
+
+  const [apiPromocod, setApiPromoCod] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem("promoCode") || "";
+    }
+    return "";
+  });
+
+  const [apiPromocodPartner, setApiPromoCodPartner] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem("promoCodePartner") || "";
+    }
+    return "";
+  });
 
   const [productName, setProductName] = useState(storedData);
-
-  const [deliveryCompleted, setDeliveryCompleted] = useState(() => {
-    const storedDeliveryCompleted = localStorage.getItem("deliveryCompleted");
-    return storedDeliveryCompleted === "true";
+  const [deliveryCompleted, setDeliveryCompleted] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const storedDeliveryCompleted = localStorage.getItem("deliveryCompleted");
+      return storedDeliveryCompleted === "true";
+    }
+    return false;
   });
 
   const [error, setError] = useState<{ [key: string]: string }>(() => {
-    const storedError = localStorage.getItem("error");
-    return storedError ? JSON.parse(storedError) : {};
+    if (typeof window !== 'undefined') {
+      const storedError = localStorage.getItem("error");
+      return storedError ? JSON.parse(storedError) : {};
+    }
+    return {};
   });
 
-  const [street, setStreet] = useState(() => {
-    const storedStreet = localStorage.getItem("street");
-    return storedStreet || "";
+  const [street, setStreet] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem("street") || "";
+    }
+    return "";
   });
 
-  const [houseNumber, setHouseNumber] = useState(() => {
-    const storedHouseNumber = localStorage.getItem("houseNumber");
-    return storedHouseNumber || "";
+  const [houseNumber, setHouseNumber] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem("houseNumber") || "";
+    }
+    return "";
+  });
+  const [city, setCity] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem("city") || "";
+    }
+    return "";
   });
 
-  const [city, setCity] = useState(() => {
-    const storedCity = localStorage.getItem("city");
-    return storedCity || "";
+  const [country, setCountry] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem("country") || "";
+    }
+    return "";
   });
 
-  const [country, setCountry] = useState(() => {
-    const storedCountry = localStorage.getItem("country");
-    return storedCountry || "";
+  const [numposhtmat, setNumposhtmat] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem("numposhtmat") || "";
+    }
+    return "";
   });
 
-  const [numposhtmat, setNumposhtmat] = useState(() => {
-    const storedNumposhtmat = localStorage.getItem("numposhtmat");
-    return storedNumposhtmat || "";
+  const [numnp, setNumnp] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem("numnp") || "";
+    }
+    return "";
   });
 
-  const [numnp, setNumnp] = useState(() => {
-    const storedNumnp = localStorage.getItem("numnp");
-    return storedNumnp || "";
+  const [index, setIndex] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem("index") || "";
+    }
+    return "";
   });
 
-  const [index, setIndex] = useState(() => {
-    const storedIndex = localStorage.getItem("index");
-    return storedIndex || "";
+  const [sstreet, setSstreet] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem("sstreet") || "";
+    }
+    return "";
   });
 
-  const [sstreet, setSstreet] = useState(() => {
-    const storedSstreet = localStorage.getItem("sstreet");
-    return storedSstreet || "";
+  const [zip, setZip] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem("zip") || "";
+    }
+    return "";
   });
 
-  const [zip, setZip] = useState(() => {
-    const storedZip = localStorage.getItem("zip");
-    return storedZip || "";
+  const [house, setHouse] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem("house") || "";
+    }
+    return "";
   });
 
-  const [house, setHouse] = useState(() => {
-    const storedHouse = localStorage.getItem("house");
-    return storedHouse || "";
+  const [appartment, setAppartment] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem("appartment") || "";
+    }
+    return "";
   });
 
-  const [appartment, setAppartment] = useState(() => {
-    const storedAppartment = localStorage.getItem("appartment");
-    return storedAppartment || "";
+  const [isRecipient, setIsRecipient] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const storedIsRecipient = localStorage.getItem("isRecipient");
+      return storedIsRecipient === "true";
+    }
+    return false;
   });
 
-  const [isRecipient, setIsRecipient] = useState(() => {
-    const storedIsRecipient = localStorage.getItem("isRecipient");
-    return storedIsRecipient === "true";
+  const [isDiscountsAndNews, setIsDiscountsAndNews] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const storedIsDiscountsAndNews = localStorage.getItem("isDiscountsAndNews");
+      return storedIsDiscountsAndNews ? storedIsDiscountsAndNews === "true" : false;
+    }
+    return false;
   });
 
-
-  const [isDiscountsAndNews, setIsDiscountsAndNews] = useState(() => {
-    const storedIsDiscountsAndNews = localStorage.getItem("isDiscountsAndNews");
-    return storedIsDiscountsAndNews ? storedIsDiscountsAndNews === "true" : false;
+  const [privacypolicy, setPrivacypolicy] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const storedIsprivacypolicy = localStorage.getItem("privacypolicy");
+      return storedIsprivacypolicy ? JSON.parse(storedIsprivacypolicy) : false;
+    }
+    return false;
   });
 
-  const [privacypolicy, setPrivacypolicy] = useState(() => {
-    const storedIsprivacypolicy = localStorage.getItem("privacypolicy");
-    return storedIsprivacypolicy ? JSON.parse(storedIsprivacypolicy) : false;
-
+  const [deliveryActive, setDeliveryActive] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const storedDeliveryActive = localStorage.getItem("deliveryActive");
+      return storedDeliveryActive ? JSON.parse(storedDeliveryActive) : false;
+    }
+    return false;
   });
 
-  const [deliveryActive, setDeliveryActive] = useState(() => {
-    const storedDeliveryActive = localStorage.getItem("deliveryActive");
-    return storedDeliveryActive ? JSON.parse(storedDeliveryActive) : false;
+  const [paymentActive, setPaymentActive] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const storedPaymentActive = localStorage.getItem("paymentActive");
+      return storedPaymentActive ? JSON.parse(storedPaymentActive) : false;
+    }
+    return false;
   });
 
-  const [paymentActive, setPaymentActive] = useState(() => {
-    const storedPaymentActive = localStorage.getItem("paymentActive");
-    return storedPaymentActive ? JSON.parse(storedPaymentActive) : false;
+  const [personActive, setPersonActive] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const storedPersonActive = localStorage.getItem("personActive");
+      return storedPersonActive ? JSON.parse(storedPersonActive) : true;
+    }
+    return true;
   });
 
-  const [personActive, setPersonActive] = useState(() => {
-    const storedPersonActive = localStorage.getItem("personActive");
-    return storedPersonActive ? JSON.parse(storedPersonActive) : true;
+  const [selectedOption, setSelectedOption] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem("selectedOption") || "";
+    }
+    return "";
   });
 
-  const [selectedOption, setSelectedOption] = useState(() => {
-    const storedSelectedOption = localStorage.getItem("selectedOption");
-    return storedSelectedOption || "";
+  const [deliveryPrice, setDeliveryPrice] = useState<number>(() => {
+    if (typeof window !== 'undefined') {
+      const storedDeliveryPrice = localStorage.getItem("deliveryPrice");
+      return storedDeliveryPrice ? parseFloat(storedDeliveryPrice) : 0;
+    }
+    return 0;
   });
-
-  const [deliveryPrice, setDeliveryPrice] = useState(() => {
-    const storedDeliveryPrice = localStorage.getItem("deliveryPrice");
-    return storedDeliveryPrice ? parseFloat(storedDeliveryPrice) : 0;
-  });
-
 
   // форми клієнта
-  const [firstName, setFirstName] = useState(() => {
-    const storedFirstName = localStorage.getItem("firstName");
-    return storedFirstName || "";
+  const [firstName, setFirstName] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem("firstName") || "";
+    }
+    return "";
   });
 
-  const [lastName, setLastName] = useState(() => {
-    const storedLastName = localStorage.getItem("lastName");
-    return storedLastName || "";
-  });
-  const [email, setEmail] = useState(() => {
-    const storedEmail = localStorage.getItem("email");
-    return storedEmail || "";
+  const [lastName, setLastName] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem("lastName") || "";
+    }
+    return "";
   });
 
-  const [phoneNumber, setPhoneNumber] = useState(() => {
-    const storedPhoneNumber = localStorage.getItem("phoneNumber");
-    return storedPhoneNumber || "";
+  const [email, setEmail] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem("email") || "";
+    }
+    return "";
   });
 
-  const [recipientFirstName, setRecipientFirstName] = useState(() => {
-    const storedRecipientFirstName = localStorage.getItem("recipientFirstName");
-    return storedRecipientFirstName || "";
+  const [phoneNumber, setPhoneNumber] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem("phoneNumber") || "";
+    }
+    return "";
   });
 
-  const [recipientLastName, setRecipientLastName] = useState(() => {
-    const storedRecipientLastName = localStorage.getItem("recipientLastName");
-    return storedRecipientLastName || "";
+  const [recipientFirstName, setRecipientFirstName] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem("recipientFirstName") || "";
+    }
+    return "";
   });
 
-  const [recipientEmail, setRecipientEmail] = useState(() => {
-    const storedRecipientEmail = localStorage.getItem("recipientEmail");
-    return storedRecipientEmail || "";
+  const [recipientLastName, setRecipientLastName] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem("recipientLastName") || "";
+    }
+    return "";
   });
 
-  const [recipientPhoneNumber, setRecipientPhoneNumber] = useState(() => {
-    const storedRecipientPhoneNumber = localStorage.getItem(
-      "recipientPhoneNumber"
-    );
-    return storedRecipientPhoneNumber || "";
+  const [recipientEmail, setRecipientEmail] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem("recipientEmail") || "";
+    }
+    return "";
   });
 
-  const [paymentMonobank, setPaymentMonobank] = useState(() => {
-    const storedPaymentMonobank = localStorage.getItem("paymentMonobank");
-    return storedPaymentMonobank ? JSON.parse(storedPaymentMonobank) : false;
+
+  const [recipientPhoneNumber, setRecipientPhoneNumber] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem("recipientPhoneNumber") || "";
+    }
+    return "";
   });
 
-  const total = localStorage.getItem("allTotal");
+  const [paymentMonobank, setPaymentMonobank] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const storedPaymentMonobank = localStorage.getItem("paymentMonobank");
+      return storedPaymentMonobank ? JSON.parse(storedPaymentMonobank) : false;
+    }
+    return false;
+  });
+  const total = typeof window !== 'undefined' ? localStorage.getItem("allTotal") : null;
+
   const totalPrice = total ? parseInt(total) : 0;
 
-  const totalEn = localStorage.getItem("totalPriceEn");
+  const totalEn = typeof window !== 'undefined' ? localStorage.getItem("totalPriceEn") : null;
   const totalPriceEn = totalEn ? parseInt(totalEn) : 0;
 
   const recipientData = `Дані отримувача ${recipientFirstName} ${recipientLastName} ${recipientEmail} ${recipientPhoneNumber}`;
@@ -331,26 +404,7 @@ const Order = ({ data, lang }: any) => {
       description: product.capacity,
     }));
 
-    // Відображення значень у консолі
-    console.log("Data before sending:", {
-      firstName,
-      lastName,
-      email,
-      phoneNumber,
-      updatedProducts,
-      selectedOption: translatedOption,
-      recipientData,
-      city,
-      apiPromocod,
-      numnp,
-      numposhtmat,
-      street,
-      houseNumber,
-      index,
-      products: parsedProducts,
-      isDiscountsAndNews,
-      apiPromocodPartner
-    });
+
 
     await fetch("/api/form-post", {
       method: "POST",
@@ -580,6 +634,7 @@ const Order = ({ data, lang }: any) => {
 
     if (deliveryCompleted && privacypolicy === true && paymentMonobank === true) {
       makeApiCall();
+
       localStorage.clear();
       try {
         const response = await fetch(
@@ -614,7 +669,9 @@ const Order = ({ data, lang }: any) => {
 
         if (response.ok) {
           const jsonData = await response.json();
-
+          setTimeout(() => {
+            router.push(`/${lang}/`);
+          }, 1000);
           window.open(jsonData.pageUrl);
         } else {
           console.error("Помилка при відправці даних:", response.statusText);
@@ -623,7 +680,7 @@ const Order = ({ data, lang }: any) => {
         console.error("Помилка:", error);
       }
     } else if (privacypolicy === false) {
-      alert("Підтвреді");
+      alert("Підтвредіть замовлення");
 
     }
     else {
@@ -636,6 +693,7 @@ const Order = ({ data, lang }: any) => {
     setPersonActive(true);
     setDeliveryActive(false);
     setPaymentActive(false);
+
   };
 
   const switchToDeliveryTab = () => {
@@ -733,7 +791,7 @@ const Order = ({ data, lang }: any) => {
   return (
     <section className="paw container grow justify-between py-40 md:flex">
       <div className="smOnly:w-full mdOnly:w-[55%]">
-        <h1 className="r mb-6 text-t18 font-bold xl:mb-10 xl:text-t32 mdOnly:mb-8 mdOnly:text-t24">
+        <h1 className=" mb-6 text-t18 font-bold xl:mb-10 xl:text-t32 mdOnly:mb-8 mdOnly:text-t24">
           {data.order.heading}
         </h1>
 
@@ -850,6 +908,8 @@ const Order = ({ data, lang }: any) => {
         switchToDeliveryTab={switchToDeliveryTab}
         deliveryPrice={deliveryPrice}
         switchToPaymentTab={switchToPaymentTab}
+        state={state}
+        setState={setState}
       />
     </section>
   );

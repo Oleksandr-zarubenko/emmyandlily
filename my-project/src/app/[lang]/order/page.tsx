@@ -89,6 +89,7 @@ const queryEN = gql`
     }
 
   }
+ 
 }
 `;
 
@@ -178,6 +179,7 @@ const queryUA = gql`
     }
 
   }
+
 }
 `;
 export default async function OrderPage({

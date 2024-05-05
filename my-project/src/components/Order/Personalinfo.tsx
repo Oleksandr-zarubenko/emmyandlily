@@ -46,11 +46,43 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
   error,
   setError,
 }) => {
+
   const validateField = (fieldName: string, value: string) => {
     const nameRegex = /^[\p{L}\s]+$/u;
-    const phoneRegex = /^[0-9]*$/;
+
 
     const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+    const phoneValidators: { [key: string]: RegExp } = {
+      'UA': /^(\+?380\d{9})$/, // Формат для України: +380XXXXXXXXX
+      'AT': /^(\+?43\d{1,9})$/,      // Австрія: +43XXXXXXXXX
+      'BE': /^(\+?32\d{1,9})$/,      // Бельгія: +32XXXXXXXXX
+      'BG': /^(\+?359\d{1,9})$/,     // Болгарія: +359XXXXXXXXX
+      'CY': /^(\+?357\d{1,9})$/,     // Кіпр: +357XXXXXXXXX
+      'CZ': /^(\+?420\d{1,9})$/,     // Чехія: +420XXXXXXXXX
+      'DE': /^(\+?49\d{1,9})$/,      // Німеччина: +49XXXXXXXXX
+      'DK': /^(\+?45\d{1,9})$/,      // Данія: +45XXXXXXXXX
+      'EE': /^(\+?372\d{1,9})$/,     // Естонія: +372XXXXXXXXX
+      'ES': /^(\+?34\d{1,9})$/,      // Іспанія: +34XXXXXXXXX
+      'FI': /^(\+?358\d{1,9})$/,     // Фінляндія: +358XXXXXXXXX
+      'FR': /^(\+?33\d{1,9})$/,      // Франція: +33XXXXXXXXX
+      'GR': /^(\+?30\d{1,9})$/,      // Греція: +30XXXXXXXXX
+      'HR': /^(\+?385\d{1,9})$/,     // Хорватія: +385XXXXXXXXX
+      'HU': /^(\+?36\d{1,9})$/,      // Угорщина: +36XXXXXXXXX
+      'IE': /^(\+?353\d{1,9})$/,     // Ірландія: +353XXXXXXXXX
+      'IT': /^(\+?39\d{1,9})$/,      // Італія: +39XXXXXXXXX
+      'LT': /^(\+?370\d{1,9})$/,     // Литва: +370XXXXXXXXX
+      'LU': /^(\+?352\d{1,9})$/,     // Люксембург: +352XXXXXXXXX
+      'LV': /^(\+?371\d{1,9})$/,     // Латвія: +371XXXXXXXXX
+      'MT': /^(\+?356\d{1,9})$/,     // Мальта: +356XXXXXXXXX
+      'NL': /^(\+?31\d{1,9})$/,      // Нідерланди: +31XXXXXXXXX
+      'PL': /^(\+?48\d{1,9})$/,      // Польща: +48XXXXXXXXX
+      'PT': /^(\+?351\d{1,9})$/,     // Португалія: +351XXXXXXXXX
+      'RO': /^(\+?40\d{1,9})$/,      // Румунія: +40XXXXXXXXX
+      'SE': /^(\+?46\d{1,9})$/,      // Швеція: +46XXXXXXXXX
+      'SI': /^(\+?386\d{1,9})$/,     // Словенія: +386XXXXXXXXX
+      'SK': /^(\+?421\d{1,9})$/,     // Словаччина: +421XXXXXXXXX
+      'US': /^(\+?1\d{10})$/   // Формат для США: +1XXXXXXXXXX
+    };
 
     switch (fieldName) {
       case "firstName":
@@ -77,8 +109,21 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
       case "phoneNumber":
         if (!value) {
           return "Введіть номер телефону";
-        } else if (!phoneRegex.test(value)) {
-          return "Введіть коректний номер телефону";
+        } else {
+          // Перевіряємо номер телефону за допомогою регулярного виразу для відповідної країни
+          const countryCodes = ['UA', 'PL', 'IT', 'ES', 'AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GR', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'MT', 'NL', 'PL', 'PT', 'RO', 'SE', 'SI', 'SK', 'US'];
+
+          let isValid = false;
+          for (const countryCode of countryCodes) {
+            const phoneValidator = phoneValidators[countryCode];
+            if (phoneValidator.test(value)) {
+              isValid = true;
+              break;
+            }
+          }
+          if (!isValid) {
+            return "Введіть коректний номер телефону отримувача";
+          }
         }
         break;
       case "recipientEmail":
@@ -91,10 +136,24 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
       case "recipientPhoneNumber":
         if (!value) {
           return "Введіть номер телефону отримувача";
-        } else if (!phoneRegex.test(value)) {
-          return "Введіть коректний номер телефону отримувача";
+        } else {
+          // Перевіряємо номер телефону отримувача за допомогою регулярного виразу для відповідної країни
+          const countryCodes = ['UA', 'PL', 'IT', 'ES', 'AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GR', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'MT', 'NL', 'PL', 'PT', 'RO', 'SE', 'SI', 'SK', 'US'];
+
+          let isValid = false;
+          for (const countryCode of countryCodes) {
+            const phoneValidator = phoneValidators[countryCode];
+            if (phoneValidator.test(value)) {
+              isValid = true;
+              break;
+            }
+          }
+          if (!isValid) {
+            return "Введіть коректний номер телефону";
+          }
         }
         break;
+
       case "recipientFirstName":
         if (!value) {
           return "Введіть ім'я отримувача";
@@ -153,7 +212,7 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
   };
 
   return (
-    <>
+    <div>
       <div className="mb-14 ">
         <h2 className="mb-6 text-t16 xl:text-t18 font-bold text-[#292D2D]">
           {data.order.enterYourDetails}
@@ -281,7 +340,7 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

@@ -93,6 +93,11 @@ const queryEN = gql`
         idCrm
       }
     }
+     secondmodal{
+    goToCart
+    itemAddedToCart
+    returnToShopping
+  }
   }
 `;
 
@@ -177,6 +182,11 @@ const queryUA = gql`
         idCrm
       }
     }
+     secondmodal(locale: uk) {
+    goToCart
+    itemAddedToCart
+    returnToShopping
+  }
   }
 `;
 

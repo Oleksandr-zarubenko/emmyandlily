@@ -38,7 +38,7 @@ export const Contacts = ({ data }: { data: any }) => {
             {data.contactssection.email && (
               <Link
                 href={"mailto:" + data.contactssection.email}
-                className="flex gap-2 text-t16 text-black md:mb-11 xl:mb-[152px]"
+                className="flex gap-2 text-t16 text-black md:mb-11 xl:mb-[32px]"
               >
                 <Email className="h-5 w-5 flex-shrink-0 text-black" />
                 {data.contactssection.email}
@@ -62,7 +62,7 @@ export const Contacts = ({ data }: { data: any }) => {
           )}
           <Markdown
             text={data.contactssection.socialsphrase}
-            className="mb-8  smOnly:max-w-[155px] smOnly:!text-t20"
+            className="mb-8  smOnly:max-w-[155px] smOnly:!text-t18 mdOnly:!text-t18"
           />
           <div className="flex flex-col gap-6 md:flex-row">
             {data.contactssection.instagramlink && (

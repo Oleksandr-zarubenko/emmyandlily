@@ -17,12 +17,14 @@ export const ProductModal = ({
   lang,
   children,
   convertPrice,
+  data
 }: {
   product: any;
   lang: any;
   children: any;
   state: any;
   convertPrice: any;
+  data: any;
 }) => {
   const locales = i18n.locales;
   const en = locales[1];
@@ -132,6 +134,7 @@ export const ProductModal = ({
           onClose={() => setAdditionalModalOpen(false)}
           lang={lang}
           en={en}
+          data={data}
         />
       )}
       {isOpen && (
@@ -142,7 +145,7 @@ export const ProductModal = ({
           <div className="relative h-full w-full xl:h-auto xl:w-auto">
             <button
               onClick={() => setMenuClosed()}
-              className="fixed right-10 top-1 z-10 mt-[10px] rounded-full  p-4 duration-300  xl:absolute"
+              className="absolute notXl:right-1 notXl:top-1 right-10 top-1 z-10 xl:mt-[10px] rounded-full  p-4 duration-300  xl:absolute"
             >
               <BurgerCross className="h-6 w-6 text-black" />
             </button>
@@ -179,10 +182,10 @@ export const ProductModal = ({
                         >
                           <div
                             className={cn(
-                              "absolute inset-0 z-10 ",
+                              "absolute inset-0 z-10 rounded",
                               slide.url !== currentImageUrl
                                 ? "bg-black/50"
-                                : "border-b-4 border-black"
+                                : "border-b-4 border-black rounded"
                             )}
                           ></div>
                           <Image
@@ -257,24 +260,24 @@ export const ProductModal = ({
                                     item.id === product.capacity[0].idCrm
                                 )
                                 ? convertPrice(
-                                    state.products.find(
-                                      (item: any) =>
-                                        item.id === product.capacity[0].idCrm
-                                    )!.price,
-                                    state.currencies.find(
-                                      (currency: any) => currency.id === "EUR"
-                                    )?.rate || 1
-                                  )
-                                : "N/A"
-                              : state &&
                                   state.products.find(
                                     (item: any) =>
                                       item.id === product.capacity[0].idCrm
-                                  )
+                                  )!.price,
+                                  state.currencies.find(
+                                    (currency: any) => currency.id === "EUR"
+                                  )?.rate || 1
+                                )
+                                : "N/A"
+                              : state &&
+                                state.products.find(
+                                  (item: any) =>
+                                    item.id === product.capacity[0].idCrm
+                                )
                                 ? state.products.find(
-                                    (item: any) =>
-                                      item.id === product.capacity[0].idCrm
-                                  )!.price
+                                  (item: any) =>
+                                    item.id === product.capacity[0].idCrm
+                                )!.price
                                 : "N/A")}{" "}
                           {lang === en ? "€" : "₴"}
                         </td>
