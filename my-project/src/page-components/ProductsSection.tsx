@@ -71,6 +71,7 @@ export const ProductsSection = ({
                     product={product}
                     lang={lang}
                     state={state}
+                    data={data}
                     convertPrice={convertPrice}
                   >
                     <div className="relative mb-3 h-[300px] w-[260px] overflow-hidden rounded xl:mb-4 xl:h-[344px] xl:w-[304px] mdOnly:h-[280x] mdOnly:w-[280px]">

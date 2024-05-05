@@ -2,7 +2,7 @@ import { Markdown } from "@/components/Markdown";
 import { convertPrice } from "@/utils/convertPrice/convertPrice"
 import { ProductModal } from "../ProductModal"
 import Image from "next/image"
-const CheaperTogether = ({ data, state, setState, lang, en }: any) => {
+const CheaperTogether = ({ data, state, setState, lang, en, modal }: any) => {
 
 
 
@@ -24,6 +24,7 @@ const CheaperTogether = ({ data, state, setState, lang, en }: any) => {
                                     product={product}
                                     lang={lang}
                                     state={state}
+                                    data={modal}
                                     convertPrice={convertPrice}
                                 >
                                     <div className="relative mb-1 h-[147px] w-[166px] overflow-hidden rounded xl:mb-1 xl:h-[147px] xl:w-[166px] mdOnly:h-[147px] mdOnly:w-full">

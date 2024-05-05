@@ -43,57 +43,94 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
       router.push(`/${lang}/order`);
     }
   };
-  const storedDatas = localStorage.getItem("storedData");
+  const storedDatas = typeof window !== 'undefined' ? localStorage.getItem("storedData") : null;
+
   const storedData = storedDatas ? JSON.parse(storedDatas) : [];
   const [tovar, setTovar] = useState(storedData);
 
   const [quantities, setQuantities] = useState<{ [productId: string]: number }>(
     () => {
-      const storedQuantities = localStorage.getItem("quantities");
-      return storedQuantities ? JSON.parse(storedQuantities) : {};
+      if (typeof window !== 'undefined') {
+        const storedQuantities = localStorage.getItem("quantities");
+        return storedQuantities ? JSON.parse(storedQuantities) : {};
+      }
+      return {};
     }
   );
 
+
   const [totalPrice, setTotalPrice] = useState<number>(() => {
-    const storedTotalPrice = localStorage.getItem("totalPrice");
-    return storedTotalPrice ? parseFloat(storedTotalPrice) : 0;
+    if (typeof window !== 'undefined') {
+      const storedTotalPrice = localStorage.getItem("totalPrice");
+      return storedTotalPrice ? parseFloat(storedTotalPrice) : 0;
+    }
+    return 0;
+  });
+  const [promoCode, setPromoCode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const storedpromoCode = localStorage.getItem("promoCode");
+      return storedpromoCode || "";
+    }
+    return "";
   });
 
-  const [promoCode, setPromoCode] = useState(() => {
-    const storedpromoCode = localStorage.getItem("promoCode");
-    return storedpromoCode || "";
-  });
   const [promoCodePartner, setPromoCodePartner] = useState(() => {
-    const storedpromoCodePartner = localStorage.getItem("promoCodePartner");
-    return storedpromoCodePartner || "";
+    if (typeof window !== 'undefined') {
+      const storedpromoCodePartner = localStorage.getItem("promoCodePartner");
+      return storedpromoCodePartner || "";
+    }
+    return "";
   });
 
   const [isValid, setIsValid] = useState(() => {
-    const storedIsValid = localStorage.getItem("isValid");
-    return storedIsValid ? storedIsValid === "true" : false;
+    if (typeof window !== 'undefined') {
+      const storedIsValid = localStorage.getItem("isValid");
+      return storedIsValid ? storedIsValid === "true" : false;
+    }
+    return false;
   });
 
   const [isInputOpen, setIsInputOpen] = useState(() => {
-    const storedIsInputOpen = localStorage.getItem("isInputOpen");
-    return storedIsInputOpen ? storedIsInputOpen === "true" : false;
+    if (typeof window !== 'undefined') {
+      const storedIsInputOpen = localStorage.getItem("isInputOpen");
+      return storedIsInputOpen ? storedIsInputOpen === "true" : false;
+    }
+    return false;
   });
 
   const [isButtonClicked, setIsButtonClicked] = useState(() => {
-    const storedIsButtonClicked = localStorage.getItem("isButtonClicked");
-    return storedIsButtonClicked ? storedIsButtonClicked === "true" : false;
+    if (typeof window !== 'undefined') {
+      const storedIsButtonClicked = localStorage.getItem("isButtonClicked");
+      return storedIsButtonClicked ? storedIsButtonClicked === "true" : false;
+    }
+    return false;
   });
 
   const [discountAmount, setDiscountAmount] = useState(() => {
-    const storedValue = localStorage.getItem("discountAmount");
-
-    return storedValue ? parseInt(storedValue, 10) : 0;
+    if (typeof window !== 'undefined') {
+      const storedValue = localStorage.getItem("discountAmount");
+      return storedValue ? parseInt(storedValue, 10) : 0;
+    }
+    return 0;
   });
+
   const [isPromoCodeValid, setIsPromoCodeValid] = useState(() => {
-    const storeisPromoCodeValid = localStorage.getItem("isPromoCodeValid");
-    return storeisPromoCodeValid ? storeisPromoCodeValid === "true" : false;
+    if (typeof window !== 'undefined') {
+      const storeisPromoCodeValid = localStorage.getItem("isPromoCodeValid");
+      return storeisPromoCodeValid ? storeisPromoCodeValid === "true" : false;
+    }
+    return false;
   });
 
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const storedData = JSON.parse(localStorage.getItem("storedData") || "[]");
+      setTovar(storedData);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
   useEffect(() => {
     localStorage.setItem("isPromoCodeValid", isPromoCodeValid.toString());
     localStorage.setItem('discountAmount', discountAmount.toString());
@@ -640,7 +677,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
         <DropDown data={data} />
       </div>
       <div className="smOnly:hidden mdOnly:hidden">
-        <CheaperTogether data={TogetherProducts} state={state} setState={setState} lang={lang} en={en} />
+        <CheaperTogether data={TogetherProducts} modal={data} state={state} setState={setState} lang={lang} en={en} />
       </div>
     </section>
   );
