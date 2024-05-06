@@ -15,6 +15,7 @@ function getLocale(request: NextRequest): string | undefined {
   const languages = new Negotiator({ headers: negotiatorHeaders }).languages();
 
   const locale = matchLocale(languages, locales, i18n.defaultLocale);
+
   return locale;
 }
 
@@ -29,7 +30,7 @@ export function middleware(request: NextRequest) {
     const locale = getLocale(request);
     return NextResponse.redirect(
       new URL(
-        `/${locale}${pathname.startsWith("/") ? "" : "/"}${pathname}`,
+        `/${i18n.defaultLocale}${pathname.startsWith("/") ? "" : "/"}${pathname}`,
         request.url
       )
     );
