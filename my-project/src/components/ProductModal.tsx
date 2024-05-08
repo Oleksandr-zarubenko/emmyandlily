@@ -136,7 +136,7 @@ export const ProductModal = ({
       )}
       {isOpen && (
         <div
-          className="fixed inset-0 z-30 flex h-dvh cursor-default items-center justify-center overflow-y-auto bg-white/50"
+          className="fixed inset-0 z-30 flex h-dvh cursor-default items-center justify-center overflow-y-auto bg-bg_transparent"
           onClick={() => setMenuClosed()}
         >
           <div className="relative h-full w-full xl:h-auto xl:w-auto">
