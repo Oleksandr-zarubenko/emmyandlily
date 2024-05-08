@@ -1,11 +1,9 @@
+import LocaleSwitcher from "@/components/locale-switcher";
+import Image from "next/image";
 import Link from "next/link";
 import Logo from "../../../public/logo.png";
-import LocaleSwitcher from "@/components/locale-switcher";
-import { Bag } from "@/components/icons/Bag";
-import Image from "next/image";
-import { MobileMenu } from "../MobileMenu";
-import cn from "classnames";
 import { Cart } from "../Cart";
+import { MobileMenu } from "../MobileMenu";
 
 const Header = ({ lang, data }: any) => {
   return (
@@ -26,7 +24,7 @@ const Header = ({ lang, data }: any) => {
             <Image src={Logo} alt="logo" className="" />
           </Link>
         </div>
-        <nav className="flex flex-col items-center text-t16 md:flex-row md:gap-4 xl:gap-10">
+        <nav className="flex flex-col items-center text-t16 md:flex-row md:gap-4">
           <h2 className="sr-only">Main navigation</h2>
           <Link
             className="text-[#0B0605] duration-300 hover:opacity-50"
@@ -45,6 +43,12 @@ const Header = ({ lang, data }: any) => {
             href={`/${lang}/#contacts`}
           >
             {data.navigation.contacts}
+          </Link>
+          <Link
+            className="duration-300 hover:opacity-50"
+            href={`/${lang}/privacy-policy`}
+          >
+            {data.navigation.policy}
           </Link>
           <LocaleSwitcher lang={lang} />
           <Cart lang={lang} color="black" />

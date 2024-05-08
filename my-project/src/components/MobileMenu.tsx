@@ -56,11 +56,18 @@ export const MobileMenu = ({
                   {navigation.aboutus}
                 </Link>
                 <Link
-                  className="border-1 mb-10 w-full border-b border-border pb-4 pt-2 text-t16"
+                  className="border-1 w-full border-b border-border pb-4 pt-2 text-t16"
                   href={`/${lang}/#contacts`}
                   onClick={() => setMenuClosed()}
                 >
                   {navigation.contacts}
+                </Link>
+                <Link
+                  className="border-1 mb-10 w-full border-b border-border pb-4 pt-2 text-t16"
+                  href={`/${lang}/privacy-policy`}
+                  onClick={() => setMenuClosed()}
+                >
+                  {navigation.policy}
                 </Link>
                 <LocaleSwitcher lang={lang} />
               </nav>

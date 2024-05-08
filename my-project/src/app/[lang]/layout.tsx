@@ -32,6 +32,7 @@ const queryEN = gql`
       ourproducts
       aboutus
       contacts
+      policy
     }
   }
 `;
@@ -43,6 +44,7 @@ const queryUA = gql`
       ourproducts
       aboutus
       contacts
+      policy
     }
   }
 `;
