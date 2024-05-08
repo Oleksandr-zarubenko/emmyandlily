@@ -17,7 +17,7 @@ export const ProductsSection = ({
   lang: Locale;
 }) => {
   const [state, setState] = useState<{
-    products: { id: string; price: string; available: string, oldprice: any }[];
+    products: { id: string; price: string; available: string; oldprice: any }[];
     currencies: { id: string; rate: number }[];
   }>({ products: [], currencies: [] });
 
@@ -35,7 +35,6 @@ export const ProductsSection = ({
 
   const locales = i18n.locales;
   const en = locales[1];
-
 
   const availableProducts = data.allProducts.filter((product: any) => {
     const correspondingProduct = state.products.find(
@@ -58,14 +57,14 @@ export const ProductsSection = ({
           <Markdown text={data.productsSection.text} />
         )}
 
-        <div className="grid grid-cols-1  gap-1 bg-black text-left md:gap-6  xl:grid-cols-3 xl:gap-4 mdOnly:grid-cols-2 ">
+        <div className="grid grid-cols-1 gap-1 bg-black text-left md:gap-6  xl:grid-cols-3 xl:gap-4 mdOnly:grid-cols-2">
           {availableProducts.length > 0 &&
             availableProducts
               .sort((a: any, b: any) => a.order - b.order)
               .map((product: any) => (
                 <article
                   key={product.id}
-                  className="group mx-auto h-auto w-[260px] cursor-pointer rounded hover:shadow-custom md:w-[304px] smOnly:mb-6"
+                  className="group mx-auto h-auto w-[260px] cursor-pointer rounded duration-300 hover:shadow-custom md:w-[304px] smOnly:mb-6"
                 >
                   <ProductModal
                     product={product}
@@ -83,11 +82,21 @@ export const ProductsSection = ({
                         sizes="(max-width: 768px) 90vw, 305px"
                       />
 
-                      {state.products.map((prod) => (
-                        prod.id === product.capacity[0].idCrm && (
-                          <span key={prod.id} className="text-black right-2 xl:right-4  absolute w-8 h-8">{prod.oldprice ? <Discount className="bg-red-600 px-[3px] py-[3px] rounded mt-3 xl:mt-6 " /> : ''}</span>
-                        )
-                      ))}
+                      {state.products.map(
+                        (prod) =>
+                          prod.id === product.capacity[0].idCrm && (
+                            <span
+                              key={prod.id}
+                              className="absolute right-2 h-8  w-8 text-black xl:right-4"
+                            >
+                              {prod.oldprice ? (
+                                <Discount className="mt-3 rounded bg-red-600 px-[3px] py-[3px] xl:mt-6 " />
+                              ) : (
+                                ""
+                              )}
+                            </span>
+                          )
+                      )}
                     </div>
                     <div className="px-3 xl:px-4">
                       <Markdown
@@ -119,44 +128,39 @@ export const ProductsSection = ({
                             {lang === en
                               ? state &&
                                 state.products.find(
-                                  (item) => item.id === product.capacity[0].idCrm
+                                  (item) =>
+                                    item.id === product.capacity[0].idCrm
                                 )
                                 ? convertPrice(
+                                    state.products.find(
+                                      (item) =>
+                                        item.id === product.capacity[0].idCrm
+                                    )!.price,
+                                    state.currencies.find(
+                                      (currency) => currency.id === "EUR"
+                                    )?.rate || 1
+                                  )
+                                : "N/A"
+                              : state &&
                                   state.products.find(
                                     (item) =>
                                       item.id === product.capacity[0].idCrm
-                                  )!.price,
-                                  state.currencies.find(
-                                    (currency) => currency.id === "EUR"
-                                  )?.rate || 1
-                                )
-                                : "N/A"
-                              : state &&
-                                state.products.find(
-                                  (item) =>
-                                    item.id === product.capacity[0].idCrm
-                                )
+                                  )
                                 ? state.products.find(
-                                  (item) =>
-                                    item.id === product.capacity[0].idCrm
-                                )!.price
+                                    (item) =>
+                                      item.id === product.capacity[0].idCrm
+                                  )!.price
                                 : "N/A"}{" "}
                             {lang === en ? "€" : "₴"}
                           </p>
-
                         </>
-
                       )}
-
-
-
                     </div>
                   </ProductModal>
                 </article>
               ))}
         </div>
       </div>
-    </section >
+    </section>
   );
 };
-
