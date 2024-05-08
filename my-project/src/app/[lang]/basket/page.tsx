@@ -69,6 +69,11 @@ const queryEN = gql`
         discount
     }
   }
+   secondmodal {
+    goToCart
+    itemAddedToCart
+    returnToShopping
+  }
 }
 `;
 
@@ -137,6 +142,12 @@ dropdown
       namePartner
         discount
     }
+    
+  }
+    secondmodal(locale: uk) {
+    goToCart
+    itemAddedToCart
+    returnToShopping
   }
 }
 `;

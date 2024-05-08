@@ -1,8 +1,8 @@
-"use client";
+
 import { i18n } from "@/i18n.config";
-import { useState, useEffect } from "react";
+
 import { convertPrice } from "@/utils/convertPrice/convertPrice";
-import getData from "@/utils/api/api";
+
 import Link from "next/link";
 type YourOrderProps = {
     lang: any;
@@ -18,6 +18,8 @@ type YourOrderProps = {
     privacypolicy: any,
     switchToPaymentTab: () => void;
     setPrivacypolicy: any;
+    setState: any;
+    state: any;
 };
 
 const YourOrder: React.FC<YourOrderProps> = ({
@@ -33,34 +35,21 @@ const YourOrder: React.FC<YourOrderProps> = ({
     deliveryPrice,
     switchToPaymentTab,
     privacypolicy,
-    setPrivacypolicy
+    setPrivacypolicy,
+    setState,
+    state
 }) => {
-    const [state, setState] = useState<{
-        products: { id: string; price: string }[];
-        currencies: { id: string; rate: number }[];
-    }>({ products: [], currencies: [] });
 
-    const fetchData = async () => {
-        try {
-            const data = await getData();
-            setState(data);
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
-    };
-    useEffect(() => {
-        fetchData();
-    }, []);
 
     const locales = i18n.locales;
     const en = locales[1];
 
-    const total = localStorage.getItem('totalPrice');
-    const totalEn = localStorage.getItem('totalPriceEn');
+    const total = typeof window !== 'undefined' ? localStorage.getItem('totalPrice') : null;
+    const totalEn = typeof window !== 'undefined' ? localStorage.getItem('totalPriceEn') : null;
     const totalPrice = total ? parseInt(total) : 0;
 
 
-    const discountAmount = localStorage.getItem('discountAmount');
+    const discountAmount = typeof window !== 'undefined' ? localStorage.getItem('discountAmount') : null;
     const totaldiscountAmount = discountAmount ? parseInt(discountAmount) : 0;
 
     const freeDelivery = (deliveryPrice: any) => {
@@ -72,8 +61,10 @@ const YourOrder: React.FC<YourOrderProps> = ({
     }
     const allTotal = freeDelivery(deliveryPrice) + totalPrice;
     const allTotalEn = parseFloat(convertPrice(totalPrice, state.currencies.find((currency: any) => currency.id === "EUR")?.rate || 1)) + deliveryPrice
-    localStorage.setItem('allTotal', JSON.stringify(allTotal));
-    localStorage.setItem('totalPriceEn', JSON.stringify(allTotalEn));
+    if (typeof window !== 'undefined') {
+        localStorage.setItem('allTotal', JSON.stringify(allTotal));
+        localStorage.setItem('totalPriceEn', JSON.stringify(allTotalEn));
+    }
     return (
         <div className='smOnly:mt-[56px] w-full px-4 py-7 smOnly:h-[360px] mdOnly:w-[255px] mdOnly:h-[353px]  xl:w-[357px] h-[420px] mdOnly:py-6 xl:py-10 mdOnly:px-4 xl:px-4 border-[1px] bg-white border-[#DCDCDC] drop-shadow-[4px_15px_40px_0px_#100E0C33] rounded'>
             <h3 className='text-t18 xl:text-t24 font-bold mb-8'>{data.order.yourOrder}</h3>
