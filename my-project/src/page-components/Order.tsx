@@ -271,13 +271,8 @@ const Order = ({ data, lang }: any) => {
     return "";
   });
 
-  const [paymentMonobank, setPaymentMonobank] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
-      const storedPaymentMonobank = localStorage.getItem("paymentMonobank");
-      return storedPaymentMonobank ? JSON.parse(storedPaymentMonobank) : false;
-    }
-    return false;
-  });
+  const [paymentMonobank, setPaymentMonobank] = useState<boolean>(false);
+  const [afterpay, setAfterpay] = useState<boolean>(false);
   const total = typeof window !== 'undefined' ? localStorage.getItem("allTotal") : null;
 
   const totalPrice = total ? parseInt(total) : 0;
@@ -289,7 +284,8 @@ const Order = ({ data, lang }: any) => {
 
   useEffect(() => {
     localStorage.setItem("selectedOption", selectedOption);
-    localStorage.setItem("paymentMonobank", JSON.stringify(paymentMonobank));
+    // localStorage.setItem("Afterpay", JSON.stringify(afterpay));
+    // localStorage.setItem("paymentMonobank", JSON.stringify(paymentMonobank));
     localStorage.setItem("privacypolicy", JSON.stringify(privacypolicy));
     localStorage.setItem("deliveryPrice", deliveryPrice.toString());
     localStorage.setItem("deliveryActive", JSON.stringify(deliveryActive));
@@ -356,13 +352,18 @@ const Order = ({ data, lang }: any) => {
     deliveryActive,
     paymentActive,
     personActive,
-    paymentMonobank,
+
   ]);
 
   const handleMonobankChange = () => {
-    setPaymentMonobank(!paymentMonobank);
+    setPaymentMonobank(true);
+    setAfterpay(false); // Якщо користувач обрав Monobank, скасувати вибір опції afterpay
   };
 
+  const handleAfterpayChange = () => {
+    setAfterpay(true);
+    setPaymentMonobank(false); // Якщо користувач обрав afterpay, скасувати вибір опції Monobank
+  };
   const products = productName.map((product: any) => ({
     name: product.productName.trim().replace(/###\s*/, ""),
     capacity: product.capacity,
@@ -394,6 +395,9 @@ const Order = ({ data, lang }: any) => {
     .map((product: any) => product.name)
     .join(", ");
 
+
+  const selectePaymentMethod = paymentMonobank === true ? "id_38" : "id_12"
+
   const makeApiCall = async () => {
     const translatedOption = translateShippingOption(selectedOption);
     const parsedProducts = updatedProducts.map((product: any) => ({
@@ -403,9 +407,6 @@ const Order = ({ data, lang }: any) => {
       amount: product.quantity,
       description: product.capacity,
     }));
-
-
-
     await fetch("/api/form-post", {
       method: "POST",
       body: JSON.stringify({
@@ -425,7 +426,8 @@ const Order = ({ data, lang }: any) => {
         index,
         products: parsedProducts,
         isDiscountsAndNews,
-        apiPromocodPartner
+        apiPromocodPartner,
+        selectePaymentMethod
       }),
     });
   };
@@ -631,8 +633,14 @@ const Order = ({ data, lang }: any) => {
 
 
   const switchToPaymentTab = async () => {
+    if (deliveryCompleted && afterpay === true && privacypolicy === true) {
+      makeApiCall();
 
-    if (deliveryCompleted && privacypolicy === true && paymentMonobank === true) {
+      localStorage.clear();
+      router.push(`http://emmyandlily.com/${lang}/thank-you`);
+
+    }
+    else if (deliveryCompleted && privacypolicy === true && paymentMonobank === true) {
       makeApiCall();
 
       localStorage.clear();
@@ -683,6 +691,7 @@ const Order = ({ data, lang }: any) => {
       alert("Підтвредіть замовлення");
 
     }
+
     else {
       alert("Виберіть спосіб оплати");
 
@@ -879,18 +888,32 @@ const Order = ({ data, lang }: any) => {
 
           {paymentActive && (
             <div>
-              <h3 className="mb-8 text-t18">Оберіть спосіб оплати</h3>
-              <label className="flex">
+              <h3 className="mb-8 text-t18 font-bold">Оберіть спосіб оплати</h3>
+              <label className="flex mb-3">
                 <input
                   type="radio"
+                  name="paymentMethod"
                   checked={paymentMonobank}
                   onChange={handleMonobankChange}
                   className="accent-black mr-2"
                 />
-
                 <Image src={Mono} alt="Monobank" width={267} height={24} />
               </label>
+              <label className="flex">
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  checked={afterpay}
+                  onChange={handleAfterpayChange}
+                  className="accent-black mr-2"
+                />
+                <div>
+                  <p className="text-t16">Оплата під час отримання товару</p>
+                  <p className="text-t12">(Ця послуга оплачується окремо, за тарифним планом перевізника)</p>
+                </div>
+              </label>
             </div>
+
           )}
         </div>
       </div>

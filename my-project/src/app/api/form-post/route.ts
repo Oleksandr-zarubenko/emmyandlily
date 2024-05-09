@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     phone: rawBody.phoneNumber,
     company: "",
     products: parsedProducts,
-    payment_method: "",
+    payment_method: rawBody.selectePaymentMethod,
     shipping_method: rawBody.selectedOption,
     shipping_address: rawBody.street,
     comment: rawBody.recipientData,
