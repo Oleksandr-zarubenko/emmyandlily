@@ -44,12 +44,6 @@ const Header = ({ lang, data }: any) => {
           >
             {data.navigation.contacts}
           </Link>
-          <Link
-            className="duration-300 hover:opacity-50"
-            href={`/${lang}/privacy-policy`}
-          >
-            {data.navigation.policy}
-          </Link>
           <LocaleSwitcher lang={lang} />
           <Cart lang={lang} color="black" />
         </nav>

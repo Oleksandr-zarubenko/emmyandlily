@@ -38,7 +38,7 @@ export const Contacts = ({ data }: { data: any }) => {
             {data.contactssection.email && (
               <Link
                 href={"mailto:" + data.contactssection.email}
-                className="flex gap-2 text-t16 text-black md:mb-11 xl:mb-[32px]"
+                className="mb-4 flex gap-2 text-t16 text-black md:mb-11 xl:mb-[32px]"
               >
                 <Email className="h-5 w-5 flex-shrink-0 text-black" />
                 {data.contactssection.email}
@@ -48,7 +48,7 @@ export const Contacts = ({ data }: { data: any }) => {
           {data.contactssection.phone2 && (
             <>
               <Markdown
-                className="mb-4 text-t18"
+                className="my-4 text-t18"
                 text={data.contactssection.text2}
               />
               <Link
@@ -70,7 +70,7 @@ export const Contacts = ({ data }: { data: any }) => {
                 href={data.contactssection.tiktoklink}
                 rel="nofollow"
                 target="_blank"
-                className="flex w-max items-center gap-1 rounded-xl py-2 text-t24 text-black duration-300 hover:bg-white"
+                className="flex w-max items-center gap-1 rounded-xl py-2 text-t24 font-bold text-black duration-300 hover:bg-white"
               >
                 <TikTok className="mr-2 h-5 w-5 flex-shrink-0" /> TikTok
               </Link>
@@ -80,9 +80,10 @@ export const Contacts = ({ data }: { data: any }) => {
                 href={data.contactssection.instagramlink}
                 rel="nofollow"
                 target="_blank"
-                className="flex w-max items-center gap-1 rounded-xl py-2 text-t24 text-[#0B0605] duration-300 hover:bg-white xl:px-8"
+                className="flex w-max items-center gap-1 rounded-xl py-2 text-t24 font-bold text-[#0B0605] duration-300 hover:bg-white xl:px-8"
               >
-                <Instagram className="mr-2 h-5 w-5 flex-shrink-0" /> Instagram
+                <Instagram className="mr-2 h-5 w-5 flex-shrink-0" />
+                Instagram
               </Link>
             )}
           </div>
