@@ -10,7 +10,13 @@ const Header = ({ lang, data }: any) => {
     <header className="absolute inset-x-0 z-30 border-b-2 border-black py-2 xl:px-20 xl:pb-4 xl:pt-6">
       <div className="container flex flex-row items-center justify-between xl:hidden">
         <Link href={`/${lang}`} className="relative z-50">
-          <Image src={Logo} alt="logo" width={158} height={32} className="" />
+          <Image
+            src={Logo}
+            alt="logo"
+            width={158}
+            height={40}
+            className="h-10 w-40 object-contain"
+          />
         </Link>
         <h2 className="sr-only">Mobile Menu</h2>
         <div className="flex flex-row items-center gap-3">
@@ -21,7 +27,7 @@ const Header = ({ lang, data }: any) => {
       <div className="container invisible h-0 content-center items-center justify-between md:flex md:flex-row xl:visible xl:h-auto smOnly:absolute">
         <div className="h-8 w-40">
           <Link href={`/${lang}`}>
-            <Image src={Logo} alt="logo" className="" />
+            <Image src={Logo} alt="logo" className="h-10 w-40 object-contain" />
           </Link>
         </div>
         <nav className="flex flex-col items-center text-t16 md:flex-row md:gap-4">
