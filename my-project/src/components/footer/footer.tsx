@@ -1,7 +1,6 @@
 import Link from "next/link";
 
 import { Logo } from "../../components/icons/Logo";
-import { Bag } from "@/components/icons/Bag";
 import { Cart } from "../Cart";
 const Footer = ({ data, lang }: any) => {
   return (
