@@ -524,8 +524,8 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                   </td>
 
                   <td className="px-1 py-2 leading-5 text-[#333333]">
-                    <ul className="text-left ">
-                      <li className="mb-4 whitespace-nowrap text-t16">
+                    <ul className="flex flex-col justify-between text-left smOnly:min-h-[80px]">
+                      <li className="whitespace-nowrap text-t16 md:mb-4">
                         {state &&
                         state.products.find(
                           (items: any) => items.id === item.id
