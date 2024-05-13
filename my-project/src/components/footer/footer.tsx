@@ -38,6 +38,12 @@ const Footer = ({ data, lang }: any) => {
             >
               {data.navigation.policy}
             </Link>
+            <Link
+              className="flex items-center text-white duration-300 hover:text-white"
+              href={`/${lang}/offer`}
+            >
+              {data.navigation.offer}
+            </Link>
             <Cart lang={lang} color="white" />
           </nav>
         </div>
