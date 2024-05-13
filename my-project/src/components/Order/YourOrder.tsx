@@ -73,7 +73,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
     localStorage.setItem("totalPriceEn", JSON.stringify(allTotalEn));
   }
   return (
-    <div className="h-[420px] w-full rounded border-[1px] border-[#DCDCDC] bg-white px-4  py-7 drop-shadow-[4px_15px_40px_0px_#100E0C33] xl:w-[357px] xl:px-4 xl:py-10 smOnly:mt-[56px] smOnly:h-[360px] mdOnly:h-[353px] mdOnly:w-[255px] mdOnly:px-4 mdOnly:py-6">
+    <div className="h-[420px] w-full rounded border-[1px] border-[#DCDCDC] bg-white px-4  py-7 shadow-order xl:w-[357px] xl:px-4 xl:py-10 smOnly:mt-[56px] smOnly:h-[360px] mdOnly:h-[353px] mdOnly:w-[255px] mdOnly:px-4 mdOnly:py-6">
       <h3 className="mb-8 text-t18 font-bold xl:text-t24">
         {data.order.yourOrder}
       </h3>

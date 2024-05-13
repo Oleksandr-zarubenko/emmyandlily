@@ -334,7 +334,7 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
             id="recipientCheckbox"
             checked={isRecipient}
             onChange={(e) => setIsRecipient(e.target.checked)}
-            className="form-checkbox h-5 w-5 text-blue-500"
+            className="form-checkbox h-5 w-5 accent-black"
           />
           <label
             htmlFor="recipientCheckbox"
