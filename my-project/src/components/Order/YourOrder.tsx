@@ -176,7 +176,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
       )}
       {deliveryActive && (
         <button
-          className="relative top-12 rounded  bg-black px-6 py-[12px] text-t12 text-white xl:top-20 xl:text-t18 smOnly:w-full mdOnly:w-full "
+          className="relative top-12 rounded bg-black px-6 py-[12px] text-t12 text-white xl:top-20 xl:text-t18 smOnly:w-full mdOnly:w-full"
           onClick={switchToDeliveryTab}
         >
           {data.order.confirmTheOrder}

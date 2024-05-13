@@ -6,8 +6,8 @@ const Footer = ({ data, lang }: any) => {
   return (
     <footer className="bg-black py-14">
       <div className="block items-center justify-between md:container xl:flex">
-        <div className="  mb-4  h-12   w-40 md:mb-0 md:w-[305px] notXl:mb-5 notXl:ml-auto notXl:mr-auto">
-          <Link href="">
+        <div className="mb-4 h-12 w-[60px] md:mb-0 smOnly:mx-auto notXl:mb-5 notXl:ml-auto notXl:mr-auto">
+          <Link href="" className="">
             <Logo color="white" />
           </Link>
         </div>
