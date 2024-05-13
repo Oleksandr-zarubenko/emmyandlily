@@ -126,37 +126,36 @@ const YourOrder: React.FC<YourOrderProps> = ({
         </p>
       </div>
       {personActive && (
-        <div className="mb-6 flex items-center">
+        <div className="items-top mb-6 flex">
           <input
             type="checkbox"
             id="isDiscountsAndNews"
             checked={isDiscountsAndNews}
             onChange={(e) => setIsDiscountsAndNews(e.target.checked)}
-            className=" h-5 w-5 accent-black"
+            className="h-5 w-5 flex-shrink-0 accent-black"
           />
 
           <label
             htmlFor="isDiscountsAndNews"
-            className="text-[ #292D2D] ml-2 text-t12
-italic xl:text-t16"
+            className="ml-2 text-t12 italic text-[#292D2D] xl:text-t16"
           >
             {data.order.wantToReceive}
           </label>
         </div>
       )}
       {paymentActive && (
-        <div className="mb-6 flex items-center">
+        <div className="items-top mb-6 flex">
           <input
             type="checkbox"
             id="privacypolicy"
             checked={privacypolicy}
             onChange={(e) => setPrivacypolicy(e.target.checked)}
-            className="h-5 w-5  accent-black"
+            className="h-5 w-5 flex-shrink-0 accent-black"
           />
 
           <label
             htmlFor="privacypolicy"
-            className="text-[ #292D2D] ml-2 text-t12 italic xl:text-t16"
+            className="ml-2 text-t12 italic text-[#292D2D] xl:text-t16"
           >
             Підтверджуючи замовлення, я даю згоду на обробку своїх персональних
             даних відповідно до{" "}

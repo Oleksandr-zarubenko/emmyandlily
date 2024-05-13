@@ -30,7 +30,7 @@ const Header = ({ lang, data }: any) => {
             <Image src={Logo} alt="logo" className="h-10 w-40 object-contain" />
           </Link>
         </div>
-        <nav className="flex flex-col items-center text-t16 md:flex-row md:gap-4">
+        <nav className="flex flex-col items-center text-t16 md:flex-row md:gap-4 xl:gap-6">
           <h2 className="sr-only">Main navigation</h2>
           <Link
             className="text-[#0B0605] duration-300 hover:opacity-50"
