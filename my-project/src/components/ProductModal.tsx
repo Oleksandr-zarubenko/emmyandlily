@@ -231,7 +231,7 @@ export const ProductModal = ({
                 <table className="mb-12 xl:w-full smOnly:w-[100%] mdOnly:w-[436px]">
                   <thead>
                     <tr>
-                      <th className="w-2/5  py-2 text-t14 text-[#333333] opacity-60 smOnly:w-1/5">
+                      <th className="w-2/5 py-2 text-left text-t14 text-[#333333] opacity-60 smOnly:w-1/5">
                         {lang === en ? "Capacity" : "Об`єм"}
                       </th>
 
