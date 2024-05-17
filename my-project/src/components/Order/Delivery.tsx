@@ -157,7 +157,7 @@ const Delivery: React.FC<DeliveryProps> = ({
 
   return (
     <div>
-      <h2 className="mb-2 text-t14 italic text-[#292D2D]">
+      <h2 className="mb-2 text-t14 italic text-dark">
         {data.order.selectCountryAndCity}
       </h2>
       <div className="mb-8"></div>
@@ -232,7 +232,7 @@ const Delivery: React.FC<DeliveryProps> = ({
 
       {selectedOption === "dhl" || selectedOption === "ups" ? (
         <div>
-          <p className="mb-2 text-t14 italic text-[#292D2D]">
+          <p className="mb-2 text-t14 italic text-dark">
             {data.order.fillInTheDetails}
           </p>
           <div className="grid grid-cols-1  gap-4 xl:grid-cols-2">
@@ -283,7 +283,7 @@ const Delivery: React.FC<DeliveryProps> = ({
       ) : selectedOption === "np-courier" ? (
         <div>
           <div>
-            <p className="mb-4 text-t14 italic text-[#292D2D]">
+            <p className="mb-4 text-t14 italic text-dark">
               {data.order.fillInTheDetails}
             </p>
             <div className="justify-between xl:flex">
@@ -315,7 +315,7 @@ const Delivery: React.FC<DeliveryProps> = ({
         </div>
       ) : selectedOption === "novaposhta-smovuviz" ? (
         <div>
-          <p className="mb-4 text-t14 italic text-[#292D2D]">
+          <p className="mb-4 text-t14 italic text-dark">
             {data.order.fillInTheDetails}
           </p>
           <div className="mr-1 xl:w-[230px]">
@@ -331,7 +331,7 @@ const Delivery: React.FC<DeliveryProps> = ({
         </div>
       ) : selectedOption === "np-poshtmat" ? (
         <div>
-          <p className="mb-4 text-t14 italic text-[#292D2D]">
+          <p className="mb-4 text-t14 italic text-dark">
             {data.order.fillInTheDetails}
           </p>
           <div className="mr-1 xl:w-[230px]">
@@ -347,7 +347,7 @@ const Delivery: React.FC<DeliveryProps> = ({
         </div>
       ) : selectedOption === "ukrposhta" ? (
         <div>
-          <p className="mb-4 text-t14 italic text-[#292D2D]">
+          <p className="mb-4 text-t14 italic text-dark">
             {data.order.fillInTheDetails}
           </p>
           <div className="mr-1 xl:w-[230px]">
@@ -362,7 +362,7 @@ const Delivery: React.FC<DeliveryProps> = ({
           </div>
         </div>
       ) : (
-        <div className="mb-4 text-t14 italic text-[#292D2D]">
+        <div className="mb-4 text-t14 italic text-dark">
           {lang === en
             ? "Specify the delivery method"
             : "  Вкажіть спосіб доставки"}
