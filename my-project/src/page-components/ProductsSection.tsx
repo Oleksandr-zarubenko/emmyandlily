@@ -40,9 +40,9 @@ export const ProductsSection = ({
     return correspondingProduct && correspondingProduct.available === "true";
   });
 
-  const previewProducts = data.allProducts.filter(
-    (product: any) => product.preview
-  );
+  // const previewProducts = data.allProducts.filter(
+  //   (product: any) => product.preview
+  // );
 
   return (
     <section className="bg-black py-14 text-center md:py-16" id="products">
@@ -72,7 +72,7 @@ export const ProductsSection = ({
                   convertPrice={convertPrice}
                 />
               ))}
-          {previewProducts.length > 0 &&
+          {/* {previewProducts.length > 0 &&
             previewProducts
               .sort((a: any, b: any) => a.order - b.order)
               .map((product: any) => (
@@ -84,7 +84,7 @@ export const ProductsSection = ({
                   data={data}
                   convertPrice={convertPrice}
                 />
-              ))}
+              ))} */}
         </div>
       </div>
     </section>

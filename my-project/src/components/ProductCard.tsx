@@ -11,7 +11,6 @@ export const ProductCard = ({
   data,
   convertPrice,
 }: any) => {
-  if (product.preview) console.log("product", product);
   return (
     <article
       key={product.id}
