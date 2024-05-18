@@ -276,7 +276,7 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
 
   return (
     <div>
-      <div className="mb-14 ">
+      <div className="mb-14">
         <h2 className="mb-6 text-t16 font-bold text-[#292D2D] xl:text-t18">
           {data.order.enterYourDetails}
         </h2>
@@ -287,7 +287,7 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
               id="firstName"
               value={firstName}
               onChange={(e) => handleInputChange("firstName", e.target.value)}
-              className={`border-b-2 bg-transparent px-[10px] py-[10px] text-t14 outline-none focus:border-black ${error.firstName ? " bg-[#C61004]/[.06]" : ""}`}
+              className={`border-b-2 bg-transparent px-[10px] py-[10px] text-t14 outline-none focus:border-black ${error.firstName ? " bg-error/[.06]" : ""}`}
               placeholder={data.order.yourName}
             />
           </div>
@@ -297,7 +297,7 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
               id="lastName"
               value={lastName}
               onChange={(e) => handleInputChange("lastName", e.target.value)}
-              className={` border-b-2  bg-transparent px-[10px] py-[10px] text-t14 outline-none focus:border-black ${error.lastName ? " bg-[#C61004]/[.06]" : ""}`}
+              className={` border-b-2  bg-transparent px-[10px] py-[10px] text-t14 outline-none focus:border-black ${error.lastName ? " bg-error/[.06]" : ""}`}
               placeholder={data.order.lastName}
             />
           </div>
@@ -308,7 +308,7 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
               id="email"
               value={email}
               onChange={(e) => handleInputChange("email", e.target.value)}
-              className={`input-email border-b-2 bg-transparent px-[10px] py-[10px] text-t14 outline-none focus:border-black ${error.email ? " bg-[#C61004]/[.06]" : ""}`}
+              className={`input-email border-b-2 bg-transparent px-[10px] py-[10px] text-t14 outline-none focus:border-black ${error.email ? " bg-error/[.06]" : ""}`}
               placeholder={data.order.eMail}
             />
           </div>
@@ -318,7 +318,7 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
               id="phoneNumber"
               value={phoneNumber}
               onChange={(e) => handleInputChange("phoneNumber", e.target.value)}
-              className={`input-phone border-b-2 bg-transparent px-[10px] py-[10px] text-t14 outline-none focus:border-black ${error.phoneNumber ? " bg-[#C61004]/[.06]" : ""}`}
+              className={`input-phone border-b-2 bg-transparent px-[10px] py-[10px] text-t14 outline-none focus:border-black ${error.phoneNumber ? " bg-error/[.06]" : ""}`}
               placeholder={data.order.phoneNumber}
             />
           </div>
@@ -354,7 +354,7 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
                   setRecipientFirstName(e.target.value);
                   handleInputChange("recipientFirstName", e.target.value);
                 }}
-                className={`border-b-2 px-[10px] py-[10px] text-t14 outline-none focus:border-black ${error.recipientFirstName ? " bg-[#C61004]/[.06]" : ""}`}
+                className={`border-b-2 px-[10px] py-[10px] text-t14 outline-none focus:border-black ${error.recipientFirstName ? " bg-error/[.06]" : ""}`}
                 placeholder={data.order.yourName}
               />
             </div>
@@ -367,7 +367,7 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
                   setRecipientLastName(e.target.value);
                   handleInputChange("recipientLastName", e.target.value);
                 }}
-                className={` border-b-2  px-[10px] py-[10px] text-t14 outline-none focus:border-black ${error.recipientLastName ? " bg-[#C61004]/[.06]" : ""}`}
+                className={` border-b-2  px-[10px] py-[10px] text-t14 outline-none focus:border-black ${error.recipientLastName ? " bg-error/[.06]" : ""}`}
                 placeholder={data.order.lastName}
               />
             </div>
@@ -380,7 +380,7 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
                   setRecipientEmail(e.target.value);
                   handleInputChange("recipientEmail", e.target.value);
                 }}
-                className={`input-email border-b-2 px-[10px] py-[10px] text-t14 outline-none focus:border-black ${error.recipientEmail ? " bg-[#C61004]/[.06]" : ""}`}
+                className={`input-email border-b-2 px-[10px] py-[10px] text-t14 outline-none focus:border-black ${error.recipientEmail ? " bg-error/[.06]" : ""}`}
                 placeholder={data.order.eMail}
               />
             </div>
@@ -393,7 +393,7 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
                   setRecipientPhoneNumber(e.target.value);
                   handleInputChange("recipientPhoneNumber", e.target.value);
                 }}
-                className={`input-phone border-b-2 px-[10px] py-[10px] text-t14 text-black  outline-none focus:border-black ${error.recipientPhoneNumber ? " bg-[#C61004]/[.06]" : ""}`}
+                className={`input-phone border-b-2 px-[10px] py-[10px] text-t14 text-black  outline-none focus:border-black ${error.recipientPhoneNumber ? " bg-error/[.06]" : ""}`}
                 placeholder={data.order.phoneNumber}
               />
             </div>

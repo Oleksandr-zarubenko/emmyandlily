@@ -25,7 +25,7 @@ const Header = ({ lang, data }: any) => {
         </div>
       </div>
       <div className="container invisible h-0 content-center items-center justify-between md:flex md:flex-row xl:visible xl:h-auto smOnly:absolute">
-        <div className="h-8 w-40">
+        <div className="h-8 w-[60px] origin-left">
           <Link href={`/${lang}`}>
             <Image src={Logo} alt="logo" className="h-10 w-40 object-contain" />
           </Link>

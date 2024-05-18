@@ -430,32 +430,40 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                   </td>
 
                   <td className="py-2 text-center leading-5 text-[#333333] xl:text-t18 mdOnly:w-16 mdOnly:text-t16">
-                    {" "}
                     {lang === "en"
                       ? state &&
                         state.products.find(
                           (items: any) => items.id === item.id
                         )
-                        ? convertPrice(
-                            (parseFloat(
-                              state.products.find(
-                                (items: any) => items.id === item.id
-                              )!.price
-                            ) || 0) * (quantities[item.id] || 1),
-                            state.currencies.find(
-                              (currency: any) => currency.id === "EUR"
-                            )?.rate || 1
-                          )
+                        ? (() => {
+                            const price =
+                              (parseFloat(
+                                state.products.find(
+                                  (items: any) => items.id === item.id
+                                )!.price
+                              ) || 0) * (quantities[item.id] || 1);
+                            const convertedPrice = convertPrice(
+                              price,
+                              state.currencies.find(
+                                (currency: any) => currency.id === "EUR"
+                              )?.rate || 1
+                            );
+                            return price === 0 ? "Preorder" : convertedPrice;
+                          })()
                         : "N/A"
                       : state &&
                           state.products.find(
                             (items: any) => items.id === item.id
                           )
-                        ? parseFloat(
-                            state.products.find(
-                              (items: any) => items.id === item.id
-                            )!.price
-                          ) * (quantities[item.id] || 1)
+                        ? (() => {
+                            const price =
+                              parseFloat(
+                                state.products.find(
+                                  (items: any) => items.id === item.id
+                                )!.price
+                              ) * (quantities[item.id] || 1);
+                            return price === 0 ? "Preorder" : price;
+                          })()
                         : "N/A"}{" "}
                     {lang === "en" ? "€" : "₴"}
                   </td>

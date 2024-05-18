@@ -46,6 +46,7 @@ export const ProductModal = ({
   //     [capacity]: Math.max((prevQuantities[capacity] || 0) + value, 0),
   //   }));
   // };
+  console.log(state.products);
 
   const setModalOpened = () => {
     setIsOpen(true);

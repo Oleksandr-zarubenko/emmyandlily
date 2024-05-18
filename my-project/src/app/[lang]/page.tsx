@@ -11,7 +11,6 @@ import { Locale } from "../../i18n.config";
 
 import Video from "@/page-components/Video";
 
-
 const queryEN = gql`
   {
     mainSection {
@@ -19,7 +18,7 @@ const queryEN = gql`
       heading
       text
       btn
-       inCart
+      inCart
     }
     videosection {
       heading
@@ -64,7 +63,7 @@ const queryEN = gql`
     }
     allProducts {
       idAvailable
-
+      preview
       heading
       description
       id
@@ -93,11 +92,11 @@ const queryEN = gql`
         idCrm
       }
     }
-     secondmodal{
-    goToCart
-    itemAddedToCart
-    returnToShopping
-  }
+    secondmodal {
+      goToCart
+      itemAddedToCart
+      returnToShopping
+    }
   }
 `;
 
@@ -108,7 +107,7 @@ const queryUA = gql`
       heading
       text
       btn
-       inCart
+      inCart
     }
     videosection(locale: uk) {
       heading
@@ -153,7 +152,7 @@ const queryUA = gql`
     }
     allProducts(locale: uk) {
       idAvailable
-
+      preview
       heading
       description
       id
@@ -182,15 +181,13 @@ const queryUA = gql`
         idCrm
       }
     }
-     secondmodal(locale: uk) {
-    goToCart
-    itemAddedToCart
-    returnToShopping
-  }
+    secondmodal(locale: uk) {
+      goToCart
+      itemAddedToCart
+      returnToShopping
+    }
   }
 `;
-
-
 
 export async function generateMetadata(): Promise<Metadata> {
   return {

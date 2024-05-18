@@ -33,6 +33,7 @@ const config: Config = {
         border: "#DCDCDC",
         bg_transparent: "rgba(51, 51, 51, 0.60)",
         video_overlay: "rgba(11, 6, 5, 0.60)",
+        error: "#C61004",
       },
       fontFamily: {
         abril: ["var(--font-abril)"],
