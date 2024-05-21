@@ -124,7 +124,7 @@ export const ProductsSection = ({
                           <p className="text-t16 leading-6 text-white xl:text-t18">
                             {product.capacity &&
                               product.capacity.length > 1 &&
-                              (lang === en ? "from" : "від")}{" "}
+                              (lang === en ? "from" : "від")}
                             {lang === en
                               ? state &&
                                 state.products.find(
@@ -132,24 +132,24 @@ export const ProductsSection = ({
                                     item.id === product.capacity[0].idCrm
                                 )
                                 ? convertPrice(
-                                    state.products.find(
-                                      (item) =>
-                                        item.id === product.capacity[0].idCrm
-                                    )!.price,
-                                    state.currencies.find(
-                                      (currency) => currency.id === "EUR"
-                                    )?.rate || 1
-                                  )
-                                : "N/A"
-                              : state &&
                                   state.products.find(
                                     (item) =>
                                       item.id === product.capacity[0].idCrm
-                                  )
+                                  )!.price,
+                                  state.currencies.find(
+                                    (currency) => currency.id === "EUR"
+                                  )?.rate || 1
+                                )
+                                : "N/A"
+                              : state &&
+                                state.products.find(
+                                  (item) =>
+                                    item.id === product.capacity[0].idCrm
+                                )
                                 ? state.products.find(
-                                    (item) =>
-                                      item.id === product.capacity[0].idCrm
-                                  )!.price
+                                  (item) =>
+                                    item.id === product.capacity[0].idCrm
+                                )!.price
                                 : "N/A"}{" "}
                             {lang === en ? "€" : "₴"}
                           </p>
