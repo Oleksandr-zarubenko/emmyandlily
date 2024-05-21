@@ -20,7 +20,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const [state, setState] = useState<{
-    products: { id: string; price: string; available: string, oldprice: any }[];
+    products: { id: string; price: string; available: string; oldprice: any }[];
     currencies: { id: string; rate: number }[];
   }>({ products: [], currencies: [] });
 
@@ -43,14 +43,15 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
       router.push(`/${lang}/order`);
     }
   };
-  const storedDatas = typeof window !== 'undefined' ? localStorage.getItem("storedData") : null;
+  const storedDatas =
+    typeof window !== "undefined" ? localStorage.getItem("storedData") : null;
 
   const storedData = storedDatas ? JSON.parse(storedDatas) : [];
   const [tovar, setTovar] = useState(storedData);
 
   const [quantities, setQuantities] = useState<{ [productId: string]: number }>(
     () => {
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         const storedQuantities = localStorage.getItem("quantities");
         return storedQuantities ? JSON.parse(storedQuantities) : {};
       }
@@ -58,16 +59,15 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
     }
   );
 
-
   const [totalPrice, setTotalPrice] = useState<number>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const storedTotalPrice = localStorage.getItem("totalPrice");
       return storedTotalPrice ? parseFloat(storedTotalPrice) : 0;
     }
     return 0;
   });
   const [promoCode, setPromoCode] = useState(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const storedpromoCode = localStorage.getItem("promoCode");
       return storedpromoCode || "";
     }
@@ -75,7 +75,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
   });
 
   const [promoCodePartner, setPromoCodePartner] = useState(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const storedpromoCodePartner = localStorage.getItem("promoCodePartner");
       return storedpromoCodePartner || "";
     }
@@ -83,7 +83,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
   });
 
   const [isValid, setIsValid] = useState(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const storedIsValid = localStorage.getItem("isValid");
       return storedIsValid ? storedIsValid === "true" : false;
     }
@@ -91,7 +91,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
   });
 
   const [isInputOpen, setIsInputOpen] = useState(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const storedIsInputOpen = localStorage.getItem("isInputOpen");
       return storedIsInputOpen ? storedIsInputOpen === "true" : false;
     }
@@ -99,7 +99,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
   });
 
   const [isButtonClicked, setIsButtonClicked] = useState(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const storedIsButtonClicked = localStorage.getItem("isButtonClicked");
       return storedIsButtonClicked ? storedIsButtonClicked === "true" : false;
     }
@@ -107,7 +107,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
   });
 
   const [discountAmount, setDiscountAmount] = useState(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const storedValue = localStorage.getItem("discountAmount");
       return storedValue ? parseInt(storedValue, 10) : 0;
     }
@@ -115,13 +115,12 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
   });
 
   const [isPromoCodeValid, setIsPromoCodeValid] = useState(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const storeisPromoCodeValid = localStorage.getItem("isPromoCodeValid");
       return storeisPromoCodeValid ? storeisPromoCodeValid === "true" : false;
     }
     return false;
   });
-
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -133,7 +132,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
   }, []);
   useEffect(() => {
     localStorage.setItem("isPromoCodeValid", isPromoCodeValid.toString());
-    localStorage.setItem('discountAmount', discountAmount.toString());
+    localStorage.setItem("discountAmount", discountAmount.toString());
     localStorage.setItem("promoCodePartner", promoCodePartner);
     localStorage.setItem("storedData", JSON.stringify(tovar));
     localStorage.setItem("promoCode", promoCode);
@@ -141,7 +140,6 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
     localStorage.setItem("totalPrice", totalPrice.toString());
     localStorage.setItem("isInputOpen", isInputOpen.toString());
     localStorage.setItem("isButtonClicked", isButtonClicked.toString());
-
   }, [
     discountAmount,
     quantities,
@@ -152,9 +150,8 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
     tovar,
     totalPrice,
     promoCodePartner,
-    isPromoCodeValid
+    isPromoCodeValid,
   ]);
-
 
   const handlePromoCodeChange = (event: any) => {
     const inputPromoCode = event.target.value;
@@ -188,7 +185,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
     const isValidPromo = data.allPromocods.some((promo: any) => {
       return promo.promoCodName.some((code: any) => {
         if (code.promocod === promoCode.trim()) {
-          setPromoCodePartner(code.namePartner)
+          setPromoCodePartner(code.namePartner);
 
           return true;
         }
@@ -201,11 +198,16 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
         inputField.classList.add("bg-white");
       }
       const discountObject = data.allPromocods.find((promo: any) => {
-        return promo.promoCodName.some((code: any) => code.promocod === promoCode.trim());
+        return promo.promoCodName.some(
+          (code: any) => code.promocod === promoCode.trim()
+        );
       });
 
-      const discountValue = discountObject ? discountObject.promoCodName.find((code: any) => code.promocod === promoCode.trim()).discount : 0;
-
+      const discountValue = discountObject
+        ? discountObject.promoCodName.find(
+            (code: any) => code.promocod === promoCode.trim()
+          ).discount
+        : 0;
 
       const discountedPrice = totalPrice * (1 - discountValue / 100);
       setDiscountAmount(totalPrice * (discountValue / 100));
@@ -219,7 +221,6 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
     }
   };
 
-
   const handleToggleInput = () => {
     setIsInputOpen(!isInputOpen);
   };
@@ -232,9 +233,15 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
     });
 
     const discountObject = data.allPromocods.find((promo: any) => {
-      return promo.promoCodName.some((code: any) => code.promocod === promoCode.trim());
+      return promo.promoCodName.some(
+        (code: any) => code.promocod === promoCode.trim()
+      );
     });
-    const discountValue = discountObject ? discountObject.promoCodName.find((code: any) => code.promocod === promoCode.trim()).discount : 0;
+    const discountValue = discountObject
+      ? discountObject.promoCodName.find(
+          (code: any) => code.promocod === promoCode.trim()
+        ).discount
+      : 0;
     const discountedPrice = newTotalPrice * (1 - discountValue / 100);
     setDiscountAmount(newTotalPrice * (discountValue / 100));
     setTotalPrice(discountedPrice);
@@ -278,12 +285,14 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
     return (
       correspondingProduct &&
       correspondingProduct.available === "true" &&
-      (product.idAvailable === "id_5" || product.idAvailable === "id_4" || product.idAvailable === "id_6")
+      (product.idAvailable === "id_5" ||
+        product.idAvailable === "id_4" ||
+        product.idAvailable === "id_6")
     );
   });
 
   return (
-    <section className="container justify-between py-40 xl:flex">
+    <section className="container flex-grow justify-between py-40 xl:flex">
       <div className="w-full xl:w-[750px]">
         <h1 className="mb-10 text-t32 font-bold tracking-wider">
           {data.basket.heading}
@@ -293,19 +302,19 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
           <table className="w-full ">
             <thead>
               <tr className="smOnly:hidden mdOnly:hidden">
-                <th className="w-[30%] mdOnly:w-[20%] py-2 pb-6 text-left text-t14 italic text-[#333333] opacity-60">
+                <th className="w-[30%] py-2 pb-6 text-left text-t14 italic text-[#333333] opacity-60 mdOnly:w-[20%]">
                   {data.basket.name}
                 </th>
-                <th className="w-[10%] mdOnly:w-[20%] py-2 pb-6  text-left text-t14 italic text-[#333333] opacity-60">
+                <th className="w-[10%] py-2 pb-6 text-left  text-t14 italic text-[#333333] opacity-60 mdOnly:w-[20%]">
                   {data.basket.price}
                 </th>
-                <th className="w-[25%] mdOnly:w-[30%] py-2 pb-6  text-center text-t14 italic text-[#333333] opacity-60">
+                <th className="w-[25%] py-2 pb-6 text-center  text-t14 italic text-[#333333] opacity-60 mdOnly:w-[30%]">
                   {data.basket.number}
                 </th>
                 <th className="w-[20%]  py-2 pb-6 text-t14 italic text-[#333333] opacity-60">
                   {data.basket.sum}
                 </th>
-                <th className="w-[15%] mdOnly:w-[10%] py-2 pb-6  text-right text-t14 italic text-[#333333] opacity-60">
+                <th className="w-[15%] py-2 pb-6 text-right  text-t14 italic text-[#333333] opacity-60 mdOnly:w-[10%]">
                   {data.basket.delete}
                 </th>
               </tr>
@@ -331,37 +340,67 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                       <p className="text-t14 text-dark/60"> {item.capacity}</p>
                     </div>
                   </td>
-                  <td className="mdOnly:w-14 text-left py-2 leading-5 text-[#333333] xl:text-t18 mdOnly:text-t16 relative">
+                  <td className="relative py-2 text-left leading-5 text-[#333333] xl:text-t18 mdOnly:w-14 mdOnly:text-t16">
                     {state &&
-                      state.products.find((items: any) => items.id === item.id) ? (
+                    state.products.find(
+                      (items: any) => items.id === item.id
+                    ) ? (
                       <>
-                        {lang === 'en' ? (
-                          <span className={`${state.products.find((items: any) => items.id === item.id)!.oldprice ? 'text-red-500' : ''}`}>
+                        {lang === "en" ? (
+                          <span
+                            className={`${state.products.find((items: any) => items.id === item.id)!.oldprice ? "text-red-500" : ""}`}
+                          >
                             {convertPrice(
-                              state.products.find((items: any) => items.id === item.id)!.price,
-                              state.currencies.find((currency: any) => currency.id === 'EUR')?.rate || 1
-                            )}   {lang === 'en' ? ' €' : ' ₴'}
+                              state.products.find(
+                                (items: any) => items.id === item.id
+                              )!.price,
+                              state.currencies.find(
+                                (currency: any) => currency.id === "EUR"
+                              )?.rate || 1
+                            )}{" "}
+                            {lang === "en" ? " €" : " ₴"}
                           </span>
                         ) : (
-                          <span className={`${state.products.find((items: any) => items.id === item.id)!.oldprice ? 'text-red-500' : ''}`}>
-                            {state.products.find((items: any) => items.id === item.id)!.price}  {lang === 'en' ? ' €' : ' ₴'}
+                          <span
+                            className={`${state.products.find((items: any) => items.id === item.id)!.oldprice ? "text-red-500" : ""}`}
+                          >
+                            {
+                              state.products.find(
+                                (items: any) => items.id === item.id
+                              )!.price
+                            }{" "}
+                            {lang === "en" ? " €" : " ₴"}
                           </span>
                         )}
                       </>
-                    ) : 'N/A'}
+                    ) : (
+                      "N/A"
+                    )}
 
-                    {state.products.map((prod: any) => (
-                      prod.id === item.id && prod.oldprice && (
-                        <p key={prod.id} className={`absolute right-4 w-10 text-sm top-0 mdOnly:mr-0 xl:mr-4 mt-14 line-through h-8 `}>
-                          {prod.oldprice ? convertPrice(prod.oldprice[0], state.currencies.find((currency: any) => currency.id === 'EUR')?.rate || 1) + (lang === 'en' ? ' €' : ' ₴') : ''}
-                        </p>
-                      )
-                    ))}
+                    {state.products.map(
+                      (prod: any) =>
+                        prod.id === item.id &&
+                        prod.oldprice && (
+                          <p
+                            key={prod.id}
+                            className={`absolute right-4 top-0 mt-14 h-8 w-10 text-sm line-through xl:mr-4 mdOnly:mr-0 `}
+                          >
+                            {prod.oldprice
+                              ? convertPrice(
+                                  prod.oldprice[0],
+                                  state.currencies.find(
+                                    (currency: any) => currency.id === "EUR"
+                                  )?.rate || 1
+                                ) + (lang === "en" ? " €" : " ₴")
+                              : ""}
+                          </p>
+                        )
+                    )}
                   </td>
 
                   <td className="py-2 text-center ">
                     <div className="flex justify-evenly mdOnly:px-3">
-                      <div className=" mdOnly:w-24 border-text-[#33333399] border-2 border-solid">
+                      <div className=" border-text-[#33333399] border-2 border-solid mdOnly:w-24">
                         <button
                           onClick={() => handleQuantityChange(item.id, -1)}
                           className="bg-white p-[4px] px-2 text-[#33333399] hover:text-black"
@@ -390,33 +429,41 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                     </div>
                   </td>
 
-                  <td className="py-2 text-center mdOnly:w-16 mdOnly:text-t16 xl:text-t18 leading-5 text-[#333333]">
-                    {" "}
+                  <td className="py-2 text-center leading-5 text-[#333333] xl:text-t18 mdOnly:w-16 mdOnly:text-t16">
                     {lang === "en"
                       ? state &&
                         state.products.find(
                           (items: any) => items.id === item.id
                         )
-                        ? convertPrice(
-                          (parseFloat(
-                            state.products.find(
-                              (items: any) => items.id === item.id
-                            )!.price
-                          ) || 0) * (quantities[item.id] || 1),
-                          state.currencies.find(
-                            (currency: any) => currency.id === "EUR"
-                          )?.rate || 1
-                        )
+                        ? (() => {
+                            const price =
+                              (parseFloat(
+                                state.products.find(
+                                  (items: any) => items.id === item.id
+                                )!.price
+                              ) || 0) * (quantities[item.id] || 1);
+                            const convertedPrice = convertPrice(
+                              price,
+                              state.currencies.find(
+                                (currency: any) => currency.id === "EUR"
+                              )?.rate || 1
+                            );
+                            return price === 0 ? "Preorder" : convertedPrice;
+                          })()
                         : "N/A"
                       : state &&
-                        state.products.find(
-                          (items: any) => items.id === item.id
-                        )
-                        ? parseFloat(
                           state.products.find(
                             (items: any) => items.id === item.id
-                          )!.price
-                        ) * (quantities[item.id] || 1)
+                          )
+                        ? (() => {
+                            const price =
+                              parseFloat(
+                                state.products.find(
+                                  (items: any) => items.id === item.id
+                                )!.price
+                              ) * (quantities[item.id] || 1);
+                            return price === 0 ? "Preorder" : price;
+                          })()
                         : "N/A"}{" "}
                     {lang === "en" ? "€" : "₴"}
                   </td>
@@ -485,35 +532,64 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                   </td>
 
                   <td className="px-1 py-2 leading-5 text-[#333333]">
-                    <ul className="text-left ">
-                      <li className="mb-4 whitespace-nowrap text-t16">
+                    <ul className="flex flex-col justify-between text-left smOnly:min-h-[80px]">
+                      <li className="whitespace-nowrap text-t16 md:mb-4">
                         {state &&
-                          state.products.find((items: any) => items.id === item.id) ? (
+                        state.products.find(
+                          (items: any) => items.id === item.id
+                        ) ? (
                           <>
-                            {lang === 'en' ? (
-                              <span className={`${state.products.find((items: any) => items.id === item.id)!.oldprice !== undefined ? 'text-red-500' : ''}`}>
+                            {lang === "en" ? (
+                              <span
+                                className={`${state.products.find((items: any) => items.id === item.id)!.oldprice !== undefined ? "text-red-500" : ""}`}
+                              >
                                 {convertPrice(
-                                  state.products.find((items: any) => items.id === item.id)!.price,
-                                  state.currencies.find((currency: any) => currency.id === 'EUR')?.rate || 1
-                                )}   {lang === 'en' ? ' €' : ' ₴'}
+                                  state.products.find(
+                                    (items: any) => items.id === item.id
+                                  )!.price,
+                                  state.currencies.find(
+                                    (currency: any) => currency.id === "EUR"
+                                  )?.rate || 1
+                                )}{" "}
+                                {lang === "en" ? " €" : " ₴"}
                               </span>
                             ) : (
-                              <span className={`${state.products.find((items: any) => items.id === item.id)!.oldprice !== undefined ? 'text-red-500' : ''}`}>
-                                {state.products.find((items: any) => items.id === item.id)!.price}  {lang === 'en' ? ' €' : ' ₴'}
+                              <span
+                                className={`${state.products.find((items: any) => items.id === item.id)!.oldprice !== undefined ? "text-red-500" : ""}`}
+                              >
+                                {
+                                  state.products.find(
+                                    (items: any) => items.id === item.id
+                                  )!.price
+                                }{" "}
+                                {lang === "en" ? " €" : " ₴"}
                               </span>
                             )}
                           </>
-                        ) : 'N/A'}
+                        ) : (
+                          "N/A"
+                        )}
                       </li>
 
-
-                      {state.products.map((prod: any) => (
-                        prod.id === item.id && prod.oldprice && (
-                          <li key={prod.id} className={` right-4 h-2 text-sm top-0 mdOnly:mr-0 line-through mt-[-12px] mb-4`}>
-                            {prod.oldprice ? convertPrice(prod.oldprice[0], state.currencies.find((currency: any) => currency.id === 'EUR')?.rate || 1) + (lang === 'en' ? ' €' : ' ₴') : ''}
-                          </li>
-                        )
-                      ))}
+                      {state.products.map(
+                        (prod: any) =>
+                          prod.id === item.id &&
+                          prod.oldprice && (
+                            <li
+                              key={prod.id}
+                              className={` right-4 top-0 mb-4 mt-[-12px] h-2 text-sm line-through mdOnly:mr-0`}
+                            >
+                              {prod.oldprice
+                                ? convertPrice(
+                                    prod.oldprice[0],
+                                    state.currencies.find(
+                                      (currency: any) => currency.id === "EUR"
+                                    )?.rate || 1
+                                  ) + (lang === "en" ? " €" : " ₴")
+                                : ""}
+                            </li>
+                          )
+                      )}
 
                       <li className="whitespace-nowrap text-t18">
                         {lang === "en"
@@ -522,30 +598,29 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                               (items: any) => items.id === item.id
                             )
                             ? convertPrice(
-                              (parseFloat(
+                                (parseFloat(
+                                  state.products.find(
+                                    (items: any) => items.id === item.id
+                                  )!.price
+                                ) || 0) * (quantities[item.id] || 1),
+                                state.currencies.find(
+                                  (currency: any) => currency.id === "EUR"
+                                )?.rate || 1
+                              )
+                            : "N/A"
+                          : state &&
+                              state.products.find(
+                                (items: any) => items.id === item.id
+                              )
+                            ? parseFloat(
                                 state.products.find(
                                   (items: any) => items.id === item.id
                                 )!.price
-                              ) || 0) * (quantities[item.id] || 1),
-                              state.currencies.find(
-                                (currency: any) => currency.id === "EUR"
-                              )?.rate || 1
-                            )
-                            : "N/A"
-                          : state &&
-                            state.products.find(
-                              (items: any) => items.id === item.id
-                            )
-                            ? parseFloat(
-                              state.products.find(
-                                (items: any) => items.id === item.id
-                              )!.price
-                            ) * (quantities[item.id] || 1)
+                              ) * (quantities[item.id] || 1)
                             : "N/A"}{" "}
                         {lang === "en" ? "€" : "₴"}
                       </li>
                     </ul>
-
                   </td>
                   <td className="ml-auto py-2 text-right">
                     <button
@@ -572,40 +647,33 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
           {isInputOpen && (
             <div className="relative">
               {isPromoCodeValid ? (
-
                 <>
                   <input
-
                     id="promoCodeInput"
                     type="text"
                     value={promoCode}
                     disabled={true}
                     placeholder={
-                      lang === en ? "Enter the promo code " : "Введіть промокод "
+                      lang === en
+                        ? "Enter the promo code "
+                        : "Введіть промокод "
                     }
                     className="w-[225px] border-gray-300 p-2 text-t14 xl:text-t16"
                   />
                   <button
                     onClick={() => {
-
-                      setTotalPrice(totalPrice + discountAmount)
+                      setTotalPrice(totalPrice + discountAmount);
                       localStorage.removeItem("promoCode");
                       setPromoCode("");
                       setPromoCodePartner("");
                       setIsPromoCodeValid(false);
-                      setDiscountAmount(0)
-                    }} onMouseEnter={() => setIsHovered(true)}
+                      setDiscountAmount(0);
+                    }}
+                    onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
                     className="absolute right-0 top-0 mt-[3px] w-10 border-none bg-black px-2 py-2 text-white "
                   >
-
-                    {isHovered ? (
-
-                      "✖"
-
-                    ) : (
-                      "✔"
-                    )}
+                    {isHovered ? "✖" : "✔"}
                   </button>
                 </>
               ) : (
@@ -616,7 +684,9 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                     value={promoCode}
                     onChange={handlePromoCodeChange}
                     placeholder={
-                      lang === en ? "Enter the promo code " : "Введіть промокод "
+                      lang === en
+                        ? "Enter the promo code "
+                        : "Введіть промокод "
                     }
                     className="w-[225px] border-gray-300 p-2 text-t14 xl:text-t16"
                   />
@@ -631,7 +701,6 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
               )}
             </div>
           )}
-
         </div>
         <div className="mb-8 ml-auto flex w-52 justify-between text-t14 xl:text-t16 ">
           <p>{lang === en ? "Discount" : "Знижка"} </p>
@@ -639,11 +708,11 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
             -
             {lang === en
               ? convertPrice(
-                discountAmount,
-                state.currencies.find(
-                  (currency: any) => currency.id === "EUR"
-                )?.rate || 1
-              )
+                  discountAmount,
+                  state.currencies.find(
+                    (currency: any) => currency.id === "EUR"
+                  )?.rate || 1
+                )
               : discountAmount}
             {lang === en ? "€" : "₴"}
           </p>
@@ -653,11 +722,11 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
           <p className="text-t16 font-bold">
             {lang === en
               ? convertPrice(
-                totalPrice,
-                state.currencies.find(
-                  (currency: any) => currency.id === "EUR"
-                )?.rate || 1
-              )
+                  totalPrice,
+                  state.currencies.find(
+                    (currency: any) => currency.id === "EUR"
+                  )?.rate || 1
+                )
               : totalPrice}{" "}
             {lang === en ? "€" : "₴"}
           </p>
@@ -671,13 +740,26 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
             {data.basket.toOrder}
           </button>
         </div>
-        <div className="xl:hidden mb-[66px]">
-          <CheaperTogether data={TogetherProducts} state={state} setState={setState} lang={lang} en={en} />
+        <div className="mb-[66px] xl:hidden">
+          <CheaperTogether
+            data={TogetherProducts}
+            state={state}
+            setState={setState}
+            lang={lang}
+            en={en}
+          />
         </div>
         <DropDown data={data} />
       </div>
       <div className="smOnly:hidden mdOnly:hidden">
-        <CheaperTogether data={TogetherProducts} modal={data} state={state} setState={setState} lang={lang} en={en} />
+        <CheaperTogether
+          data={TogetherProducts}
+          modal={data}
+          state={state}
+          setState={setState}
+          lang={lang}
+          en={en}
+        />
       </div>
     </section>
   );

@@ -58,7 +58,7 @@ const queryEN = gql`
       }
       order
       methodOfUse
-    
+
       capacity {
         price
         ml
@@ -72,25 +72,22 @@ const queryEN = gql`
         idD
         name
         price
-          img {
-        alt
-        url
-        width
-      }
+        img {
+          alt
+          url
+          width
+        }
       }
     }
 
-  
-   allPromocods {
-    promoCodName {
-      promocod
-      namePartner
+    allPromocods {
+      promoCodName {
+        promocod
+        namePartner
         discount
+      }
     }
-
   }
- 
-}
 `;
 
 const queryUA = gql`
@@ -148,7 +145,7 @@ const queryUA = gql`
       }
       order
       methodOfUse
-  
+
       capacity {
         price
         ml
@@ -162,25 +159,22 @@ const queryUA = gql`
         idD
         name
         price
-          img {
-        alt
-        url
+        img {
+          alt
+          url
           width
-      }
+        }
       }
     }
 
-  
     allPromocods(locale: uk) {
-    promoCodName {
-      promocod
-      namePartner
+      promoCodName {
+        promocod
+        namePartner
         discount
+      }
     }
-
   }
-
-}
 `;
 export default async function OrderPage({
   params: { lang },

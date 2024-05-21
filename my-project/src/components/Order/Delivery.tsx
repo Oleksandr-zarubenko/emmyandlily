@@ -157,7 +157,7 @@ const Delivery: React.FC<DeliveryProps> = ({
 
   return (
     <div>
-      <h2 className="mb-2 text-t14 italic text-[#292D2D]">
+      <h2 className="mb-2 text-t14 italic text-dark">
         {data.order.selectCountryAndCity}
       </h2>
       <div className="mb-8"></div>
@@ -170,7 +170,7 @@ const Delivery: React.FC<DeliveryProps> = ({
               id="country"
               value={country}
               onChange={(e) => handleInputChange("country", e.target.value)}
-              className={`w-full border-b-2 px-[15px]  py-[10px] text-t14 outline-none focus:border-black  ${error.country ? " bg-[#C61004]/[.06]" : "bg-white"}`}
+              className={`w-full border-b-2 bg-transparent px-[15px]  py-[10px] text-t14 outline-none focus:border-black  ${error.country ? " bg-[#C61004]/[.06]" : "bg-white"}`}
               placeholder={lang === en ? "Country" : "Країна"}
             />
           </div>
@@ -181,7 +181,7 @@ const Delivery: React.FC<DeliveryProps> = ({
               id="city"
               value={city}
               onChange={(e) => handleInputChange("city", e.target.value)}
-              className={`w-full border-b-2  px-[15px] py-[10px] text-t14 outline-none focus:border-black ${error.city ? " bg-[#C61004]/[.06]" : "bg-white"}`}
+              className={`w-full border-b-2 bg-transparent px-[15px] py-[10px] text-t14 outline-none focus:border-black ${error.city ? " bg-[#C61004]/[.06]" : "bg-white"}`}
               placeholder={lang === en ? "City" : "Місто"}
             />
           </div>
@@ -202,7 +202,7 @@ const Delivery: React.FC<DeliveryProps> = ({
         {data.delivery.deliveryMethod.map((method: any) => (
           <div key={method.idD} className="py-3 ">
             <div className="flex items-center notXl:grid notXl:flex-row">
-              <div className="notXl:flex notXl:mb-2 xl:flex xl:mr-4">
+              <div className="xl:mr-4 xl:flex notXl:mb-2 notXl:flex">
                 <input
                   type="radio"
                   value={method.idD}
@@ -230,147 +230,145 @@ const Delivery: React.FC<DeliveryProps> = ({
                 <span className="text-t18 text-red-500 ">{data.order.noDelivery}</span>
             </div> */}
 
-      {
-        selectedOption === "dhl" || selectedOption === "ups" ? (
-          <div>
-            <p className="mb-2 text-t14 italic text-[#292D2D]">
-              {data.order.fillInTheDetails}
-            </p>
-            <div className="grid grid-cols-1  gap-4 xl:grid-cols-2">
-              <div className="xl:w-[250px]">
-                <input
-                  type="text"
-                  id="zip"
-                  value={zip}
-                  onChange={(e) => handleInputChange("zip", e.target.value)}
-                  className={`w-full border-b-2  px-[15px] py-[10px] text-t14 outline-none focus:border-black ${error.zip ? " bg-[#C61004]/[.06]" : ""}`}
-                  placeholder="Zip-CODE"
-                />
-              </div>
-              <div className="xl:w-[250px]">
-                <input
-                  type="text"
-                  id="sstreet"
-                  value={sstreet}
-                  onChange={(e) => handleInputChange("sstreet", e.target.value)}
-                  className={`w-full border-b-2  px-[15px] py-[10px] text-t14 outline-none focus:border-black ${error.sstreet ? " bg-[#C61004]/[.06]" : ""}`}
-                  placeholder="Street"
-                />
-              </div>
-              <div className="xl:w-[250px]">
-                <input
-                  type="text"
-                  id="house"
-                  value={house}
-                  onChange={(e) => handleInputChange("house", e.target.value)}
-                  className={`w-full border-b-2  px-[15px] py-[10px] text-t14 outline-none focus:border-black ${error.house ? " bg-[#C61004]/[.06]" : ""}`}
-                  placeholder="House"
-                />
-              </div>
-              <div className="xl:w-[250px]">
-                <input
-                  type="text"
-                  id="appartment"
-                  value={appartment}
-                  onChange={(e) =>
-                    handleInputChange("appartment", e.target.value)
-                  }
-                  className={`w-full border-b-2  px-[15px] py-[10px] text-t14 outline-none focus:border-black ${error.appartment ? " bg-[#C61004]/[.06]" : ""}`}
-                  placeholder="Appartment"
-                />
-              </div>
+      {selectedOption === "dhl" || selectedOption === "ups" ? (
+        <div>
+          <p className="mb-2 text-t14 italic text-dark">
+            {data.order.fillInTheDetails}
+          </p>
+          <div className="grid grid-cols-1  gap-4 xl:grid-cols-2">
+            <div className="xl:w-[250px]">
+              <input
+                type="text"
+                id="zip"
+                value={zip}
+                onChange={(e) => handleInputChange("zip", e.target.value)}
+                className={`w-full border-b-2 bg-transparent px-[15px] py-[10px] text-t14 outline-none focus:border-black ${error.zip ? " bg-[#C61004]/[.06]" : ""}`}
+                placeholder="Zip-CODE"
+              />
+            </div>
+            <div className="xl:w-[250px]">
+              <input
+                type="text"
+                id="sstreet"
+                value={sstreet}
+                onChange={(e) => handleInputChange("sstreet", e.target.value)}
+                className={`w-full border-b-2 bg-transparent px-[15px] py-[10px] text-t14 outline-none focus:border-black ${error.sstreet ? " bg-[#C61004]/[.06]" : ""}`}
+                placeholder="Street"
+              />
+            </div>
+            <div className="xl:w-[250px]">
+              <input
+                type="text"
+                id="house"
+                value={house}
+                onChange={(e) => handleInputChange("house", e.target.value)}
+                className={`w-full border-b-2 bg-transparent px-[15px] py-[10px] text-t14 outline-none focus:border-black ${error.house ? " bg-[#C61004]/[.06]" : ""}`}
+                placeholder="House"
+              />
+            </div>
+            <div className="xl:w-[250px]">
+              <input
+                type="text"
+                id="appartment"
+                value={appartment}
+                onChange={(e) =>
+                  handleInputChange("appartment", e.target.value)
+                }
+                className={`w-full border-b-2 bg-transparent px-[15px] py-[10px] text-t14 outline-none focus:border-black ${error.appartment ? " bg-[#C61004]/[.06]" : ""}`}
+                placeholder="Appartment"
+              />
             </div>
           </div>
-        ) : selectedOption === "np-courier" ? (
+        </div>
+      ) : selectedOption === "np-courier" ? (
+        <div>
           <div>
-            <div>
-              <p className="mb-4 text-t14 italic text-[#292D2D]">
-                {data.order.fillInTheDetails}
-              </p>
-              <div className="justify-between xl:flex">
-                <div className="mb-2 xl:mb-0 xl:w-[230px]">
-                  <input
-                    type="text"
-                    id="street"
-                    value={street}
-                    onChange={(e) => handleInputChange("street", e.target.value)}
-                    className={`w-full border-b-2 px-[15px]  py-[10px] text-t14 outline-none focus:border-black  ${error.street ? " bg-[#C61004]/[.06]" : "bg-white"}`}
-                    placeholder="Введіть вулицю"
-                  />
-                </div>
+            <p className="mb-4 text-t14 italic text-dark">
+              {data.order.fillInTheDetails}
+            </p>
+            <div className="justify-between xl:flex">
+              <div className="mb-2 xl:mb-0 xl:w-[230px]">
+                <input
+                  type="text"
+                  id="street"
+                  value={street}
+                  onChange={(e) => handleInputChange("street", e.target.value)}
+                  className={`w-full border-b-2 px-[15px]  py-[10px] text-t14 outline-none focus:border-black  ${error.street ? " bg-[#C61004]/[.06]" : "bg-white"}`}
+                  placeholder="Введіть вулицю"
+                />
+              </div>
 
-                <div className=" xl:w-[230px]">
-                  <input
-                    type="text"
-                    id="houseNumber"
-                    value={houseNumber}
-                    onChange={(e) =>
-                      handleInputChange("houseNumber", e.target.value)
-                    }
-                    className={`w-full border-b-2  px-[15px] py-[10px] text-t14 outline-none focus:border-black ${error.houseNumber ? " bg-[#C61004]/[.06]" : "bg-white"}`}
-                    placeholder="Введіть номер будинку"
-                  />
-                </div>
+              <div className=" xl:w-[230px]">
+                <input
+                  type="text"
+                  id="houseNumber"
+                  value={houseNumber}
+                  onChange={(e) =>
+                    handleInputChange("houseNumber", e.target.value)
+                  }
+                  className={`w-full border-b-2 bg-transparent px-[15px] py-[10px] text-t14 outline-none focus:border-black ${error.houseNumber ? " bg-[#C61004]/[.06]" : "bg-white"}`}
+                  placeholder="Введіть номер будинку"
+                />
               </div>
             </div>
           </div>
-        ) : selectedOption === "novaposhta-smovuviz" ? (
-          <div>
-            <p className="mb-4 text-t14 italic text-[#292D2D]">
-              {data.order.fillInTheDetails}
-            </p>
-            <div className="mr-1 xl:w-[230px]">
-              <input
-                type="text"
-                id="numnp"
-                value={numnp}
-                onChange={(e) => handleInputChange("numnp", e.target.value)}
-                className={`w-full border-b-2  px-[15px] py-[10px] text-t14 outline-none focus:border-black ${error.numnp ? " bg-[#C61004]/[.06]" : "bg-white"}`}
-                placeholder="Номер відділення"
-              />
-            </div>
+        </div>
+      ) : selectedOption === "novaposhta-smovuviz" ? (
+        <div>
+          <p className="mb-4 text-t14 italic text-dark">
+            {data.order.fillInTheDetails}
+          </p>
+          <div className="mr-1 xl:w-[230px]">
+            <input
+              type="text"
+              id="numnp"
+              value={numnp}
+              onChange={(e) => handleInputChange("numnp", e.target.value)}
+              className={`w-full border-b-2 bg-transparent px-[15px] py-[10px] text-t14 outline-none focus:border-black ${error.numnp ? " bg-[#C61004]/[.06]" : "bg-white"}`}
+              placeholder="Номер відділення"
+            />
           </div>
-        ) : selectedOption === "np-poshtmat" ? (
-          <div>
-            <p className="mb-4 text-t14 italic text-[#292D2D]">
-              {data.order.fillInTheDetails}
-            </p>
-            <div className="mr-1 xl:w-[230px]">
-              <input
-                type="text"
-                id="numposhtmat"
-                value={numposhtmat}
-                onChange={(e) => handleInputChange("numposhtmat", e.target.value)}
-                className={`w-full border-b-2  px-[15px] py-[10px] text-t14 outline-none focus:border-black ${error.numposhtmat ? " bg-[#C61004]/[.06]" : "bg-white"}`}
-                placeholder="Номер Поштомату"
-              />
-            </div>
+        </div>
+      ) : selectedOption === "np-poshtmat" ? (
+        <div>
+          <p className="mb-4 text-t14 italic text-dark">
+            {data.order.fillInTheDetails}
+          </p>
+          <div className="mr-1 xl:w-[230px]">
+            <input
+              type="text"
+              id="numposhtmat"
+              value={numposhtmat}
+              onChange={(e) => handleInputChange("numposhtmat", e.target.value)}
+              className={`w-full border-b-2 bg-transparent px-[15px] py-[10px] text-t14 outline-none focus:border-black ${error.numposhtmat ? " bg-[#C61004]/[.06]" : "bg-white"}`}
+              placeholder="Номер Поштомату"
+            />
           </div>
-        ) : selectedOption === "ukrposhta" ? (
-          <div>
-            <p className="mb-4 text-t14 italic text-[#292D2D]">
-              {data.order.fillInTheDetails}
-            </p>
-            <div className="mr-1 xl:w-[230px]">
-              <input
-                type="text"
-                id="index"
-                value={index}
-                onChange={(e) => handleInputChange("index", e.target.value)}
-                className={`w-full border-b-2  px-[15px] py-[10px] text-t14 outline-none focus:border-black ${error.index ? " bg-[#C61004]/[.06]" : "bg-white"}`}
-                placeholder="Індекс укрпошти"
-              />
-            </div>
+        </div>
+      ) : selectedOption === "ukrposhta" ? (
+        <div>
+          <p className="mb-4 text-t14 italic text-dark">
+            {data.order.fillInTheDetails}
+          </p>
+          <div className="mr-1 xl:w-[230px]">
+            <input
+              type="text"
+              id="index"
+              value={index}
+              onChange={(e) => handleInputChange("index", e.target.value)}
+              className={`w-full border-b-2 bg-transparent px-[15px] py-[10px] text-t14 outline-none focus:border-black ${error.index ? " bg-[#C61004]/[.06]" : "bg-white"}`}
+              placeholder="Індекс укрпошти"
+            />
           </div>
-        ) : (
-          <div className="mb-4 text-t14 italic text-[#292D2D]">
-            {lang === en
-              ? "Specify the delivery method"
-              : "  Вкажіть спосіб доставки"}
-          </div>
-        )
-      }
-    </div >
+        </div>
+      ) : (
+        <div className="mb-4 text-t14 italic text-dark">
+          {lang === en
+            ? "Specify the delivery method"
+            : "  Вкажіть спосіб доставки"}
+        </div>
+      )}
+    </div>
   );
 };
 

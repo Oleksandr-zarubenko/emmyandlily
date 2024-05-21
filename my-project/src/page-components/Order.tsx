@@ -483,45 +483,6 @@ const Order = ({ data, lang }: any) => {
     }
   };
 
-  const isDeliveryDataComplete = (selectedOption: any) => {
-    if (selectedOption === "np-courier") {
-      return (
-        street.trim() !== "" &&
-        houseNumber.trim() !== "" &&
-        !error.street &&
-        !error.houseNumber
-      );
-    } else if (selectedOption === "novaposhta-smovuviz") {
-      return numnp.trim() !== "" && !error.numnp;
-    } else if (selectedOption === "np-poshtmat") {
-      return numposhtmat.trim() !== "" && !error.numposhtmat;
-    } else if (selectedOption === "ukrposhta") {
-      return index.trim() !== "" && !error.index;
-    }
-    else if (selectedOption === "dhl") {
-      return sstreet.trim() !== "" &&
-        house.trim() !== "" &&
-        zip.trim() !== "" &&
-        appartment.trim() !== "" &&
-        !error.sstreet &&
-        !error.house &&
-        !error.zip &&
-        !error.appartment
-    }
-    else if (selectedOption === "ups") {
-      return sstreet.trim() !== "" &&
-        house.trim() !== "" &&
-        zip.trim() !== "" &&
-        appartment.trim() !== "" &&
-        !error.sstreet &&
-        !error.house &&
-        !error.zip &&
-        !error.appartment
-    }
-    else {
-      return false;
-    }
-  };
 
   const saveAndProceed = () => {
     if (isPersonalDataComplete()) {
@@ -706,80 +667,74 @@ const Order = ({ data, lang }: any) => {
   };
 
   const switchToDeliveryTab = () => {
-
-    if (city.trim() === "" || country.trim() === "") {
-      //@ts-ignore
-      document.getElementById('city').classList.add('input-error')
-      //@ts-ignore
-      document.getElementById('country').classList.add('input-error')
+    // Перевірка та встановлення/видалення класів для країни
+    if (country.trim() === "" || error.country) {
+      document.getElementById('country')?.classList.add('input-error');
       return;
-
+    } else {
+      document.getElementById('country')?.classList.remove('input-error');
     }
-    else {
-      //@ts-ignore
-      document.getElementById('city').classList.remove('input-error');
-      //@ts-ignore
-      document.getElementById('country').classList.remove('input-error');
-    }
-    if (!isDeliveryDataComplete(selectedOption)) {
-      if (selectedOption === "np-courier") {
 
-        if (street.trim() === "" || houseNumber.trim() === "") {
-          //@ts-ignore
-          document.getElementById('street').classList.add('input-error');
-          //@ts-ignore
-          document.getElementById('houseNumber').classList.add('input-error');
-          return;
-        }
-      } else if (selectedOption === "novaposhta-smovuviz") {
-        if (numnp.trim() === "") {
-          //@ts-ignore
-          document.getElementById('numnp').classList.add('input-error');
-          return;
-        }
-      } else if (selectedOption === "np-poshtmat") {
-        if (numposhtmat.trim() === "") {
-          //@ts-ignore
-          document.getElementById('numposhtmat').classList.add('input-error');
-          return;
-        }
-      } else if (selectedOption === "ukrposhta") {
-        if (index.trim() === "") {
-          //@ts-ignore
-          document.getElementById('index').classList.add('input-error');
-          return;
-        }
-      }
-      else if (selectedOption === "dhl") {
-        if (sstreet.trim() === "" || zip.trim() === "" || house.trim() === "" || appartment.trim() === "") {
-          //@ts-ignore
-          document.getElementById('sstreet').classList.add('input-error');
-          //@ts-ignore
-          document.getElementById('zip').classList.add('input-error');
-          //@ts-ignore
-          document.getElementById('house').classList.add('input-error');
-
-          //@ts-ignore
-          document.getElementById('appartment').classList.add('input-error');
-          return;
-        }
-      }
-      else if (selectedOption === "ups") {
-        if (sstreet.trim() === "" || zip.trim() === "" || house.trim() === "" || appartment.trim() === "") {
-          //@ts-ignore
-          document.getElementById('sstreet').classList.add('input-error');
-          //@ts-ignore
-          document.getElementById('zip').classList.add('input-error');
-          //@ts-ignore
-          document.getElementById('house').classList.add('input-error');
-
-          //@ts-ignore
-          document.getElementById('appartment').classList.add('input-error');
-          return;
-        }
-      }
-
+    // Перевірка та встановлення/видалення класів для міста
+    if (city.trim() === "" || error.city) {
+      document.getElementById('city')?.classList.add('input-error');
       return;
+    } else {
+      document.getElementById('city')?.classList.remove('input-error');
+    }
+
+    // Перевірка даних для конкретного методу доставки
+
+    if (selectedOption === "np-courier") {
+      if (street.trim() === "") {
+        document.getElementById('street')?.classList.add('input-error');
+      } else {
+        document.getElementById('street')?.classList.remove('input-error');
+      }
+
+      if (houseNumber.trim() === "") {
+        document.getElementById('houseNumber')?.classList.add('input-error');
+      } else {
+        document.getElementById('houseNumber')?.classList.remove('input-error');
+      }
+
+      if (street.trim() === "" || houseNumber.trim() === "") {
+        return;
+      }
+    } else if (selectedOption === "dhl" || selectedOption === "ups") {
+      if (sstreet.trim() === "" || error.sstreet) {
+        document.getElementById('sstreet')?.classList.add('input-error');
+        return;
+      } else {
+        document.getElementById('sstreet')?.classList.remove('input-error');
+      }
+
+      if (zip.trim() === "" || error.zip) {
+        document.getElementById('zip')?.classList.add('input-error');
+        return;
+      } else {
+        document.getElementById('zip')?.classList.remove('input-error');
+      }
+
+      if (house.trim() === "" || error.house) {
+        document.getElementById('house')?.classList.add('input-error');
+        return;
+      } else {
+        document.getElementById('house')?.classList.remove('input-error');
+      }
+
+      if (appartment.trim() === "" || error.appartment) {
+        document.getElementById('appartment')?.classList.add('input-error');
+        return;
+      } else {
+        document.getElementById('appartment')?.classList.remove('input-error');
+      }
+
+      if (sstreet.trim() === "" || zip.trim() === "" || house.trim() === "" || appartment.trim() === "") {
+        return;
+      }
+
+
     }
 
     if (selectedOption) {
