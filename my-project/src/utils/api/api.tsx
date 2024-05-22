@@ -2,6 +2,7 @@ const getData = async () => {
   try {
     const res = await fetch(`/api/get-price`, {
       method: "GET",
+      next: { revalidate: 60 },
     });
     const pos = await res.json();
     return pos;
