@@ -5,7 +5,7 @@ import { parseString } from "xml2js";
 export async function GET(): Promise<void | Response> {
   try {
     const response = await fetch(
-      "https://emmyandlily.salesdrive.me/export/yml/export.yml?publicKey=zalGum1W2NGfiOp_oUVyeqbAP3DkkjivuwB4xeAB7s-_PltssZ",
+      "https://emmyandlily.salesdrive.me/export/yml/export.yml?publicKey=JAvWTZJQXYHA15-Adae5O-JRlHOuDA97l1SBWVXpy_Okn3WEsPjQKZmcbiOGYCfWYNC6_M42GBn5",
       {
         headers: {
           "Content-Type": "application/json",

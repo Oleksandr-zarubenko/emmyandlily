@@ -41,7 +41,6 @@ export default async function ThankYouPage({
       },
     },
   });
-  console.log(data);
 
   return (
     <section className="relative grow">
