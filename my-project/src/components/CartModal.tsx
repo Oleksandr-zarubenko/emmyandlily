@@ -16,6 +16,7 @@ const CartModal = ({
   const pathname = usePathname();
 
   const isBasketPage = pathname.includes(`${lang}/basket`);
+
   return (
     <div className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50">
       <div className="rounded-lg bg-white px-5 py-16 text-center  xl:px-48  xl:py-24 mdOnly:px-[217px] mdOnly:py-[89px]">

@@ -42,6 +42,7 @@ export default async function ThankYouPage({
     },
   });
 
+
   return (
     <section className="relative grow">
       <Image

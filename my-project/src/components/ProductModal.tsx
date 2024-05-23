@@ -40,12 +40,6 @@ export const ProductModal = ({
     product.productSlider[0].url
   );
 
-  // const handleQuantityChange = (capacity: string, value: number) => {
-  //   setQuantities((prevQuantities) => ({
-  //     ...prevQuantities,
-  //     [capacity]: Math.max((prevQuantities[capacity] || 0) + value, 0),
-  //   }));
-  // };
 
   const setModalOpened = () => {
     setIsOpen(true);
@@ -88,11 +82,12 @@ export const ProductModal = ({
     const parsedAddedToCart = storedAddedToCart
       ? JSON.parse(storedAddedToCart)
       : {};
-
+    const productState = state.products.find((p: any) => p.id === item.idCrm);
+    const productPrice = productState ? productState.price : item.price;
     const dataToStore = {
       id: item.idCrm,
       productName: product.heading,
-      price: item.price,
+      price: productPrice,
       capacity: item.ml,
       photo: product.productSlider[0].url,
     };
@@ -249,43 +244,31 @@ export const ProductModal = ({
                         <td className="py-2 text-t18 leading-5 text-[#333333] ">
                           {item.ml}
                         </td>
-
                         <td className="py-2 text-left text-t18 leading-5 text-[#333333] xl:text-center smOnly:text-center">
-                          {product.capacity &&
-                            product.capacity[0] &&
-                            (lang === en
-                              ? state &&
-                                state.products.find(
-                                  (item: any) =>
-                                    item.id === product.capacity[0].idCrm
-                                )
-                                ? convertPrice(
-                                    state.products.find(
-                                      (item: any) =>
-                                        item.id === product.capacity[0].idCrm
-                                    )!.price,
+                          {state.products
+                            .filter((p: any) => p.id === item.idCrm)
+                            .map((p: any) => (
+                              <span key={p.id}>
+                                {lang === "en"
+                                  ? convertPrice(
+                                    p.price,
                                     state.currencies.find(
-                                      (currency: any) => currency.id === "EUR"
+                                      (currency: any) =>
+                                        currency.id === "EUR"
                                     )?.rate || 1
                                   )
-                                : "N/A"
-                              : state &&
-                                  state.products.find(
-                                    (item: any) =>
-                                      item.id === product.capacity[0].idCrm
-                                  )
-                                ? state.products.find(
-                                    (item: any) =>
-                                      item.id === product.capacity[0].idCrm
-                                  )!.price
-                                : "N/A")}{" "}
-                          {lang === en ? "€" : "₴"}
+                                  : p.price}{" "}
+                                {lang === "en" ? "€" : "₴"}
+                              </span>
+                            ))}
                         </td>
-
                         <td className="py-2 text-end text-t18 leading-5 text-[#333333]">
                           <button
                             onClick={() => addToCart(item)}
-                            className={`py-auto ml-auto h-10 rounded bg-black ${addedToCart[item.idCrm] ? "pointer-events-none    w-[172px] cursor-default px-3 py-1 text-t18 text-white smOnly:w-[120px]" : " w-[76px] px-[22.5px] py-[5px] "}`}
+                            className={`py-auto ml-auto h-10 rounded bg-black ${addedToCart[item.idCrm]
+                              ? "pointer-events-none w-[172px] cursor-default px-3 py-1 text-t18 text-white smOnly:w-[120px]"
+                              : " w-[76px] px-[22.5px] py-[5px] "
+                              }`}
                             disabled={addedToCart[item.idCrm]}
                           >
                             {addedToCart[item.idCrm] ? (

@@ -62,7 +62,7 @@ const queryEN = gql`
       text
     }
     allProducts {
-      idAvailable
+   
       preview
       heading
       description
@@ -87,7 +87,7 @@ const queryEN = gql`
       order
       methodOfUse
       capacity {
-        price
+  
         ml
         idCrm
       }
@@ -151,7 +151,7 @@ const queryUA = gql`
       text
     }
     allProducts(locale: uk) {
-      idAvailable
+   
       preview
       heading
       description
@@ -176,7 +176,7 @@ const queryUA = gql`
       order
       methodOfUse
       capacity {
-        price
+  
         ml
         idCrm
       }

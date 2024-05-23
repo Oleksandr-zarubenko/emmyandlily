@@ -60,7 +60,7 @@ const queryEN = gql`
       methodOfUse
 
       capacity {
-        price
+      
         ml
         idCrm
       }
@@ -147,7 +147,7 @@ const queryUA = gql`
       methodOfUse
 
       capacity {
-        price
+  
         ml
         idCrm
       }

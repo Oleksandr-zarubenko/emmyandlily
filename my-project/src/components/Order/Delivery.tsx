@@ -191,8 +191,8 @@ const Delivery: React.FC<DeliveryProps> = ({
         )}
 
         {selectedOption === "dhl" ||
-        selectedOption === "ups" ||
-        selectedOption === "novaposhta-smovuviz-euro" ? (
+          selectedOption === "ups" ||
+          selectedOption === "novaposhta-smovuviz-euro" ? (
           <span className="text-t14 italic">{data.order.deliveryTime2}</span>
         ) : (
           <span className="text-t14 italic">{data.order.deliveryTime}</span>

@@ -30,7 +30,7 @@ const queryEN = gql`
       text
     }
     allProducts {
-      idAvailable
+   
 
       heading
       description
@@ -57,7 +57,7 @@ const queryEN = gql`
 
 
       capacity {
-        price
+  
         ml
         idCrm
       }
@@ -104,7 +104,7 @@ dropdown
       text
     }
     allProducts(locale: uk)   {
-      idAvailable
+   
 
       heading
       description
@@ -131,7 +131,7 @@ dropdown
 
    
       capacity {
-        price
+      
         ml
         idCrm
       }
