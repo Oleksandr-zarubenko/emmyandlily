@@ -40,6 +40,7 @@ export const ProductModal = ({
     product.productSlider[0].url
   );
 
+
   const setModalOpened = () => {
     setIsOpen(true);
   };
