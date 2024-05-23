@@ -11,6 +11,20 @@ export const ProductCard = ({
   data,
   convertPrice,
 }: any) => {
+  const findProductPrice = (idCrm: string) => {
+    const product = state.products.find((item: { id: string }) => item.id === idCrm);
+    if (!product) return "N/A";
+
+    return lang === "en"
+      ? convertPrice(
+        product.price,
+        state.currencies.find((currency: { id: string }) => currency.id === "EUR")?.rate || 1
+      )
+      : product.price;
+  };
+
+  const getCurrencySymbol = () => (lang === "en" ? "€" : "₴");
+
   return (
     <article
       key={product.id}
@@ -23,7 +37,7 @@ export const ProductCard = ({
         data={data}
         convertPrice={convertPrice}
       >
-        <div className="relative mb-3 h-[300px] w-[260px] overflow-hidden rounded xl:mb-4 xl:h-[344px] xl:w-[304px] mdOnly:h-[280x] mdOnly:w-[280px]">
+        <div className="relative mb-3 h-[300px] w-[260px] overflow-hidden rounded xl:mb-4 xl:h-[344px] xl:w-[304px] mdOnly:h-[280px] mdOnly:w-[280px]">
           <Image
             fill
             src={product.productpicture.url}
@@ -59,7 +73,6 @@ export const ProductCard = ({
           />
           <ul className="mb-2 flex xl:mb-4">
             {product.capacity &&
-              product.capacity &&
               product.capacity.map((item: any) => (
                 <li
                   key={item.idCrm}
@@ -70,51 +83,16 @@ export const ProductCard = ({
               ))}
           </ul>
           {product.capacity && product.capacity[0] && (
-            <>
-              <p className="text-t16 leading-6 text-white xl:text-t18">
-                {product.preview ? (
-                  lang === "en" ? (
-                    "Coming soon!"
-                  ) : (
-                    "Скоро в доступі!"
-                  )
-                ) : (
-                  <>
-                    {product.capacity &&
-                      product.capacity.length > 1 &&
-                      (lang === "en" ? "from" : "від")}{" "}
-                    {lang === "en"
-                      ? state &&
-                        state.products.find(
-                          (item: { id: any }) =>
-                            item.id === product.capacity[0].idCrm
-                        )
-                        ? convertPrice(
-                            state.products.find(
-                              (item: { id: any }) =>
-                                item.id === product.capacity[0].idCrm
-                            )!.price,
-                            state.currencies.find(
-                              (currency: { id: string }) =>
-                                currency.id === "EUR"
-                            )?.rate || 1
-                          )
-                        : "N/A"
-                      : state &&
-                          state.products.find(
-                            (item: { id: any }) =>
-                              item.id === product.capacity[0].idCrm
-                          )
-                        ? state.products.find(
-                            (item: { id: any }) =>
-                              item.id === product.capacity[0].idCrm
-                          )!.price
-                        : "N/A"}{" "}
-                    {lang === "en" ? "€" : "₴"}
-                  </>
-                )}
-              </p>
-            </>
+            <p className="text-t16 leading-6 text-white xl:text-t18">
+              {product.preview ? (
+                lang === "en" ? "Coming soon!" : "Скоро в доступі!"
+              ) : (
+                <>
+                  {product.capacity.length > 1 && (lang === "en" ? "from" : "від")}{" "}
+                  {findProductPrice(product.capacity[0].idCrm)} {getCurrencySymbol()}
+                </>
+              )}
+            </p>
           )}
         </div>
       </ProductModal>

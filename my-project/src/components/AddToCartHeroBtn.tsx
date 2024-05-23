@@ -1,52 +1,76 @@
 "use client";
-
+import { useState, useEffect } from "react";
 import { FC } from "react";
 import cn from "classnames";
 import { useAddedToCart } from "@/components/context/addedToCart";
-interface AddToCartHeroBtnProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+import getData from "@/utils/api/api";
+interface AddToCartHeroBtnProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   text: string;
   className?: string;
-  data: any
-  secondtext: string
+  data: any;
+  secondtext: string;
 }
 
 export const AddToCartHeroBtn: FC<AddToCartHeroBtnProps> = ({
   text,
   className,
   data,
-  secondtext
+  secondtext,
+
 }) => {
 
   const { addedToCart, setAddedToCart } = useAddedToCart();
-  const trevelSet = data.allProducts
+  const trevelSet = data.allProducts;
+  const [state, setState] = useState<{
+    products: { id: string; price: string; available: string; oldprice: any }[];
+    currencies: { id: string; rate: number }[];
+  }>({ products: [], currencies: [] });
 
-
-
-  const productToAdd = trevelSet.find((product: any) => product.idAvailable === "id_12");
-
+  const fetchData = async () => {
+    try {
+      const data = await getData();
+      setState(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+  const productToAdd = trevelSet.find((product: any) =>
+    product.capacity.some((cap: any) => cap.idCrm === "id_12")
+  );
+  console.log(state)
   const addToCart = () => {
-    const storedDataString = localStorage.getItem('storedData');
+    const storedDataString = localStorage.getItem("storedData");
     const storedData = storedDataString ? JSON.parse(storedDataString) : [];
     const storedAddedToCart = localStorage.getItem("addedToCart");
     const parsedAddedToCart = storedAddedToCart ? JSON.parse(storedAddedToCart) : {};
-    const productToAdd = trevelSet.find((product: any) => product.idAvailable === "id_12");
+
+    const productToAdd = trevelSet.find((product: any) =>
+      product.capacity.some((cap: any) => cap.idCrm === "id_12")
+    );
 
     if (productToAdd) {
-      if (productToAdd.capacity && productToAdd.capacity.length > 0) {
-        const firstCapacity = productToAdd.capacity[0];
-        const { price, ml } = firstCapacity;
+      const capacityToAdd = productToAdd.capacity.find((cap: any) => cap.idCrm === "id_12");
+      if (capacityToAdd) {
+        const { ml, idCrm } = capacityToAdd;
+
+
+        const productState = state.products.find((p: any) => p.id === idCrm);
+        const productPrice = productState ? productState.price : capacityToAdd.price;
+
         const dataToStore = {
-          id: productToAdd.idAvailable,
+          id: idCrm,
           productName: productToAdd.heading,
-          price: price,
+          price: productPrice,
           capacity: ml,
           photo: productToAdd.productSlider[0].url,
         };
 
         const updatedAddedToCart = {
           ...parsedAddedToCart,
-          [productToAdd.idAvailable]: true,
+          [idCrm]: true,
         };
         const updatedData = [...storedData, dataToStore];
         localStorage.setItem("storedData", JSON.stringify(updatedData));
@@ -54,10 +78,14 @@ export const AddToCartHeroBtn: FC<AddToCartHeroBtnProps> = ({
 
         setAddedToCart(updatedAddedToCart);
       } else {
-        console.error('Product capacity is not available.');
+        console.error("Product capacity is not available.");
       }
     }
   };
+
+
+  const isProductAdded = productToAdd && addedToCart[productToAdd.capacity.find((cap: any) => cap.idCrm === "id_12")?.idCrm];
+
   return (
     <button
       onClick={addToCart}
@@ -65,15 +93,9 @@ export const AddToCartHeroBtn: FC<AddToCartHeroBtnProps> = ({
         "relative z-20 rounded bg-black px-6 py-3 text-center text-t18 font-bold text-white duration-300 hover:bg-white hover:text-black hover:ring-1 hover:ring-black",
         className
       )}
-      disabled={addedToCart[productToAdd.idAvailable]}
+      disabled={isProductAdded}
     >
-
-      {addedToCart[productToAdd.idAvailable] ? (
-        <span>{secondtext}</span>
-      ) : (
-        <span>{text}</span>
-      )}
-
+      {isProductAdded ? <span>{secondtext}</span> : <span>{text}</span>}
     </button>
   );
 };

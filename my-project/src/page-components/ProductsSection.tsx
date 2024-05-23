@@ -34,12 +34,12 @@ export const ProductsSection = ({
   const en = locales[1];
 
   const availableProducts = data.allProducts.filter((product: any) => {
-    const correspondingProduct = state.products.find(
-      (p) => p.id === product.idAvailable
+    const correspondingProduct = product.capacity.some((cap: any) =>
+      state.products.some((p: any) => p.id === cap.idCrm && p.available === "true")
     );
-    return correspondingProduct && correspondingProduct.available === "true";
+    return correspondingProduct;
   });
-
+  console.log(state)
   // const previewProducts = data.allProducts.filter(
   //   (product: any) => product.preview
   // );

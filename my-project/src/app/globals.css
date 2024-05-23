@@ -327,5 +327,27 @@ input:-webkit-autofill:active {
   background-color: transparent !important;
 }
 input:-webkit-autofill + svg {
-  fill: balck;
+  fill: black;
+}
+textarea {
+  resize: none;
+  overflow-x: scroll;
+  white-space: nowrap;
+}
+
+.no-scroll::-webkit-scrollbar,
+.no-scroll::-webkit-scrollbar-track-piece {
+  width: 0px;
+}
+.no-scroll::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 0px;
+}
+
+.no-scroll::-webkit-scrollbar-thumb {
+  border-radius: 0px;
+  border: 0px solid transparent;
+  background-clip: content-box;
+  background-color: transparent;
+  width: 0px;
 }

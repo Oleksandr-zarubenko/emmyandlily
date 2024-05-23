@@ -498,94 +498,94 @@ const Order = ({ data, lang }: any) => {
       setDeliveryActive(false);
 
       if (!isRecipient) { // Якщо не є отримувачем
-        if (firstName.trim() === '') {
+        if (firstName.trim() === '' || error.firstName) {
           //@ts-ignore
-          document.getElementById('firstName').classList.add('input-error');
+          document.getElementById('firstName')?.classList.add('input-error');
         } else {
           //@ts-ignore
-          document.getElementById('firstName').classList.remove('input-error');
+          document.getElementById('firstName')?.classList.remove('input-error');
         }
-        if (lastName.trim() === '') {
+        if (lastName.trim() === '' || error.lastName) {
           //@ts-ignore
-          document.getElementById('lastName').classList.add('input-error');
+          document.getElementById('lastName')?.classList.add('input-error');
         } else {
           //@ts-ignore
-          document.getElementById('lastName').classList.remove('input-error');
+          document.getElementById('lastName')?.classList.remove('input-error');
         }
-        if (email.trim() === '') {
+        if (email.trim() === '' || error.email) {
           //@ts-ignore
-          document.getElementById('email').classList.add('input-error');
+          document.getElementById('email')?.classList.add('input-error');
         } else {
           //@ts-ignore
-          document.getElementById('email').classList.remove('input-error');
+          document.getElementById('email')?.classList.remove('input-error');
         }
-        if (phoneNumber.trim() === '') {
+        if (phoneNumber.trim() === '' || error.phoneNumber) {
           //@ts-ignore
-          document.getElementById('phoneNumber').classList.add('input-error');
+          document.getElementById('phoneNumber')?.classList.add('input-error');
         } else {
           //@ts-ignore
-          document.getElementById('phoneNumber').classList.remove('input-error');
+          document.getElementById('phoneNumber')?.classList.remove('input-error');
         }
-        if (recipientFirstName.trim() === '') {
+        if (recipientFirstName.trim() === '' || error.recipientFirstName) {
           //@ts-ignore
-          document.getElementById('recipientFirstName').classList.add('input-error');
+          document.getElementById('recipientFirstName')?.classList.add('input-error');
         } else {
           //@ts-ignore
-          document.getElementById('recipientFirstName').classList.remove('input-error');
+          document.getElementById('recipientFirstName')?.classList.remove('input-error');
         }
-        if (recipientLastName.trim() === '') {
+        if (recipientLastName.trim() === '' || error.recipientLastName) {
           //@ts-ignore
-          document.getElementById('recipientLastName').classList.add('input-error');
+          document.getElementById('recipientLastName')?.classList.add('input-error');
         } else {
           //@ts-ignore
-          document.getElementById('recipientLastName').classList.remove('input-error');
+          document.getElementById('recipientLastName')?.classList.remove('input-error');
         }
-        if (recipientEmail.trim() === '') {
+        if (recipientEmail.trim() === '' || error.recipientEmail) {
           //@ts-ignore
-          document.getElementById('recipientEmail').classList.add('input-error');
+          document.getElementById('recipientEmail')?.classList.add('input-error');
         } else {
           //@ts-ignore
-          document.getElementById('recipientEmail').classList.remove('input-error');
+          document.getElementById('recipientEmail')?.classList.remove('input-error');
         }
-        if (recipientPhoneNumber.trim() === '') {
+        if (recipientPhoneNumber.trim() === '' || error.recipientPhoneNumber) {
           //@ts-ignore
-          document.getElementById('recipientPhoneNumber').classList.add('input-error');
+          document.getElementById('recipientPhoneNumber')?.classList.add('input-error');
         } else {
           //@ts-ignore
-          document.getElementById('recipientPhoneNumber').classList.remove('input-error');
+          document.getElementById('recipientPhoneNumber')?.classList.remove('input-error');
         }
       } else { // Якщо є отримувачем
-        if (firstName.trim() === '') {
+        if (firstName.trim() === '' || error.firstName) {
           //@ts-ignore
-          document.getElementById('firstName').classList.add('input-error');
+          document.getElementById('firstName')?.classList.add('input-error');
         } else {
           //@ts-ignore
-          document.getElementById('firstName').classList.remove('input-error');
+          document.getElementById('firstName')?.classList.remove('input-error');
         }
-        if (lastName.trim() === '') {
+        if (lastName.trim() === '' || error.lastName) {
           //@ts-ignore
-          document.getElementById('lastName').classList.add('input-error');
+          document.getElementById('lastName')?.classList.add('input-error');
         } else {
           //@ts-ignore
-          document.getElementById('lastName').classList.remove('input-error');
+          document.getElementById('lastName')?.classList.remove('input-error');
         }
-        if (email.trim() === '') {
+        if (email.trim() === '' || error.email) {
           //@ts-ignore
-          document.getElementById('email').classList.add('input-error');
+          document.getElementById('email')?.classList.add('input-error');
         } else {
           //@ts-ignore
-          document.getElementById('email').classList.remove('input-error');
+          document.getElementById('email')?.classList.remove('input-error');
         }
-        if (phoneNumber.trim() === '') {
+        if (phoneNumber.trim() === '' || error.phoneNumber) {
           //@ts-ignore
-          document.getElementById('phoneNumber').classList.add('input-error');
+          document.getElementById('phoneNumber')?.classList.add('input-error');
         } else {
           //@ts-ignore
-          document.getElementById('phoneNumber').classList.remove('input-error');
+          document.getElementById('phoneNumber')?.classList.remove('input-error');
         }
       }
     }
-  };
+  }
 
 
 
@@ -856,6 +856,7 @@ const Order = ({ data, lang }: any) => {
               </label>
               <label className="flex">
                 <input
+
                   type="radio"
                   name="paymentMethod"
                   checked={afterpay}
