@@ -337,10 +337,10 @@ const Delivery: React.FC<DeliveryProps> = ({
           <div className="mr-1 xl:w-[230px]">
             <input
               type="text"
-              id="numposhtmat"
-              value={numposhtmat}
-              onChange={(e) => handleInputChange("numposhtmat", e.target.value)}
-              className={`w-full border-b-2 bg-transparent px-[15px] py-[10px] text-t14 outline-none focus:border-black ${error.numposhtmat ? " bg-[#C61004]/[.06]" : "bg-white"}`}
+              id="numnp"
+              value={numnp}
+              onChange={(e) => handleInputChange("numnp", e.target.value)}
+              className={`w-full border-b-2 bg-transparent px-[15px] py-[10px] text-t14 outline-none focus:border-black ${error.numnp ? " bg-[#C61004]/[.06]" : "bg-white"}`}
               placeholder="Номер Поштомату"
             />
           </div>
