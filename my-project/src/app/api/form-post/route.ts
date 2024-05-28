@@ -36,7 +36,7 @@ export async function POST(req: Request) {
       area: "",
       region: "",
       city: rawBody.city,
-      cityNameFormat: rawBody.numposhtmat,
+      cityNameFormat: "",
       WarehouseNumber: rawBody.numnp,
       Street: rawBody.street,
       BuildingNumber: rawBody.houseNumber,

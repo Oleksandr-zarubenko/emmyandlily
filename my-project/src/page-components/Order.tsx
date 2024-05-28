@@ -357,12 +357,12 @@ const Order = ({ data, lang }: any) => {
 
   const handleMonobankChange = () => {
     setPaymentMonobank(true);
-    setAfterpay(false); // Якщо користувач обрав Monobank, скасувати вибір опції afterpay
+    setAfterpay(false);
   };
 
   const handleAfterpayChange = () => {
     setAfterpay(true);
-    setPaymentMonobank(false); // Якщо користувач обрав afterpay, скасувати вибір опції Monobank
+    setPaymentMonobank(false);
   };
   const products = productName.map((product: any) => ({
     name: product.productName.trim().replace(/###\s*/, ""),
@@ -397,7 +397,8 @@ const Order = ({ data, lang }: any) => {
 
 
   const selectePaymentMethod = paymentMonobank === true ? "id_38" : "id_12"
-
+  const adress = street + houseNumber
+  console.log(adress)
   const makeApiCall = async () => {
     const translatedOption = translateShippingOption(selectedOption);
     const parsedProducts = updatedProducts.map((product: any) => ({
@@ -421,7 +422,7 @@ const Order = ({ data, lang }: any) => {
         apiPromocod,
         numnp,
         numposhtmat,
-        street,
+        street: adress,
         houseNumber,
         index,
         products: parsedProducts,
