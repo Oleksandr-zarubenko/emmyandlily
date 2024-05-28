@@ -336,7 +336,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                       <p className="py-2  xl:text-t18 mdOnly:text-t16 ">
                         {item.productName.replace(/#/g, "")}
                       </p>
-                      <p className="text-t14 text-dark/60"> {item.capacity}</p>
+                      <p className="text-t14 text-dark/60"> {item.capacity}{lang === "ua" ? "мл" : "ml"}</p>
                     </div>
                   </td>
                   <td className="relative py-2 text-left leading-5 text-[#333333] xl:text-t18 mdOnly:w-14 mdOnly:text-t16">

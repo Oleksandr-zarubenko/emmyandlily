@@ -242,7 +242,7 @@ export const ProductModal = ({
                     {product.capacity.map((item: any) => (
                       <tr key={item.idCrm}>
                         <td className="py-2 text-t18 leading-5 text-[#333333] ">
-                          {item.ml}
+                          {item.ml} {lang === "ua" ? "мл" : "ml"}
                         </td>
                         <td className="py-2 text-left text-t18 leading-5 text-[#333333] xl:text-center smOnly:text-center">
                           {state.products

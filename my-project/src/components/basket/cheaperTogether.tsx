@@ -50,7 +50,7 @@ const CheaperTogether = ({ data, state, setState, lang, en, modal }: any) => {
                                                         key={item.idCrm}
                                                         className="mr-8 text-t14 italic text-black xl:text-t16"
                                                     >
-                                                        {item.ml}
+                                                        {item.ml} {lang === "ua" ? "мл" : "ml"}
                                                     </li>
                                                 ))}
                                         </ul>
