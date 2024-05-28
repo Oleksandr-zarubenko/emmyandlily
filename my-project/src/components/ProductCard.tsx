@@ -78,7 +78,7 @@ export const ProductCard = ({
                   key={item.idCrm}
                   className="mr-8 text-t14 italic text-white xl:text-t16"
                 >
-                  {item.ml}
+                  {item.ml} {lang === "ua" ? "мл" : "ml"}
                 </li>
               ))}
           </ul>
@@ -88,7 +88,7 @@ export const ProductCard = ({
                 lang === "en" ? "Coming soon!" : "Скоро в доступі!"
               ) : (
                 <>
-                  {product.capacity.length > 1 && (lang === "en" ? "from" : "від")}{" "}
+                  {product.capacity.length > 1 && (lang === "en" ? "from" : "від")}
                   {findProductPrice(product.capacity[0].idCrm)} {getCurrencySymbol()}
                 </>
               )}
