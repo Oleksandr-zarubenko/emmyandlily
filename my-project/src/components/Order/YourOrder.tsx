@@ -65,7 +65,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
       convertPrice(
         totalPrice,
         state.currencies.find((currency: any) => currency.id === "EUR")?.rate ||
-          1
+        1
       )
     ) + deliveryPrice;
   if (typeof window !== "undefined") {
@@ -83,12 +83,12 @@ const YourOrder: React.FC<YourOrderProps> = ({
           <p className="text-t16 xl:text-t18">
             {lang === en
               ? convertPrice(
-                  totalPrice,
-                  state.currencies.find(
-                    (currency: any) => currency.id === "EUR"
-                  )?.rate || 1
-                ) + " €"
-              : totalPrice + totaldiscountAmount + " ₴"}
+                totalPrice,
+                state.currencies.find(
+                  (currency: any) => currency.id === "EUR"
+                )?.rate || 1
+              ) + " €"
+              : totalPrice + " ₴"}
           </p>
         </li>
         <li className="mb-2 flex justify-between">
@@ -105,13 +105,13 @@ const YourOrder: React.FC<YourOrderProps> = ({
           <p className="text-t16 xl:text-t18">
             {lang === en
               ? "- " +
-                convertPrice(
-                  totaldiscountAmount,
-                  state.currencies.find(
-                    (currency: any) => currency.id === "EUR"
-                  )?.rate || 1
-                ) +
-                " €"
+              convertPrice(
+                totaldiscountAmount,
+                state.currencies.find(
+                  (currency: any) => currency.id === "EUR"
+                )?.rate || 1
+              ) +
+              " €"
               : "- " + totaldiscountAmount + " ₴"}
           </p>
         </li>
@@ -122,7 +122,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
           {data.order.totalAmountToBePaid}
         </p>{" "}
         <p className="text-t16 xl:text-t18">
-          {lang === en ? allTotalEn + " €" : allTotal + " ₴"}
+          {lang === en ? allTotalEn - totaldiscountAmount + " €" : allTotal - totaldiscountAmount + " ₴"}
         </p>
       </div>
       {personActive && (
