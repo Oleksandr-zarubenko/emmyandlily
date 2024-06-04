@@ -11,6 +11,8 @@ import { Locale } from "../../i18n.config";
 import { getClient } from "../../utils/apollo-client";
 import { AddedToCartProvider } from "@/components/context/addedToCart";
 import Header from "@/components/header/header";
+import { Suspense } from "react";
+import { FacebookPixelEvents } from "@/components/pixel-events";
 
 const libre = Open_Sans({
   weight: ["400"],
@@ -104,7 +106,9 @@ export default async function RootLayout({
       >
         <AddedToCartProvider>
           <Header data={data} lang={lang} />
-
+          <Suspense fallback={null}>
+            <FacebookPixelEvents />
+          </Suspense>
           {children}
           <Footer data={data} lang={lang} />
         </AddedToCartProvider>

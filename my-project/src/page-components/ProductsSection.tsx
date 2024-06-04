@@ -35,11 +35,12 @@ export const ProductsSection = ({
 
   const availableProducts = data.allProducts.filter((product: any) => {
     const correspondingProduct = product.capacity.some((cap: any) =>
-      state.products.some((p: any) => p.id === cap.idCrm && p.available === "true")
+      state.products.some(
+        (p: any) => p.id === cap.idCrm && p.available === "true"
+      )
     );
     return correspondingProduct;
   });
-  console.log(state)
   // const previewProducts = data.allProducts.filter(
   //   (product: any) => product.preview
   // );
