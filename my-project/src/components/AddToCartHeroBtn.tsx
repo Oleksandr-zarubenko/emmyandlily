@@ -17,6 +17,7 @@ export const AddToCartHeroBtn: FC<AddToCartHeroBtnProps> = ({
   className,
   data,
   secondtext,
+  lang,
 }) => {
   const { addedToCart, setAddedToCart } = useAddedToCart();
   const trevelSet = data.allProducts;
@@ -46,6 +47,7 @@ export const AddToCartHeroBtn: FC<AddToCartHeroBtnProps> = ({
   const productToAdd = trevelSet.find((product: any) =>
     product.capacity.some((cap: any) => cap.idCrm === "id_12")
   );
+  console.log(state);
   const addToCart = () => {
     const storedDataString = localStorage.getItem("storedData");
     const storedData = storedDataString ? JSON.parse(storedDataString) : [];
@@ -87,6 +89,13 @@ export const AddToCartHeroBtn: FC<AddToCartHeroBtnProps> = ({
         localStorage.setItem("addedToCart", JSON.stringify(updatedAddedToCart));
 
         setAddedToCart(updatedAddedToCart);
+
+        window.fbq("track", "AddToCart", {
+          content_ids: [idCrm],
+          content_type: productToAdd.heading,
+          value: productPrice,
+          currency: lang === "en" ? "EUR" : "UAH",
+        });
       } else {
         console.error("Product capacity is not available.");
       }
