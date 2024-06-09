@@ -39,6 +39,15 @@ export default async function PolicyPage({
       <div className="container flex flex-col gap-3">
         <Markdown text={data.policy.policytext} />
       </div>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            if (typeof window !== "undefined" && window.fbq) {
+              window.fbq('track', 'PP Page View');
+            }
+          `,
+        }}
+      />
     </section>
   );
 }

@@ -20,9 +20,9 @@ const queryEN = gql`
       toOrder
       total
       dropdown
-    dropdown1
-    dropdown2
-    dropdown3
+      dropdown1
+      dropdown2
+      dropdown3
     }
 
     productsSection {
@@ -30,8 +30,6 @@ const queryEN = gql`
       text
     }
     allProducts {
-   
-
       heading
       description
       id
@@ -55,26 +53,24 @@ const queryEN = gql`
       order
       methodOfUse
 
-
       capacity {
-  
         ml
         idCrm
       }
     }
-   allPromocods {
-    promoCodName {
-      promocod
-      namePartner
+    allPromocods {
+      promoCodName {
+        promocod
+        namePartner
         discount
+      }
+    }
+    secondmodal {
+      goToCart
+      itemAddedToCart
+      returnToShopping
     }
   }
-   secondmodal {
-    goToCart
-    itemAddedToCart
-    returnToShopping
-  }
-}
 `;
 
 const queryUA = gql`
@@ -91,10 +87,10 @@ const queryUA = gql`
       price
       privacy
       sum
-dropdown
-    dropdown1
-    dropdown2
-    dropdown3
+      dropdown
+      dropdown1
+      dropdown2
+      dropdown3
       toOrder
       total
     }
@@ -103,9 +99,7 @@ dropdown
       heading
       text
     }
-    allProducts(locale: uk)   {
-   
-
+    allProducts(locale: uk) {
       heading
       description
       id
@@ -129,27 +123,24 @@ dropdown
       order
       methodOfUse
 
-   
       capacity {
-      
         ml
         idCrm
       }
     }
-      allPromocods(locale: uk) {
-    promoCodName {
-      promocod
-      namePartner
+    allPromocods(locale: uk) {
+      promoCodName {
+        promocod
+        namePartner
         discount
+      }
     }
-    
-  }
     secondmodal(locale: uk) {
-    goToCart
-    itemAddedToCart
-    returnToShopping
+      goToCart
+      itemAddedToCart
+      returnToShopping
+    }
   }
-}
 `;
 
 export default async function BasketPage({
@@ -167,5 +158,18 @@ export default async function BasketPage({
     },
   });
 
-  return <Basket data={data} lang={lang} />;
+  return (
+    <>
+      <Basket data={data} lang={lang} />
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            if (typeof window !== "undefined" && window.fbq) {
+              window.fbq('track', 'Basket Page View');
+            }
+          `,
+        }}
+      />
+    </>
+  );
 }
