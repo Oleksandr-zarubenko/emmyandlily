@@ -40,7 +40,6 @@ export const ProductModal = ({
     product.productSlider[0].url
   );
 
-
   const setModalOpened = () => {
     setIsOpen(true);
   };
@@ -105,6 +104,13 @@ export const ProductModal = ({
       [item.idCrm]: true,
     }));
     setAddedToCart(updatedAddedToCart);
+
+    window.fbq("track", "AddToCart", {
+      content_ids: [item.idCrm],
+      content_type: "product",
+      value: productPrice,
+      currency: lang === en ? "EUR" : "UAH",
+    });
   };
 
   useEffect(() => {
@@ -251,12 +257,11 @@ export const ProductModal = ({
                               <span key={p.id}>
                                 {lang === "en"
                                   ? convertPrice(
-                                    p.price,
-                                    state.currencies.find(
-                                      (currency: any) =>
-                                        currency.id === "EUR"
-                                    )?.rate || 1
-                                  )
+                                      p.price,
+                                      state.currencies.find(
+                                        (currency: any) => currency.id === "EUR"
+                                      )?.rate || 1
+                                    )
                                   : p.price}{" "}
                                 {lang === "en" ? "€" : "₴"}
                               </span>
@@ -265,10 +270,11 @@ export const ProductModal = ({
                         <td className="py-2 text-end text-t18 leading-5 text-[#333333]">
                           <button
                             onClick={() => addToCart(item)}
-                            className={`py-auto ml-auto h-10 rounded bg-black ${addedToCart[item.idCrm]
-                              ? "pointer-events-none w-[172px] cursor-default px-3 py-1 text-t18 text-white smOnly:w-[120px]"
-                              : " w-[76px] px-[22.5px] py-[5px] "
-                              }`}
+                            className={`py-auto ml-auto h-10 rounded bg-black ${
+                              addedToCart[item.idCrm]
+                                ? "pointer-events-none w-[172px] cursor-default px-3 py-1 text-t18 text-white smOnly:w-[120px]"
+                                : " w-[76px] px-[22.5px] py-[5px] "
+                            }`}
                             disabled={addedToCart[item.idCrm]}
                           >
                             {addedToCart[item.idCrm] ? (

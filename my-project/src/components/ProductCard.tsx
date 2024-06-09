@@ -12,14 +12,18 @@ export const ProductCard = ({
   convertPrice,
 }: any) => {
   const findProductPrice = (idCrm: string) => {
-    const product = state.products.find((item: { id: string }) => item.id === idCrm);
+    const product = state.products.find(
+      (item: { id: string }) => item.id === idCrm
+    );
     if (!product) return "N/A";
 
     return lang === "en"
       ? convertPrice(
-        product.price,
-        state.currencies.find((currency: { id: string }) => currency.id === "EUR")?.rate || 1
-      )
+          product.price,
+          state.currencies.find(
+            (currency: { id: string }) => currency.id === "EUR"
+          )?.rate || 1
+        )
       : product.price;
   };
 
@@ -85,11 +89,17 @@ export const ProductCard = ({
           {product.capacity && product.capacity[0] && (
             <p className="text-t16 leading-6 text-white xl:text-t18">
               {product.preview ? (
-                lang === "en" ? "Coming soon!" : "Скоро в доступі!"
+                lang === "en" ? (
+                  "Coming soon!"
+                ) : (
+                  "Скоро в доступі!"
+                )
               ) : (
                 <>
-                  {product.capacity.length > 1 && (lang === "en" ? "from" : "від")}{" "}
-                  {findProductPrice(product.capacity[0].idCrm)} {getCurrencySymbol()}
+                  {product.capacity.length > 1 &&
+                    (lang === "en" ? "from" : "від")}{" "}
+                  {findProductPrice(product.capacity[0].idCrm)}{" "}
+                  {getCurrencySymbol()}
                 </>
               )}
             </p>
