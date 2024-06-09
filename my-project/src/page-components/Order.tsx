@@ -637,6 +637,22 @@ const Order = ({ data, lang }: any) => {
 
       localStorage.clear();
       try {
+        if (typeof window !== "undefined" && window.fbq) {
+          const productDetails = updatedProducts
+            .map(
+              (product: { name: any; quantity: any }) =>
+                `${product.name} : ${product.quantity}`
+            )
+            .join(", ");
+          window.fbq("track", "Purchase", {
+            content_ids: updatedProducts.map(
+              (product: { id: any }) => product.id
+            ),
+            content_type: productDetails,
+            value: amount / 100,
+            currency: lang === "en" ? "EUR" : "UAH",
+          });
+        }
         const response = await fetch(
           "https://api.monobank.ua/api/merchant/invoice/create",
           {
