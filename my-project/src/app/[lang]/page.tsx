@@ -235,14 +235,17 @@ export default async function Home({
       {lang !== "en" && <FreeDelivery />}
 
       <ProductsSection data={data} lang={lang} />
-
-      {/* <AboutUs data={data} /> */}
-      {/* 
-      <AboutUsSlider data={data} /> */}
-
       <AboutUs data={data} />
-
       <Contacts data={data} />
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            if (typeof window !== "undefined" && window.fbq) {
+              window.fbq('track', 'Home Page View');
+            }
+          `,
+        }}
+      />
     </div>
   );
 }
