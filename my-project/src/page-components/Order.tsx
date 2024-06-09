@@ -628,6 +628,12 @@ const Order = ({ data, lang }: any) => {
 
       localStorage.clear();
       router.push(`http://emmyandlily.com/${lang}/thank-you`);
+      window.fbq("track", "Purchase", {
+        content_ids: updatedProducts.map((product: { id: any }) => product.id),
+        content_type: productDetails,
+        value: amount / 100,
+        currency: lang === "en" ? "EUR" : "UAH",
+      });
     } else if (
       deliveryCompleted &&
       privacypolicy === true &&
