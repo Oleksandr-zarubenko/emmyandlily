@@ -45,7 +45,7 @@ export const ProductCard = ({
           <Image
             fill
             src={product.productpicture.url}
-            alt={product.productpicture.alt || "Emmy and Lili"}
+            alt={product.productpicture.alt || "Emmy and Lily"}
             className="product object-cover duration-1000 group-hover:scale-105"
             sizes="(max-width: 768px) 90vw, 305px"
           />

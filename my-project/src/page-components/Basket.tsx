@@ -205,8 +205,8 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
 
       const discountValue = discountObject
         ? discountObject.promoCodName.find(
-          (code: any) => code.promocod === promoCode.trim()
-        ).discount
+            (code: any) => code.promocod === promoCode.trim()
+          ).discount
         : 0;
 
       const discountedPrice = totalPrice * (1 - discountValue / 100);
@@ -239,8 +239,8 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
     });
     const discountValue = discountObject
       ? discountObject.promoCodName.find(
-        (code: any) => code.promocod === promoCode.trim()
-      ).discount
+          (code: any) => code.promocod === promoCode.trim()
+        ).discount
       : 0;
     const discountedPrice = newTotalPrice * (1 - discountValue / 100);
     setDiscountAmount(newTotalPrice * (discountValue / 100));
@@ -289,7 +289,6 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
     });
   });
 
-
   return (
     <section className="container flex-grow justify-between py-40 xl:flex">
       <div className="w-full xl:w-[750px]">
@@ -299,7 +298,9 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
 
         <div className="mb-4 border-b-[1px] border-black pb-14">
           {tovar.length === 0 ? ( // Check if tovar array is empty
-            <p className="text-t16">{lang === 'en' ? 'No items in basket' : 'Не має товарів у кошику'}</p>
+            <p className="text-t16">
+              {lang === "en" ? "No items in basket" : "Не має товарів у кошику"}
+            </p>
           ) : (
             <table className="w-full ">
               <thead>
@@ -330,7 +331,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                           quality={80}
                           fill
                           src={item.photo}
-                          alt={item.productName || "Emmy and Lili"}
+                          alt={item.productName || "Emmy and Lily"}
                           className="object-cover"
                           sizes="(max-width: 768px) 80vw, (max-width: 1200px) 50vw, 550px"
                         />
@@ -339,14 +340,18 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                         <p className="py-2  xl:text-t18 mdOnly:text-t16 ">
                           {item.productName.replace(/#/g, "")}
                         </p>
-                        <p className="text-t14 text-dark/60"> {item.capacity}{lang === "ua" ? "мл" : "ml"}</p>
+                        <p className="text-t14 text-dark/60">
+                          {" "}
+                          {item.capacity}
+                          {lang === "ua" ? "мл" : "ml"}
+                        </p>
                       </div>
                     </td>
                     <td className="relative py-2 text-left leading-5 text-[#333333] xl:text-t18 mdOnly:w-14 mdOnly:text-t16">
                       {state &&
-                        state.products.find(
-                          (items: any) => items.id === item.id
-                        ) ? (
+                      state.products.find(
+                        (items: any) => items.id === item.id
+                      ) ? (
                         <>
                           {lang === "en" ? (
                             <span
@@ -389,11 +394,11 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                             >
                               {prod.oldprice
                                 ? convertPrice(
-                                  prod.oldprice[0],
-                                  state.currencies.find(
-                                    (currency: any) => currency.id === "EUR"
-                                  )?.rate || 1
-                                ) + (lang === "en" ? " €" : " ₴")
+                                    prod.oldprice[0],
+                                    state.currencies.find(
+                                      (currency: any) => currency.id === "EUR"
+                                    )?.rate || 1
+                                  ) + (lang === "en" ? " €" : " ₴")
                                 : ""}
                             </p>
                           )
@@ -438,34 +443,34 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                             (items: any) => items.id === item.id
                           )
                           ? (() => {
-                            const price =
-                              (parseFloat(
-                                state.products.find(
-                                  (items: any) => items.id === item.id
-                                )!.price
-                              ) || 0) * (quantities[item.id] || 1);
-                            const convertedPrice = convertPrice(
-                              price,
-                              state.currencies.find(
-                                (currency: any) => currency.id === "EUR"
-                              )?.rate || 1
-                            );
-                            return price === 0 ? "Preorder" : convertedPrice;
-                          })()
+                              const price =
+                                (parseFloat(
+                                  state.products.find(
+                                    (items: any) => items.id === item.id
+                                  )!.price
+                                ) || 0) * (quantities[item.id] || 1);
+                              const convertedPrice = convertPrice(
+                                price,
+                                state.currencies.find(
+                                  (currency: any) => currency.id === "EUR"
+                                )?.rate || 1
+                              );
+                              return price === 0 ? "Preorder" : convertedPrice;
+                            })()
                           : "N/A"
                         : state &&
-                          state.products.find(
-                            (items: any) => items.id === item.id
-                          )
+                            state.products.find(
+                              (items: any) => items.id === item.id
+                            )
                           ? (() => {
-                            const price =
-                              parseFloat(
-                                state.products.find(
-                                  (items: any) => items.id === item.id
-                                )!.price
-                              ) * (quantities[item.id] || 1);
-                            return price === 0 ? "Preorder" : price;
-                          })()
+                              const price =
+                                parseFloat(
+                                  state.products.find(
+                                    (items: any) => items.id === item.id
+                                  )!.price
+                                ) * (quantities[item.id] || 1);
+                              return price === 0 ? "Preorder" : price;
+                            })()
                           : "N/A"}{" "}
                       {lang === "en" ? " €" : " ₴"}
                     </td>
@@ -490,7 +495,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                           quality={80}
                           fill
                           src={item.photo}
-                          alt={item.productName || "Emmy and Lili"}
+                          alt={item.productName || "Emmy and Lily"}
                           className="object-cover"
                           sizes="(max-width: 768px) 80vw"
                         />
@@ -537,9 +542,9 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                       <ul className="flex flex-col justify-between text-left smOnly:min-h-[80px]">
                         <li className="whitespace-nowrap text-t16 md:mb-4">
                           {state &&
-                            state.products.find(
-                              (items: any) => items.id === item.id
-                            ) ? (
+                          state.products.find(
+                            (items: any) => items.id === item.id
+                          ) ? (
                             <>
                               {lang === "en" ? (
                                 <span
@@ -583,11 +588,11 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                               >
                                 {prod.oldprice
                                   ? convertPrice(
-                                    prod.oldprice[0],
-                                    state.currencies.find(
-                                      (currency: any) => currency.id === "EUR"
-                                    )?.rate || 1
-                                  ) + (lang === "en" ? " €" : " ₴")
+                                      prod.oldprice[0],
+                                      state.currencies.find(
+                                        (currency: any) => currency.id === "EUR"
+                                      )?.rate || 1
+                                    ) + (lang === "en" ? " €" : " ₴")
                                   : ""}
                               </li>
                             )
@@ -600,25 +605,25 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                                 (items: any) => items.id === item.id
                               )
                               ? convertPrice(
-                                (parseFloat(
+                                  (parseFloat(
+                                    state.products.find(
+                                      (items: any) => items.id === item.id
+                                    )!.price
+                                  ) || 0) * (quantities[item.id] || 1),
+                                  state.currencies.find(
+                                    (currency: any) => currency.id === "EUR"
+                                  )?.rate || 1
+                                )
+                              : "N/A"
+                            : state &&
+                                state.products.find(
+                                  (items: any) => items.id === item.id
+                                )
+                              ? parseFloat(
                                   state.products.find(
                                     (items: any) => items.id === item.id
                                   )!.price
-                                ) || 0) * (quantities[item.id] || 1),
-                                state.currencies.find(
-                                  (currency: any) => currency.id === "EUR"
-                                )?.rate || 1
-                              )
-                              : "N/A"
-                            : state &&
-                              state.products.find(
-                                (items: any) => items.id === item.id
-                              )
-                              ? parseFloat(
-                                state.products.find(
-                                  (items: any) => items.id === item.id
-                                )!.price
-                              ) * (quantities[item.id] || 1)
+                                ) * (quantities[item.id] || 1)
                               : "N/A"}{" "}
                           {lang === "en" ? " €" : " ₴"}
                         </li>
@@ -709,13 +714,14 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
         <div className="mb-8 ml-auto flex w-52 justify-between text-t14 xl:text-t16 ">
           <p>{lang === en ? "Discount" : "Знижка"} </p>
           <p>
-            -  {lang === en
+            -{" "}
+            {lang === en
               ? convertPrice(
-                discountAmount,
-                state.currencies.find(
-                  (currency: any) => currency.id === "EUR"
-                )?.rate || 1
-              )
+                  discountAmount,
+                  state.currencies.find(
+                    (currency: any) => currency.id === "EUR"
+                  )?.rate || 1
+                )
               : discountAmount}
             {lang === en ? " €" : " ₴"}
           </p>
@@ -725,11 +731,11 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
           <p className="text-t16 font-bold">
             {lang === en
               ? convertPrice(
-                totalPrice,
-                state.currencies.find(
-                  (currency: any) => currency.id === "EUR"
-                )?.rate || 1
-              )
+                  totalPrice,
+                  state.currencies.find(
+                    (currency: any) => currency.id === "EUR"
+                  )?.rate || 1
+                )
               : totalPrice}
             {lang === en ? " €" : " ₴"}
           </p>

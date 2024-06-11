@@ -191,8 +191,8 @@ const Delivery: React.FC<DeliveryProps> = ({
         )}
 
         {selectedOption === "dhl" ||
-          selectedOption === "ups" ||
-          selectedOption === "novaposhta-smovuviz-euro" ? (
+        selectedOption === "ups" ||
+        selectedOption === "novaposhta-smovuviz-euro" ? (
           <span className="text-t14 italic">{data.order.deliveryTime2}</span>
         ) : (
           <span className="text-t14 italic">{data.order.deliveryTime}</span>
@@ -214,7 +214,7 @@ const Delivery: React.FC<DeliveryProps> = ({
                   width={305}
                   height={33}
                   src={method.img.url}
-                  alt={method.img.alt || "Emmy and Lili"}
+                  alt={method.img.alt || "Emmy and Lily"}
                   className="product h-[33px] w-auto object-contain object-center"
                   sizes="(max-width: 768px) 90vw, 305px"
                 />
