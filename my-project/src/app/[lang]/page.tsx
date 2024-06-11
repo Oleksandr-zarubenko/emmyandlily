@@ -45,7 +45,9 @@ const queryEN = gql`
         url
       }
     }
-
+    promoOffer {
+      title
+    }
     contactssection {
       heading
       text
@@ -132,7 +134,9 @@ const queryUA = gql`
         url
       }
     }
-
+    promoOffer(locale: uk) {
+      title
+    }
     contactssection(locale: uk) {
       heading
       text
@@ -232,7 +236,9 @@ export default async function Home({
     <div className="flex flex-grow flex-col bg-bg_secondary">
       <HeroSection data={data} />
       <Video data={data} />
-      {lang !== "en" && <FreeDelivery />}
+      {data?.promoOffer?.title && (
+        <FreeDelivery text={data?.promoOffer?.title} />
+      )}
 
       <ProductsSection data={data} lang={lang} />
       <AboutUs data={data} />
