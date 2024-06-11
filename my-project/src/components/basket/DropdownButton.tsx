@@ -53,8 +53,7 @@ const DropdownButton = ({
 const DropDown = ({ data }: any) => {
   return (
     <div>
-      <h2 className="mb-8 text-t24 -tracking-5 xl:mb-10 xl:text-t32">
-        {" "}
+      <h2 className="mb-8 text-t24 -tracking-5 xl:mb-10 xl:text-t32 mdOnly:font-bold smOnly:font-bold xl:font-bold ">
         {data.basket.additionalInformation}
       </h2>
 

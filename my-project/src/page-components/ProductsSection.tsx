@@ -39,7 +39,7 @@ export const ProductsSection = ({
     );
     return correspondingProduct;
   });
-  console.log(state)
+
   // const previewProducts = data.allProducts.filter(
   //   (product: any) => product.preview
   // );

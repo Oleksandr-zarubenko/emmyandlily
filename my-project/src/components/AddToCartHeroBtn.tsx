@@ -40,7 +40,7 @@ export const AddToCartHeroBtn: FC<AddToCartHeroBtnProps> = ({
   const productToAdd = trevelSet.find((product: any) =>
     product.capacity.some((cap: any) => cap.idCrm === "id_12")
   );
-  console.log(state)
+
   const addToCart = () => {
     const storedDataString = localStorage.getItem("storedData");
     const storedData = storedDataString ? JSON.parse(storedDataString) : [];

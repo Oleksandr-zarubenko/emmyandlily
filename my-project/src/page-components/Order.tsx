@@ -398,7 +398,7 @@ const Order = ({ data, lang }: any) => {
 
   const selectePaymentMethod = paymentMonobank === true ? "id_38" : "id_12"
   const adress = street + houseNumber
-  console.log(adress)
+
   const makeApiCall = async () => {
     const translatedOption = translateShippingOption(selectedOption);
     const parsedProducts = updatedProducts.map((product: any) => ({
@@ -756,7 +756,7 @@ const Order = ({ data, lang }: any) => {
   return (
     <section className="paw container grow justify-between py-40 md:flex">
       <div className="smOnly:w-full mdOnly:w-[55%]">
-        <h1 className=" mb-6 text-t18 font-bold xl:mb-10 xl:text-t32 mdOnly:mb-8 mdOnly:text-t24">
+        <h1 className=" mb-6 text-t18  mdOnly:font-bold smOnly:font-bold xl:font-bold xl:mb-10 xl:text-t32 mdOnly:mb-8 mdOnly:text-t24">
           {data.order.heading}
         </h1>
 

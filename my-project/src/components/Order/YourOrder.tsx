@@ -74,7 +74,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
   }
   return (
     <div className="h-[420px] w-full rounded border-[1px] border-[#DCDCDC] bg-white px-4  py-7 shadow-order xl:w-[357px] xl:px-4 xl:py-10 smOnly:mt-[56px] smOnly:h-[360px] mdOnly:h-[353px] mdOnly:w-[255px] mdOnly:px-4 mdOnly:py-6">
-      <h3 className="mb-8 text-t18 font-bold xl:text-t24">
+      <h3 className="mb-8 text-t18 mdOnly:font-bold smOnly:font-bold xl:font-bold  xl:text-t24">
         {data.order.yourOrder}
       </h3>
       <ul className="mb-6 border-b-[1px] border-[#292D2D]">
@@ -121,7 +121,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
         <p className="text-t12 xl:text-t18">
           {data.order.totalAmountToBePaid}
         </p>{" "}
-        <p className="text-t16 xl:text-t18">
+        <p className="text-t16  mdOnly:font-bold smOnly:font-bold xl:font-bold xl:text-t18">
           {lang === en ? allTotalEn - totaldiscountAmount + " €" : allTotal - totaldiscountAmount + " ₴"}
         </p>
       </div>
