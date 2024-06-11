@@ -42,7 +42,6 @@ export default async function ThankYouPage({
     },
   });
 
-
   return (
     <section className="relative grow">
       <Image
@@ -73,6 +72,15 @@ export default async function ThankYouPage({
           </Link>
         </div>
       </div>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            if (typeof window !== "undefined" && window.fbq) {
+              window.fbq('track', 'Thank You Page View');
+            }
+          `,
+        }}
+      />
     </section>
   );
 }

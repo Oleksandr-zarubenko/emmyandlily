@@ -8,7 +8,7 @@ import Mono from "../../public/mono.png";
 import { i18n } from "@/i18n.config";
 import getData from "@/utils/api/api";
 import { convertPrice } from "@/utils/convertPrice/convertPrice";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 const Order = ({ data, lang }: any) => {
   const locales = i18n.locales;
   const en = locales[1];
@@ -16,7 +16,7 @@ const Order = ({ data, lang }: any) => {
     products: { id: string; price: string }[];
     currencies: { id: string; rate: number }[];
   }>({ products: [], currencies: [] });
-  const router = useRouter()
+  const router = useRouter();
   const fetchData = async () => {
     try {
       const data = await getData();
@@ -30,28 +30,30 @@ const Order = ({ data, lang }: any) => {
   }, []);
 
   const [storedData, setStoredData] = useState(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       return JSON.parse(localStorage.getItem("storedData") || "[]");
     }
     return [];
   });
 
-  const [quantities, setQuantities] = useState<{ [productId: string]: number }>(() => {
-    if (typeof window !== 'undefined') {
-      return JSON.parse(localStorage.getItem("quantities") || "{}");
+  const [quantities, setQuantities] = useState<{ [productId: string]: number }>(
+    () => {
+      if (typeof window !== "undefined") {
+        return JSON.parse(localStorage.getItem("quantities") || "{}");
+      }
+      return {};
     }
-    return {};
-  });
+  );
 
   const [apiPromocod, setApiPromoCod] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       return localStorage.getItem("promoCode") || "";
     }
     return "";
   });
 
   const [apiPromocodPartner, setApiPromoCodPartner] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       return localStorage.getItem("promoCodePartner") || "";
     }
     return "";
@@ -59,7 +61,7 @@ const Order = ({ data, lang }: any) => {
 
   const [productName, setProductName] = useState(storedData);
   const [deliveryCompleted, setDeliveryCompleted] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const storedDeliveryCompleted = localStorage.getItem("deliveryCompleted");
       return storedDeliveryCompleted === "true";
     }
@@ -67,7 +69,7 @@ const Order = ({ data, lang }: any) => {
   });
 
   const [error, setError] = useState<{ [key: string]: string }>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const storedError = localStorage.getItem("error");
       return storedError ? JSON.parse(storedError) : {};
     }
@@ -75,83 +77,90 @@ const Order = ({ data, lang }: any) => {
   });
 
   const [street, setStreet] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       return localStorage.getItem("street") || "";
     }
     return "";
   });
 
+  const [externalId, setExternalId] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("externalId") || "";
+    }
+    return "";
+  });
+
   const [houseNumber, setHouseNumber] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       return localStorage.getItem("houseNumber") || "";
     }
     return "";
   });
   const [city, setCity] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       return localStorage.getItem("city") || "";
     }
     return "";
   });
 
   const [country, setCountry] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       return localStorage.getItem("country") || "";
     }
     return "";
   });
 
   const [numposhtmat, setNumposhtmat] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       return localStorage.getItem("numposhtmat") || "";
     }
     return "";
   });
 
   const [numnp, setNumnp] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       return localStorage.getItem("numnp") || "";
     }
     return "";
   });
 
   const [index, setIndex] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       return localStorage.getItem("index") || "";
     }
     return "";
   });
 
   const [sstreet, setSstreet] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       return localStorage.getItem("sstreet") || "";
     }
     return "";
   });
 
   const [zip, setZip] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       return localStorage.getItem("zip") || "";
     }
     return "";
   });
 
   const [house, setHouse] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       return localStorage.getItem("house") || "";
     }
     return "";
   });
 
   const [appartment, setAppartment] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       return localStorage.getItem("appartment") || "";
     }
     return "";
   });
 
   const [isRecipient, setIsRecipient] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const storedIsRecipient = localStorage.getItem("isRecipient");
       return storedIsRecipient === "true";
     }
@@ -159,15 +168,18 @@ const Order = ({ data, lang }: any) => {
   });
 
   const [isDiscountsAndNews, setIsDiscountsAndNews] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
-      const storedIsDiscountsAndNews = localStorage.getItem("isDiscountsAndNews");
-      return storedIsDiscountsAndNews ? storedIsDiscountsAndNews === "true" : false;
+    if (typeof window !== "undefined") {
+      const storedIsDiscountsAndNews =
+        localStorage.getItem("isDiscountsAndNews");
+      return storedIsDiscountsAndNews
+        ? storedIsDiscountsAndNews === "true"
+        : false;
     }
     return false;
   });
 
   const [privacypolicy, setPrivacypolicy] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const storedIsprivacypolicy = localStorage.getItem("privacypolicy");
       return storedIsprivacypolicy ? JSON.parse(storedIsprivacypolicy) : false;
     }
@@ -175,7 +187,7 @@ const Order = ({ data, lang }: any) => {
   });
 
   const [deliveryActive, setDeliveryActive] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const storedDeliveryActive = localStorage.getItem("deliveryActive");
       return storedDeliveryActive ? JSON.parse(storedDeliveryActive) : false;
     }
@@ -183,7 +195,7 @@ const Order = ({ data, lang }: any) => {
   });
 
   const [paymentActive, setPaymentActive] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const storedPaymentActive = localStorage.getItem("paymentActive");
       return storedPaymentActive ? JSON.parse(storedPaymentActive) : false;
     }
@@ -191,7 +203,7 @@ const Order = ({ data, lang }: any) => {
   });
 
   const [personActive, setPersonActive] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const storedPersonActive = localStorage.getItem("personActive");
       return storedPersonActive ? JSON.parse(storedPersonActive) : true;
     }
@@ -199,14 +211,14 @@ const Order = ({ data, lang }: any) => {
   });
 
   const [selectedOption, setSelectedOption] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       return localStorage.getItem("selectedOption") || "";
     }
     return "";
   });
 
   const [deliveryPrice, setDeliveryPrice] = useState<number>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const storedDeliveryPrice = localStorage.getItem("deliveryPrice");
       return storedDeliveryPrice ? parseFloat(storedDeliveryPrice) : 0;
     }
@@ -215,69 +227,72 @@ const Order = ({ data, lang }: any) => {
 
   // форми клієнта
   const [firstName, setFirstName] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       return localStorage.getItem("firstName") || "";
     }
     return "";
   });
 
   const [lastName, setLastName] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       return localStorage.getItem("lastName") || "";
     }
     return "";
   });
 
   const [email, setEmail] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       return localStorage.getItem("email") || "";
     }
     return "";
   });
 
   const [phoneNumber, setPhoneNumber] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       return localStorage.getItem("phoneNumber") || "";
     }
     return "";
   });
 
   const [recipientFirstName, setRecipientFirstName] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       return localStorage.getItem("recipientFirstName") || "";
     }
     return "";
   });
 
   const [recipientLastName, setRecipientLastName] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       return localStorage.getItem("recipientLastName") || "";
     }
     return "";
   });
 
   const [recipientEmail, setRecipientEmail] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       return localStorage.getItem("recipientEmail") || "";
     }
     return "";
   });
 
-
-  const [recipientPhoneNumber, setRecipientPhoneNumber] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem("recipientPhoneNumber") || "";
+  const [recipientPhoneNumber, setRecipientPhoneNumber] = useState<string>(
+    () => {
+      if (typeof window !== "undefined") {
+        return localStorage.getItem("recipientPhoneNumber") || "";
+      }
+      return "";
     }
-    return "";
-  });
+  );
 
   const [paymentMonobank, setPaymentMonobank] = useState<boolean>(false);
   const [afterpay, setAfterpay] = useState<boolean>(false);
-  const total = typeof window !== 'undefined' ? localStorage.getItem("allTotal") : null;
+  const total =
+    typeof window !== "undefined" ? localStorage.getItem("allTotal") : null;
 
   const totalPrice = total ? parseInt(total) : 0;
 
-  const totalEn = typeof window !== 'undefined' ? localStorage.getItem("totalPriceEn") : null;
+  const totalEn =
+    typeof window !== "undefined" ? localStorage.getItem("totalPriceEn") : null;
   const totalPriceEn = totalEn ? parseInt(totalEn) : 0;
 
   const recipientData = `Дані отримувача ${recipientFirstName} ${recipientLastName} ${recipientEmail} ${recipientPhoneNumber}`;
@@ -312,7 +327,6 @@ const Order = ({ data, lang }: any) => {
       "isDiscountsAndNews",
       JSON.stringify(isDiscountsAndNews)
     );
-
 
     localStorage.setItem("firstName", firstName);
     localStorage.setItem("lastName", lastName);
@@ -352,7 +366,6 @@ const Order = ({ data, lang }: any) => {
     deliveryActive,
     paymentActive,
     personActive,
-
   ]);
 
   const handleMonobankChange = () => {
@@ -396,8 +409,10 @@ const Order = ({ data, lang }: any) => {
     .join(", ");
 
 
+
   const selectePaymentMethod = paymentMonobank === true ? "id_38" : "id_12"
   const adress = street + houseNumber
+
 
   const makeApiCall = async () => {
     const translatedOption = translateShippingOption(selectedOption);
@@ -428,28 +443,27 @@ const Order = ({ data, lang }: any) => {
         products: parsedProducts,
         isDiscountsAndNews,
         apiPromocodPartner,
-        selectePaymentMethod
+        selectePaymentMethod,
+        externalId,
       }),
     });
   };
 
-
   const handleOptionChange = (e: any) => {
     setSelectedOption(e.target.value);
 
-    const deliveryMethod = data.delivery.deliveryMethod.find((method: any) => method.idD === e.target.value);
+    const deliveryMethod = data.delivery.deliveryMethod.find(
+      (method: any) => method.idD === e.target.value
+    );
 
     if (deliveryMethod) {
       setDeliveryPrice(parseInt(deliveryMethod.price));
     } else {
-
       setDeliveryPrice(0);
     }
   };
 
-
   const isPersonalDataComplete = () => {
-
     if (isRecipient === false) {
       return (
         firstName !== "" &&
@@ -468,7 +482,6 @@ const Order = ({ data, lang }: any) => {
         !error.recipientLastName &&
         !error.recipientEmail &&
         !error.recipientPhoneNumber
-
       );
     } else {
       return (
@@ -484,7 +497,6 @@ const Order = ({ data, lang }: any) => {
     }
   };
 
-
   const saveAndProceed = () => {
     if (isPersonalDataComplete()) {
       setPersonActive(false);
@@ -498,101 +510,121 @@ const Order = ({ data, lang }: any) => {
     } else {
       setDeliveryActive(false);
 
-      if (!isRecipient) { // Якщо не є отримувачем
-        if (firstName.trim() === '' || error.firstName) {
+      if (!isRecipient) {
+        // Якщо не є отримувачем
+        if (firstName.trim() === "" || error.firstName) {
           //@ts-ignore
-          document.getElementById('firstName')?.classList.add('input-error');
+          document.getElementById("firstName")?.classList.add("input-error");
         } else {
           //@ts-ignore
-          document.getElementById('firstName')?.classList.remove('input-error');
+          document.getElementById("firstName")?.classList.remove("input-error");
         }
-        if (lastName.trim() === '' || error.lastName) {
+        if (lastName.trim() === "" || error.lastName) {
           //@ts-ignore
-          document.getElementById('lastName')?.classList.add('input-error');
+          document.getElementById("lastName")?.classList.add("input-error");
         } else {
           //@ts-ignore
-          document.getElementById('lastName')?.classList.remove('input-error');
+          document.getElementById("lastName")?.classList.remove("input-error");
         }
-        if (email.trim() === '' || error.email) {
+        if (email.trim() === "" || error.email) {
           //@ts-ignore
-          document.getElementById('email')?.classList.add('input-error');
+          document.getElementById("email")?.classList.add("input-error");
         } else {
           //@ts-ignore
-          document.getElementById('email')?.classList.remove('input-error');
+          document.getElementById("email")?.classList.remove("input-error");
         }
-        if (phoneNumber.trim() === '' || error.phoneNumber) {
+        if (phoneNumber.trim() === "" || error.phoneNumber) {
           //@ts-ignore
-          document.getElementById('phoneNumber')?.classList.add('input-error');
+          document.getElementById("phoneNumber")?.classList.add("input-error");
         } else {
           //@ts-ignore
-          document.getElementById('phoneNumber')?.classList.remove('input-error');
+          document
+            .getElementById("phoneNumber")
+            ?.classList.remove("input-error");
         }
-        if (recipientFirstName.trim() === '' || error.recipientFirstName) {
+        if (recipientFirstName.trim() === "" || error.recipientFirstName) {
           //@ts-ignore
-          document.getElementById('recipientFirstName')?.classList.add('input-error');
+          document
+            .getElementById("recipientFirstName")
+            ?.classList.add("input-error");
         } else {
           //@ts-ignore
-          document.getElementById('recipientFirstName')?.classList.remove('input-error');
+          document
+            .getElementById("recipientFirstName")
+            ?.classList.remove("input-error");
         }
-        if (recipientLastName.trim() === '' || error.recipientLastName) {
+        if (recipientLastName.trim() === "" || error.recipientLastName) {
           //@ts-ignore
-          document.getElementById('recipientLastName')?.classList.add('input-error');
+          document
+            .getElementById("recipientLastName")
+            ?.classList.add("input-error");
         } else {
           //@ts-ignore
-          document.getElementById('recipientLastName')?.classList.remove('input-error');
+          document
+            .getElementById("recipientLastName")
+            ?.classList.remove("input-error");
         }
-        if (recipientEmail.trim() === '' || error.recipientEmail) {
+        if (recipientEmail.trim() === "" || error.recipientEmail) {
           //@ts-ignore
-          document.getElementById('recipientEmail')?.classList.add('input-error');
+          document
+            .getElementById("recipientEmail")
+            ?.classList.add("input-error");
         } else {
           //@ts-ignore
-          document.getElementById('recipientEmail')?.classList.remove('input-error');
+          document
+            .getElementById("recipientEmail")
+            ?.classList.remove("input-error");
         }
-        if (recipientPhoneNumber.trim() === '' || error.recipientPhoneNumber) {
+        if (recipientPhoneNumber.trim() === "" || error.recipientPhoneNumber) {
           //@ts-ignore
-          document.getElementById('recipientPhoneNumber')?.classList.add('input-error');
+          document
+            .getElementById("recipientPhoneNumber")
+            ?.classList.add("input-error");
         } else {
           //@ts-ignore
-          document.getElementById('recipientPhoneNumber')?.classList.remove('input-error');
+          document
+            .getElementById("recipientPhoneNumber")
+            ?.classList.remove("input-error");
         }
-      } else { // Якщо є отримувачем
-        if (firstName.trim() === '' || error.firstName) {
+      } else {
+        // Якщо є отримувачем
+        if (firstName.trim() === "" || error.firstName) {
           //@ts-ignore
-          document.getElementById('firstName')?.classList.add('input-error');
+          document.getElementById("firstName")?.classList.add("input-error");
         } else {
           //@ts-ignore
-          document.getElementById('firstName')?.classList.remove('input-error');
+          document.getElementById("firstName")?.classList.remove("input-error");
         }
-        if (lastName.trim() === '' || error.lastName) {
+        if (lastName.trim() === "" || error.lastName) {
           //@ts-ignore
-          document.getElementById('lastName')?.classList.add('input-error');
+          document.getElementById("lastName")?.classList.add("input-error");
         } else {
           //@ts-ignore
-          document.getElementById('lastName')?.classList.remove('input-error');
+          document.getElementById("lastName")?.classList.remove("input-error");
         }
-        if (email.trim() === '' || error.email) {
+        if (email.trim() === "" || error.email) {
           //@ts-ignore
-          document.getElementById('email')?.classList.add('input-error');
+          document.getElementById("email")?.classList.add("input-error");
         } else {
           //@ts-ignore
-          document.getElementById('email')?.classList.remove('input-error');
+          document.getElementById("email")?.classList.remove("input-error");
         }
-        if (phoneNumber.trim() === '' || error.phoneNumber) {
+        if (phoneNumber.trim() === "" || error.phoneNumber) {
           //@ts-ignore
-          document.getElementById('phoneNumber')?.classList.add('input-error');
+          document.getElementById("phoneNumber")?.classList.add("input-error");
         } else {
           //@ts-ignore
-          document.getElementById('phoneNumber')?.classList.remove('input-error');
+          document
+            .getElementById("phoneNumber")
+            ?.classList.remove("input-error");
         }
       }
     }
-  }
+  };
 
-
-
-  const numberValute = lang === en ? 978 : 980
-  const amount = lang === en ? Math.round(totalPriceEn * 100) : totalPrice * 100
-
+  const numberValute = lang === en ? 978 : 980;
+  const amount =
+    lang === en ? Math.round(totalPriceEn * 100) : totalPrice * 100;
 
   const switchToPaymentTab = async () => {
     if (deliveryCompleted && afterpay === true && privacypolicy === true) {
@@ -600,13 +632,47 @@ const Order = ({ data, lang }: any) => {
 
       localStorage.clear();
       router.push(`http://emmyandlily.com/${lang}/thank-you`);
-
-    }
-    else if (deliveryCompleted && privacypolicy === true && paymentMonobank === true) {
+      if (typeof window !== "undefined" && window.fbq) {
+        const productDetails = updatedProducts
+          .map(
+            (product: { name: any; quantity: any }) =>
+              `${product.name} : ${product.quantity}`
+          )
+          .join(", ");
+        window.fbq("track", "Purchase", {
+          content_ids: updatedProducts.map(
+            (product: { id: any }) => product.id
+          ),
+          content_type: productDetails,
+          value: amount / 100,
+          currency: lang === "en" ? "EUR" : "UAH",
+        });
+      }
+    } else if (
+      deliveryCompleted &&
+      privacypolicy === true &&
+      paymentMonobank === true
+    ) {
       makeApiCall();
 
       localStorage.clear();
       try {
+        if (typeof window !== "undefined" && window.fbq) {
+          const productDetails = updatedProducts
+            .map(
+              (product: { name: any; quantity: any }) =>
+                `${product.name} : ${product.quantity}`
+            )
+            .join(", ");
+          window.fbq("track", "Purchase", {
+            content_ids: updatedProducts.map(
+              (product: { id: any }) => product.id
+            ),
+            content_type: productDetails,
+            value: amount / 100,
+            currency: lang === "en" ? "EUR" : "UAH",
+          });
+        }
         const response = await fetch(
           "https://api.monobank.ua/api/merchant/invoice/create",
           {
@@ -619,7 +685,7 @@ const Order = ({ data, lang }: any) => {
               amount: amount,
               ccy: numberValute,
               merchantPaymInfo: {
-                reference: "84d0070ee4e44667b31371d8f8813947",
+                reference: externalId,
                 destination: productNamesString,
                 comment: productNamesString,
                 customerEmails: [],
@@ -651,12 +717,8 @@ const Order = ({ data, lang }: any) => {
       }
     } else if (privacypolicy === false) {
       alert("Підтвредіть замовлення");
-
-    }
-
-    else {
+    } else {
       alert("Виберіть спосіб оплати");
-
     }
   };
 
@@ -664,39 +726,49 @@ const Order = ({ data, lang }: any) => {
     setPersonActive(true);
     setDeliveryActive(false);
     setPaymentActive(false);
-
   };
 
   const switchToDeliveryTab = () => {
-    // Перевірка та встановлення/видалення класів для країни
+    const generateUniqueString = () => {
+      const timestamp = new Date().getTime();
+      const randomNum = Math.floor(Math.random() * 1000000);
+      const currentTime = new Date().toLocaleString();
+      return `${timestamp}-${randomNum}-${currentTime}`;
+    };
+
+    const uniqueString = generateUniqueString();
+
+    localStorage.setItem("externalId", uniqueString);
+    setExternalId(uniqueString);
+    // Перевірка та встановлення / видалення класів для країни
     if (country.trim() === "" || error.country) {
-      document.getElementById('country')?.classList.add('input-error');
+      document.getElementById("country")?.classList.add("input-error");
       return;
     } else {
-      document.getElementById('country')?.classList.remove('input-error');
+      document.getElementById("country")?.classList.remove("input-error");
     }
 
     // Перевірка та встановлення/видалення класів для міста
     if (city.trim() === "" || error.city) {
-      document.getElementById('city')?.classList.add('input-error');
+      document.getElementById("city")?.classList.add("input-error");
       return;
     } else {
-      document.getElementById('city')?.classList.remove('input-error');
+      document.getElementById("city")?.classList.remove("input-error");
     }
 
     // Перевірка даних для конкретного методу доставки
 
     if (selectedOption === "np-courier") {
       if (street.trim() === "") {
-        document.getElementById('street')?.classList.add('input-error');
+        document.getElementById("street")?.classList.add("input-error");
       } else {
-        document.getElementById('street')?.classList.remove('input-error');
+        document.getElementById("street")?.classList.remove("input-error");
       }
 
       if (houseNumber.trim() === "") {
-        document.getElementById('houseNumber')?.classList.add('input-error');
+        document.getElementById("houseNumber")?.classList.add("input-error");
       } else {
-        document.getElementById('houseNumber')?.classList.remove('input-error');
+        document.getElementById("houseNumber")?.classList.remove("input-error");
       }
 
       if (street.trim() === "" || houseNumber.trim() === "") {
@@ -704,38 +776,41 @@ const Order = ({ data, lang }: any) => {
       }
     } else if (selectedOption === "dhl" || selectedOption === "ups") {
       if (sstreet.trim() === "" || error.sstreet) {
-        document.getElementById('sstreet')?.classList.add('input-error');
+        document.getElementById("sstreet")?.classList.add("input-error");
         return;
       } else {
-        document.getElementById('sstreet')?.classList.remove('input-error');
+        document.getElementById("sstreet")?.classList.remove("input-error");
       }
 
       if (zip.trim() === "" || error.zip) {
-        document.getElementById('zip')?.classList.add('input-error');
+        document.getElementById("zip")?.classList.add("input-error");
         return;
       } else {
-        document.getElementById('zip')?.classList.remove('input-error');
+        document.getElementById("zip")?.classList.remove("input-error");
       }
 
       if (house.trim() === "" || error.house) {
-        document.getElementById('house')?.classList.add('input-error');
+        document.getElementById("house")?.classList.add("input-error");
         return;
       } else {
-        document.getElementById('house')?.classList.remove('input-error');
+        document.getElementById("house")?.classList.remove("input-error");
       }
 
       if (appartment.trim() === "" || error.appartment) {
-        document.getElementById('appartment')?.classList.add('input-error');
+        document.getElementById("appartment")?.classList.add("input-error");
         return;
       } else {
-        document.getElementById('appartment')?.classList.remove('input-error');
+        document.getElementById("appartment")?.classList.remove("input-error");
       }
 
-      if (sstreet.trim() === "" || zip.trim() === "" || house.trim() === "" || appartment.trim() === "") {
+      if (
+        sstreet.trim() === "" ||
+        zip.trim() === "" ||
+        house.trim() === "" ||
+        appartment.trim() === ""
+      ) {
         return;
       }
-
-
     }
 
     if (selectedOption) {
@@ -845,32 +920,33 @@ const Order = ({ data, lang }: any) => {
           {paymentActive && (
             <div>
               <h3 className="mb-8 text-t18 font-bold">Оберіть спосіб оплати</h3>
-              <label className="flex mb-3">
+              <label className="mb-3 flex">
                 <input
                   type="radio"
                   name="paymentMethod"
                   checked={paymentMonobank}
                   onChange={handleMonobankChange}
-                  className="accent-black mr-2"
+                  className="mr-2 accent-black"
                 />
                 <Image src={Mono} alt="Monobank" width={267} height={24} />
               </label>
               <label className="flex">
                 <input
-
                   type="radio"
                   name="paymentMethod"
                   checked={afterpay}
                   onChange={handleAfterpayChange}
-                  className="accent-black mr-2"
+                  className="mr-2 accent-black"
                 />
                 <div>
                   <p className="text-t16">Оплата під час отримання товару</p>
-                  <p className="text-t12">(Ця послуга оплачується окремо, за тарифним планом перевізника)</p>
+                  <p className="text-t12">
+                    (Ця послуга оплачується окремо, за тарифним планом
+                    перевізника)
+                  </p>
                 </div>
               </label>
             </div>
-
           )}
         </div>
       </div>

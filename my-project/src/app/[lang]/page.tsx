@@ -45,7 +45,9 @@ const queryEN = gql`
         url
       }
     }
-
+    promoOffer {
+      title
+    }
     contactssection {
       heading
       text
@@ -62,7 +64,6 @@ const queryEN = gql`
       text
     }
     allProducts {
-   
       preview
       heading
       description
@@ -87,7 +88,6 @@ const queryEN = gql`
       order
       methodOfUse
       capacity {
-  
         ml
         idCrm
       }
@@ -134,7 +134,9 @@ const queryUA = gql`
         url
       }
     }
-
+    promoOffer(locale: uk) {
+      title
+    }
     contactssection(locale: uk) {
       heading
       text
@@ -151,7 +153,6 @@ const queryUA = gql`
       text
     }
     allProducts(locale: uk) {
-   
       preview
       heading
       description
@@ -176,7 +177,6 @@ const queryUA = gql`
       order
       methodOfUse
       capacity {
-  
         ml
         idCrm
       }
@@ -236,17 +236,22 @@ export default async function Home({
     <div className="flex flex-grow flex-col bg-bg_secondary">
       <HeroSection data={data} />
       <Video data={data} />
-      {lang !== "en" && <FreeDelivery />}
+      {data?.promoOffer?.title && (
+        <FreeDelivery text={data?.promoOffer?.title} />
+      )}
 
       <ProductsSection data={data} lang={lang} />
-
-      {/* <AboutUs data={data} /> */}
-      {/* 
-      <AboutUsSlider data={data} /> */}
-
       <AboutUs data={data} />
-
       <Contacts data={data} />
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            if (typeof window !== "undefined" && window.fbq) {
+              window.fbq('track', 'Home Page View');
+            }
+          `,
+        }}
+      />
     </div>
   );
 }

@@ -33,10 +33,21 @@ export default async function OfferPage({
   });
 
   return (
-    <section className="grow py-32">
-      <div className="container flex flex-col gap-3">
-        <Markdown text={data.offer.offertext} />
-      </div>
-    </section>
+    <>
+      <section className="grow py-32">
+        <div className="container flex flex-col gap-3">
+          <Markdown text={data.offer.offertext} />
+        </div>
+      </section>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            if (typeof window !== "undefined" && window.fbq) {
+              window.fbq('track', 'Offer Page View');
+            }
+          `,
+        }}
+      />
+    </>
   );
 }

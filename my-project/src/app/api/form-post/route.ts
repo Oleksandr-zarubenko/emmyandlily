@@ -27,7 +27,7 @@ export async function POST(req: Request) {
     sajt: "",
     promokod: rawBody.apiPromocod,
     partnerPoPromokodu: rawBody.apiPromocodPartner,
-    externalId: "",
+    externalId: rawBody.externalId,
     organizationId: "",
     stockId: "",
     novaposhta: {

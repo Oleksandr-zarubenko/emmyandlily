@@ -60,7 +60,6 @@ const queryEN = gql`
       methodOfUse
 
       capacity {
-      
         ml
         idCrm
       }
@@ -147,7 +146,6 @@ const queryUA = gql`
       methodOfUse
 
       capacity {
-  
         ml
         idCrm
       }
@@ -191,5 +189,18 @@ export default async function OrderPage({
     },
   });
 
-  return <Order data={data} lang={lang} />;
+  return (
+    <>
+      <Order data={data} lang={lang} />{" "}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            if (typeof window !== "undefined" && window.fbq) {
+              window.fbq('track', 'Order Page View');
+            }
+          `,
+        }}
+      />
+    </>
+  );
 }
