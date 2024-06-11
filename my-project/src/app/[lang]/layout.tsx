@@ -4,9 +4,9 @@ import Footer from "@/components/footer/footer";
 import { Open_Sans } from "next/font/google";
 import { Abril_Fatface } from "next/font/google";
 import { gql } from "@apollo/client";
+import { Analytics } from "@vercel/analytics/react";
 
 import "../globals.css";
-import { MobileMenu } from "@/components/MobileMenu";
 import { Locale } from "../../i18n.config";
 import { getClient } from "../../utils/apollo-client";
 import { AddedToCartProvider } from "@/components/context/addedToCart";
@@ -112,6 +112,7 @@ export default async function RootLayout({
           {children}
           <Footer data={data} lang={lang} />
         </AddedToCartProvider>
+        <Analytics />
       </body>
     </html>
   );
