@@ -41,6 +41,7 @@ export const ProductsSection = ({
     );
     return correspondingProduct;
   });
+
   // const previewProducts = data.allProducts.filter(
   //   (product: any) => product.preview
   // );

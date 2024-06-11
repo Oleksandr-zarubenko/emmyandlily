@@ -4,8 +4,7 @@ import { FC } from "react";
 import cn from "classnames";
 import { useAddedToCart } from "@/components/context/addedToCart";
 import getData from "@/utils/api/api";
-interface AddToCartHeroBtnProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface AddToCartHeroBtnProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   text: string;
   className?: string;
   data: any;
@@ -17,8 +16,9 @@ export const AddToCartHeroBtn: FC<AddToCartHeroBtnProps> = ({
   className,
   data,
   secondtext,
-  lang,
+
 }) => {
+
   const { addedToCart, setAddedToCart } = useAddedToCart();
   const trevelSet = data.allProducts;
   const [state, setState] = useState<{
@@ -36,40 +36,29 @@ export const AddToCartHeroBtn: FC<AddToCartHeroBtnProps> = ({
   };
   useEffect(() => {
     fetchData();
-
-    const interval = setInterval(() => {
-      fetchData();
-    }, 60000);
-
-    return () => clearInterval(interval);
   }, []);
-
   const productToAdd = trevelSet.find((product: any) =>
     product.capacity.some((cap: any) => cap.idCrm === "id_12")
   );
+
   const addToCart = () => {
     const storedDataString = localStorage.getItem("storedData");
     const storedData = storedDataString ? JSON.parse(storedDataString) : [];
     const storedAddedToCart = localStorage.getItem("addedToCart");
-    const parsedAddedToCart = storedAddedToCart
-      ? JSON.parse(storedAddedToCart)
-      : {};
+    const parsedAddedToCart = storedAddedToCart ? JSON.parse(storedAddedToCart) : {};
 
     const productToAdd = trevelSet.find((product: any) =>
       product.capacity.some((cap: any) => cap.idCrm === "id_12")
     );
 
     if (productToAdd) {
-      const capacityToAdd = productToAdd.capacity.find(
-        (cap: any) => cap.idCrm === "id_12"
-      );
+      const capacityToAdd = productToAdd.capacity.find((cap: any) => cap.idCrm === "id_12");
       if (capacityToAdd) {
         const { ml, idCrm } = capacityToAdd;
 
+
         const productState = state.products.find((p: any) => p.id === idCrm);
-        const productPrice = productState
-          ? productState.price
-          : capacityToAdd.price;
+        const productPrice = productState ? productState.price : capacityToAdd.price;
 
         const dataToStore = {
           id: idCrm,
@@ -88,24 +77,14 @@ export const AddToCartHeroBtn: FC<AddToCartHeroBtnProps> = ({
         localStorage.setItem("addedToCart", JSON.stringify(updatedAddedToCart));
 
         setAddedToCart(updatedAddedToCart);
-
-        window.fbq("track", "AddToCart", {
-          content_ids: [idCrm],
-          content_type: productToAdd.heading,
-          value: productPrice,
-          currency: lang === "en" ? "EUR" : "UAH",
-        });
       } else {
         console.error("Product capacity is not available.");
       }
     }
   };
 
-  const isProductAdded =
-    productToAdd &&
-    addedToCart[
-      productToAdd.capacity.find((cap: any) => cap.idCrm === "id_12")?.idCrm
-    ];
+
+  const isProductAdded = productToAdd && addedToCart[productToAdd.capacity.find((cap: any) => cap.idCrm === "id_12")?.idCrm];
 
   return (
     <button

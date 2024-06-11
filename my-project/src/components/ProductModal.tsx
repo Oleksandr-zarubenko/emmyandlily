@@ -232,14 +232,14 @@ export const ProductModal = ({
                 <table className="mb-12 xl:w-full smOnly:w-[100%] mdOnly:w-[436px]">
                   <thead>
                     <tr>
-                      <th className="w-2/5 py-2 text-left text-t14 text-[#333333] opacity-60 smOnly:w-1/5">
+                      <th className="w-2/5 italic py-2 text-left text-t14 text-[#333333] opacity-60 smOnly:w-1/5">
                         {lang === en ? "Capacity" : "Об`єм"}
                       </th>
 
-                      <th className=" w-1/5 py-2  text-left text-t14 text-[#333333] opacity-60 xl:text-center smOnly:w-2/5 smOnly:text-center">
+                      <th className=" w-1/5 py-2 italic  text-left text-t14 text-[#333333] opacity-60 xl:text-center smOnly:w-2/5 smOnly:text-center">
                         {lang === en ? "Price" : "Ціна "}
                       </th>
-                      <th className="w-2/5 py-2 text-right text-t14 text-[#333333] opacity-60">
+                      <th className="w-2/5 py-2 italic text-right text-t14 text-[#333333] opacity-60">
                         {lang === en ? "Add to Cart " : " Додати у кошик "}
                       </th>
                     </tr>
