@@ -4,7 +4,8 @@ import { FC } from "react";
 import cn from "classnames";
 import { useAddedToCart } from "@/components/context/addedToCart";
 import getData from "@/utils/api/api";
-interface AddToCartHeroBtnProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface AddToCartHeroBtnProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   text: string;
   className?: string;
   data: any;
@@ -16,9 +17,7 @@ export const AddToCartHeroBtn: FC<AddToCartHeroBtnProps> = ({
   className,
   data,
   secondtext,
-
 }) => {
-
   const { addedToCart, setAddedToCart } = useAddedToCart();
   const trevelSet = data.allProducts;
   const [state, setState] = useState<{
@@ -38,27 +37,36 @@ export const AddToCartHeroBtn: FC<AddToCartHeroBtnProps> = ({
     fetchData();
   }, []);
   const productToAdd = trevelSet.find((product: any) =>
-    product.capacity.some((cap: any) => cap.idCrm === "id_12")
+    product.capacity.some(
+      (cap: any) => cap.idCrm === data?.mainSection?.productId
+    )
   );
 
   const addToCart = () => {
     const storedDataString = localStorage.getItem("storedData");
     const storedData = storedDataString ? JSON.parse(storedDataString) : [];
     const storedAddedToCart = localStorage.getItem("addedToCart");
-    const parsedAddedToCart = storedAddedToCart ? JSON.parse(storedAddedToCart) : {};
+    const parsedAddedToCart = storedAddedToCart
+      ? JSON.parse(storedAddedToCart)
+      : {};
 
     const productToAdd = trevelSet.find((product: any) =>
-      product.capacity.some((cap: any) => cap.idCrm === "id_12")
+      product.capacity.some(
+        (cap: any) => cap.idCrm === data?.mainSection?.productId
+      )
     );
 
     if (productToAdd) {
-      const capacityToAdd = productToAdd.capacity.find((cap: any) => cap.idCrm === "id_12");
+      const capacityToAdd = productToAdd.capacity.find(
+        (cap: any) => cap.idCrm === data?.mainSection?.productId
+      );
       if (capacityToAdd) {
         const { ml, idCrm } = capacityToAdd;
 
-
         const productState = state.products.find((p: any) => p.id === idCrm);
-        const productPrice = productState ? productState.price : capacityToAdd.price;
+        const productPrice = productState
+          ? productState.price
+          : capacityToAdd.price;
 
         const dataToStore = {
           id: idCrm,
@@ -83,8 +91,13 @@ export const AddToCartHeroBtn: FC<AddToCartHeroBtnProps> = ({
     }
   };
 
-
-  const isProductAdded = productToAdd && addedToCart[productToAdd.capacity.find((cap: any) => cap.idCrm === "id_12")?.idCrm];
+  const isProductAdded =
+    productToAdd &&
+    addedToCart[
+      productToAdd.capacity.find(
+        (cap: any) => cap.idCrm === data?.mainSection?.productId
+      )?.idCrm
+    ];
 
   return (
     <button
