@@ -13,10 +13,7 @@ const Video = ({ data }: { data: any }) => {
           loop
           preload="none"
         >
-          <source
-            src="https://res.cloudinary.com/da0fw4mep/video/upload/v1719906915/rshkatgqotlwvjsxpr0z.mp4"
-            type="video/mp4"
-          />
+          <source src={data.videosection.videolink} type="video/mp4" />
         </video>
       </div>
       <div className="relative z-10 flex h-full w-full flex-col items-center justify-center bg-video_overlay text-center text-white">

@@ -27,6 +27,7 @@ const queryEN = gql`
       text2
       text3
       text4
+      videolink
     }
     aboutUsSection {
       heading
