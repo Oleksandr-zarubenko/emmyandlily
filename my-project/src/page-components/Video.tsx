@@ -14,12 +14,12 @@ const Video = ({ data }: { data: any }) => {
           preload="none"
         >
           <source
-            src="https://res.cloudinary.com/dg6fnnbpd/video/upload/v1711999849/xk7tihwmrpfrglqk3ekl.mp4"
+            src="https://res.cloudinary.com/da0fw4mep/video/upload/v1719906915/rshkatgqotlwvjsxpr0z.mp4"
             type="video/mp4"
           />
         </video>
       </div>
-      <div className="bg-video_overlay relative z-10 flex h-full w-full flex-col items-center justify-center text-center text-white">
+      <div className="relative z-10 flex h-full w-full flex-col items-center justify-center bg-video_overlay text-center text-white">
         <h2 className="mb-10 mt-8 text-t32 xl:mb-16 xl:mt-[108px] xl:text-t53 notXl:max-w-[340px]">
           {data.videosection.heading}
         </h2>
