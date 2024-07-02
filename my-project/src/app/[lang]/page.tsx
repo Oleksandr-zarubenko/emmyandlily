@@ -118,6 +118,7 @@ const queryUA = gql`
       text2
       text3
       text4
+      videolink
     }
     aboutUsSection(locale: uk) {
       heading
