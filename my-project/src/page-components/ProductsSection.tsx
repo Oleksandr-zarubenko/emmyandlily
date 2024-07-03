@@ -74,19 +74,6 @@ export const ProductsSection = ({
                   convertPrice={convertPrice}
                 />
               ))}
-          {/* {previewProducts.length > 0 &&
-            previewProducts
-              .sort((a: any, b: any) => a.order - b.order)
-              .map((product: any) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  lang={lang}
-                  state={state}
-                  data={data}
-                  convertPrice={convertPrice}
-                />
-              ))} */}
         </div>
       </div>
     </section>

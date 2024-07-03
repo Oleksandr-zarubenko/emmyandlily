@@ -42,6 +42,14 @@ export const ProductModal = ({
 
   const setModalOpened = () => {
     setIsOpen(true);
+    window.fbq("track", "ViewContent", {
+      content_name: product.heading,
+      content_category: product.category,
+      content_ids: [product.id],
+      content_type: "product",
+      value: product.price,
+      currency: lang === en ? "USD" : "UAH",
+    });
   };
 
   const setMenuClosed = () => {
