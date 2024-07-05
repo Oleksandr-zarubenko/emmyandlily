@@ -41,13 +41,19 @@ export const ProductModal = ({
   );
 
   const setModalOpened = () => {
+    const content_ids = product.capacity.map((item: any) => item.idCrm);
+    const productState = state.products.find(
+      (p: any) => p.id === content_ids[0]
+    );
+    const productPrice = productState ? productState.price : "N/A";
+
     setIsOpen(true);
     window.fbq("track", "ViewContent", {
       content_name: product.heading,
       content_category: product.category,
-      content_ids: [product.id],
+      content_ids: content_ids,
       content_type: "product",
-      value: product.price,
+      value: productPrice,
       currency: lang === en ? "USD" : "UAH",
     });
   };
