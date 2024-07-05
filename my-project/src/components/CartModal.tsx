@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 import { ModalPath } from "./icons/ModalPaw";
 import { usePathname } from "next/navigation";
@@ -6,16 +5,20 @@ const CartModal = ({
   onClose,
   lang,
   en,
-  data
+  data,
 }: {
   onClose: () => void;
   lang: any;
   en: any;
-  data: any
+  data: any;
 }) => {
   const pathname = usePathname();
 
   const isBasketPage = pathname.includes(`${lang}/basket`);
+
+  const handleCheckoutInitiate = () => {
+    window.fbq("track", "InitiateCheckout");
+  };
 
   return (
     <div className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50">
@@ -35,6 +38,7 @@ const CartModal = ({
             <Link
               className="rounded border-2 border-solid border-black bg-black px-6 py-3 text-t18 font-bold text-white"
               href={`/${lang}/basket`}
+              onClick={handleCheckoutInitiate}
             >
               {data.secondmodal.goToCart}
             </Link>
