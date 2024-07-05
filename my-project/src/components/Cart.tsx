@@ -17,8 +17,16 @@ export const Cart = ({ lang, color }: any) => {
 
     return () => clearInterval(interval);
   }, []);
+
+  const handleCheckoutInitiate = () => {
+    window.fbq("track", "InitiateCheckout");
+  };
   return (
-    <Link className={cn(`relative z-50 duration-300`)} href={`/${lang}/basket`}>
+    <Link
+      onClick={handleCheckoutInitiate}
+      className={cn(`relative z-50 duration-300`)}
+      href={`/${lang}/basket`}
+    >
       <div className="relative">
         <Bag
           className={cn(
