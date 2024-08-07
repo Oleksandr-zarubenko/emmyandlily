@@ -10,6 +10,7 @@ export async function GET(): Promise<void | Response> {
         headers: {
           "Content-Type": "application/json",
         },
+        cache: "no-store",
       }
     );
     const xmlData = await response.text();
@@ -18,7 +19,6 @@ export async function GET(): Promise<void | Response> {
 
     const products = extractProducts(parsedData);
     const currencies = extractCurrencies(parsedData);
-
     return NextResponse.json({ products, currencies });
   } catch (error) {
     console.error("Error fetching data:", error);
