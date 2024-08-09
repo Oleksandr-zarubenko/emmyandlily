@@ -54,7 +54,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
   const totaldiscountAmount = discountAmount ? parseInt(discountAmount) : 0;
 
   const freeDelivery = (deliveryPrice: any) => {
-    if (totalPrice >= 9999999999999) {
+    if (totalPrice >= -1) {
       return lang === "en" ? deliveryPrice : (deliveryPrice = 0);
     }
     return deliveryPrice;
@@ -91,7 +91,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
               : totalPrice + " ₴"}
           </p>
         </li>
-        <li className="mb-2 flex justify-between">
+        {/* <li className="mb-2 flex justify-between">
           <p className="text-t14 xl:text-t16"> {data.order.delivery}</p>{" "}
           <p className="text-t16 xl:text-t18">
             {" "}
@@ -99,7 +99,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
               ? deliveryPrice + " €"
               : freeDelivery(deliveryPrice) + " ₴"}
           </p>
-        </li>
+        </li> */}
         <li className="mb-2 flex justify-between">
           <p className="text-t14 xl:text-t16">{data.order.discount}</p>
           <p className="text-t16 xl:text-t18">
