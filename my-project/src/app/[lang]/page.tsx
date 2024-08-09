@@ -232,6 +232,7 @@ export default async function Home({
     context: {
       fetchOptions: {
         next: { revalidate: 60 },
+        cache: "no-store",
       },
     },
   });

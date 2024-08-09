@@ -14,7 +14,6 @@ export async function GET(): Promise<void | Response> {
       }
     );
     const xmlData = await response.text();
-
     const parsedData = await parseXml(xmlData);
 
     const products = extractProducts(parsedData);
