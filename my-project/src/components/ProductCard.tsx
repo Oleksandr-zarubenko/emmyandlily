@@ -82,7 +82,7 @@ export const ProductCard = ({
                   key={item.idCrm}
                   className="mr-8 text-t14 italic text-white xl:text-t16"
                 >
-                  {item.ml} {lang === "ua" ? "мл" : "ml"}
+                  {item.ml} {item.ml ? (lang === "ua" ? "мл" : "ml") : ""}
                 </li>
               ))}
           </ul>

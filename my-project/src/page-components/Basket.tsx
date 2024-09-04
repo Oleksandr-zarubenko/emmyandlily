@@ -343,7 +343,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                         <p className="text-t14 text-dark/60">
                           {" "}
                           {item.capacity}
-                          {lang === "ua" ? "мл" : "ml"}
+                          {item.capacity ? (lang === "ua" ? "мл" : "ml") : ""}
                         </p>
                       </div>
                     </td>
