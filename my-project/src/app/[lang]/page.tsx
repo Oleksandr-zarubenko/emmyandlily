@@ -65,7 +65,7 @@ const queryEN = gql`
       heading
       text
     }
-    allProducts {
+    allProducts(first: 100){
       preview
       heading
       description
@@ -156,7 +156,7 @@ const queryUA = gql`
       heading
       text
     }
-    allProducts(locale: uk) {
+    allProducts(locale: uk, first: 100) {
       preview
       heading
       description
