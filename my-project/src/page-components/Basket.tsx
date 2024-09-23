@@ -716,30 +716,34 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
   <p>
     -{" "}
     {lang === en
-      ? convertPrice(
-          discountAmount,
-          state.currencies.find(
-            (currency: any) => currency.id === "EUR"
-          )?.rate || 1
-        ).toFixed(2)
-      : discountAmount.toFixed(2)}
+      ? Math.round(
+          convertPrice(
+            discountAmount,
+            state.currencies.find(
+              (currency: any) => currency.id === "EUR"
+            )?.rate || 1
+          )
+        )
+      : Math.round(discountAmount)}
     {lang === en ? " €" : " ₴"}
   </p>
 </div>
-        <div className="6 mb-10 ml-auto flex w-52 justify-between text-t14 xl:text-t16">
-          <p className="text-black opacity-60">{data.basket.total}</p>
-          <p className="text-t16 font-bold">
-            {lang === en
-              ? convertPrice(
-                  totalPrice,
-                  state.currencies.find(
-                    (currency: any) => currency.id === "EUR"
-                  )?.rate || 1
-                )
-              : totalPrice}
-            {lang === en ? " €" : " ₴"}
-          </p>
-        </div>
+<div className="6 mb-10 ml-auto flex w-52 justify-between text-t14 xl:text-t16">
+  <p className="text-black opacity-60">{data.basket.total}</p>
+  <p className="text-t16 font-bold">
+    {lang === en
+      ? Math.round(
+          convertPrice(
+            totalPrice,
+            state.currencies.find(
+              (currency: any) => currency.id === "EUR"
+            )?.rate || 1
+          )
+        )
+      : Math.round(totalPrice)}
+    {lang === en ? " €" : " ₴"}
+  </p>
+</div>
 
         <div className="mb-[66px]  flex justify-end xl:mb-28">
           <button
