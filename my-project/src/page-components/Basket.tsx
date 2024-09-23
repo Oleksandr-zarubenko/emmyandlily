@@ -716,20 +716,20 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
   <p>
     -{" "}
     {lang === en
-      ? Math.floor(
+      ? Math.round(
           convertPrice(
-            discountAmount,
+            totaldiscountAmount,
             state.currencies.find(
               (currency: any) => currency.id === "EUR"
             )?.rate || 1
           )
-        )
-      : Math.floor(discountAmount)}
-    {lang === en ? " €" : " ₴"}
+        ) + " €"
+      : Math.round(totaldiscountAmount) + " ₴"}
   </p>
 </div>
 
-<div className="6 mb-10 ml-auto flex w-52 justify-between text-t14 xl:text-t16">
+
+<div className="mb-10 ml-auto flex w-52 justify-between text-t14 xl:text-t16">
   <p className="text-black opacity-60">{data.basket.total}</p>
   <p className="text-t16 font-bold">
     {lang === en
@@ -745,6 +745,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
     {lang === en ? " €" : " ₴"}
   </p>
 </div>
+
 
 
         <div className="mb-[66px]  flex justify-end xl:mb-28">
