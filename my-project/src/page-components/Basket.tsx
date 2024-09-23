@@ -723,8 +723,8 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
               (currency: any) => currency.id === "EUR"
             )?.rate || 1
           )
-        ) + " €"
-      : Math.round(totaldiscountAmount) + " ₴"}
+        ).toFixed(0) + " €" // Округлення до цілого числа
+      : Math.round(totaldiscountAmount).toFixed(0) + " ₴"} // Округлення до цілого числа
   </p>
 </div>
 
