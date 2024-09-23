@@ -733,18 +733,19 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
   <p className="text-black opacity-60">{data.basket.total}</p>
   <p className="text-t16 font-bold">
     {lang === en
-      ? Math.floor(
+      ? Math.round(
           convertPrice(
             totalPrice,
             state.currencies.find(
               (currency: any) => currency.id === "EUR"
             )?.rate || 1
           )
-        )
-      : Math.floor(totalPrice)}
+        ).toFixed(0) // Округлення до цілого числа
+      : Math.round(totalPrice).toFixed(0)} // Округлення до цілого числа
     {lang === en ? " €" : " ₴"}
   </p>
 </div>
+
 
 
 
