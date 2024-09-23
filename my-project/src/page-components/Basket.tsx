@@ -711,21 +711,21 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
             </div>
           )}
         </div>
-        <div className="mb-8 ml-auto flex w-52 justify-between text-t14 xl:text-t16 ">
-          <p>{lang === en ? "Discount" : "Знижка"} </p>
-          <p>
-            -{" "}
-            {lang === en
-              ? convertPrice(
-                  discountAmount,
-                  state.currencies.find(
-                    (currency: any) => currency.id === "EUR"
-                  )?.rate || 1
-                )
-              : discountAmount}
-            {lang === en ? " €" : " ₴"}
-          </p>
-        </div>
+<div className="mb-8 ml-auto flex w-52 justify-between text-t14 xl:text-t16">
+  <p>{lang === en ? "Discount" : "Знижка"} </p>
+  <p>
+    -{" "}
+    {lang === en
+      ? convertPrice(
+          discountAmount,
+          state.currencies.find(
+            (currency: any) => currency.id === "EUR"
+          )?.rate || 1
+        ).toFixed(2)
+      : discountAmount.toFixed(2)}
+    {lang === en ? " €" : " ₴"}
+  </p>
+</div>
         <div className="6 mb-10 ml-auto flex w-52 justify-between text-t14 xl:text-t16">
           <p className="text-black opacity-60">{data.basket.total}</p>
           <p className="text-t16 font-bold">
