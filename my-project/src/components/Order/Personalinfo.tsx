@@ -32,7 +32,7 @@ interface PersonalInfoProps {
   recipientLastName: string;
   setRecipientLastName: React.Dispatch<React.SetStateAction<string>>;
   error: ErrorState;
-  setError: React.Dispatch<React.SetStateAction<ErrorState>>;
+  setError: React.Dispatch<React.SetStateAction<ErrorState>> | any;
 }
 
 const FIELD_NAMES = {
@@ -75,7 +75,7 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
       setRecipientLastName("");
       setRecipientEmail("");
       setRecipientPhoneNumber("");
-      setError((prevErrors) => ({
+      setError((prevErrors: any) => ({
         ...prevErrors,
         recipientFirstName: "",
         recipientLastName: "",
@@ -183,7 +183,7 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
         break;
     }
 
-    setError((prevErrors) => ({
+    setError((prevErrors: any) => ({
       ...prevErrors,
       [fieldName]: errorMessage,
     }));
