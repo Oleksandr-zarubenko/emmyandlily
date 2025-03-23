@@ -626,8 +626,6 @@ const Order = ({ data, lang }: any) => {
   const switchToPaymentTab = async () => {
     if (deliveryCompleted && afterpay === true && privacypolicy === true) {
       makeApiCall();
-
-      localStorage.clear();
       router.push(`http://emmyandlily.com/${lang}/thank-you`);
       if (typeof window !== "undefined" && window.fbq) {
         const productDetails = updatedProducts
@@ -651,8 +649,6 @@ const Order = ({ data, lang }: any) => {
       paymentMonobank === true
     ) {
       makeApiCall();
-
-      localStorage.clear();
       try {
         if (typeof window !== "undefined" && window.fbq) {
           const productDetails = updatedProducts

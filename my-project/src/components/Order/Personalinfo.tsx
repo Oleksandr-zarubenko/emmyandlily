@@ -1,3 +1,16 @@
+import React, { useEffect, useState } from "react";
+
+interface ErrorState {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phoneNumber?: string;
+  recipientFirstName?: string;
+  recipientLastName?: string;
+  recipientEmail?: string;
+  recipientPhoneNumber?: string;
+}
+
 interface PersonalInfoProps {
   data: any;
   firstName: string;
@@ -18,9 +31,20 @@ interface PersonalInfoProps {
   setRecipientFirstName: React.Dispatch<React.SetStateAction<string>>;
   recipientLastName: string;
   setRecipientLastName: React.Dispatch<React.SetStateAction<string>>;
-  error: any;
-  setError: any;
+  error: ErrorState;
+  setError: React.Dispatch<React.SetStateAction<ErrorState>>;
 }
+
+const FIELD_NAMES = {
+  FIRST_NAME: "firstName",
+  LAST_NAME: "lastName",
+  EMAIL: "email",
+  PHONE_NUMBER: "phoneNumber",
+  RECIPIENT_FIRST_NAME: "recipientFirstName",
+  RECIPIENT_LAST_NAME: "recipientLastName",
+  RECIPIENT_EMAIL: "recipientEmail",
+  RECIPIENT_PHONE_NUMBER: "recipientPhoneNumber",
+};
 
 const Personalinfo: React.FC<PersonalInfoProps> = ({
   data,
@@ -45,10 +69,48 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
   error,
   setError,
 }) => {
-  const validateField = (fieldName: string, value: string) => {
-    const nameRegex = /^[\p{L}\s]+$/u;
+  useEffect(() => {
+    if (isRecipient) {
+      setRecipientFirstName("");
+      setRecipientLastName("");
+      setRecipientEmail("");
+      setRecipientPhoneNumber("");
+      setError((prevErrors) => ({
+        ...prevErrors,
+        recipientFirstName: "",
+        recipientLastName: "",
+        recipientEmail: "",
+        recipientPhoneNumber: "",
+      }));
+    }
+  }, [isRecipient]);
 
-    const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+  const validateName = (value: string, fieldName: string) => {
+    const nameRegex = /^[a-zA-ZÀ-ÖØ-öø-ÿ\s]+$/;
+    if (!value) {
+      return fieldName.includes("recipient")
+        ? `Введіть ім'я отримувача`
+        : `Введіть ${fieldName === FIELD_NAMES.FIRST_NAME ? "ім'я" : "прізвище"}`;
+    } else if (!nameRegex.test(value)) {
+      return fieldName.includes("recipient")
+        ? `Ім'я отримувача не повинно містити цифр`
+        : `${fieldName === FIELD_NAMES.FIRST_NAME ? "Ім'я" : "Прізвище"} не повинно містити цифр`;
+    }
+    return "";
+  };
+
+  // Validate email fields
+  const validateEmail = (value: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!value) {
+      return "Введіть електронну пошту";
+    } else if (!emailRegex.test(value)) {
+      return "Введіть коректну електронну пошту";
+    }
+    return "";
+  };
+
+  const validatePhoneNumber = (value: string) => {
     const phoneValidators: { [key: string]: RegExp } = {
       UA: /^(\+?380\d{9})$/, // Формат для України: +380XXXXXXXXX
       AT: /^(\+?43\d{1,9})$/, // Австрія: +43XXXXXXXXX
@@ -81,193 +143,75 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
       US: /^(\+?1\d{10})$/, // Формат для США: +1XXXXXXXXXX
     };
 
+    if (!value) {
+      return "Введіть номер телефону";
+    }
+
+    let isValid = false;
+    for (const countryCode of Object.keys(phoneValidators)) {
+      const validator = phoneValidators[countryCode];
+      if (validator.test(value)) {
+        isValid = true;
+        break;
+      }
+    }
+
+    return isValid
+      ? ""
+      : "Введіть коректний номер телефону (наприклад, +380XXXXXXXXX або +1XXXXXXXXXX)";
+  };
+
+  const handleInputChange = (fieldName: string, value: string) => {
+    let errorMessage = "";
+
     switch (fieldName) {
-      case "firstName":
-        if (!value) {
-          return "Введіть ім'я";
-        } else if (!nameRegex.test(value)) {
-          return "Ім'я не повинно містити цифр";
-        }
+      case FIELD_NAMES.FIRST_NAME:
+      case FIELD_NAMES.LAST_NAME:
+      case FIELD_NAMES.RECIPIENT_FIRST_NAME:
+      case FIELD_NAMES.RECIPIENT_LAST_NAME:
+        errorMessage = validateName(value, fieldName);
         break;
-      case "lastName":
-        if (!value) {
-          return "Введіть прізвище";
-        } else if (!nameRegex.test(value)) {
-          return "Прізвище не повинно містити цифр";
-        }
+      case FIELD_NAMES.EMAIL:
+      case FIELD_NAMES.RECIPIENT_EMAIL:
+        errorMessage = validateEmail(value);
         break;
-      case "email":
-        if (!value) {
-          return "Введіть електронну пошту";
-        } else if (!emailRegex.test(value)) {
-          return "Введіть коректну електронну пошту";
-        }
-        break;
-      case "phoneNumber":
-        if (!value) {
-          return "Введіть номер телефону";
-        } else {
-          // Перевіряємо номер телефону за допомогою регулярного виразу для відповідної країни
-          const countryCodes = [
-            "UA",
-            "PL",
-            "IT",
-            "ES",
-            "AT",
-            "BE",
-            "BG",
-            "CY",
-            "CZ",
-            "DE",
-            "DK",
-            "EE",
-            "ES",
-            "FI",
-            "FR",
-            "GR",
-            "HR",
-            "HU",
-            "IE",
-            "IT",
-            "LT",
-            "LU",
-            "LV",
-            "MT",
-            "NL",
-            "PL",
-            "PT",
-            "RO",
-            "SE",
-            "SI",
-            "SK",
-            "US",
-          ];
-
-          let isValid = false;
-          for (const countryCode of countryCodes) {
-            const phoneValidator = phoneValidators[countryCode];
-            if (phoneValidator.test(value)) {
-              isValid = true;
-              break;
-            }
-          }
-          if (!isValid) {
-            return "Введіть коректний номер телефону отримувача";
-          }
-        }
-        break;
-      case "recipientEmail":
-        if (!value) {
-          return "Введіть електронну пошту отримувача";
-        } else if (!emailRegex.test(value)) {
-          return "Введіть коректну електронну пошту отримувача";
-        }
-        break;
-      case "recipientPhoneNumber":
-        if (!value) {
-          return "Введіть номер телефону отримувача";
-        } else {
-          // Перевіряємо номер телефону отримувача за допомогою регулярного виразу для відповідної країни
-          const countryCodes = [
-            "UA",
-            "PL",
-            "IT",
-            "ES",
-            "AT",
-            "BE",
-            "BG",
-            "CY",
-            "CZ",
-            "DE",
-            "DK",
-            "EE",
-            "ES",
-            "FI",
-            "FR",
-            "GR",
-            "HR",
-            "HU",
-            "IE",
-            "IT",
-            "LT",
-            "LU",
-            "LV",
-            "MT",
-            "NL",
-            "PL",
-            "PT",
-            "RO",
-            "SE",
-            "SI",
-            "SK",
-            "US",
-          ];
-
-          let isValid = false;
-          for (const countryCode of countryCodes) {
-            const phoneValidator = phoneValidators[countryCode];
-            if (phoneValidator.test(value)) {
-              isValid = true;
-              break;
-            }
-          }
-          if (!isValid) {
-            return "Введіть коректний номер телефону";
-          }
-        }
-        break;
-
-      case "recipientFirstName":
-        if (!value) {
-          return "Введіть ім'я отримувача";
-        } else if (!nameRegex.test(value)) {
-          return "Ім'я отримувача не повинно містити цифр";
-        }
-        break;
-      case "recipientLastName":
-        if (!value) {
-          return "Введіть прізвище отримувача";
-        } else if (!nameRegex.test(value)) {
-          return "Прізвище отримувача не повинно містити цифр";
-        }
+      case FIELD_NAMES.PHONE_NUMBER:
+      case FIELD_NAMES.RECIPIENT_PHONE_NUMBER:
+        errorMessage = validatePhoneNumber(value);
         break;
       default:
         break;
     }
 
-    return "";
-  };
-
-  const handleInputChange = (fieldName: string, value: string) => {
-    const error = validateField(fieldName, value);
-    setError((prevErrors: any) => ({
+    setError((prevErrors) => ({
       ...prevErrors,
-      [fieldName]: error,
+      [fieldName]: errorMessage,
     }));
+
     switch (fieldName) {
-      case "firstName":
+      case FIELD_NAMES.FIRST_NAME:
         setFirstName(value);
         break;
-      case "lastName":
+      case FIELD_NAMES.LAST_NAME:
         setLastName(value);
         break;
-      case "email":
+      case FIELD_NAMES.EMAIL:
         setEmail(value);
         break;
-      case "phoneNumber":
+      case FIELD_NAMES.PHONE_NUMBER:
         setPhoneNumber(value);
         break;
-      case "recipientEmail":
-        setRecipientEmail(value);
-        break;
-      case "recipientPhoneNumber":
-        setRecipientPhoneNumber(value);
-        break;
-      case "recipientFirstName":
+      case FIELD_NAMES.RECIPIENT_FIRST_NAME:
         setRecipientFirstName(value);
         break;
-      case "recipientLastName":
+      case FIELD_NAMES.RECIPIENT_LAST_NAME:
         setRecipientLastName(value);
+        break;
+      case FIELD_NAMES.RECIPIENT_EMAIL:
+        setRecipientEmail(value);
+        break;
+      case FIELD_NAMES.RECIPIENT_PHONE_NUMBER:
+        setRecipientPhoneNumber(value);
         break;
       default:
         break;
@@ -281,49 +225,92 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
           {data.order.enterYourDetails}
         </h2>
         <div className="xl:grid xl:grid-cols-2">
+          {/* First Name */}
           <div className="mb-2 flex flex-col xl:mb-4 xl:mr-8">
             <input
               type="text"
-              id="firstName"
+              id={FIELD_NAMES.FIRST_NAME}
               value={firstName}
-              onChange={(e) => handleInputChange("firstName", e.target.value)}
+              onChange={(e) =>
+                handleInputChange(FIELD_NAMES.FIRST_NAME, e.target.value)
+              }
               className={`border-b-2 bg-transparent px-[10px] py-[10px] text-t14 outline-none focus:border-black ${error.firstName ? " bg-error/[.06]" : ""}`}
               placeholder={data.order.yourName}
+              aria-invalid={!!error.firstName}
+              aria-describedby={error.firstName ? "firstName-error" : undefined}
             />
+            {error.firstName && (
+              <span id="firstName-error" className="text-t12 text-error">
+                {error.firstName}
+              </span>
+            )}
           </div>
+
           <div className="mb-2 flex flex-col xl:mb-4">
             <input
               type="text"
-              id="lastName"
+              id={FIELD_NAMES.LAST_NAME}
               value={lastName}
-              onChange={(e) => handleInputChange("lastName", e.target.value)}
-              className={` border-b-2  bg-transparent px-[10px] py-[10px] text-t14 outline-none focus:border-black ${error.lastName ? " bg-error/[.06]" : ""}`}
+              onChange={(e) =>
+                handleInputChange(FIELD_NAMES.LAST_NAME, e.target.value)
+              }
+              className={`border-b-2 bg-transparent px-[10px] py-[10px] text-t14 outline-none focus:border-black ${error.lastName ? " bg-error/[.06]" : ""}`}
               placeholder={data.order.lastName}
+              aria-invalid={!!error.lastName}
+              aria-describedby={error.lastName ? "lastName-error" : undefined}
             />
+            {error.lastName && (
+              <span id="lastName-error" className="text-t12 text-error">
+                {error.lastName}
+              </span>
+            )}
           </div>
 
-          <div className="mb-2 flex flex-col xl:mb-0  xl:mr-8 ">
+          {/* Email */}
+          <div className="mb-2 flex flex-col xl:mb-0 xl:mr-8">
             <input
               type="email"
-              id="email"
+              id={FIELD_NAMES.EMAIL}
               value={email}
-              onChange={(e) => handleInputChange("email", e.target.value)}
-              className={`input-email border-b-2 bg-transparent px-[10px] py-[10px] text-t14 outline-none focus:border-black ${error.email ? " bg-error/[.06]" : ""}`}
+              onChange={(e) =>
+                handleInputChange(FIELD_NAMES.EMAIL, e.target.value)
+              }
+              className={`border-b-2 bg-transparent px-[10px] py-[10px] text-t14 outline-none focus:border-black ${error.email ? " bg-error/[.06]" : ""}`}
               placeholder={data.order.eMail}
+              aria-invalid={!!error.email}
+              aria-describedby={error.email ? "email-error" : undefined}
             />
+            {error.email && (
+              <span id="email-error" className="text-t12 text-error">
+                {error.email}
+              </span>
+            )}
           </div>
+
           <div className="mb-2 flex flex-col xl:mb-0">
             <input
               type="tel"
-              id="phoneNumber"
+              id={FIELD_NAMES.PHONE_NUMBER}
               value={phoneNumber}
-              onChange={(e) => handleInputChange("phoneNumber", e.target.value)}
-              className={`input-phone border-b-2 bg-transparent px-[10px] py-[10px] text-t14 outline-none focus:border-black ${error.phoneNumber ? " bg-error/[.06]" : ""}`}
+              onChange={(e) =>
+                handleInputChange(FIELD_NAMES.PHONE_NUMBER, e.target.value)
+              }
+              className={`border-b-2 bg-transparent px-[10px] py-[10px] text-t14 outline-none focus:border-black ${error.phoneNumber ? " bg-error/[.06]" : ""}`}
               placeholder={data.order.phoneNumber}
+              aria-invalid={!!error.phoneNumber}
+              aria-describedby={
+                error.phoneNumber ? "phoneNumber-error" : undefined
+              }
             />
+            {error.phoneNumber && (
+              <span id="phoneNumber-error" className="text-t12 text-error">
+                {error.phoneNumber}
+              </span>
+            )}
           </div>
         </div>
       </div>
+
       <div>
         <h2 className="mb-6 text-t16 font-bold text-[#292D2D] xl:text-t18">
           {data.order.recipientData}
@@ -343,59 +330,119 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
             {data.order.receiver}
           </label>
         </div>
-        {isRecipient ? null : (
+
+        {!isRecipient && (
           <div className="xl:grid xl:grid-cols-2">
-            <div className="mb-2  flex flex-col xl:mb-4 xl:mr-8">
+            <div className="mb-2 flex flex-col xl:mb-4 xl:mr-8">
               <input
                 type="text"
-                id="recipientFirstName"
+                id={FIELD_NAMES.RECIPIENT_FIRST_NAME}
                 value={recipientFirstName}
-                onChange={(e) => {
-                  setRecipientFirstName(e.target.value);
-                  handleInputChange("recipientFirstName", e.target.value);
-                }}
-                className={`border-b-2 px-[10px] py-[10px] text-t14 outline-none focus:border-black ${error.recipientFirstName ? " bg-error/[.06]" : ""}`}
+                onChange={(e) =>
+                  handleInputChange(
+                    FIELD_NAMES.RECIPIENT_FIRST_NAME,
+                    e.target.value
+                  )
+                }
+                className={`border-b-2 bg-transparent px-[10px] py-[10px] text-t14 outline-none focus:border-black ${error.recipientFirstName ? " bg-error/[.06]" : ""}`}
                 placeholder={data.order.yourName}
+                aria-invalid={!!error.recipientFirstName}
+                aria-describedby={
+                  error.recipientFirstName
+                    ? "recipientFirstName-error"
+                    : undefined
+                }
               />
+              {error.recipientFirstName && (
+                <span
+                  id="recipientFirstName-error"
+                  className="text-t12 text-error"
+                >
+                  {error.recipientFirstName}
+                </span>
+              )}
             </div>
-            <div className="mb-2  flex flex-col xl:mb-4">
+
+            <div className="mb-2 flex flex-col xl:mb-4">
               <input
                 type="text"
-                id="recipientLastName"
+                id={FIELD_NAMES.RECIPIENT_LAST_NAME}
                 value={recipientLastName}
-                onChange={(e) => {
-                  setRecipientLastName(e.target.value);
-                  handleInputChange("recipientLastName", e.target.value);
-                }}
-                className={` border-b-2  px-[10px] py-[10px] text-t14 outline-none focus:border-black ${error.recipientLastName ? " bg-error/[.06]" : ""}`}
+                onChange={(e) =>
+                  handleInputChange(
+                    FIELD_NAMES.RECIPIENT_LAST_NAME,
+                    e.target.value
+                  )
+                }
+                className={`border-b-2 bg-transparent px-[10px] py-[10px] text-t14 outline-none focus:border-black ${error.recipientLastName ? " bg-error/[.06]" : ""}`}
                 placeholder={data.order.lastName}
+                aria-invalid={!!error.recipientLastName}
+                aria-describedby={
+                  error.recipientLastName
+                    ? "recipientLastName-error"
+                    : undefined
+                }
               />
+              {error.recipientLastName && (
+                <span
+                  id="recipientLastName-error"
+                  className="text-t12 text-error"
+                >
+                  {error.recipientLastName}
+                </span>
+              )}
             </div>
-            <div className="mb-2 flex flex-col xl:mb-0  xl:mr-8">
+
+            <div className="mb-2 flex flex-col xl:mb-0 xl:mr-8">
               <input
                 type="email"
-                id="recipientEmail"
+                id={FIELD_NAMES.RECIPIENT_EMAIL}
                 value={recipientEmail}
-                onChange={(e) => {
-                  setRecipientEmail(e.target.value);
-                  handleInputChange("recipientEmail", e.target.value);
-                }}
-                className={`input-email border-b-2 px-[10px] py-[10px] text-t14 outline-none focus:border-black ${error.recipientEmail ? " bg-error/[.06]" : ""}`}
+                onChange={(e) =>
+                  handleInputChange(FIELD_NAMES.RECIPIENT_EMAIL, e.target.value)
+                }
+                className={`border-b-2 bg-transparent px-[10px] py-[10px] text-t14 outline-none focus:border-black ${error.recipientEmail ? " bg-error/[.06]" : ""}`}
                 placeholder={data.order.eMail}
+                aria-invalid={!!error.recipientEmail}
+                aria-describedby={
+                  error.recipientEmail ? "recipientEmail-error" : undefined
+                }
               />
+              {error.recipientEmail && (
+                <span id="recipientEmail-error" className="text-t12 text-error">
+                  {error.recipientEmail}
+                </span>
+              )}
             </div>
+
             <div className="mb-2 flex flex-col xl:mb-0">
               <input
                 type="tel"
-                id="recipientPhoneNumber"
+                id={FIELD_NAMES.RECIPIENT_PHONE_NUMBER}
                 value={recipientPhoneNumber}
-                onChange={(e) => {
-                  setRecipientPhoneNumber(e.target.value);
-                  handleInputChange("recipientPhoneNumber", e.target.value);
-                }}
-                className={`input-phone border-b-2 px-[10px] py-[10px] text-t14 text-black  outline-none focus:border-black ${error.recipientPhoneNumber ? " bg-error/[.06]" : ""}`}
+                onChange={(e) =>
+                  handleInputChange(
+                    FIELD_NAMES.RECIPIENT_PHONE_NUMBER,
+                    e.target.value
+                  )
+                }
+                className={`border-b-2 bg-transparent px-[10px] py-[10px] text-t14 outline-none focus:border-black ${error.recipientPhoneNumber ? " bg-error/[.06]" : ""}`}
                 placeholder={data.order.phoneNumber}
+                aria-invalid={!!error.recipientPhoneNumber}
+                aria-describedby={
+                  error.recipientPhoneNumber
+                    ? "recipientPhoneNumber-error"
+                    : undefined
+                }
               />
+              {error.recipientPhoneNumber && (
+                <span
+                  id="recipientPhoneNumber-error"
+                  className="text-t12 text-error"
+                >
+                  {error.recipientPhoneNumber}
+                </span>
+              )}
             </div>
           </div>
         )}

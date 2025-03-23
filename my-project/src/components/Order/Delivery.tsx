@@ -1,4 +1,6 @@
 import Image from "next/image";
+import React from "react";
+
 interface DeliveryProps {
   data: any;
   selectedOption: string;
@@ -26,9 +28,23 @@ interface DeliveryProps {
   index: string;
   setIndex: React.Dispatch<React.SetStateAction<string>>;
   error: any;
-  setError: any;
-  lang: any;
-  en: any;
+  setError: React.Dispatch<React.SetStateAction<any>>;
+  lang: string;
+  en: string;
+}
+
+interface ErrorState {
+  country?: string;
+  city?: string;
+  street?: string;
+  houseNumber?: string;
+  sstreet?: string;
+  zip?: string;
+  house?: string;
+  appartment?: string;
+  numnp?: string;
+  numposhtmat?: string;
+  index?: string;
 }
 
 const Delivery: React.FC<DeliveryProps> = ({
@@ -58,15 +74,28 @@ const Delivery: React.FC<DeliveryProps> = ({
   index,
   setIndex,
   error,
-  lang,
   setError,
+  lang,
   en,
 }) => {
   const validateField = (fieldName: string, value: string) => {
-    const nameRegex = /^[\p{L}\s]+$/u;
+    const nameRegex = /^[A-Za-zА-Яа-яЇїІіЄєҐґ\s']+$/;
     const phoneRegex = /^[0-9]*$/;
-
     const zipRegex = /^\d{5}(?:[-\s]\d{4})?$/;
+
+    const fieldNamesInUkrainian: { [key: string]: string } = {
+      country: "країну",
+      city: "місто",
+      street: "вулицю",
+      sstreet: "назву додаткової вулиці",
+      houseNumber: "номер будинку",
+      house: "будинок",
+      appartment: "квартиру",
+      numnp: "номер відділення",
+      numposhtmat: "номер поштомату",
+      index: "індекс",
+      zip: "ZIP-код",
+    };
 
     switch (fieldName) {
       case "country":
@@ -74,35 +103,55 @@ const Delivery: React.FC<DeliveryProps> = ({
       case "street":
       case "sstreet":
         if (!value) {
-          return `Введіть ${fieldName === "sstreet" ? "назву додаткової " : ""}${fieldName}`;
+          return `Введіть ${fieldNamesInUkrainian[fieldName]}`;
         } else if (!nameRegex.test(value)) {
-          return `${fieldName} не повинно містити цифр`;
+          return `${fieldNamesInUkrainian[fieldName]} не повинно містити цифр`;
         }
         break;
-      // case 'houseNumber':
-      //     if (!value) {
-      //         return 'Введіть номер будинку';
-      //     } else if (!phoneRegex.test(value)) {
-      //         return 'Номер будинку не повинен містити букв';
-      //     }
-      //     break;
-      case "zip":
+      case "houseNumber":
+      case "house":
         if (!value) {
-          return "Введіть ZIP-код";
-        } else if (!zipRegex.test(value)) {
-          return "Введіть коректний ZIP-код";
+          return `Введіть ${fieldNamesInUkrainian[fieldName]}`;
+        } else if (!phoneRegex.test(value)) {
+          return `Номер будинку повинен містити лише цифри`;
         }
         break;
-      // case 'house':
       case "appartment":
+        if (!value) {
+          return `Введіть ${fieldNamesInUkrainian[fieldName]}`;
+        } else if (!phoneRegex.test(value)) {
+          return `Номер квартири повинен містити лише цифри`;
+        }
+        break;
       case "numnp":
+        if (!value) {
+          return `Введіть ${fieldNamesInUkrainian[fieldName]}`;
+        } else if (!phoneRegex.test(value)) {
+          return `Номер відділення повинен містити лише цифри`;
+        }
+        break;
       case "numposhtmat":
+        if (!value) {
+          return `Введіть ${fieldNamesInUkrainian[fieldName]}`;
+        } else if (!phoneRegex.test(value)) {
+          return `Номер поштомату повинен містити лише цифри`;
+        }
+        break;
       case "index":
         if (!value) {
-          return "Це поле є обов'язковим";
+          return `Введіть ${fieldNamesInUkrainian[fieldName]}`;
         } else if (!phoneRegex.test(value)) {
-          return "Це поле не повинно містити букв";
+          return `Індекс повинен містити лише цифри`;
         }
+        break;
+      case "zip":
+        if (!value) {
+          return `Введіть ${fieldNamesInUkrainian[fieldName]}`;
+        } else if (!zipRegex.test(value)) {
+          return "Введіть коректний ZIP-код (наприклад, 12345 або 12345-6789)";
+        }
+        break;
+      default:
         break;
     }
 
@@ -110,12 +159,13 @@ const Delivery: React.FC<DeliveryProps> = ({
   };
 
   const handleInputChange = (fieldName: string, value: string) => {
-    const error = validateField(fieldName, value);
+    const errorMessage = validateField(fieldName, value);
 
-    setError((prevErrors: any) => ({
+    setError((prevErrors: ErrorState) => ({
       ...prevErrors,
-      [fieldName]: error,
+      [fieldName]: errorMessage,
     }));
+
     switch (fieldName) {
       case "country":
         setCountry(value);
@@ -155,6 +205,40 @@ const Delivery: React.FC<DeliveryProps> = ({
     }
   };
 
+  const renderInputField = (
+    fieldName: string,
+    value: string,
+    placeholder: string,
+    className?: string,
+    required: boolean = false
+  ) => {
+    return (
+      <div className="mb-2 flex flex-col">
+        <input
+          type="text"
+          id={fieldName}
+          value={value}
+          onChange={(e) => handleInputChange(fieldName, e.target.value)}
+          className={`w-full border-b-2 bg-transparent px-[15px] py-[10px] text-t14 outline-none focus:border-black ${
+            error[fieldName] ? "bg-[#C61004]/[.06]" : ""
+          } ${className}`}
+          placeholder={placeholder}
+          aria-invalid={!!error[fieldName]}
+          aria-describedby={error[fieldName] ? `${fieldName}-error` : undefined}
+          required={required}
+        />
+        {error[fieldName] && (
+          <span
+            id={`${fieldName}-error`}
+            className="mt-1 text-t12 text-[#C61004]"
+          >
+            {error[fieldName]}
+          </span>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div>
       <h2 className="mb-2 text-t14 italic text-dark">
@@ -163,28 +247,21 @@ const Delivery: React.FC<DeliveryProps> = ({
       <div className="mb-8"></div>
       <div className="mb-6">
         <h3 className="text-t18">{data.order.delivery_method}</h3>
-        <div className="mb-6 xl:flex ">
-          <div className="mb-2 w-full xl:mb-0 xl:mr-1 xl:w-[230px]">
-            <input
-              type="text"
-              id="country"
-              value={country}
-              onChange={(e) => handleInputChange("country", e.target.value)}
-              className={`w-full border-b-2 bg-transparent px-[15px]  py-[10px] text-t14 outline-none focus:border-black  ${error.country ? " bg-[#C61004]/[.06]" : "bg-white"}`}
-              placeholder={lang === en ? "Country" : "Країна"}
-            />
-          </div>
-
-          <div className=" w-full xl:w-[230px]">
-            <input
-              type="text"
-              id="city"
-              value={city}
-              onChange={(e) => handleInputChange("city", e.target.value)}
-              className={`w-full border-b-2 bg-transparent px-[15px] py-[10px] text-t14 outline-none focus:border-black ${error.city ? " bg-[#C61004]/[.06]" : "bg-white"}`}
-              placeholder={lang === en ? "City" : "Місто"}
-            />
-          </div>
+        <div className="mb-6 xl:flex">
+          {renderInputField(
+            "country",
+            country,
+            lang === en ? "Country" : "Країна",
+            "xl:mr-1 xl:w-[230px]",
+            true
+          )}
+          {renderInputField(
+            "city",
+            city,
+            lang === en ? "City" : "Місто",
+            "xl:w-[230px]",
+            true
+          )}
         </div>
         {lang !== "en" && (
           <p className="mb-2 text-t14 text-[#C61004]">{data.order.freeDel}</p>
@@ -198,9 +275,10 @@ const Delivery: React.FC<DeliveryProps> = ({
           <span className="text-t14 italic">{data.order.deliveryTime}</span>
         )}
       </div>
+
       <div className="mb-6 text-t14">
         {data.delivery.deliveryMethod.map((method: any) => (
-          <div key={method.idD} className="py-3 ">
+          <div key={method.idD} className="py-3">
             <div className="flex items-center notXl:grid notXl:flex-row">
               <div className="xl:mr-4 xl:flex notXl:mb-2 notXl:flex">
                 <input
@@ -226,91 +304,51 @@ const Delivery: React.FC<DeliveryProps> = ({
           </div>
         ))}
       </div>
-      {/* <div className="mb-6">
-                <span className="text-t18 text-red-500 ">{data.order.noDelivery}</span>
-            </div> */}
 
       {selectedOption === "dhl" || selectedOption === "ups" ? (
         <div>
           <p className="mb-2 text-t14 italic text-dark">
             {data.order.fillInTheDetails}
           </p>
-          <div className="grid grid-cols-1  gap-4 xl:grid-cols-2">
-            <div className="xl:w-[250px]">
-              <input
-                type="text"
-                id="zip"
-                value={zip}
-                onChange={(e) => handleInputChange("zip", e.target.value)}
-                className={`w-full border-b-2 bg-transparent px-[15px] py-[10px] text-t14 outline-none focus:border-black ${error.zip ? " bg-[#C61004]/[.06]" : ""}`}
-                placeholder="Zip-CODE"
-              />
-            </div>
-            <div className="xl:w-[250px]">
-              <input
-                type="text"
-                id="sstreet"
-                value={sstreet}
-                onChange={(e) => handleInputChange("sstreet", e.target.value)}
-                className={`w-full border-b-2 bg-transparent px-[15px] py-[10px] text-t14 outline-none focus:border-black ${error.sstreet ? " bg-[#C61004]/[.06]" : ""}`}
-                placeholder="Street"
-              />
-            </div>
-            <div className="xl:w-[250px]">
-              <input
-                type="text"
-                id="house"
-                value={house}
-                onChange={(e) => handleInputChange("house", e.target.value)}
-                className={`w-full border-b-2 bg-transparent px-[15px] py-[10px] text-t14 outline-none focus:border-black ${error.house ? " bg-[#C61004]/[.06]" : ""}`}
-                placeholder="House"
-              />
-            </div>
-            <div className="xl:w-[250px]">
-              <input
-                type="text"
-                id="appartment"
-                value={appartment}
-                onChange={(e) =>
-                  handleInputChange("appartment", e.target.value)
-                }
-                className={`w-full border-b-2 bg-transparent px-[15px] py-[10px] text-t14 outline-none focus:border-black ${error.appartment ? " bg-[#C61004]/[.06]" : ""}`}
-                placeholder="Appartment"
-              />
-            </div>
+          <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+            {renderInputField("zip", zip, "ZIP-код", "xl:w-[250px]", true)}
+            {renderInputField(
+              "sstreet",
+              sstreet,
+              "Вулиця",
+              "xl:w-[250px]",
+              true
+            )}
+            {renderInputField("house", house, "Будинок", "xl:w-[250px]", true)}
+            {renderInputField(
+              "appartment",
+              appartment,
+              "Квартира",
+              "xl:w-[250px]",
+              true
+            )}
           </div>
         </div>
       ) : selectedOption === "np-courier" ? (
         <div>
-          <div>
-            <p className="mb-4 text-t14 italic text-dark">
-              {data.order.fillInTheDetails}
-            </p>
-            <div className="justify-between xl:flex">
-              <div className="mb-2 xl:mb-0 xl:w-[230px]">
-                <input
-                  type="text"
-                  id="street"
-                  value={street}
-                  onChange={(e) => handleInputChange("street", e.target.value)}
-                  className={`w-full border-b-2 px-[15px]  py-[10px] text-t14 outline-none focus:border-black  ${error.street ? " bg-[#C61004]/[.06]" : "bg-white"}`}
-                  placeholder="Введіть вулицю"
-                />
-              </div>
-
-              <div className=" xl:w-[230px]">
-                <input
-                  type="text"
-                  id="houseNumber"
-                  value={houseNumber}
-                  onChange={(e) =>
-                    handleInputChange("houseNumber", e.target.value)
-                  }
-                  className={`w-full border-b-2 bg-transparent px-[15px] py-[10px] text-t14 outline-none focus:border-black ${error.houseNumber ? " bg-[#C61004]/[.06]" : "bg-white"}`}
-                  placeholder="Введіть номер будинку"
-                />
-              </div>
-            </div>
+          <p className="mb-4 text-t14 italic text-dark">
+            {data.order.fillInTheDetails}
+          </p>
+          <div className="justify-between xl:flex">
+            {renderInputField(
+              "street",
+              street,
+              "Введіть вулицю",
+              "xl:w-[230px]",
+              true
+            )}
+            {renderInputField(
+              "houseNumber",
+              houseNumber,
+              "Введіть номер будинку",
+              "xl:w-[230px]",
+              true
+            )}
           </div>
         </div>
       ) : selectedOption === "novaposhta-smovuviz" ? (
@@ -318,54 +356,45 @@ const Delivery: React.FC<DeliveryProps> = ({
           <p className="mb-4 text-t14 italic text-dark">
             {data.order.fillInTheDetails}
           </p>
-          <div className="mr-1 xl:w-[230px]">
-            <input
-              type="text"
-              id="numnp"
-              value={numnp}
-              onChange={(e) => handleInputChange("numnp", e.target.value)}
-              className={`w-full border-b-2 bg-transparent px-[15px] py-[10px] text-t14 outline-none focus:border-black ${error.numnp ? " bg-[#C61004]/[.06]" : "bg-white"}`}
-              placeholder="Номер відділення"
-            />
-          </div>
+          {renderInputField(
+            "numnp",
+            numnp,
+            "Номер відділення",
+            "xl:w-[230px]",
+            true
+          )}
         </div>
       ) : selectedOption === "np-poshtmat" ? (
         <div>
           <p className="mb-4 text-t14 italic text-dark">
             {data.order.fillInTheDetails}
           </p>
-          <div className="mr-1 xl:w-[230px]">
-            <input
-              type="text"
-              id="numnp"
-              value={numnp}
-              onChange={(e) => handleInputChange("numnp", e.target.value)}
-              className={`w-full border-b-2 bg-transparent px-[15px] py-[10px] text-t14 outline-none focus:border-black ${error.numnp ? " bg-[#C61004]/[.06]" : "bg-white"}`}
-              placeholder="Номер Поштомату"
-            />
-          </div>
+          {renderInputField(
+            "numposhtmat",
+            numposhtmat,
+            "Номер Поштомату",
+            "xl:w-[230px]",
+            true
+          )}
         </div>
       ) : selectedOption === "ukrposhta" ? (
         <div>
           <p className="mb-4 text-t14 italic text-dark">
             {data.order.fillInTheDetails}
           </p>
-          <div className="mr-1 xl:w-[230px]">
-            <input
-              type="text"
-              id="index"
-              value={index}
-              onChange={(e) => handleInputChange("index", e.target.value)}
-              className={`w-full border-b-2 bg-transparent px-[15px] py-[10px] text-t14 outline-none focus:border-black ${error.index ? " bg-[#C61004]/[.06]" : "bg-white"}`}
-              placeholder="Індекс укрпошти"
-            />
-          </div>
+          {renderInputField(
+            "index",
+            index,
+            "Індекс укрпошти",
+            "xl:w-[230px]",
+            true
+          )}
         </div>
       ) : (
         <div className="mb-4 text-t14 italic text-dark">
           {lang === en
             ? "Specify the delivery method"
-            : "  Вкажіть спосіб доставки"}
+            : "Вкажіть спосіб доставки"}
         </div>
       )}
     </div>

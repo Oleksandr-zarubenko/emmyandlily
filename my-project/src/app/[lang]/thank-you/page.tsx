@@ -7,6 +7,7 @@ import BgImg from "/public/About us2.png";
 import DogsImg from "/public/emmy-lilly-2-dogs-bg-hero.webp";
 import Image from "next/image";
 import { Logo } from "@/components/icons/Logo";
+import { ClearLocalStorage } from "@/components/ClearLocalStorage";
 
 const queryEN = gql`
   {
@@ -27,12 +28,13 @@ const queryUA = gql`
     }
   }
 `;
+
 export default async function ThankYouPage({
   params: { lang },
 }: {
   params: { lang: Locale };
 }) {
-  const query = lang == "ua" ? queryUA : queryEN;
+  const query = lang === "ua" ? queryUA : queryEN;
   const { data } = await getClient().query({
     query,
     context: {
@@ -44,6 +46,8 @@ export default async function ThankYouPage({
 
   return (
     <section className="relative grow">
+      <ClearLocalStorage />
+
       <Image
         src={BgImg}
         alt="dogs"
@@ -57,7 +61,7 @@ export default async function ThankYouPage({
         />
         <div className="flex flex-col gap-4 py-20 md:w-1/2">
           <Markdown text={data.thankyoupage.maintext} />
-          <Link href={lang == "ua" ? "/ua" : "/"} className="ml-auto w-32">
+          <Link href={lang === "ua" ? "/ua" : "/"} className="ml-auto w-32">
             <Logo color="black" />
           </Link>
           <Markdown
@@ -65,7 +69,7 @@ export default async function ThankYouPage({
             className="smOnly:mb-44"
           />
           <Link
-            href={lang == "ua" ? "/ua" : "/"}
+            href={lang === "ua" ? "/ua" : "/"}
             className="relative z-20 inline-block rounded bg-black px-6 py-3 text-center text-t18 font-bold text-white duration-300 hover:bg-white hover:text-black hover:ring-1 hover:ring-black md:ml-auto md:max-w-max"
           >
             {data.thankyoupage.buttontext}
