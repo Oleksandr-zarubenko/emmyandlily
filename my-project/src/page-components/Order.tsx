@@ -767,6 +767,54 @@ const Order = ({ data, lang }: any) => {
       if (street.trim() === "" || houseNumber.trim() === "") {
         return;
       }
+    } else if (selectedOption === "novaposhta-smovuviz") {
+      if (street.trim() === "") {
+        document.getElementById("street")?.classList.add("input-error");
+      } else {
+        document.getElementById("street")?.classList.remove("input-error");
+      }
+
+      if (numnp.trim() === "") {
+        document.getElementById("numnp")?.classList.add("input-error");
+      } else {
+        document.getElementById("numnp")?.classList.remove("input-error");
+      }
+
+      if (street.trim() === "" || houseNumber.trim() === "") {
+        return;
+      }
+    } else if (selectedOption === "np-poshtmat") {
+      if (street.trim() === "") {
+        document.getElementById("street")?.classList.add("input-error");
+      } else {
+        document.getElementById("street")?.classList.remove("input-error");
+      }
+
+      if (numposhtmat.trim() === "") {
+        document.getElementById("numposhtmat")?.classList.add("input-error");
+      } else {
+        document.getElementById("numposhtmat")?.classList.remove("input-error");
+      }
+
+      if (street.trim() === "" || houseNumber.trim() === "") {
+        return;
+      }
+    } else if (selectedOption === "ukrposhta") {
+      if (street.trim() === "") {
+        document.getElementById("street")?.classList.add("input-error");
+      } else {
+        document.getElementById("street")?.classList.remove("input-error");
+      }
+
+      if (index.trim() === "") {
+        document.getElementById("index")?.classList.add("input-error");
+      } else {
+        document.getElementById("index")?.classList.remove("input-error");
+      }
+
+      if (street.trim() === "" || houseNumber.trim() === "") {
+        return;
+      }
     } else if (selectedOption === "dhl" || selectedOption === "ups") {
       if (sstreet.trim() === "" || error.sstreet) {
         document.getElementById("sstreet")?.classList.add("input-error");

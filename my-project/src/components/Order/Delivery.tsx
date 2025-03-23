@@ -80,7 +80,7 @@ const Delivery: React.FC<DeliveryProps> = ({
 }) => {
   const validateField = (fieldName: string, value: string) => {
     const nameRegex = /^[A-Za-zА-Яа-яЇїІіЄєҐґ\s']+$/;
-    const phoneRegex = /^[0-9]*$/;
+    const alphanumericRegex = /^[A-Za-z0-9\s\-]*$/; // Allows letters, numbers, spaces, and hyphens
     const zipRegex = /^\d{5}(?:[-\s]\d{4})?$/;
 
     const fieldNamesInUkrainian: { [key: string]: string } = {
@@ -110,38 +110,14 @@ const Delivery: React.FC<DeliveryProps> = ({
         break;
       case "houseNumber":
       case "house":
-        if (!value) {
-          return `Введіть ${fieldNamesInUkrainian[fieldName]}`;
-        } else if (!phoneRegex.test(value)) {
-          return `Номер будинку повинен містити лише цифри`;
-        }
-        break;
       case "appartment":
-        if (!value) {
-          return `Введіть ${fieldNamesInUkrainian[fieldName]}`;
-        } else if (!phoneRegex.test(value)) {
-          return `Номер квартири повинен містити лише цифри`;
-        }
-        break;
       case "numnp":
-        if (!value) {
-          return `Введіть ${fieldNamesInUkrainian[fieldName]}`;
-        } else if (!phoneRegex.test(value)) {
-          return `Номер відділення повинен містити лише цифри`;
-        }
-        break;
       case "numposhtmat":
-        if (!value) {
-          return `Введіть ${fieldNamesInUkrainian[fieldName]}`;
-        } else if (!phoneRegex.test(value)) {
-          return `Номер поштомату повинен містити лише цифри`;
-        }
-        break;
       case "index":
         if (!value) {
           return `Введіть ${fieldNamesInUkrainian[fieldName]}`;
-        } else if (!phoneRegex.test(value)) {
-          return `Індекс повинен містити лише цифри`;
+        } else if (!alphanumericRegex.test(value)) {
+          return `${fieldNamesInUkrainian[fieldName]} повинен містити лише літери та цифри`;
         }
         break;
       case "zip":
