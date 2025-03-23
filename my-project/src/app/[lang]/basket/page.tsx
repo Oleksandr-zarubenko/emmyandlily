@@ -50,7 +50,7 @@ const queryEN = gql`
         url
         id
       }
-      order
+
       methodOfUse
 
       capacity {
@@ -120,7 +120,7 @@ const queryUA = gql`
         url
         id
       }
-      order
+
       methodOfUse
 
       capacity {

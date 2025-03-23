@@ -17,8 +17,10 @@ export const ProductsSection = ({
     products: { id: string; price: string; available: string; oldprice: any }[];
     currencies: { id: string; rate: number }[];
   }>({ products: [], currencies: [] });
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const fetchData = async () => {
+    console.log("1");
     try {
       const data = await getData();
       setState(data);
@@ -34,14 +36,18 @@ export const ProductsSection = ({
   const en = locales[1];
 
   const availableProducts = data.allProducts.filter((product: any) => {
+    const inSelectedCategory = selectedCategory
+      ? product.category.some((cat: any) => cat.id === selectedCategory)
+      : true;
+
     const correspondingProduct = product.capacity.some((cap: any) =>
       state.products.some(
         (p: any) => p.id === cap.idCrm && p.available === "true"
       )
     );
-    return correspondingProduct;
-  });
 
+    return inSelectedCategory && correspondingProduct;
+  });
   // const previewProducts = data.allProducts.filter(
   //   (product: any) => product.preview
   // );
@@ -59,21 +65,48 @@ export const ProductsSection = ({
         {data.productsSection.text && (
           <Markdown text={data.productsSection.text} />
         )}
+        <div className="mb-6 flex flex-wrap gap-4">
+          <button
+            className={`rounded-md border px-3 py-1 text-sm font-medium ${
+              selectedCategory === null
+                ? "border-white text-white"
+                : "border-gray-300 text-gray-500 hover:border-white hover:text-white"
+            }`}
+            onClick={() => setSelectedCategory(null)}
+          >
+            Всі
+          </button>
 
+          {data.allCategories.map((category: any) => (
+            <button
+              key={category.id}
+              className={`rounded-md border px-3 py-1 text-sm font-medium ${
+                selectedCategory === category.id
+                  ? "border-white text-white"
+                  : "border-gray-300 text-gray-500 hover:border-white hover:text-white"
+              }`}
+              onClick={() =>
+                setSelectedCategory(
+                  selectedCategory === category.id ? null : category.id
+                )
+              }
+            >
+              {category.name}
+            </button>
+          ))}
+        </div>
         <div className="grid grid-cols-1 gap-1 bg-black text-left md:gap-6  xl:grid-cols-3 xl:gap-4 mdOnly:grid-cols-2">
           {availableProducts.length > 0 &&
-            availableProducts
-              .sort((a: any, b: any) => a.order - b.order)
-              .map((product: any) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  lang={lang}
-                  state={state}
-                  data={data}
-                  convertPrice={convertPrice}
-                />
-              ))}
+            availableProducts.map((product: any) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                lang={lang}
+                state={state}
+                data={data}
+                convertPrice={convertPrice}
+              />
+            ))}
         </div>
       </div>
     </section>

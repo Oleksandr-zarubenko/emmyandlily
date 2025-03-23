@@ -351,3 +351,9 @@ textarea {
   background-color: transparent;
   width: 0px;
 }
+
+@media (min-width: 1895px) {
+  .custom-position {
+    left: 30vw !important;
+  }
+}

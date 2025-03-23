@@ -132,7 +132,7 @@ export const FormModal = ({ orderForm }: { orderForm: any }) => {
       </button>
       {isOpen && (
         <div
-          className="fixed inset-0 z-30 flex h-dvh items-center justify-center md:overflow-y-auto bg-black/50"
+          className="fixed inset-0 z-30 flex h-dvh items-center justify-center bg-black/50 md:overflow-y-auto"
           onClick={() => setMenuClosed()}
         >
           <div className="relative h-full xl:h-auto">

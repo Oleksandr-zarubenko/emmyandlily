@@ -27,6 +27,14 @@ export const HeroSection = ({ data }: { data: any }) => {
           text={data.mainSection.btn}
           className="mb-[260px] xl:mr-[180px]"
         />
+        <Image
+          src={data?.mainSection.bottles?.url}
+          alt={data?.mainSection.bottles?.alt || ""}
+          className="2xl:left-[60vw] custom-position absolute bottom-0 left-[20vw] z-10 h-64 w-96 object-contain object-left-bottom md:left-[50vw] xl:h-96"
+          sizes="50vw"
+          width={1000}
+          height={1000}
+        />
       </div>
     </div>
   );

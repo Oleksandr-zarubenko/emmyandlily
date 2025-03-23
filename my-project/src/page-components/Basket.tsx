@@ -227,27 +227,35 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
 
   useEffect(() => {
     let newTotalPrice = 0;
+
+    // Розрахунок нової ціни
     tovar.forEach((item: any) => {
       const quantity = quantities[item.id] || 1;
       newTotalPrice += item.price * quantity;
     });
 
-    const discountObject = data.allPromocods.find((promo: any) => {
-      return promo.promoCodName.some(
-        (code: any) => code.promocod === promoCode.trim()
-      );
-    });
+    // Пошук об'єкта знижки
+    const discountObject = data.allPromocods.find((promo: any) =>
+      promo.promoCodName.some((code: any) => code.promocod === promoCode.trim())
+    );
+
+    // Витягування значення знижки
     const discountValue = discountObject
       ? discountObject.promoCodName.find(
           (code: any) => code.promocod === promoCode.trim()
-        ).discount
+        )?.discount || 0
       : 0;
+
+    // Розрахунок ціни зі знижкою
     const discountedPrice = newTotalPrice * (1 - discountValue / 100);
+
+    // Оновлення станів
     setDiscountAmount(newTotalPrice * (discountValue / 100));
     setTotalPrice(discountedPrice);
 
+    // Збереження в localStorage
     localStorage.setItem("totalPrice", newTotalPrice.toString());
-  }, [quantities, tovar]);
+  }, [quantities, tovar, data.allPromocods, promoCode]); // Додано всі залежності
 
   const handleQuantityChange = (capacity: string, value: number) => {
     const updatedQuantities = {
@@ -711,43 +719,39 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
             </div>
           )}
         </div>
-<div className="mb-8 ml-auto flex w-52 justify-between text-t14 xl:text-t16">
-  <p>{lang === en ? "Discount" : "Знижка"} </p>
-  <p>
-    -{" "}
-    {lang === en
-      ? Math.round(
-          convertPrice(
-            totaldiscountAmount,
-            state.currencies.find(
-              (currency: any) => currency.id === "EUR"
-            )?.rate || 1
-          )
-        ).toFixed(0) + " €" // Округлення до цілого числа
-      : Math.round(totaldiscountAmount).toFixed(0) + " ₴"} // Округлення до цілого числа
-  </p>
-</div>
+        <div className="mb-8 ml-auto flex w-52 justify-between text-t14 xl:text-t16">
+          <p>{lang === en ? "Discount" : "Знижка"} </p>
+          <p>
+            -{" "}
+            {lang === en
+              ? Math.round(
+                  convertPrice(
+                    discountAmount,
+                    state.currencies.find(
+                      (currency: any) => currency.id === "EUR"
+                    )?.rate || 1
+                  )
+                ).toFixed(0) + " €"
+              : Math.round(discountAmount).toFixed(0) + " ₴"}
+          </p>
+        </div>
 
-
-<div className="mb-10 ml-auto flex w-52 justify-between text-t14 xl:text-t16">
-  <p className="text-black opacity-60">{data.basket.total}</p>
-  <p className="text-t16 font-bold">
-    {lang === en
-      ? Math.round(
-          convertPrice(
-            totalPrice,
-            state.currencies.find(
-              (currency: any) => currency.id === "EUR"
-            )?.rate || 1
-          )
-        ).toFixed(0) // Округлення до цілого числа
-      : Math.round(totalPrice).toFixed(0)} // Округлення до цілого числа
-    {lang === en ? " €" : " ₴"}
-  </p>
-</div>
-
-
-
+        <div className="mb-10 ml-auto flex w-52 justify-between text-t14 xl:text-t16">
+          <p className="text-black opacity-60">{data.basket.total}</p>
+          <p className="text-t16 font-bold">
+            {lang === en
+              ? Math.round(
+                  convertPrice(
+                    totalPrice,
+                    state.currencies.find(
+                      (currency: any) => currency.id === "EUR"
+                    )?.rate || 1
+                  )
+                ).toFixed(0)
+              : Math.round(totalPrice).toFixed(0)}
+            {lang === en ? " €" : " ₴"}
+          </p>
+        </div>
 
         <div className="mb-[66px]  flex justify-end xl:mb-28">
           <button

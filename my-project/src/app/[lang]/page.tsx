@@ -20,6 +20,10 @@ const queryEN = gql`
       btn
       inCart
       productId
+      bottles {
+        alt
+        url
+      }
     }
     videosection {
       heading
@@ -28,6 +32,10 @@ const queryEN = gql`
       text3
       text4
       videolink
+    }
+    allCategories {
+      id
+      name
     }
     aboutUsSection {
       heading
@@ -65,11 +73,15 @@ const queryEN = gql`
       heading
       text
     }
-    allProducts(first: 100){
+    allProducts(first: 100) {
       preview
       heading
       description
       id
+      category {
+        name
+        id
+      }
       productpicture {
         alt
         url
@@ -87,7 +99,7 @@ const queryEN = gql`
         url
         id
       }
-      order
+
       methodOfUse
       capacity {
         ml
@@ -111,6 +123,10 @@ const queryUA = gql`
       btn
       inCart
       productId
+      bottles {
+        alt
+        url
+      }
     }
     videosection(locale: uk) {
       heading
@@ -156,11 +172,19 @@ const queryUA = gql`
       heading
       text
     }
+    allCategories(locale: uk) {
+      id
+      name
+    }
     allProducts(locale: uk, first: 100) {
       preview
       heading
       description
       id
+      category {
+        name
+        id
+      }
       productpicture {
         alt
         url
@@ -178,7 +202,7 @@ const queryUA = gql`
         url
         id
       }
-      order
+
       methodOfUse
       capacity {
         ml
@@ -232,7 +256,6 @@ export default async function Home({
     context: {
       fetchOptions: {
         next: { revalidate: 60 },
-        cache: "no-store",
       },
     },
   });

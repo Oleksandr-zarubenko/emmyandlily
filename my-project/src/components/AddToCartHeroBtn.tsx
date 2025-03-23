@@ -42,52 +42,62 @@ export const AddToCartHeroBtn: FC<AddToCartHeroBtnProps> = ({
     )
   );
 
-  const addToCart = () => {
-    const storedDataString = localStorage.getItem("storedData");
-    const storedData = storedDataString ? JSON.parse(storedDataString) : [];
-    const storedAddedToCart = localStorage.getItem("addedToCart");
-    const parsedAddedToCart = storedAddedToCart
-      ? JSON.parse(storedAddedToCart)
-      : {};
+  const addToCart = async () => {
+    try {
+      const storedDataString = localStorage.getItem("storedData");
+      const storedData = storedDataString ? JSON.parse(storedDataString) : [];
+      const storedAddedToCart = localStorage.getItem("addedToCart");
+      const parsedAddedToCart = storedAddedToCart
+        ? JSON.parse(storedAddedToCart)
+        : {};
 
-    const productToAdd = trevelSet.find((product: any) =>
-      product.capacity.some(
-        (cap: any) => cap.idCrm === data?.mainSection?.productId
-      )
-    );
-
-    if (productToAdd) {
-      const capacityToAdd = productToAdd.capacity.find(
-        (cap: any) => cap.idCrm === data?.mainSection?.productId
+      const productToAdd = trevelSet.find((product: any) =>
+        product.capacity.some(
+          (cap: any) => cap.idCrm === data?.mainSection?.productId
+        )
       );
-      if (capacityToAdd) {
-        const { ml, idCrm } = capacityToAdd;
 
-        const productState = state.products.find((p: any) => p.id === idCrm);
-        const productPrice = productState
-          ? productState.price
-          : capacityToAdd.price;
+      if (productToAdd) {
+        const capacityToAdd = productToAdd.capacity.find(
+          (cap: any) => cap.idCrm === data?.mainSection?.productId
+        );
+        if (capacityToAdd) {
+          // Отримуємо актуальні дані з API перед додаванням в кошик
+          const response = await getData();
+          const updatedProducts = response.products;
 
-        const dataToStore = {
-          id: idCrm,
-          productName: productToAdd.heading,
-          price: productPrice,
-          capacity: ml,
-          photo: productToAdd.productSlider[0].url,
-        };
+          const { ml, idCrm } = capacityToAdd;
+          const productState = updatedProducts.find((p: any) => p.id === idCrm);
+          const productPrice = productState
+            ? productState.price
+            : capacityToAdd.price;
 
-        const updatedAddedToCart = {
-          ...parsedAddedToCart,
-          [idCrm]: true,
-        };
-        const updatedData = [...storedData, dataToStore];
-        localStorage.setItem("storedData", JSON.stringify(updatedData));
-        localStorage.setItem("addedToCart", JSON.stringify(updatedAddedToCart));
+          const dataToStore = {
+            id: idCrm,
+            productName: productToAdd.heading,
+            price: productPrice,
+            capacity: ml,
+            photo: productToAdd.productSlider[0].url,
+          };
 
-        setAddedToCart(updatedAddedToCart);
-      } else {
-        console.error("Product capacity is not available.");
+          const updatedAddedToCart = {
+            ...parsedAddedToCart,
+            [idCrm]: true,
+          };
+          const updatedData = [...storedData, dataToStore];
+          localStorage.setItem("storedData", JSON.stringify(updatedData));
+          localStorage.setItem(
+            "addedToCart",
+            JSON.stringify(updatedAddedToCart)
+          );
+
+          setAddedToCart(updatedAddedToCart);
+        } else {
+          console.error("Product capacity is not available.");
+        }
       }
+    } catch (error) {
+      console.error("Error adding product to cart:", error);
     }
   };
 
