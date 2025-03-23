@@ -86,20 +86,21 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
   }, [isRecipient]);
 
   const validateName = (value: string, fieldName: string) => {
-    const nameRegex = /^[a-zA-ZÀ-ÖØ-öø-ÿ\s]+$/;
+    // Unicode regex to match letters from any language, including accents and special characters
+    const nameRegex = /^[\p{L}\s'-]+$/u;
+
     if (!value) {
       return fieldName.includes("recipient")
         ? `Введіть ім'я отримувача`
         : `Введіть ${fieldName === FIELD_NAMES.FIRST_NAME ? "ім'я" : "прізвище"}`;
     } else if (!nameRegex.test(value)) {
       return fieldName.includes("recipient")
-        ? `Ім'я отримувача не повинно містити цифр`
-        : `${fieldName === FIELD_NAMES.FIRST_NAME ? "Ім'я" : "Прізвище"} не повинно містити цифр`;
+        ? `Ім'я отримувача повинно містити лише літери`
+        : `${fieldName === FIELD_NAMES.FIRST_NAME ? "Ім'я" : "Прізвище"} повинно містити лише літери`;
     }
     return "";
   };
 
-  // Validate email fields
   const validateEmail = (value: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!value) {
@@ -112,35 +113,35 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
 
   const validatePhoneNumber = (value: string) => {
     const phoneValidators: { [key: string]: RegExp } = {
-      UA: /^(\+?380\d{9})$/, // Формат для України: +380XXXXXXXXX
-      AT: /^(\+?43\d{1,9})$/, // Австрія: +43XXXXXXXXX
-      BE: /^(\+?32\d{1,9})$/, // Бельгія: +32XXXXXXXXX
-      BG: /^(\+?359\d{1,9})$/, // Болгарія: +359XXXXXXXXX
-      CY: /^(\+?357\d{1,9})$/, // Кіпр: +357XXXXXXXXX
-      CZ: /^(\+?420\d{1,9})$/, // Чехія: +420XXXXXXXXX
-      DE: /^(\+?49\d{1,9})$/, // Німеччина: +49XXXXXXXXX
-      DK: /^(\+?45\d{1,9})$/, // Данія: +45XXXXXXXXX
-      EE: /^(\+?372\d{1,9})$/, // Естонія: +372XXXXXXXXX
-      ES: /^(\+?34\d{1,9})$/, // Іспанія: +34XXXXXXXXX
-      FI: /^(\+?358\d{1,9})$/, // Фінляндія: +358XXXXXXXXX
-      FR: /^(\+?33\d{1,9})$/, // Франція: +33XXXXXXXXX
-      GR: /^(\+?30\d{1,9})$/, // Греція: +30XXXXXXXXX
-      HR: /^(\+?385\d{1,9})$/, // Хорватія: +385XXXXXXXXX
-      HU: /^(\+?36\d{1,9})$/, // Угорщина: +36XXXXXXXXX
-      IE: /^(\+?353\d{1,9})$/, // Ірландія: +353XXXXXXXXX
-      IT: /^(\+?39\d{1,9})$/, // Італія: +39XXXXXXXXX
-      LT: /^(\+?370\d{1,9})$/, // Литва: +370XXXXXXXXX
-      LU: /^(\+?352\d{1,9})$/, // Люксембург: +352XXXXXXXXX
-      LV: /^(\+?371\d{1,9})$/, // Латвія: +371XXXXXXXXX
-      MT: /^(\+?356\d{1,9})$/, // Мальта: +356XXXXXXXXX
-      NL: /^(\+?31\d{1,9})$/, // Нідерланди: +31XXXXXXXXX
-      PL: /^(\+?48\d{1,9})$/, // Польща: +48XXXXXXXXX
-      PT: /^(\+?351\d{1,9})$/, // Португалія: +351XXXXXXXXX
-      RO: /^(\+?40\d{1,9})$/, // Румунія: +40XXXXXXXXX
-      SE: /^(\+?46\d{1,9})$/, // Швеція: +46XXXXXXXXX
-      SI: /^(\+?386\d{1,9})$/, // Словенія: +386XXXXXXXXX
-      SK: /^(\+?421\d{1,9})$/, // Словаччина: +421XXXXXXXXX
-      US: /^(\+?1\d{10})$/, // Формат для США: +1XXXXXXXXXX
+      UA: /^(\+?380\d{9})$/,
+      AT: /^(\+?43\d{1,9})$/,
+      BE: /^(\+?32\d{1,9})$/,
+      BG: /^(\+?359\d{1,9})$/,
+      CY: /^(\+?357\d{1,9})$/,
+      CZ: /^(\+?420\d{1,9})$/,
+      DE: /^(\+?49\d{1,9})$/,
+      DK: /^(\+?45\d{1,9})$/,
+      EE: /^(\+?372\d{1,9})$/,
+      ES: /^(\+?34\d{1,9})$/,
+      FI: /^(\+?358\d{1,9})$/,
+      FR: /^(\+?33\d{1,9})$/,
+      GR: /^(\+?30\d{1,9})$/,
+      HR: /^(\+?385\d{1,9})$/,
+      HU: /^(\+?36\d{1,9})$/,
+      IE: /^(\+?353\d{1,9})$/,
+      IT: /^(\+?39\d{1,9})$/,
+      LT: /^(\+?370\d{1,9})$/,
+      LU: /^(\+?352\d{1,9})$/,
+      LV: /^(\+?371\d{1,9})$/,
+      MT: /^(\+?356\d{1,9})$/,
+      NL: /^(\+?31\d{1,9})$/,
+      PL: /^(\+?48\d{1,9})$/,
+      PT: /^(\+?351\d{1,9})$/,
+      RO: /^(\+?40\d{1,9})$/,
+      SE: /^(\+?46\d{1,9})$/,
+      SI: /^(\+?386\d{1,9})$/,
+      SK: /^(\+?421\d{1,9})$/,
+      US: /^(\+?1\d{10})$/,
     };
 
     if (!value) {
