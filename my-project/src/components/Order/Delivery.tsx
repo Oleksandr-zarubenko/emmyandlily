@@ -79,8 +79,8 @@ const Delivery: React.FC<DeliveryProps> = ({
   en,
 }) => {
   const validateField = (fieldName: string, value: string) => {
-    const nameRegex = /^[A-Za-zА-Яа-яЇїІіЄєҐґ\s']+$/;
-    const alphanumericRegex = /^[A-Za-z0-9\s\-]*$/; // Allows letters, numbers, spaces, and hyphens
+    const nameRegex = /^[\p{L}\s'-]+$/u;
+    const alphanumericRegex = /^[\p{L}0-9\s\-]*$/u; // Allows letters, numbers, spaces, and hyphens
     const zipRegex = /^\d{5}(?:[-\s]\d{4})?$/;
 
     const fieldNamesInUkrainian: { [key: string]: string } = {
