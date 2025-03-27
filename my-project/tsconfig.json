@@ -29,6 +29,7 @@
     "src/components/Slider.js",
     "src/components/MobileMenu.tsx",
     "src/app/api/tlg.ts",
+    "src/app/api/send-email/route.ts",
   ],
   "exclude": ["node_modules"],
 }

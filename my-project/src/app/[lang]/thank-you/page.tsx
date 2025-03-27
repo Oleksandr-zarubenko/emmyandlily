@@ -46,8 +46,6 @@ export default async function ThankYouPage({
 
   return (
     <section className="relative grow">
-      <ClearLocalStorage />
-
       <Image
         src={BgImg}
         alt="dogs"
@@ -64,9 +62,8 @@ export default async function ThankYouPage({
           <Link href={lang === "ua" ? "/ua" : "/"} className="ml-auto w-32">
             <Logo color="black" />
           </Link>
-          <Markdown
-            text={data.thankyoupage.additionaltext}
-            className="smOnly:mb-44"
+          <ClearLocalStorage
+            additionalText={data.thankyoupage.additionaltext}
           />
           <Link
             href={lang === "ua" ? "/ua" : "/"}
@@ -78,11 +75,7 @@ export default async function ThankYouPage({
       </div>
       <script
         dangerouslySetInnerHTML={{
-          __html: `
-            if (typeof window !== "undefined" && window.fbq) {
-              window.fbq('track', 'Thank You Page View');
-            }
-          `,
+          __html: `if (typeof window !== "undefined" && window.fbq) { window.fbq('track', 'Thank You Page View'); }`,
         }}
       />
     </section>
