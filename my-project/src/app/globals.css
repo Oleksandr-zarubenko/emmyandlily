@@ -357,3 +357,18 @@ textarea {
     left: 30vw !important;
   }
 }
+
+/* Safari-specific fixes to prevent video fullscreen */
+video::-webkit-media-controls-fullscreen-button {
+  display: none !important;
+}
+
+video::-webkit-media-controls {
+  display: none !important;
+}
+
+/* Prevent video from going fullscreen on Safari */
+video {
+  -webkit-playsinline: true;
+  -webkit-presentation-mode: inline;
+}

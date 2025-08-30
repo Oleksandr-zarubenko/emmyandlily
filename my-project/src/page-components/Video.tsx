@@ -12,6 +12,8 @@ const Video = ({ data }: { data: any }) => {
           muted
           loop
           preload="none"
+          playsInline
+          controls={false}
         >
           <source src={data.videosection.videolink} type="video/mp4" />
         </video>

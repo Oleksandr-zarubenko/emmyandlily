@@ -698,10 +698,13 @@ const Order = ({ data, lang }: any) => {
 
         if (response.ok) {
           const jsonData = await response.json();
-          setTimeout(() => {
-            router.push(`/${lang}/`);
-          }, 1000);
-          window.open(jsonData.pageUrl);
+          // Open payment page - let the payment flow handle redirects
+          const paymentWindow = window.open(jsonData.pageUrl);
+          
+          // If popup is blocked, redirect directly to payment URL
+          if (!paymentWindow) {
+            window.location.href = jsonData.pageUrl;
+          }
         } else {
           console.error("Помилка при відправці даних:", response.statusText);
         }
