@@ -186,6 +186,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
       )}
       {paymentActive && (
         <button
+          type="button"
           className=" relative top-[-15px] rounded bg-black  px-6  py-[12px] text-t12 text-white xl:top-0 xl:text-t18 smOnly:w-full mdOnly:top-[-17px] mdOnly:w-full "
           onClick={switchToPaymentTab}
         >
