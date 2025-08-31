@@ -170,6 +170,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
       )}
       {personActive && (
         <button
+          type="button"
           onClick={saveAndProceed}
           className="relative rounded bg-black px-6 py-[12px] text-t18 text-white xl:top-5 smOnly:w-full mdOnly:w-full"
         >
@@ -178,6 +179,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
       )}
       {deliveryActive && (
         <button
+          type="button"
           className="relative top-12 rounded bg-black px-6 py-[12px] text-t12 text-white xl:top-20 xl:text-t18 smOnly:w-full mdOnly:w-full"
           onClick={switchToDeliveryTab}
         >
