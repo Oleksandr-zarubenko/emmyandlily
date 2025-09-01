@@ -100,6 +100,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
               : freeDelivery(deliveryPrice) + " ₴"}
           </p>
         </li> */}
+
         <li className="mb-2 flex justify-between">
           <p className="text-t14 xl:text-t16">{data.order.discount}</p>
           <p className="text-t16 xl:text-t18">
