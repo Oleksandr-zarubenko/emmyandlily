@@ -3,6 +3,7 @@ import { i18n } from "@/i18n.config";
 import { convertPrice } from "@/utils/convertPrice/convertPrice";
 
 import Link from "next/link";
+
 type YourOrderProps = {
   lang: any;
   data: any;
