@@ -666,41 +666,23 @@ const Order = ({ data, lang }: any) => {
             currency: lang === "en" ? "EUR" : "UAH",
           });
         }
-        const response = await fetch(
-          "https://api.monobank.ua/api/merchant/invoice/create",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "X-Token": "mDLjwZ7Idkxv5odecWj5ByA",
-            },
-            body: JSON.stringify({
-              amount: amount,
-              ccy: numberValute,
-              merchantPaymInfo: {
-                reference: externalId,
-                destination: productNamesString,
-                comment: productNamesString,
-                customerEmails: [],
-              },
-              redirectUrl: `http://emmyandlily.com/${lang}/thank-you`,
-              webHookUrl:
-                "https://example.com/mono/acquiring/webhook/maybesomegibberishuniquestringbutnotnecessarily",
-              validity: 3600,
-              paymentType: "debit",
-              saveCardData: {
-                saveCard: true,
-                walletId: "69f780d841a0434aa535b08821f4822c",
-              },
-            }),
-          }
-        );
+        const response = await fetch("/api/mono/create-invoice", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            amount,
+            numberValute,
+            externalId,
+            productNamesString,
+            lang,
+          }),
+        });
 
         if (response.ok) {
           const jsonData = await response.json();
           // Open payment page - let the payment flow handle redirects
           const paymentWindow = window.open(jsonData.pageUrl);
-          
+
           // If popup is blocked, redirect directly to payment URL
           if (!paymentWindow) {
             window.location.href = jsonData.pageUrl;
