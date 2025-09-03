@@ -16,14 +16,6 @@ export async function POST(req: NextRequest) {
     productNamesString,
     lang,
   }: RequestType = await req.json();
-  console.log(
-    amount,
-    numberValute,
-    externalId,
-    productNamesString,
-    lang,
-    MONO_TOKEN
-  );
 
   try {
     const response = await fetch(
