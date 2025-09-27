@@ -23,7 +23,8 @@ export default async function OfferPage({
   params: Promise<{ lang: Locale }>;
 }) {
   const { lang } = await params;
-  const query = lang == "uk" ? queryUA : queryEN;
+  const local = lang as Locale;
+  const query = local == "uk" ? queryUA : queryEN;
   const { data } = await getClient().query<{ offer: { offertext: string } }>({
     query,
     context: {

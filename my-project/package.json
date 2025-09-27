@@ -26,8 +26,6 @@
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-facebook-pixel": "^1.0.4",
-    "react-hook-form": "^7.63.0",
-    "react-hook-form-persist": "^3.0.0",
     "server-only": "^0.0.1",
     "sharp": "^0.33.3",
     "swiper": "^11.0.5",

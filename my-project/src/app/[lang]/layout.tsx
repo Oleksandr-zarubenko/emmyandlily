@@ -87,10 +87,11 @@ export default async function RootLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ lang: Locale }>;
+  params: Promise<{ lang: string }>;
 }) {
   const { lang } = await params;
-  if (!hasLocale(routing.locales, lang)) {
+  const local = lang as Locale;
+  if (!hasLocale(routing.locales, local)) {
     notFound();
   }
   setRequestLocale(lang);
@@ -114,7 +115,7 @@ export default async function RootLayout({
       >
         <NextIntlClientProvider>
           <AddedToCartProvider>
-            <Header data={data} lang={lang} />
+            <Header data={data} lang={local} />
             <Suspense fallback={null}>
               <FacebookPixelEvents />
             </Suspense>

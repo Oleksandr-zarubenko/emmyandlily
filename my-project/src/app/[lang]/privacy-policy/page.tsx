@@ -23,10 +23,11 @@ const queryUA = gql`
 export default async function PolicyPage({
   params,
 }: {
-  params: Promise<{ lang: Locale }>;
+  params: Promise<{ lang: string }>;
 }) {
   const { lang } = await params;
-  const query = lang == "uk" ? queryUA : queryEN;
+  const local = lang as Locale;
+  const query = local == "uk" ? queryUA : queryEN;
   const { data } = await getClient().query<{ policy: { policytext: string } }>({
     query,
     context: {

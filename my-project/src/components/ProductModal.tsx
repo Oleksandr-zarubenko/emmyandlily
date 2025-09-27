@@ -9,7 +9,7 @@ import { PathModalXl } from "./icons/PathModalXl";
 import { Bag } from "./icons/Bag";
 import CartModal from "./CartModal";
 import { useAddedToCart } from "@/components/context/addedToCart";
-import { locales } from "@/i18n/routing";
+import { Locale, locales } from "@/i18n/routing";
 
 export const ProductModal = ({
   product,
@@ -20,7 +20,7 @@ export const ProductModal = ({
   data,
 }: {
   product: any;
-  lang: any;
+  lang: Locale;
   children: any;
   state: any;
   convertPrice: any;
@@ -264,7 +264,7 @@ export const ProductModal = ({
                       <tr key={item.idCrm}>
                         <td className="py-2 text-t18 leading-5 text-[#333333] ">
                           {item.ml}{" "}
-                          {item.ml ? (lang === "ua" ? "мл" : "ml") : ""}
+                          {item.ml ? (lang === "uk" ? "мл" : "ml") : ""}
                         </td>
                         <td className="py-2 text-left text-t18 leading-5 text-[#333333] xl:text-center smOnly:text-center">
                           {state.products

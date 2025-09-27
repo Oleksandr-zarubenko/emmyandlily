@@ -39,10 +39,11 @@ type Data = {
 export default async function ThankYouPage({
   params,
 }: {
-  params: Promise<{ lang: Locale }>;
+  params: Promise<{ lang: string }>;
 }) {
   const { lang } = await params;
-  const query = lang === "uk" ? queryUA : queryEN;
+  const local = lang as Locale;
+  const query = local === "uk" ? queryUA : queryEN;
   const { data } = await getClient().query<Data>({
     query,
     context: {
