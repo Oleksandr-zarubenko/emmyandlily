@@ -3,8 +3,8 @@ import axios from "axios";
 import { parseString } from "xml2js";
 
 export async function POST(req: NextRequest): Promise<void | Response> {
-  const { searchParams } = req.nextUrl;
-  console.log("calling post get-price", searchParams);
+  // const { searchParams } = req.nextUrl;
+  // console.log("calling post get-price", searchParams);
   try {
     const { data: xmlData } = await axios.get(
       `https://emmyandlily.salesdrive.me/export/yml/export.yml?publicKey=JAvWTZJQXYHA15-Adae5O-JRlHOuDA97l1SBWVXpy_Okn3WEsPjQKZmcbiOGYCfWYNC6_M42GBn5&timestamp=${Date.now()}`,

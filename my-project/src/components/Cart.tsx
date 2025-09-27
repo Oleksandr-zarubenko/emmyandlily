@@ -1,10 +1,10 @@
 "use client";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Bag } from "./icons/Bag";
 import cn from "classnames";
+import { Link } from "@/i18n/navigation";
 
-export const Cart = ({ lang, color }: any) => {
+export const Cart = ({ color }: { color: any }) => {
   const color1 = color === "black" ? "black" : "white";
   const color2 = color === "black" ? "white" : "black";
   const [storedDataLength, setStoredDataLength] = useState(0);
@@ -25,7 +25,7 @@ export const Cart = ({ lang, color }: any) => {
     <Link
       onClick={handleCheckoutInitiate}
       className={cn(`relative z-50 duration-300`)}
-      href={`/${lang}/basket`}
+      href={`/basket`}
     >
       <div className="relative">
         <Bag

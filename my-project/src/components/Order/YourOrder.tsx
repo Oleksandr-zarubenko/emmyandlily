@@ -1,11 +1,10 @@
-import { i18n } from "@/i18n.config";
+import { Link } from "@/i18n/navigation";
+import { Locale } from "@/i18n/routing";
 
 import { convertPrice } from "@/utils/convertPrice/convertPrice";
 
-import Link from "next/link";
-
 type YourOrderProps = {
-  lang: any;
+  lang: Locale;
   data: any;
   setIsDiscountsAndNews: any;
   isDiscountsAndNews: boolean;
@@ -36,16 +35,13 @@ const YourOrder: React.FC<YourOrderProps> = ({
   switchToPaymentTab,
   privacypolicy,
   setPrivacypolicy,
-  setState,
+  // setState,
   state,
 }) => {
-  const locales = i18n.locales;
-  const en = locales[1];
-
   const total =
     typeof window !== "undefined" ? localStorage.getItem("totalPrice") : null;
-  const totalEn =
-    typeof window !== "undefined" ? localStorage.getItem("totalPriceEn") : null;
+  // const totalEn =
+  //   typeof window !== "undefined" ? localStorage.getItem("totalPriceEn") : null;
   const totalPrice = total ? parseInt(total) : 0;
 
   const discountAmount =
@@ -82,7 +78,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
         <li className="mb-2 flex justify-between">
           <p className="text-t14 xl:text-t16">{data.order.total}</p>{" "}
           <p className="text-t16 xl:text-t18">
-            {lang === en
+            {lang === "en"
               ? convertPrice(
                   totalPrice,
                   state.currencies.find(
@@ -104,7 +100,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
         <li className="mb-2 flex justify-between">
           <p className="text-t14 xl:text-t16">{data.order.discount}</p>
           <p className="text-t16 xl:text-t18">
-            {lang === en
+            {lang === "en"
               ? "- " +
                 convertPrice(
                   totaldiscountAmount,
@@ -123,7 +119,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
           {data.order.totalAmountToBePaid}
         </p>{" "}
         <p className="text-t16  xl:text-t18 xl:font-bold smOnly:font-bold mdOnly:font-bold">
-          {lang === en
+          {lang === "en"
             ? allTotalEn - totaldiscountAmount + " €"
             : allTotal - totaldiscountAmount + " ₴"}
         </p>
@@ -162,7 +158,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
           >
             Підтверджуючи замовлення, я даю згоду на обробку своїх персональних
             даних відповідно до{" "}
-            <Link className="italic underline" href={`/${lang}/privacy-policy`}>
+            <Link className="italic underline" href="/privacy-policy">
               умов користувача
             </Link>{" "}
             на законних підставах*

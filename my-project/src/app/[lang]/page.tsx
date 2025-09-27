@@ -7,7 +7,7 @@ import FreeDelivery from "@/components/FreeDelivery";
 import { gql } from "@apollo/client";
 import { getClient } from "../../utils/apollo-client";
 import { Metadata } from "next/types";
-import { Locale } from "../../i18n.config";
+import { Locale } from "@/i18n/routing";
 
 import Video from "@/page-components/Video";
 
@@ -245,13 +245,14 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Home({
-  params: { lang },
+  params,
 }: {
-  params: { lang: Locale };
+  params: Promise<{ lang: Locale }>;
 }) {
-  const query = lang == "ua" ? queryUA : queryEN;
+  const { lang } = await params;
+  const query = lang == "uk" ? queryUA : queryEN;
 
-  const { data } = await getClient().query({
+  const { data } = await getClient().query<{ promoOffer: { title: string } }>({
     query,
     context: {
       fetchOptions: {
@@ -259,6 +260,7 @@ export default async function Home({
       },
     },
   });
+  // console.log("data in page.tsx from graphql.datocms.com", data);
 
   return (
     <div className="flex flex-grow flex-col bg-bg_secondary">

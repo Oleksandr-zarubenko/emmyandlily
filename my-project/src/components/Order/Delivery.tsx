@@ -1,3 +1,4 @@
+import { Locale } from "@/i18n/routing";
 import Image from "next/image";
 import React from "react";
 
@@ -29,7 +30,7 @@ interface DeliveryProps {
   setIndex: React.Dispatch<React.SetStateAction<string>>;
   error: any;
   setError: React.Dispatch<React.SetStateAction<any>>;
-  lang: string;
+  lang: Locale;
   en: string;
 }
 
@@ -227,14 +228,14 @@ const Delivery: React.FC<DeliveryProps> = ({
           {renderInputField(
             "country",
             country,
-            lang === en ? "Country" : "Країна",
+            lang === "en" ? "Country" : "Країна",
             "xl:mr-1 xl:w-[230px]",
             true
           )}
           {renderInputField(
             "city",
             city,
-            lang === en ? "City" : "Місто",
+            lang === "en" ? "City" : "Місто",
             "xl:w-[230px]",
             true
           )}
@@ -368,7 +369,7 @@ const Delivery: React.FC<DeliveryProps> = ({
         </div>
       ) : (
         <div className="mb-4 text-t14 italic text-dark">
-          {lang === en
+          {lang === "en"
             ? "Specify the delivery method"
             : "Вкажіть спосіб доставки"}
         </div>

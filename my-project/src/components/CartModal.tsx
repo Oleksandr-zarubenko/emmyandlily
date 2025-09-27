@@ -1,15 +1,14 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { ModalPath } from "./icons/ModalPaw";
 import { usePathname } from "next/navigation";
+import { Locale } from "@/i18n/routing";
 const CartModal = ({
   onClose,
   lang,
-  en,
   data,
 }: {
   onClose: () => void;
-  lang: any;
-  en: any;
+  lang: Locale;
   data: any;
 }) => {
   const pathname = usePathname();
@@ -37,7 +36,7 @@ const CartModal = ({
           {!isBasketPage ? (
             <Link
               className="rounded border-2 border-solid border-black bg-black px-6 py-3 text-t18 font-bold text-white"
-              href={`/${lang}/basket`}
+              href="/basket"
               onClick={handleCheckoutInitiate}
             >
               {data.secondmodal.goToCart}

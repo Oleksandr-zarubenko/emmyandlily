@@ -1,7 +1,8 @@
 import { gql } from "@apollo/client";
 import Basket from "@/page-components/Basket";
 import { getClient } from "@/utils/apollo-client";
-import { Locale } from "@/i18n.config";
+import { Locale } from "@/i18n/routing";
+import Script from "next/script";
 const queryEN = gql`
   {
     basket {
@@ -144,11 +145,13 @@ const queryUA = gql`
 `;
 
 export default async function BasketPage({
-  params: { lang },
+  params,
 }: {
-  params: { lang: Locale };
+  params: Promise<{ lang: Locale }>;
 }) {
-  const query = lang == "ua" ? queryUA : queryEN;
+  const { lang } = await params;
+  const query = lang == "uk" ? queryUA : queryEN;
+
   const { data } = await getClient().query({
     query,
     context: {
@@ -161,7 +164,8 @@ export default async function BasketPage({
   return (
     <>
       <Basket data={data} lang={lang} />
-      <script
+      <Script
+        id="facebook-pixel-basket-page"
         dangerouslySetInnerHTML={{
           __html: `
             if (typeof window !== "undefined" && window.fbq) {
