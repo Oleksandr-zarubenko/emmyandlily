@@ -335,7 +335,7 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
                     <td className="flex">
                       <div className="relative mr-4 h-[80px] w-[71px] xl:flex-shrink-0">
                         <Image
-                          quality={80}
+                          quality={75}
                           fill
                           src={item.photo}
                           alt={item.productName || "Emmy and Lily"}
@@ -499,7 +499,7 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
                     <td className="flex">
                       <div className="relative mr-4 w-[71px] flex-shrink-0">
                         <Image
-                          quality={80}
+                          quality={75}
                           fill
                           src={item.photo}
                           alt={item.productName || "Emmy and Lily"}

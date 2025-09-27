@@ -247,10 +247,11 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function Home({
   params,
 }: {
-  params: Promise<{ lang: Locale }>;
+  params: Promise<{ lang: string }>;
 }) {
   const { lang } = await params;
-  const query = lang == "uk" ? queryUA : queryEN;
+  const local = lang as Locale;
+  const query = local == "uk" ? queryUA : queryEN;
 
   const { data } = await getClient().query<{ promoOffer: { title: string } }>({
     query,
@@ -270,7 +271,7 @@ export default async function Home({
         <FreeDelivery text={data?.promoOffer?.title} />
       )}
 
-      <ProductsSection data={data} lang={lang} />
+      <ProductsSection data={data} lang={local} />
       <AboutUs data={data} />
       <Contacts data={data} />
       <script
