@@ -9,7 +9,7 @@ export const HeroSection = ({ data }: { data: any }) => {
       <div className="container relative text-grey ">
         <Image
           src={HeroDog}
-          alt={"Emmy Dog"}
+          alt="Emmy Dog"
           className="absolute -bottom-16 -left-28 z-20 h-[360px] w-[298px] object-contain md:-bottom-20 md:-left-0 md:h-[420px] md:w-[338px] xl:-bottom-[110px] xl:left-0 xl:h-[584px] xl:w-[476px]"
           sizes="50vw"
         />

@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 import { getClient } from "@/utils/apollo-client";
-import { Locale } from "@/i18n.config";
 import { Markdown } from "@/components/Markdown";
+import { Locale } from "@/i18n/routing";
 const queryEN = gql`
   {
     offer {
@@ -18,12 +18,13 @@ const queryUA = gql`
   }
 `;
 export default async function OfferPage({
-  params: { lang },
+  params,
 }: {
-  params: { lang: Locale };
+  params: Promise<{ lang: Locale }>;
 }) {
-  const query = lang == "ua" ? queryUA : queryEN;
-  const { data } = await getClient().query({
+  const { lang } = await params;
+  const query = lang == "uk" ? queryUA : queryEN;
+  const { data } = await getClient().query<{ offer: { offertext: string } }>({
     query,
     context: {
       fetchOptions: {
@@ -36,7 +37,7 @@ export default async function OfferPage({
     <>
       <section className="grow py-32">
         <div className="container flex flex-col gap-3">
-          <Markdown text={data.offer.offertext} />
+          <Markdown text={data?.offer.offertext || "offer"} />
         </div>
       </section>
       <script

@@ -18,9 +18,10 @@ export const AboutUs = ({ data }: { data: any }) => {
           <div className="relative aspect-[1.35] w-full object-center xl:aspect-square mdOnly:order-3">
             <Image
               src={data.aboutUsSection.image1.url}
-              alt={data.aboutUsSection.image1.alt}
+              alt={data.aboutUsSection.image1.alt || "image"}
               fill
-              className="object-cover"
+              sizes="(max-width: 768px) 90vw, 312px"
+              className="h-auto  object-cover"
             />
           </div>
           <div className="mdOnly:order-4">
@@ -29,9 +30,10 @@ export const AboutUs = ({ data }: { data: any }) => {
           <div className="relative aspect-[1.35] w-full object-center xl:aspect-square mdOnly:order-2">
             <Image
               src={data.aboutUsSection.image2.url}
-              alt={data.aboutUsSection.image2.alt}
+              alt={data.aboutUsSection.image2.alt || "image"}
               fill
-              className="object-cover"
+              sizes="(max-width: 768px) 90vw, 312px"
+              className="h-auto  object-cover"
             />
           </div>
           <div className="mdOnly:order-5">
@@ -40,9 +42,10 @@ export const AboutUs = ({ data }: { data: any }) => {
           <div className="relative aspect-[1.35] w-full object-center xl:aspect-square mdOnly:order-6">
             <Image
               src={data.aboutUsSection.image3.url}
-              alt={data.aboutUsSection.image3.alt}
+              alt={data.aboutUsSection.image3.alt || "image"}
               fill
-              className="object-cover"
+              sizes="(max-width: 768px) 90vw, 312px"
+              className="h-auto object-cover"
             />
           </div>
         </div>

@@ -1,15 +1,15 @@
 "use client";
-import { i18n } from "@/i18n.config";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Markdown } from "./Markdown";
-import { Arrow } from "./icons/Arrow";
+// import { Arrow } from "./icons/Arrow";
 import { BurgerCross } from "./icons/BurgerCross";
 import cn from "classnames";
 import { PathModalXl } from "./icons/PathModalXl";
 import { Bag } from "./icons/Bag";
 import CartModal from "./CartModal";
 import { useAddedToCart } from "@/components/context/addedToCart";
+import { locales } from "@/i18n/routing";
 
 export const ProductModal = ({
   product,
@@ -26,7 +26,6 @@ export const ProductModal = ({
   convertPrice: any;
   data: any;
 }) => {
-  const locales = i18n.locales;
   const en = locales[1];
   const { addedToCart, setAddedToCart } = useAddedToCart();
   const [isOpen, setIsOpen] = useState(false);
@@ -148,7 +147,6 @@ export const ProductModal = ({
         <CartModal
           onClose={() => setAdditionalModalOpen(false)}
           lang={lang}
-          en={en}
           data={data}
         />
       )}
@@ -178,7 +176,7 @@ export const ProductModal = ({
                 <div className="notXl:flex">
                   <div className="relative mb-4  mr-4 h-52 w-[200px]  md:h-96 xl:mr-0 xl:h-[380px] xl:w-[450px] xl:flex-shrink-0 mdOnly:h-52   mdOnly:w-[312px] ">
                     <Image
-                      quality={80}
+                      quality={100}
                       fill
                       src={currentImageUrl || product.productSlider[0].url}
                       alt={product.productpicture.alt || "Emmy and Lily"}
@@ -189,33 +187,36 @@ export const ProductModal = ({
 
                   <div className="block h-[48px] w-[88px]  cursor-pointer flex-row xl:flex xl:h-[88px] xl:w-[450px] xl:flex-row mdOnly:h-[48px] mdOnly:w-[88px]">
                     {product.productSlider.map(
-                      (slide: { alt: string; url: string; id: string }) => (
-                        <div
-                          className="relative  mb-8 h-[88px] w-full last:mr-0 xl:mr-2 xl:w-1/3 smOnly:h-[48px] mdOnly:h-[48px] "
-                          key={slide.id}
-                          onClick={() => setActiveSlideImage(slide.url)}
-                        >
+                      (slide: { alt: string; url: string; id: string }) => {
+                        return (
                           <div
-                            className={cn(
-                              "absolute inset-0 z-10 rounded",
-                              slide.url !== currentImageUrl
-                                ? "bg-black/50"
-                                : "rounded border-b-4 border-black"
-                            )}
-                          ></div>
-                          <Image
-                            quality={80}
-                            fill
-                            src={slide.url}
-                            alt={slide.alt || "Emmy and Lily"}
-                            className={cn(
-                              "object-cover",
-                              slide.url !== currentImageUrl ? "" : ""
-                            )}
-                            sizes="(max-width: 768px) 20vw, (max-width: 1200px) 20vw, 183px"
-                          />
-                        </div>
-                      )
+                            className="relative  mb-8 h-[88px] w-full last:mr-0 xl:mr-2 xl:w-1/3 smOnly:h-[48px] mdOnly:h-[48px] "
+                            key={crypto.randomUUID()}
+                            // key={slide.id}
+                            onClick={() => setActiveSlideImage(slide.url)}
+                          >
+                            <div
+                              className={cn(
+                                "absolute inset-0 z-10 rounded",
+                                slide.url !== currentImageUrl
+                                  ? "bg-black/50"
+                                  : "rounded border-b-4 border-black"
+                              )}
+                            ></div>
+                            <Image
+                              quality={75}
+                              fill
+                              src={slide.url}
+                              alt={slide.alt || "Emmy and Lily"}
+                              className={cn(
+                                "object-cover",
+                                slide.url !== currentImageUrl ? "" : ""
+                              )}
+                              sizes="(max-width: 768px) 20vw, (max-width: 1200px) 20vw, 183px"
+                            />
+                          </div>
+                        );
+                      }
                     )}
                   </div>
                 </div>

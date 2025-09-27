@@ -6,12 +6,17 @@ import { Abril_Fatface } from "next/font/google";
 import { gql } from "@apollo/client";
 
 import "../globals.css";
-import { Locale } from "../../i18n.config";
+import { Locale } from "@/i18n/routing";
 import { getClient } from "../../utils/apollo-client";
 import { AddedToCartProvider } from "@/components/context/addedToCart";
 import Header from "@/components/header/header";
 import { Suspense } from "react";
 import { FacebookPixelEvents } from "@/components/pixel-events";
+import { Analytics } from "@vercel/analytics/next";
+import { hasLocale, NextIntlClientProvider } from "next-intl";
+import { routing } from "@/i18n/routing";
+import { notFound } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
 
 const libre = Open_Sans({
   weight: ["400"],
@@ -80,12 +85,16 @@ export const metadata: Metadata = {
 export default async function RootLayout({
   children,
   params,
-  params: { lang },
-}: Readonly<{
+}: {
   children: React.ReactNode;
-  params: { lang: Locale };
-}>) {
-  const query = lang == "ua" ? queryUA : queryEN;
+  params: Promise<{ lang: Locale }>;
+}) {
+  const { lang } = await params;
+  if (!hasLocale(routing.locales, lang)) {
+    notFound();
+  }
+  setRequestLocale(lang);
+  const query = lang == "uk" ? queryUA : queryEN;
   const { data } = await getClient().query({
     query,
     context: {
@@ -96,21 +105,25 @@ export default async function RootLayout({
   });
 
   return (
-    <html lang={lang} className={`${abril.variable} ${libre.variable}`}>
+    <html className={`${abril.variable} ${libre.variable}`} lang={lang}>
       <body
         className={cn(
           libre.className,
           "relative flex flex-grow flex-col bg-white"
         )}
       >
-        <AddedToCartProvider>
-          <Header data={data} lang={lang} />
-          <Suspense fallback={null}>
-            <FacebookPixelEvents />
-          </Suspense>
-          {children}
-          <Footer data={data} lang={lang} />
-        </AddedToCartProvider>
+        <NextIntlClientProvider>
+          <AddedToCartProvider>
+            <Header data={data} lang={lang} />
+            <Suspense fallback={null}>
+              <FacebookPixelEvents />
+            </Suspense>
+            {children}
+            <Footer data={data} />
+          </AddedToCartProvider>
+        </NextIntlClientProvider>
+
+        <Analytics />
       </body>
     </html>
   );

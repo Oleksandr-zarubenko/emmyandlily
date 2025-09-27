@@ -1,9 +1,10 @@
-import Order from "@/page-components/Order";
+// import Order from "@/page-components/Order";
 
 import { gql } from "@apollo/client";
 import { getClient } from "@/utils/apollo-client";
-import { Locale } from "@/i18n.config";
+import { Locale } from "@/i18n/routing";
 import { Markdown } from "@/components/Markdown";
+import Script from "next/script";
 const queryEN = gql`
   {
     policy {
@@ -20,12 +21,13 @@ const queryUA = gql`
   }
 `;
 export default async function PolicyPage({
-  params: { lang },
+  params,
 }: {
-  params: { lang: Locale };
+  params: Promise<{ lang: Locale }>;
 }) {
-  const query = lang == "ua" ? queryUA : queryEN;
-  const { data } = await getClient().query({
+  const { lang } = await params;
+  const query = lang == "uk" ? queryUA : queryEN;
+  const { data } = await getClient().query<{ policy: { policytext: string } }>({
     query,
     context: {
       fetchOptions: {
@@ -37,9 +39,10 @@ export default async function PolicyPage({
   return (
     <section className="grow py-32">
       <div className="container flex flex-col gap-3">
-        <Markdown text={data.policy.policytext} />
+        <Markdown text={data?.policy.policytext || ""} />
       </div>
-      <script
+      <Script
+        id="facebook-pixel-policy-page"
         dangerouslySetInnerHTML={{
           __html: `
             if (typeof window !== "undefined" && window.fbq) {

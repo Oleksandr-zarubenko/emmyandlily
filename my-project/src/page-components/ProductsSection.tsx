@@ -2,7 +2,7 @@
 import { Markdown } from "@/components/Markdown";
 import { ProductCard } from "@/components/ProductCard";
 import { Paw } from "@/components/icons/Paw";
-import { Locale, i18n } from "@/i18n.config";
+import { Locale, locales } from "@/i18n/routing";
 import getData from "@/utils/api/api";
 import { convertPrice } from "@/utils/convertPrice/convertPrice";
 import { useEffect, useState } from "react";
@@ -20,19 +20,19 @@ export const ProductsSection = ({
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const fetchData = async () => {
-    console.log("1");
     try {
       const data = await getData();
       setState(data);
+      // console.log("data.allCategories crm :", data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
   useEffect(() => {
     fetchData();
+    // console.log("data all prod>>", data);
   }, []);
 
-  const locales = i18n.locales;
   const en = locales[1];
 
   const availableProducts = data.allProducts.filter((product: any) => {
@@ -48,6 +48,7 @@ export const ProductsSection = ({
 
     return inSelectedCategory && correspondingProduct;
   });
+  // console.log("availableProducts", availableProducts);
   // const previewProducts = data.allProducts.filter(
   //   (product: any) => product.preview
   // );

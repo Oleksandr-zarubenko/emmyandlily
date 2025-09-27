@@ -1,13 +1,14 @@
 import { gql } from "@apollo/client";
 import { getClient } from "@/utils/apollo-client";
-import { Locale } from "@/i18n.config";
+import { Locale } from "@/i18n/routing";
 import { Markdown } from "@/components/Markdown";
-import Link from "next/link";
 import BgImg from "/public/About us2.png";
 import DogsImg from "/public/emmy-lilly-2-dogs-bg-hero.webp";
 import Image from "next/image";
 import { Logo } from "@/components/icons/Logo";
 import { ClearLocalStorage } from "@/components/ClearLocalStorage";
+import Script from "next/script";
+import { Link } from "@/i18n/navigation";
 
 const queryEN = gql`
   {
@@ -28,14 +29,21 @@ const queryUA = gql`
     }
   }
 `;
-
+type Data = {
+  thankyoupage: {
+    maintext: string;
+    buttontext: string;
+    additionaltext: string;
+  };
+};
 export default async function ThankYouPage({
-  params: { lang },
+  params,
 }: {
-  params: { lang: Locale };
+  params: Promise<{ lang: Locale }>;
 }) {
-  const query = lang === "ua" ? queryUA : queryEN;
-  const { data } = await getClient().query({
+  const { lang } = await params;
+  const query = lang === "uk" ? queryUA : queryEN;
+  const { data } = await getClient().query<Data>({
     query,
     context: {
       fetchOptions: {
@@ -58,22 +66,23 @@ export default async function ThankYouPage({
           className="luminosity absolute left-[calc(50%-115px)] h-[230px] w-auto bg-white shadow-order grayscale md:left-[52%] md:h-[467px] smOnly:top-96"
         />
         <div className="flex flex-col gap-4 py-20 md:w-1/2">
-          <Markdown text={data.thankyoupage.maintext} />
-          <Link href={lang === "ua" ? "/ua" : "/"} className="ml-auto w-32">
+          <Markdown text={data?.thankyoupage.maintext || ""} />
+          <Link href="/" className="ml-auto w-32">
             <Logo color="black" />
           </Link>
           <ClearLocalStorage
-            additionalText={data.thankyoupage.additionaltext}
+            additionalText={data?.thankyoupage.additionaltext || ""}
           />
           <Link
-            href={lang === "ua" ? "/ua" : "/"}
+            href="/"
             className="relative z-20 inline-block rounded bg-black px-6 py-3 text-center text-t18 font-bold text-white duration-300 hover:bg-white hover:text-black hover:ring-1 hover:ring-black md:ml-auto md:max-w-max"
           >
-            {data.thankyoupage.buttontext}
+            {data?.thankyoupage.buttontext || "Home"}
           </Link>
         </div>
       </div>
-      <script
+      <Script
+        id="facebook-pixel"
         dangerouslySetInnerHTML={{
           __html: `if (typeof window !== "undefined" && window.fbq) { window.fbq('track', 'Thank You Page View'); }`,
         }}
