@@ -368,15 +368,15 @@ const Order = ({ data, lang }: { data: any; lang: Locale }) => {
     personActive,
   ]);
 
-  const handleMonobankChange = () => {
-    setPaymentMonobank(true);
-    setAfterpay(false);
-  };
+  // const handleMonobankChange = () => {
+  //   setPaymentMonobank(true);
+  //   setAfterpay(false);
+  // };
 
-  const handleAfterpayChange = () => {
-    setAfterpay(true);
-    setPaymentMonobank(false);
-  };
+  // const handleAfterpayChange = () => {
+  //   setAfterpay(true);
+  //   setPaymentMonobank(false);
+  // };
   const products = productName.map((product: any) => ({
     name: product.productName.trim().replace(/###\s*/, ""),
     capacity: product.capacity,
