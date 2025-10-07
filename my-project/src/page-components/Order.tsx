@@ -283,7 +283,7 @@ const Order = ({ data, lang }: { data: any; lang: Locale }) => {
     }
   );
 
-  const [paymentMonobank, setPaymentMonobank] = useState<boolean>(false);
+  const [paymentMonobank, setPaymentMonobank] = useState<boolean>(true);
   const [afterpay, setAfterpay] = useState<boolean>(false);
   const total =
     typeof window !== "undefined" ? localStorage.getItem("allTotal") : null;
@@ -932,12 +932,12 @@ const Order = ({ data, lang }: { data: any; lang: Locale }) => {
                   type="radio"
                   name="paymentMethod"
                   checked={paymentMonobank}
-                  onChange={handleMonobankChange}
+                  // onChange={handleMonobankChange}
                   className="mr-2 accent-black"
                 />
                 <Image src={Mono} alt="Monobank" width={267} height={24} />
               </label>
-              <label className="flex">
+              {/* <label className="flex">
                 <input
                   type="radio"
                   name="paymentMethod"
@@ -952,7 +952,7 @@ const Order = ({ data, lang }: { data: any; lang: Locale }) => {
                     перевізника)
                   </p>
                 </div>
-              </label>
+              </label> */}
             </div>
           )}
         </div>
