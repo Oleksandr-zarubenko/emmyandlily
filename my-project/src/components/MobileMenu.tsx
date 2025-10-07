@@ -1,7 +1,7 @@
 "use client";
 import Hamburger from "hamburger-react";
 import { useEffect, useState } from "react";
-import LocaleSwitcher from "./locale-switcher";
+// import LocaleSwitcher from "./locale-switcher";
 import { Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 
@@ -63,7 +63,7 @@ export const MobileMenu = ({
                 >
                   {navigation.contacts}
                 </Link>
-                <LocaleSwitcher lang={lang} />
+                {/* <LocaleSwitcher lang={lang} /> */}
               </nav>
             </div>
           </div>

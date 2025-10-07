@@ -1,9 +1,8 @@
-import Order from "@/page-components/Order";
-
 import { gql } from "@apollo/client";
 import { getClient } from "@/utils/apollo-client";
 import { Locale } from "@/i18n/routing";
 import Script from "next/script";
+import Order from "@/page-components/Order";
 const queryEN = gql`
   {
     order {
