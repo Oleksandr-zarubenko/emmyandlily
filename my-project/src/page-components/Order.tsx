@@ -9,6 +9,7 @@ import { Locale, locales } from "@/i18n/routing";
 import getData from "@/utils/api/api";
 // import { convertPrice } from "@/utils/convertPrice/convertPrice";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 const Order = ({ data, lang }: { data: any; lang: Locale }) => {
   const en = locales[1];
   const [state, setState] = useState<{
@@ -931,7 +932,8 @@ const Order = ({ data, lang }: { data: any; lang: Locale }) => {
                 <input
                   type="radio"
                   name="paymentMethod"
-                  checked={paymentMonobank}
+                  defaultChecked
+                  // checked={paymentMonobank}
                   // onChange={handleMonobankChange}
                   className="mr-2 accent-black"
                 />
@@ -978,4 +980,5 @@ const Order = ({ data, lang }: { data: any; lang: Locale }) => {
   );
 };
 
-export default Order;
+// export default Order;
+export default dynamic(() => Promise.resolve(Order), { ssr: false });
