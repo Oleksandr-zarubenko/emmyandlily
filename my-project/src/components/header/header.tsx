@@ -1,4 +1,4 @@
-import LocaleSwitcher from "@/components/locale-switcher";
+// import LocaleSwitcher from "@/components/locale-switcher";
 import Image from "next/image";
 import Logo from "../../../public/logo.png";
 import { Cart } from "../Cart";
@@ -45,7 +45,7 @@ const Header = ({ lang, data }: { data: any; lang: Locale }) => {
           <Link className="duration-300 hover:opacity-50" href="/#contacts">
             {data.navigation.contacts}
           </Link>
-          <LocaleSwitcher lang={lang} />
+          {/* <LocaleSwitcher lang={lang} /> */}
           <Cart color="black" />
         </nav>
       </div>
