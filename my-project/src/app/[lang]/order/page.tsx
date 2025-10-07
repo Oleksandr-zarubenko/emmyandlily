@@ -2,7 +2,8 @@ import Order from "@/page-components/Order";
 
 import { gql } from "@apollo/client";
 import { getClient } from "@/utils/apollo-client";
-import { Locale } from "@/i18n.config";
+import { Locale } from "@/i18n/routing";
+import Script from "next/script";
 const queryEN = gql`
   {
     order {
@@ -175,11 +176,13 @@ const queryUA = gql`
   }
 `;
 export default async function OrderPage({
-  params: { lang },
+  params,
 }: {
-  params: { lang: Locale };
+  params: Promise<{ lang: Locale }>;
 }) {
-  const query = lang == "ua" ? queryUA : queryEN;
+  const { lang } = await params;
+  const local = lang as Locale;
+  const query = local == "uk" ? queryUA : queryEN;
   const { data } = await getClient().query({
     query,
     context: {
@@ -192,7 +195,8 @@ export default async function OrderPage({
   return (
     <>
       <Order data={data} lang={lang} />{" "}
-      <script
+      <Script
+        id="facebook-pixel-order-page"
         dangerouslySetInnerHTML={{
           __html: `
             if (typeof window !== "undefined" && window.fbq) {

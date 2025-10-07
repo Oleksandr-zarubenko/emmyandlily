@@ -7,14 +7,13 @@ import { useRouter } from "next/navigation";
 
 import { BurgerCross } from "@/components/icons/BurgerCross";
 
-import { i18n } from "@/i18n.config";
+import { Locale, locales } from "@/i18n/routing";
 import { useAddedToCart } from "@/components/context/addedToCart";
 import CheaperTogether from "@/components/basket/cheaperTogether";
 import DropDown from "@/components/basket/DropdownButton";
 import getData from "@/utils/api/api";
 
-const Basket = ({ data, lang }: { data: any; lang: any }) => {
-  const locales = i18n.locales;
+const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
   const en = locales[1];
   const { addedToCart, setAddedToCart } = useAddedToCart();
   const [isHovered, setIsHovered] = useState(false);
@@ -336,7 +335,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                     <td className="flex">
                       <div className="relative mr-4 h-[80px] w-[71px] xl:flex-shrink-0">
                         <Image
-                          quality={80}
+                          quality={75}
                           fill
                           src={item.photo}
                           alt={item.productName || "Emmy and Lily"}
@@ -351,7 +350,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                         <p className="text-t14 text-dark/60">
                           {" "}
                           {item.capacity}
-                          {item.capacity ? (lang === "ua" ? "мл" : "ml") : ""}
+                          {item.capacity ? (lang === "uk" ? "мл" : "ml") : ""}
                         </p>
                       </div>
                     </td>
@@ -384,7 +383,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                                   (items: any) => items.id === item.id
                                 )!.price
                               }{" "}
-                              {lang === "en" ? " €" : " ₴"}
+                              {lang === "uk" ? " ₴" : " €"}
                             </span>
                           )}
                         </>
@@ -500,7 +499,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                     <td className="flex">
                       <div className="relative mr-4 w-[71px] flex-shrink-0">
                         <Image
-                          quality={80}
+                          quality={75}
                           fill
                           src={item.photo}
                           alt={item.productName || "Emmy and Lily"}
@@ -577,7 +576,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                                       (items: any) => items.id === item.id
                                     )!.price
                                   }{" "}
-                                  {lang === "en" ? " €" : " ₴"}
+                                  {lang === "uk" ? " ₴" : " €"}
                                 </span>
                               )}
                             </>
@@ -657,7 +656,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
             className="mb-6 ml-auto flex w-[225px] justify-between text-t14 text-black xl:text-t16"
             onClick={handleToggleInput}
           >
-            {lang === en ? "Add promo code" : "Додати промокод "}{" "}
+            {lang === "en" ? "Add promo code" : "Додати промокод "}{" "}
             <BurgerCross className="h-4 w-4 origin-center rotate-45" />
           </button>
 
@@ -671,7 +670,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                     value={promoCode}
                     disabled={true}
                     placeholder={
-                      lang === en
+                      lang === "en"
                         ? "Enter the promo code "
                         : "Введіть промокод "
                     }
@@ -701,7 +700,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                     value={promoCode}
                     onChange={handlePromoCodeChange}
                     placeholder={
-                      lang === en
+                      lang === "en"
                         ? "Enter the promo code "
                         : "Введіть промокод "
                     }
@@ -720,10 +719,10 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
           )}
         </div>
         <div className="mb-8 ml-auto flex w-52 justify-between text-t14 xl:text-t16">
-          <p>{lang === en ? "Discount" : "Знижка"} </p>
+          <p>{lang === "en" ? "Discount" : "Знижка"} </p>
           <p>
             -{" "}
-            {lang === en
+            {lang === "en"
               ? Math.round(
                   convertPrice(
                     discountAmount,
@@ -739,7 +738,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
         <div className="mb-10 ml-auto flex w-52 justify-between text-t14 xl:text-t16">
           <p className="text-black opacity-60">{data.basket.total}</p>
           <p className="text-t16 font-bold">
-            {lang === en
+            {lang === "en"
               ? Math.round(
                   convertPrice(
                     totalPrice,
@@ -749,7 +748,7 @@ const Basket = ({ data, lang }: { data: any; lang: any }) => {
                   )
                 ).toFixed(0)
               : Math.round(totalPrice).toFixed(0)}
-            {lang === en ? " €" : " ₴"}
+            {lang === "en" ? " €" : " ₴"}
           </p>
         </div>
 

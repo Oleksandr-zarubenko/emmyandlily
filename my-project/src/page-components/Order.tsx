@@ -5,12 +5,11 @@ import YourOrder from "@/components/Order/YourOrder";
 import Delivery from "@/components/Order/Delivery";
 import Image from "next/image";
 import Mono from "../../public/mono.png";
-import { i18n } from "@/i18n.config";
+import { Locale, locales } from "@/i18n/routing";
 import getData from "@/utils/api/api";
-import { convertPrice } from "@/utils/convertPrice/convertPrice";
+// import { convertPrice } from "@/utils/convertPrice/convertPrice";
 import { useRouter } from "next/navigation";
-const Order = ({ data, lang }: any) => {
-  const locales = i18n.locales;
+const Order = ({ data, lang }: { data: any; lang: Locale }) => {
   const en = locales[1];
   const [state, setState] = useState<{
     products: { id: string; price: string }[];
@@ -284,7 +283,7 @@ const Order = ({ data, lang }: any) => {
     }
   );
 
-  const [paymentMonobank, setPaymentMonobank] = useState<boolean>(false);
+  const [paymentMonobank, setPaymentMonobank] = useState<boolean>(true);
   const [afterpay, setAfterpay] = useState<boolean>(false);
   const total =
     typeof window !== "undefined" ? localStorage.getItem("allTotal") : null;
@@ -619,9 +618,9 @@ const Order = ({ data, lang }: any) => {
     }
   };
 
-  const numberValute = lang === en ? 978 : 980;
+  const numberValute = lang === "en" ? 978 : 980;
   const amount =
-    lang === en ? Math.round(totalPriceEn * 100) : totalPrice * 100;
+    lang === "en" ? Math.round(totalPriceEn * 100) : totalPrice * 100;
 
   const switchToPaymentTab = async () => {
     if (deliveryCompleted && afterpay === true && privacypolicy === true) {
@@ -933,12 +932,12 @@ const Order = ({ data, lang }: any) => {
                   type="radio"
                   name="paymentMethod"
                   checked={paymentMonobank}
-                  onChange={handleMonobankChange}
+                  // onChange={handleMonobankChange}
                   className="mr-2 accent-black"
                 />
                 <Image src={Mono} alt="Monobank" width={267} height={24} />
               </label>
-              <label className="flex">
+              {/* <label className="flex">
                 <input
                   type="radio"
                   name="paymentMethod"
@@ -953,7 +952,7 @@ const Order = ({ data, lang }: any) => {
                     перевізника)
                   </p>
                 </div>
-              </label>
+              </label> */}
             </div>
           )}
         </div>

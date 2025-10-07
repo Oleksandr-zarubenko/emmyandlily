@@ -31,6 +31,7 @@ export const ProductCard = ({
 
   return (
     <article
+      data-idcrm={product.capacity[0].idCrm}
       key={product.id}
       className="group mx-auto h-auto w-[260px] cursor-pointer rounded duration-300 hover:shadow-custom md:w-[304px] smOnly:mb-6"
     >

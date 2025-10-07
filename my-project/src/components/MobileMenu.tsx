@@ -1,15 +1,16 @@
 "use client";
 import Hamburger from "hamburger-react";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import LocaleSwitcher from "./locale-switcher";
+import { Locale } from "@/i18n/routing";
+import { Link } from "@/i18n/navigation";
 
 export const MobileMenu = ({
   navigation,
   lang,
 }: {
   navigation: any;
-  lang: any;
+  lang: Locale;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -43,21 +44,21 @@ export const MobileMenu = ({
                 <h2 className="sr-only">Mobile navigation</h2>
                 <Link
                   className="border-1 w-full border-b border-border pb-4 pt-2 text-t16 text-[#0B0605]"
-                  href={`/${lang}/#products`}
+                  href="/#products"
                   onClick={() => setMenuClosed()}
                 >
                   {navigation.ourproducts}
                 </Link>
                 <Link
                   className="border-1 w-full border-b border-border pb-4 pt-2 text-t16"
-                  href={`/${lang}/#about-us`}
+                  href="/#about-us"
                   onClick={() => setMenuClosed()}
                 >
                   {navigation.aboutus}
                 </Link>
                 <Link
                   className="border-1 w-full border-b border-border pb-4 pt-2 text-t16"
-                  href={`/${lang}/#contacts`}
+                  href="/#contacts"
                   onClick={() => setMenuClosed()}
                 >
                   {navigation.contacts}
