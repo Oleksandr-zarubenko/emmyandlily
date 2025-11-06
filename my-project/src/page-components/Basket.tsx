@@ -22,10 +22,11 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
     products: { id: string; price: string; available: string; oldprice: any }[];
     currencies: { id: string; rate: number }[];
   }>({ products: [], currencies: [] });
+  console.log({ basketData: data });
 
   const fetchData = async () => {
     try {
-      const data = await getData();
+      const data = await getData(lang);
       setState(data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -372,7 +373,7 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
                                   (currency: any) => currency.id === "EUR"
                                 )?.rate || 1
                               )}{" "}
-                              {lang === "en" ? " €" : " ₴"}
+                              {lang === "en" ? " UAH" : " ₴"}
                             </span>
                           ) : (
                             <span
@@ -383,7 +384,7 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
                                   (items: any) => items.id === item.id
                                 )!.price
                               }{" "}
-                              {lang === "uk" ? " ₴" : " €"}
+                              {lang === "uk" ? " ₴" : " UAH"}
                             </span>
                           )}
                         </>
@@ -405,7 +406,7 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
                                     state.currencies.find(
                                       (currency: any) => currency.id === "EUR"
                                     )?.rate || 1
-                                  ) + (lang === "en" ? " €" : " ₴")
+                                  ) + (lang === "en" ? " UAH" : " ₴")
                                 : ""}
                             </p>
                           )
@@ -479,7 +480,7 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
                               return price === 0 ? "Preorder" : price;
                             })()
                           : "N/A"}{" "}
-                      {lang === "en" ? " €" : " ₴"}
+                      {lang === "en" ? " UAH" : " ₴"}
                     </td>
                     <td className="ml-auto py-2 text-right">
                       <button
@@ -565,7 +566,7 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
                                       (currency: any) => currency.id === "EUR"
                                     )?.rate || 1
                                   )}{" "}
-                                  {lang === "en" ? " €" : " ₴"}
+                                  {lang === "en" ? " UAH" : " ₴"}
                                 </span>
                               ) : (
                                 <span
@@ -576,7 +577,7 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
                                       (items: any) => items.id === item.id
                                     )!.price
                                   }{" "}
-                                  {lang === "uk" ? " ₴" : " €"}
+                                  {lang === "uk" ? " ₴" : " UAH"}
                                 </span>
                               )}
                             </>
@@ -599,7 +600,7 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
                                       state.currencies.find(
                                         (currency: any) => currency.id === "EUR"
                                       )?.rate || 1
-                                    ) + (lang === "en" ? " €" : " ₴")
+                                    ) + (lang === "en" ? " UAH" : " ₴")
                                   : ""}
                               </li>
                             )
@@ -632,7 +633,7 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
                                   )!.price
                                 ) * (quantities[item.id] || 1)
                               : "N/A"}{" "}
-                          {lang === "en" ? " €" : " ₴"}
+                          {lang === "en" ? " UAH" : " ₴"}
                         </li>
                       </ul>
                     </td>
@@ -730,7 +731,7 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
                       (currency: any) => currency.id === "EUR"
                     )?.rate || 1
                   )
-                ).toFixed(0) + " €"
+                ).toFixed(0) + " UAH"
               : Math.round(discountAmount).toFixed(0) + " ₴"}
           </p>
         </div>
@@ -748,7 +749,7 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
                   )
                 ).toFixed(0)
               : Math.round(totalPrice).toFixed(0)}
-            {lang === "en" ? " €" : " ₴"}
+            {lang === "en" ? " UAH" : " ₴"}
           </p>
         </div>
 

@@ -157,10 +157,11 @@ export default async function BasketPage({
     query,
     context: {
       fetchOptions: {
-        next: { revalidate: 60 },
+        next: { revalidate: 60 * 60 },
       },
     },
   });
+  // console.log({ datafromDatoCRM: data });
 
   return (
     <>

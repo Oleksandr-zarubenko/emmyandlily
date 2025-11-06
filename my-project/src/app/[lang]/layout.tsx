@@ -106,7 +106,11 @@ export default async function RootLayout({
   });
 
   return (
-    <html className={`${abril.variable} ${libre.variable}`} lang={lang}>
+    <html
+      className={`${abril.variable} ${libre.variable}`}
+      lang={lang}
+      data-scroll-behavior="smooth"
+    >
       <body
         className={cn(
           libre.className,

@@ -179,9 +179,9 @@ export default async function OrderPage({
 }: {
   params: Promise<{ lang: Locale }>;
 }) {
-  const { lang } = await params;
-  const local = lang as Locale;
-  const query = local == "uk" ? queryUA : queryEN;
+  const { lang }: { lang: Locale } = await params;
+  // const local = lang as Locale;
+  const query = lang == "uk" ? queryUA : queryEN;
   const { data } = await getClient().query({
     query,
     context: {
@@ -190,6 +190,7 @@ export default async function OrderPage({
       },
     },
   });
+  // console.log({ datoCRM: data });
 
   return (
     <>

@@ -27,7 +27,7 @@ export const ProductCard = ({
       : product.price;
   };
 
-  const getCurrencySymbol = () => (lang === "en" ? "€" : "₴");
+  const getCurrencySymbol = () => (lang === "en" ? "UAH" : "₴");
 
   return (
     <article

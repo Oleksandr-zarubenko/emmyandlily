@@ -1,10 +1,13 @@
+import { Locale } from "@/i18n/routing";
 import axios from "axios";
 
-const getData = async () => {
+const getData = async (lang: Locale) => {
   try {
     const res = await axios.post(
       `/api/get-price?timestamp=${Date.now()}`,
+
       {
+        lang,
         timestamp: Date.now(),
       },
       {

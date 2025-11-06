@@ -21,16 +21,15 @@ export const ProductsSection = ({
 
   const fetchData = async () => {
     try {
-      const data = await getData();
+      const data = await getData(lang);
       setState(data);
-      // console.log("data.allCategories crm :", data);
+      // console.log("data crm :", { data });
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
   useEffect(() => {
     fetchData();
-    // console.log("data all prod>>", data);
   }, []);
 
   const en = locales[1];
@@ -49,9 +48,6 @@ export const ProductsSection = ({
     return inSelectedCategory && correspondingProduct;
   });
   // console.log("availableProducts", availableProducts);
-  // const previewProducts = data.allProducts.filter(
-  //   (product: any) => product.preview
-  // );
 
   return (
     <section className="bg-black py-14 text-center md:py-16" id="products">

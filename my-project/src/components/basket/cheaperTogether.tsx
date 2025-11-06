@@ -80,7 +80,7 @@ const CheaperTogether = ({ data, state, setState, lang, en, modal }: any) => {
                                 item.id === product.capacity[0].idCrm
                             )!.price
                           : "N/A"}{" "}
-                      {lang === en ? "€" : "₴"}
+                      {lang === en ? " UAH" : "₴"}
                     </p>
                   )}
                 </div>
