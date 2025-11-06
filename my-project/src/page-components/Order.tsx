@@ -19,7 +19,7 @@ const Order = ({ data, lang }: { data: any; lang: Locale }) => {
   const router = useRouter();
   const fetchData = async () => {
     try {
-      const data = await getData();
+      const data = await getData(lang);
       setState(data);
     } catch (error) {
       console.error("Error fetching data:", error);

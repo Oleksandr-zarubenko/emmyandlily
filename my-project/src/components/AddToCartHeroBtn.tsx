@@ -4,12 +4,14 @@ import { FC } from "react";
 import cn from "classnames";
 import { useAddedToCart } from "@/components/context/addedToCart";
 import getData from "@/utils/api/api";
+import { Locale } from "@/i18n/routing";
 interface AddToCartHeroBtnProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   text: string;
   className?: string;
   data: any;
   secondtext: string;
+  lang: Locale;
 }
 
 export const AddToCartHeroBtn: FC<AddToCartHeroBtnProps> = ({
@@ -17,6 +19,7 @@ export const AddToCartHeroBtn: FC<AddToCartHeroBtnProps> = ({
   className,
   data,
   secondtext,
+  lang,
 }) => {
   const { addedToCart, setAddedToCart } = useAddedToCart();
   const trevelSet = data.allProducts;
@@ -27,7 +30,7 @@ export const AddToCartHeroBtn: FC<AddToCartHeroBtnProps> = ({
 
   const fetchData = async () => {
     try {
-      const data = await getData();
+      const data = await getData(lang);
       setState(data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -63,7 +66,7 @@ export const AddToCartHeroBtn: FC<AddToCartHeroBtnProps> = ({
         );
         if (capacityToAdd) {
           // Отримуємо актуальні дані з API перед додаванням в кошик
-          const response = await getData();
+          const response = await getData(lang);
           const updatedProducts = response.products;
 
           const { ml, idCrm } = capacityToAdd;
