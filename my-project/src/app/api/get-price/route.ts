@@ -1,13 +1,25 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import axios from "axios";
 import { parseString } from "xml2js";
+import { Locale } from "@/i18n/routing";
 
-export async function POST(req: NextRequest): Promise<void | Response> {
+const KEY_UKR_CRM =
+  "JAvWTZJQXYHA15-Adae5O-JRlHOuDA97l1SBWVXpy_Okn3WEsPjQKZmcbiOGYCfWYNC6_M42GBn5";
+const KEY_EN_CRM =
+  "tMB0fTRX_ej-ZsQRllq-LuP_FVOBq5GlEcv79omXh60IVTAPsh22SYtj2R7Dm24RZAVd0J";
+
+export async function POST(req: Request): Promise<void | Response> {
+  const { lang, timestamp }: { lang: Locale; timestamp: number } =
+    await req.json();
+  // console.log({ body });
+  // const selectedAPI = lang === "uk" ? KEY_UKR_CRM : KEY_EN_CRM;
+  const selectedAPI = KEY_UKR_CRM;
+
   // const { searchParams } = req.nextUrl;
   // console.log("calling post get-price", searchParams);
   try {
     const { data: xmlData } = await axios.get(
-      `https://emmyandlily.salesdrive.me/export/yml/export.yml?publicKey=JAvWTZJQXYHA15-Adae5O-JRlHOuDA97l1SBWVXpy_Okn3WEsPjQKZmcbiOGYCfWYNC6_M42GBn5&timestamp=${Date.now()}`,
+      `https://emmyandlily.salesdrive.me/export/yml/export.yml?publicKey=${selectedAPI}&timestamp=${Date.now()}`,
       { responseType: "text" }
     );
     const parsedData = await parseXml(xmlData);

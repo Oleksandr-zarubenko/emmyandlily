@@ -279,7 +279,7 @@ export const ProductModal = ({
                                       )?.rate || 1
                                     )
                                   : p.price}{" "}
-                                {lang === "en" ? "€" : "₴"}
+                                {lang === "en" ? " UAH" : "₴"}
                               </span>
                             ))}
                         </td>

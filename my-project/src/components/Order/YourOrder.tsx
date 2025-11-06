@@ -84,7 +84,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
                   state.currencies.find(
                     (currency: any) => currency.id === "EUR"
                   )?.rate || 1
-                ) + " €"
+                ) + " UAH"
               : totalPrice + " ₴"}
           </p>
         </li>
@@ -93,7 +93,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
           <p className="text-t16 xl:text-t18">
             {" "}
             {lang === en
-              ? deliveryPrice + " €"
+              ? deliveryPrice + "UAH"
               : freeDelivery(deliveryPrice) + " ₴"}
           </p>
         </li> */}
@@ -108,7 +108,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
                     (currency: any) => currency.id === "EUR"
                   )?.rate || 1
                 ) +
-                " €"
+                " UAH"
               : "- " + totaldiscountAmount + " ₴"}
           </p>
         </li>
@@ -120,7 +120,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
         </p>{" "}
         <p className="text-t16  xl:text-t18 xl:font-bold smOnly:font-bold mdOnly:font-bold">
           {lang === "en"
-            ? allTotalEn - totaldiscountAmount + " €"
+            ? allTotalEn - totaldiscountAmount + " UAH"
             : allTotal - totaldiscountAmount + " ₴"}
         </p>
       </div>
