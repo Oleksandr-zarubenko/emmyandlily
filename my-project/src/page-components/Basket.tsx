@@ -2,9 +2,9 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { convertPrice } from "@/utils/convertPrice/convertPrice";
-import { useRouter } from "next/navigation";
 
 import { BurgerCross } from "@/components/icons/BurgerCross";
+import { Link } from "@/i18n/navigation";
 
 import { Locale, locales } from "@/i18n/routing";
 import CheaperTogether from "@/components/basket/cheaperTogether";
@@ -55,14 +55,6 @@ const Basket = ({ data, lang }: { data: DatoBasketData; lang: Locale }) => {
       cancelled = true;
     };
   }, [lang]);
-
-  const router = useRouter();
-
-  const handleOrderClick = () => {
-    if (!isButtonDisabled) {
-      router.push(`/${lang}/order`);
-    }
-  };
 
   const calculateBaseTotal = () => {
     let newTotalPrice = 0;
@@ -696,13 +688,23 @@ const Basket = ({ data, lang }: { data: DatoBasketData; lang: Locale }) => {
           </p>
         </div>
 
-        <div className="mb-[66px]  flex justify-end xl:mb-28">
-          <button
-            onClick={handleOrderClick}
-            className={`ml-auto rounded bg-black px-6 py-4 text-t16 text-white xl:text-t18 smOnly:w-full ${isButtonDisabled ? "cursor-not-allowed opacity-50" : ""} `}
-          >
-            {data.basket.toOrder}
-          </button>
+        <div className="mb-[66px] flex justify-end xl:mb-28">
+          {isButtonDisabled ? (
+            <button
+              type="button"
+              disabled
+              className="ml-auto cursor-not-allowed rounded bg-black px-6 py-4 text-t16 text-white opacity-50 xl:text-t18 smOnly:w-full"
+            >
+              {data.basket.toOrder}
+            </button>
+          ) : (
+            <Link
+              href="/order"
+              className="ml-auto rounded bg-black px-6 py-4 text-center text-t16 text-white xl:text-t18 smOnly:w-full"
+            >
+              {data.basket.toOrder}
+            </Link>
+          )}
         </div>
         <div className="mb-[66px] xl:hidden">
           <CheaperTogether
