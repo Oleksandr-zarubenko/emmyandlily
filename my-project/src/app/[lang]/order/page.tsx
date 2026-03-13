@@ -238,7 +238,7 @@ export default async function OrderPage({
         dangerouslySetInnerHTML={{
           __html: `
             if (typeof window !== "undefined" && window.fbq) {
-              window.fbq('track', 'Order Page View');
+              window.fbq('trackCustom', 'Order Page View');
             }
           `,
         }}

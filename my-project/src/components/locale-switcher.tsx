@@ -1,37 +1,33 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
 import autoAnimate from "@formkit/auto-animate";
 
 import { Locale, locales } from "@/i18n/routing";
 import cn from "classnames";
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 
 export default function LocaleSwitcher({ lang }: { lang: Locale }) {
   const pathName = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const parent = useRef(null);
 
-  const redirectedPathName = (locale: Locale) => {
-    if (!pathName) return "/";
-    const segments = pathName.split("/");
-    segments[1] = locale;
-    return segments.join("/");
-  };
-
+  const currentPath = pathName || "/";
   const langText = lang === "en" ? "Eng" : "Укр";
 
   useEffect(() => {
-    parent.current && autoAnimate(parent.current);
-  }, [parent]);
+    if (parent.current) {
+      autoAnimate(parent.current);
+    }
+  }, []);
 
-  const togleIsOpen = () => {
-    setIsOpen(!isOpen);
+  const toggleIsOpen = () => {
+    setIsOpen((prev) => !prev);
   };
+
   return (
     <div className="relative">
       <button
-        onClick={togleIsOpen}
+        onClick={toggleIsOpen}
         className="w-[56.8px] rounded-md border-2 border-black px-3 py-2 text-black duration-300 hover:border-black hover:text-black"
       >
         {langText}
@@ -39,7 +35,7 @@ export default function LocaleSwitcher({ lang }: { lang: Locale }) {
 
       <div ref={parent}>
         {isOpen && (
-          <ul className="absolute left-0 top-full mt-4 w-max rounded-md  py-1 backdrop-opacity-0">
+          <ul className="absolute left-0 top-full mt-4 w-max rounded-md py-1 backdrop-opacity-0">
             {locales.map((locale) => (
               <li
                 key={locale}
@@ -50,10 +46,9 @@ export default function LocaleSwitcher({ lang }: { lang: Locale }) {
               >
                 <Link
                   className="px-4 py-2"
-                  // href={redirectedPathName(locale)}
-                  href={"/"}
+                  href={currentPath}
                   locale={locale}
-                  onClick={togleIsOpen}
+                  onClick={toggleIsOpen}
                 >
                   {locale === "en" ? "Eng" : locale === "uk" ? "Укр" : locale}
                 </Link>
