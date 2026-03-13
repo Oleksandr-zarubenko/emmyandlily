@@ -1,6 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
-import { Markdown } from "@/components/Markdown"; // Ensure you import the Markdown component
+import { useEffect, useRef, useState } from "react";
+import { Markdown } from "@/components/Markdown";
+import { useCheckoutStore } from "@/store/checkoutStore";
+import { sendOrderEmail } from "@/server/actions/checkout";
 
 export function ClearLocalStorage({
   additionalText,
@@ -8,63 +10,63 @@ export function ClearLocalStorage({
   additionalText: string;
 }) {
   const [status, setStatus] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false); // Loading state
-  const [isSuccess, setIsSuccess] = useState<boolean | null>(null); // Track success or failure
+  const [loading, setLoading] = useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = useState<boolean | null>(null);
+  const hasSentRef = useRef(false);
+
+  const email = useCheckoutStore((store) => store.email);
+  const cartItems = useCheckoutStore((store) => store.cartItems);
+  const resetCheckout = useCheckoutStore((store) => store.resetCheckout);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const email = localStorage.getItem("email");
-
-      if (email) {
-        setLoading(true); // Start loading before sending the email
-        sendEmail(email);
-      }
+    if (hasSentRef.current) {
+      return;
     }
-  }, []);
 
-  const sendEmail = async (email: string) => {
-    try {
-      const storedData = localStorage.getItem("storedData");
-      const products = storedData ? JSON.parse(storedData) : [];
+    if (!email) {
+      setIsSuccess(false);
+      setStatus("❌ Email is missing");
+      return;
+    }
 
-      const productList = products
-        .map(
-          (item: { productName: string; price: string }) =>
-            `- ${item.productName}: ${item.price} грн`
-        )
-        .join("\n");
+    hasSentRef.current = true;
+    setLoading(true);
 
-      const response = await fetch("/api/send-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+    const sendEmail = async () => {
+      try {
+        const productList = cartItems
+          .map((item) => `- ${item.productName}: ${item.price} грн`)
+          .join("\n");
+
+        const result = await sendOrderEmail({
           to: email,
           subject: "Emmy&Lily Замовлення",
           message: `Ваше замовлення було прийняте! 🛍️\n\n📦 Список товарів:\n${productList}`,
-        }),
-      });
+        });
 
-      const result = await response.json();
-      if (result.success) {
-        setIsSuccess(true); // Success, show the additional text
-        setStatus("✅ Email sent successfully!");
-      } else {
-        setIsSuccess(false); // Failure, show the error message
-        setStatus("❌ Failed to send email: " + result.error);
+        if (result.success) {
+          setIsSuccess(true);
+          setStatus("✅ Email sent successfully!");
+        } else {
+          setIsSuccess(false);
+          setStatus("❌ Failed to send email: " + (result.error || "unknown error"));
+        }
+      } catch (error) {
+        setIsSuccess(false);
+        setStatus("❌ Error: " + (error as Error).message);
+      } finally {
+        resetCheckout();
+        setLoading(false);
       }
-    } catch (error) {
-      setIsSuccess(false); // Failure, show the error message
-      setStatus("❌ Error: " + (error as Error).message);
-    } finally {
-      localStorage.clear(); // Clear local storage after email is sent or error occurs
-      setLoading(false); // Stop loading once the process is finished
-    }
-  };
+    };
+
+    sendEmail();
+  }, [email, cartItems, resetCheckout]);
 
   return (
     <div className="flex w-full items-center justify-center">
       {loading ? (
-        <div className="h-16 w-16 animate-spin rounded-full border-t-4 border-solid border-black"></div> // Centered loader
+        <div className="h-16 w-16 animate-spin rounded-full border-t-4 border-solid border-black"></div>
       ) : isSuccess ? (
         <div className="flex flex-col items-center">
           <Markdown text={additionalText} className="smOnly:mb-44" />

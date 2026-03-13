@@ -1,7 +1,8 @@
 import { Link } from "@/i18n/navigation";
 import { Logo } from "../../components/icons/Logo";
 import { Cart } from "../Cart";
-const Footer = ({ data }: { data: any }) => {
+import { DatoLayoutData } from "@/types/dato";
+const Footer = ({ data }: { data: DatoLayoutData }) => {
   return (
     <footer className="bg-black py-14">
       <div className="block items-center justify-between md:container xl:flex">

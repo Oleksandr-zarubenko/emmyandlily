@@ -1,20 +1,10 @@
 import { Locale } from "@/i18n/routing";
-import axios from "axios";
+import { SalesDriveData } from "@/types/salesdrive";
+import { getSalesDriveData } from "@/server/actions/salesdrive";
 
-const getData = async (lang: Locale) => {
+const getData = async (lang: Locale): Promise<SalesDriveData> => {
   try {
-    const res = await axios.post(
-      `/api/get-price?timestamp=${Date.now()}`,
-
-      {
-        lang,
-        timestamp: Date.now(),
-      },
-      {
-        headers: { "Cache-Control": "no-store" },
-      }
-    );
-    return res.data;
+    return await getSalesDriveData(lang);
   } catch (error) {
     console.error("Error fetching data:", error);
     throw new Error("Error fetching data");

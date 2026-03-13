@@ -8,6 +8,9 @@ import { gql } from "@apollo/client";
 import { getClient } from "../../utils/apollo-client";
 import { Metadata } from "next/types";
 import { Locale } from "@/i18n/routing";
+import { DatoHomeData } from "@/types/dato";
+import { cacheLife, cacheTag } from "next/cache";
+import { getCanonicalUrl, getLanguageAlternates } from "@/utils/seo";
 
 import Video from "@/page-components/Video";
 
@@ -217,31 +220,69 @@ const queryUA = gql`
   }
 `;
 
-export async function generateMetadata(): Promise<Metadata> {
-  return {
-    openGraph: {
-      title: "Emmy and Lily - dog`s shampoo brand.",
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const local = lang as Locale;
+  const metadataByLocale = {
+    uk: {
+      title: "Emmy & Lily | Шампуні та догляд для собак",
       description:
-        "Emmy and Lily - dog`s shampoo brand. We need to be healthy and beautiful, so we have been looking for the best hair products for a long time to be shiny, smooth, and well-combed. However, we have never found a one-size-fits-all solution that meets our needs. That's how demanding we are! Then, we had the idea to invent our super formula for hair health. Our friends helped us a little, but they wouldn't have managed without us! So we invite you to the world of beauty! Try our formula, and let us know if you like it!",
-      url: "https://www.emmyandlily.com/",
-      siteName: "Emmy and Lily - dog`s shampoo brand.",
+        "Emmy & Lily - шампуні та засоби догляду для собак. Дбайливі формули для чистої, блискучої та доглянутої шерсті.",
+    },
+    en: {
+      title: "Emmy & Lily | Dog Shampoos and Coat Care",
+      description:
+        "Emmy & Lily offers dog shampoos and coat care products designed to keep your dog's coat clean, soft, and healthy-looking.",
+    },
+  } as const;
+  const meta = metadataByLocale[local];
+
+  return {
+    title: meta.title,
+    description: meta.description,
+    alternates: {
+      canonical: getCanonicalUrl(local),
+      languages: getLanguageAlternates(),
+    },
+    openGraph: {
+      title: meta.title,
+      description: meta.description,
+      url: getCanonicalUrl(local),
+      siteName: "Emmy & Lily",
       images: [
         {
-          url: `${process.env.HOSTNAME}/favicon/android-chrome-512x512.png`,
+          url: "/favicon/android-chrome-512x512.png",
           width: 512,
           height: 512,
         },
         {
-          url: `${process.env.HOSTNAME}/favicon/android-chrome-192x192.png`,
+          url: "/favicon/android-chrome-192x192.png",
           width: 192,
           height: 192,
           alt: "Emmy and Lily - dog`s shampoo brand.",
         },
       ],
-      locale: "en",
+      locale: local === "uk" ? "uk_UA" : "en_US",
       type: "website",
     },
   };
+}
+
+async function getHomeData(local: Locale): Promise<DatoHomeData> {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag(`dato:home:${local}`);
+
+  const query = local === "uk" ? queryUA : queryEN;
+  const { data } = await getClient().query<DatoHomeData>({ query });
+  if (!data) {
+    throw new Error("Failed to load homepage data from DatoCMS");
+  }
+  return data;
 }
 
 export default async function Home({
@@ -251,21 +292,40 @@ export default async function Home({
 }) {
   const { lang } = await params;
   const local = lang as Locale;
-  const query = local == "uk" ? queryUA : queryEN;
-
-  const { data } = await getClient().query<{ promoOffer: { title: string } }>({
-    query,
-    context: {
-      fetchOptions: {
-        next: { revalidate: 60 },
+  const data = await getHomeData(local);
+  const siteUrl = getCanonicalUrl(local);
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${siteUrl}#organization`,
+        name: "Emmy & Lily",
+        url: siteUrl,
+        logo: `${siteUrl}/favicon/android-chrome-512x512.png`,
       },
-    },
-  });
-  // console.log("data in page.tsx from graphql.datocms.com", data);
+      {
+        "@type": "WebSite",
+        "@id": `${siteUrl}#website`,
+        url: siteUrl,
+        name: "Emmy & Lily",
+        publisher: {
+          "@id": `${siteUrl}#organization`,
+        },
+        inLanguage: local,
+      },
+    ],
+  };
 
   return (
-    <div className="flex flex-grow flex-col bg-bg_secondary">
-      <HeroSection data={data} />
+    <div className="bg-bg_secondary flex grow flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(organizationSchema),
+        }}
+      />
+      <HeroSection data={data} lang={local} />
       <Video data={data} />
       {data?.promoOffer?.title && (
         <FreeDelivery text={data?.promoOffer?.title} />

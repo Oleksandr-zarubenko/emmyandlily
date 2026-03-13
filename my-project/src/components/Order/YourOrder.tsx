@@ -1,12 +1,15 @@
+import { useEffect } from "react";
 import { Link } from "@/i18n/navigation";
 import { Locale } from "@/i18n/routing";
-
 import { convertPrice } from "@/utils/convertPrice/convertPrice";
+import { DatoOrderData } from "@/types/dato";
+import { SalesDriveData } from "@/types/salesdrive";
+import { useCheckoutStore } from "@/store/checkoutStore";
 
 type YourOrderProps = {
   lang: Locale;
-  data: any;
-  setIsDiscountsAndNews: any;
+  data: DatoOrderData;
+  setIsDiscountsAndNews: (value: boolean) => void;
   isDiscountsAndNews: boolean;
   saveAndProceed: () => void;
   personActive: boolean;
@@ -14,11 +17,10 @@ type YourOrderProps = {
   paymentActive: boolean;
   switchToDeliveryTab: () => void;
   deliveryPrice: number;
-  privacypolicy: any;
+  privacypolicy: boolean;
   switchToPaymentTab: () => void;
-  setPrivacypolicy: any;
-  setState: any;
-  state: any;
+  setPrivacypolicy: (value: boolean) => void;
+  state: SalesDriveData;
 };
 
 const YourOrder: React.FC<YourOrderProps> = ({
@@ -35,93 +37,72 @@ const YourOrder: React.FC<YourOrderProps> = ({
   switchToPaymentTab,
   privacypolicy,
   setPrivacypolicy,
-  // setState,
   state,
 }) => {
-  const total =
-    typeof window !== "undefined" ? localStorage.getItem("totalPrice") : null;
-  // const totalEn =
-  //   typeof window !== "undefined" ? localStorage.getItem("totalPriceEn") : null;
-  const totalPrice = total ? parseInt(total) : 0;
+  const totalPrice = useCheckoutStore((store) => store.totalPrice);
+  const totalDiscountAmount = useCheckoutStore((store) => store.discountAmount);
+  const setAllTotal = useCheckoutStore((store) => store.setAllTotal);
+  const setTotalPriceEn = useCheckoutStore((store) => store.setTotalPriceEn);
 
-  const discountAmount =
-    typeof window !== "undefined"
-      ? localStorage.getItem("discountAmount")
-      : null;
-  const totaldiscountAmount = discountAmount ? parseInt(discountAmount) : 0;
+  const formatAmount = (value: number) => value.toFixed(2);
+  const subtotalBeforeDiscount = totalPrice + totalDiscountAmount;
 
-  const freeDelivery = (deliveryPrice: any) => {
+  const freeDelivery = (deliveryPriceValue: number) => {
     if (totalPrice >= -1) {
-      return lang === "en" ? deliveryPrice : (deliveryPrice = 0);
+      return lang === "en" ? deliveryPriceValue : 0;
     }
-    return deliveryPrice;
+    return deliveryPriceValue;
   };
+
   const allTotal = freeDelivery(deliveryPrice) + totalPrice;
+  const subtotalBeforeDiscountEn = convertPrice(
+    subtotalBeforeDiscount,
+    state.currencies.find((currency) => currency.id === "EUR")?.rate || 1
+  );
   const allTotalEn =
     parseFloat(
       convertPrice(
         totalPrice,
-        state.currencies.find((currency: any) => currency.id === "EUR")?.rate ||
-          1
+        state.currencies.find((currency) => currency.id === "EUR")?.rate || 1
       )
     ) + deliveryPrice;
-  if (typeof window !== "undefined") {
-    localStorage.setItem("allTotal", JSON.stringify(allTotal));
-    localStorage.setItem("totalPriceEn", JSON.stringify(allTotalEn));
-  }
+  const totalDiscountAmountEn = convertPrice(
+    totalDiscountAmount,
+    state.currencies.find((currency) => currency.id === "EUR")?.rate || 1
+  );
+
+  useEffect(() => {
+    setAllTotal(allTotal);
+    setTotalPriceEn(allTotalEn);
+  }, [allTotal, allTotalEn, setAllTotal, setTotalPriceEn]);
+
   return (
-    <div className="h-[420px] w-full rounded border-[1px] border-[#DCDCDC] bg-white px-4  py-7 shadow-order xl:w-[357px] xl:px-4 xl:py-10 smOnly:mt-[56px] smOnly:h-[360px] mdOnly:h-[353px] mdOnly:w-[255px] mdOnly:px-4 mdOnly:py-6">
-      <h3 className="mb-8 text-t18 xl:text-t24 xl:font-bold smOnly:font-bold  mdOnly:font-bold">
+    <div className="shadow-order smOnly:mt-[56px] smOnly:h-[360px] mdOnly:h-[353px] mdOnly:w-[255px] mdOnly:px-4 mdOnly:py-6 h-[420px] w-full rounded border-[1px] border-[#DCDCDC] bg-white px-4 py-7 xl:w-[357px] xl:px-4 xl:py-10">
+      <h3 className="text-t18 xl:text-t24 smOnly:font-bold mdOnly:font-bold mb-8 xl:font-bold">
         {data.order.yourOrder}
       </h3>
       <ul className="mb-6 border-b-[1px] border-[#292D2D]">
         <li className="mb-2 flex justify-between">
-          <p className="text-t14 xl:text-t16">{data.order.total}</p>{" "}
+          <p className="text-t14 xl:text-t16">{data.order.total}</p>
           <p className="text-t16 xl:text-t18">
             {lang === "en"
-              ? convertPrice(
-                  totalPrice,
-                  state.currencies.find(
-                    (currency: any) => currency.id === "EUR"
-                  )?.rate || 1
-                ) + " UAH"
-              : totalPrice + " ₴"}
+              ? `${subtotalBeforeDiscountEn} UAH`
+              : `${formatAmount(subtotalBeforeDiscount)} ₴`}
           </p>
         </li>
-        {/* <li className="mb-2 flex justify-between">
-          <p className="text-t14 xl:text-t16"> {data.order.delivery}</p>{" "}
-          <p className="text-t16 xl:text-t18">
-            {" "}
-            {lang === en
-              ? deliveryPrice + "UAH"
-              : freeDelivery(deliveryPrice) + " ₴"}
-          </p>
-        </li> */}
         <li className="mb-2 flex justify-between">
           <p className="text-t14 xl:text-t16">{data.order.discount}</p>
           <p className="text-t16 xl:text-t18">
             {lang === "en"
-              ? "- " +
-                convertPrice(
-                  totaldiscountAmount,
-                  state.currencies.find(
-                    (currency: any) => currency.id === "EUR"
-                  )?.rate || 1
-                ) +
-                " UAH"
-              : "- " + totaldiscountAmount + " ₴"}
+              ? `- ${totalDiscountAmountEn} UAH`
+              : `- ${formatAmount(totalDiscountAmount)} ₴`}
           </p>
         </li>
       </ul>
       <div className="mb-8 flex justify-between">
-        {" "}
-        <p className="text-t12 xl:text-t18">
-          {data.order.totalAmountToBePaid}
-        </p>{" "}
-        <p className="text-t16  xl:text-t18 xl:font-bold smOnly:font-bold mdOnly:font-bold">
-          {lang === "en"
-            ? allTotalEn - totaldiscountAmount + " UAH"
-            : allTotal - totaldiscountAmount + " ₴"}
+        <p className="text-t12 xl:text-t18">{data.order.totalAmountToBePaid}</p>
+        <p className="text-t16 xl:text-t18 smOnly:font-bold mdOnly:font-bold xl:font-bold">
+          {lang === "en" ? `${allTotalEn.toFixed(2)} UAH` : `${formatAmount(allTotal)} ₴`}
         </p>
       </div>
       {personActive && (
@@ -136,7 +117,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
 
           <label
             htmlFor="isDiscountsAndNews"
-            className="ml-2 text-t12 italic text-[#292D2D] xl:text-t16"
+            className="text-t12 xl:text-t16 ml-2 text-[#292D2D] italic"
           >
             {data.order.wantToReceive}
           </label>
@@ -154,7 +135,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
 
           <label
             htmlFor="privacypolicy"
-            className="ml-2 text-t12 italic text-[#292D2D] xl:text-t16"
+            className="text-t12 xl:text-t16 ml-2 text-[#292D2D] italic"
           >
             Підтверджуючи замовлення, я даю згоду на обробку своїх персональних
             даних відповідно до{" "}
@@ -169,7 +150,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
         <button
           type="button"
           onClick={saveAndProceed}
-          className="relative rounded bg-black px-6 py-[12px] text-t18 text-white xl:top-5 smOnly:w-full mdOnly:w-full"
+          className="text-t18 smOnly:w-full mdOnly:w-full relative rounded bg-black px-6 py-[12px] text-white xl:top-5"
         >
           {data.order.next}
         </button>
@@ -177,7 +158,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
       {deliveryActive && (
         <button
           type="button"
-          className="relative top-12 rounded bg-black px-6 py-[12px] text-t12 text-white xl:top-20 xl:text-t18 smOnly:w-full mdOnly:w-full"
+          className="text-t12 xl:text-t18 smOnly:w-full mdOnly:w-full relative top-12 rounded bg-black px-6 py-[12px] text-white xl:top-20"
           onClick={switchToDeliveryTab}
         >
           {data.order.confirmTheOrder}
@@ -186,7 +167,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
       {paymentActive && (
         <button
           type="button"
-          className=" relative top-[-15px] rounded bg-black  px-6  py-[12px] text-t12 text-white xl:top-0 xl:text-t18 smOnly:w-full mdOnly:top-[-17px] mdOnly:w-full "
+          className="text-t12 xl:text-t18 smOnly:w-full mdOnly:top-[-17px] mdOnly:w-full relative top-[-15px] rounded bg-black px-6 py-[12px] text-white xl:top-0"
           onClick={switchToPaymentTab}
         >
           {data.order.order}

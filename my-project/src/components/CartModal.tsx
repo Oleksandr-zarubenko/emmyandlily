@@ -2,6 +2,7 @@ import { Link } from "@/i18n/navigation";
 import { ModalPath } from "./icons/ModalPaw";
 import { usePathname } from "next/navigation";
 import { Locale } from "@/i18n/routing";
+import { DatoSecondModal } from "@/types/dato";
 const CartModal = ({
   onClose,
   lang,
@@ -9,7 +10,7 @@ const CartModal = ({
 }: {
   onClose: () => void;
   lang: Locale;
-  data: any;
+  data: { secondmodal: DatoSecondModal };
 }) => {
   const pathname = usePathname();
 
@@ -20,7 +21,7 @@ const CartModal = ({
   };
 
   return (
-    <div className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="fixed inset-0 z-[120] flex items-center justify-center bg-black bg-opacity-50">
       <div className="rounded-lg bg-white px-5 py-16 text-center  xl:px-48  xl:py-24 mdOnly:px-[217px] mdOnly:py-[89px]">
         <h2 className="mb-6 text-t20 font-bold xl:text-t24">
           {data.secondmodal.itemAddedToCart}

@@ -2,8 +2,10 @@ import { Markdown } from "@/components/Markdown";
 import Image from "next/image";
 import HeroDog from "../../public/hero-dog.webp";
 import { AddToCartHeroBtn } from "@/components/AddToCartHeroBtn";
+import { DatoHomeData } from "@/types/dato";
+import { Locale } from "@/i18n/routing";
 
-export const HeroSection = ({ data }: { data: any }) => {
+export const HeroSection = ({ data, lang }: { data: DatoHomeData; lang: Locale }) => {
   return (
     <div className="hero relative bg-white text-center">
       <div className="container relative text-grey ">
@@ -21,7 +23,7 @@ export const HeroSection = ({ data }: { data: any }) => {
           {data.mainSection.bigtext}
         </p>
         <AddToCartHeroBtn
-          lang={data.lang}
+          lang={lang}
           data={data}
           secondtext={data.mainSection.inCart}
           text={data.mainSection.btn}

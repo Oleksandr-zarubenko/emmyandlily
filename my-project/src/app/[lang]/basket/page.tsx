@@ -3,6 +3,10 @@ import Basket from "@/page-components/Basket";
 import { getClient } from "@/utils/apollo-client";
 import { Locale } from "@/i18n/routing";
 import Script from "next/script";
+import { DatoBasketData } from "@/types/dato";
+import { cacheLife, cacheTag } from "next/cache";
+import { Metadata } from "next";
+import { getCanonicalUrl, getLanguageAlternates } from "@/utils/seo";
 const queryEN = gql`
   {
     basket {
@@ -144,6 +148,48 @@ const queryUA = gql`
   }
 `;
 
+async function getBasketData(local: Locale): Promise<DatoBasketData> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag(`dato:basket:${local}`);
+
+  const query = local === "uk" ? queryUA : queryEN;
+  const { data } = await getClient().query<DatoBasketData>({ query });
+  if (!data) {
+    throw new Error("Failed to load basket data from DatoCMS");
+  }
+  return data;
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: Locale }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const metadataByLocale = {
+    uk: {
+      title: "Кошик | Emmy & Lily",
+      description:
+        "Перегляньте товари у кошику Emmy & Lily, перевірте кількість, застосуйте промокод і перейдіть до оформлення замовлення.",
+    },
+    en: {
+      title: "Basket | Emmy & Lily",
+      description:
+        "Review the items in your Emmy & Lily basket, update quantities, apply a promo code, and continue to checkout.",
+    },
+  } as const;
+
+  return {
+    title: metadataByLocale[lang].title,
+    description: metadataByLocale[lang].description,
+    alternates: {
+      canonical: getCanonicalUrl(lang, "/basket"),
+      languages: getLanguageAlternates("/basket"),
+    },
+  };
+}
+
 export default async function BasketPage({
   params,
 }: {
@@ -151,16 +197,7 @@ export default async function BasketPage({
 }) {
   const { lang } = await params;
   const local = lang as Locale;
-  const query = local == "uk" ? queryUA : queryEN;
-
-  const { data } = await getClient().query({
-    query,
-    context: {
-      fetchOptions: {
-        next: { revalidate: 60 * 60 },
-      },
-    },
-  });
+  const data = await getBasketData(local);
   // console.log({ datafromDatoCRM: data });
 
   return (

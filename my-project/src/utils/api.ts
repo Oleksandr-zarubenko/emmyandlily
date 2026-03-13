@@ -15,7 +15,7 @@
 // }
 
 // export async function sendGoogleTable(user: {
-//   [p: string]: any;
+//   [p: string]: unknown;
 //   createdAt: string;
 // }) {
 //   const res = await fetch("api/google-sheet-service", {
@@ -49,7 +49,7 @@
 // }
 
 // export async function sendUserToTelegramBot(data: {
-//   [p: string]: any;
+//   [p: string]: unknown;
 //   createdAt: string;
 // }) {
 //   const res = await fetch("api/tlg", {

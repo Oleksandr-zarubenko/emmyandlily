@@ -19,7 +19,7 @@
 // const isBrowser = typeof window !== "undefined";
 // const SESSION_KEY = "form";
 
-// export const FormModal = ({ orderForm }: { orderForm: any }) => {
+// export const FormModal = ({ orderForm }: { orderForm: unknown }) => {
 //   const [isOpen, setIsOpen] = useState(false);
 //   const [isSent, setIsSent] = useState(false);
 //   const [isLoading, setIsLoading] = useState<boolean>(false);

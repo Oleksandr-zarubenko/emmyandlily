@@ -8,8 +8,15 @@ import cn from "classnames";
 import { PathModalXl } from "./icons/PathModalXl";
 import { Bag } from "./icons/Bag";
 import CartModal from "./CartModal";
-import { useAddedToCart } from "@/components/context/addedToCart";
 import { Locale, locales } from "@/i18n/routing";
+import {
+  DatoBasketData,
+  DatoHomeData,
+  DatoProduct,
+  DatoProductCapacity,
+} from "@/types/dato";
+import { SalesDriveData } from "@/types/salesdrive";
+import { useCheckoutStore } from "@/store/checkoutStore";
 
 export const ProductModal = ({
   product,
@@ -19,15 +26,17 @@ export const ProductModal = ({
   convertPrice,
   data,
 }: {
-  product: any;
+  product: DatoProduct;
   lang: Locale;
-  children: any;
-  state: any;
-  convertPrice: any;
-  data: any;
+  children: React.ReactNode;
+  state: SalesDriveData;
+  convertPrice: (price: string | number, rate: number) => string;
+  data: DatoHomeData | DatoBasketData;
 }) => {
   const en = locales[1];
-  const { addedToCart, setAddedToCart } = useAddedToCart();
+  const addedToCart = useCheckoutStore((state) => state.addedToCart);
+  const setAddedToCart = useCheckoutStore((state) => state.setAddedToCart);
+  const addCartItem = useCheckoutStore((state) => state.addCartItem);
   const [isOpen, setIsOpen] = useState(false);
   const [cartModalOpen, setCartModalOpen] = useState(false);
   const [additionalModalOpen, setAdditionalModalOpen] = useState(false);
@@ -40,10 +49,8 @@ export const ProductModal = ({
   );
 
   const setModalOpened = () => {
-    const content_ids = product.capacity.map((item: any) => item.idCrm);
-    const productState = state.products.find(
-      (p: any) => p.id === content_ids[0]
-    );
+    const content_ids = product.capacity.map((item) => item.idCrm);
+    const productState = state.products.find((p) => p.id === content_ids[0]);
     const productPrice = productState ? productState.price : "N/A";
 
     setIsOpen(true);
@@ -53,7 +60,7 @@ export const ProductModal = ({
       content_ids: content_ids,
       content_type: "product",
       value: productPrice,
-      currency: lang === en ? "USD" : "UAH",
+      currency: lang === en ? "EUR" : "UAH",
     });
   };
 
@@ -85,38 +92,24 @@ export const ProductModal = ({
     }
   }, [isOpen]);
 
-  const addToCart = (item: any) => {
+  const addToCart = (item: DatoProductCapacity) => {
     setCartModalOpen(true);
     setAdditionalModalOpen(true);
-    const storedDataString = localStorage.getItem("storedData");
-    const storedData = storedDataString ? JSON.parse(storedDataString) : [];
-    const storedAddedToCart = localStorage.getItem("addedToCart");
-    const parsedAddedToCart = storedAddedToCart
-      ? JSON.parse(storedAddedToCart)
-      : {};
-    const productState = state.products.find((p: any) => p.id === item.idCrm);
+    const productState = state.products.find((p) => p.id === item.idCrm);
     const productPrice = productState ? productState.price : item.price;
     const dataToStore = {
       id: item.idCrm,
       productName: product.heading,
-      price: productPrice,
+      price: String(productPrice ?? 0),
       capacity: item.ml,
       photo: product.productSlider[0].url,
     };
-    const updatedAddedToCart = {
-      ...parsedAddedToCart,
-      [item.idCrm]: true,
-    };
-    const updatedData = [...storedData, dataToStore];
 
-    localStorage.setItem("storedData", JSON.stringify(updatedData));
-    localStorage.setItem("addedToCart", JSON.stringify(updatedAddedToCart));
-
-    setAddedToCart((prevAddedToCart: any) => ({
+    addCartItem(dataToStore);
+    setAddedToCart((prevAddedToCart) => ({
       ...prevAddedToCart,
       [item.idCrm]: true,
     }));
-    setAddedToCart(updatedAddedToCart);
 
     window.fbq("track", "AddToCart", {
       content_ids: [item.idCrm],
@@ -125,13 +118,6 @@ export const ProductModal = ({
       currency: lang === en ? "EUR" : "UAH",
     });
   };
-
-  useEffect(() => {
-    const storedAddedToCart = localStorage.getItem("addedToCart");
-    if (storedAddedToCart) {
-      setAddedToCart(JSON.parse(storedAddedToCart));
-    }
-  }, [setAddedToCart]);
 
   return (
     <>
@@ -152,29 +138,29 @@ export const ProductModal = ({
       )}
       {isOpen && (
         <div
-          className="fixed inset-0 z-30 flex h-dvh cursor-default items-center justify-center overflow-y-auto bg-bg_transparent"
+          className="bg-bg_transparent fixed inset-0 z-[110] flex h-dvh cursor-default items-center justify-center overflow-y-auto"
           onClick={() => setMenuClosed()}
         >
           <div className="relative h-full w-full xl:h-auto xl:w-auto">
             <button
               onClick={() => setMenuClosed()}
-              className="absolute right-10 top-1 z-10 rounded-full p-4 duration-300 xl:absolute  xl:mt-[10px] notXl:right-1  notXl:top-1"
+              className="notXl:right-1 notXl:top-1 absolute top-1 right-10 z-10 rounded-full p-4 duration-300 xl:absolute xl:mt-[10px]"
             >
               <BurgerCross className="h-6 w-6 text-black" />
             </button>
 
             <div
-              className="relative h-full w-full overflow-y-auto bg-white px-5 py-6 xl:mr-8 xl:flex xl:h-[698px] xl:w-[1280px] xl:flex-row xl:px-[80px] mdOnly:px-[48px]"
+              className="mdOnly:px-[48px] relative h-full w-full overflow-y-auto bg-white px-5 py-6 xl:mr-8 xl:flex xl:h-[698px] xl:w-[1280px] xl:flex-row xl:px-[80px]"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="xl:mr-[80px]  xl:flex xl:h-full xl:flex-col">
+              <div className="xl:mr-[80px] xl:flex xl:h-full xl:flex-col">
                 <Markdown
                   text={product.heading}
-                  className="mb-8 text-t24 xl:hidden"
+                  className="text-t24 mb-8 xl:hidden"
                 />
 
                 <div className="notXl:flex">
-                  <div className="relative mb-4  mr-4 h-52 w-[200px]  md:h-96 xl:mr-0 xl:h-[380px] xl:w-[450px] xl:flex-shrink-0 mdOnly:h-52   mdOnly:w-[312px] ">
+                  <div className="mdOnly:h-52 mdOnly:w-[312px] relative mr-4 mb-4 h-52 w-[200px] md:h-96 xl:mr-0 xl:h-[380px] xl:w-[450px] xl:flex-shrink-0">
                     <Image
                       quality={100}
                       fill
@@ -185,54 +171,52 @@ export const ProductModal = ({
                     />
                   </div>
 
-                  <div className="block h-[48px] w-[88px]  cursor-pointer flex-row xl:flex xl:h-[88px] xl:w-[450px] xl:flex-row mdOnly:h-[48px] mdOnly:w-[88px]">
-                    {product.productSlider.map(
-                      (slide: { alt: string; url: string; id: string }) => {
-                        return (
+                  <div className="mdOnly:h-[48px] mdOnly:w-[88px] block h-[48px] w-[88px] cursor-pointer flex-row xl:flex xl:h-[88px] xl:w-[450px] xl:flex-row">
+                    {product.productSlider.map((slide) => {
+                      return (
+                        <div
+                          className="smOnly:h-[48px] mdOnly:h-[48px] relative mb-8 h-[88px] w-full last:mr-0 xl:mr-2 xl:w-1/3"
+                          key={crypto.randomUUID()}
+                          // key={slide.id}
+                          onClick={() => setActiveSlideImage(slide.url)}
+                        >
                           <div
-                            className="relative  mb-8 h-[88px] w-full last:mr-0 xl:mr-2 xl:w-1/3 smOnly:h-[48px] mdOnly:h-[48px] "
-                            key={crypto.randomUUID()}
-                            // key={slide.id}
-                            onClick={() => setActiveSlideImage(slide.url)}
-                          >
-                            <div
-                              className={cn(
-                                "absolute inset-0 z-10 rounded",
-                                slide.url !== currentImageUrl
-                                  ? "bg-black/50"
-                                  : "rounded border-b-4 border-black"
-                              )}
-                            ></div>
-                            <Image
-                              quality={75}
-                              fill
-                              src={slide.url}
-                              alt={slide.alt || "Emmy and Lily"}
-                              className={cn(
-                                "object-cover",
-                                slide.url !== currentImageUrl ? "" : ""
-                              )}
-                              sizes="(max-width: 768px) 20vw, (max-width: 1200px) 20vw, 183px"
-                            />
-                          </div>
-                        );
-                      }
-                    )}
+                            className={cn(
+                              "absolute inset-0 z-10 rounded",
+                              slide.url !== currentImageUrl
+                                ? "bg-black/50"
+                                : "rounded border-b-4 border-black"
+                            )}
+                          ></div>
+                          <Image
+                            quality={75}
+                            fill
+                            src={slide.url}
+                            alt={slide.alt ?? "Emmy and Lily"}
+                            className={cn(
+                              "object-cover",
+                              slide.url !== currentImageUrl ? "" : ""
+                            )}
+                            sizes="(max-width: 768px) 20vw, (max-width: 1200px) 20vw, 183px"
+                          />
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
-                <div className="mb-8 mt-6 gap-2 md:flex-wrap md:gap-3 xl:mb-0 xl:flex xl:w-[450px] smOnly:flex-col">
+                <div className="smOnly:flex-col mt-6 mb-8 gap-2 md:flex-wrap md:gap-3 xl:mb-0 xl:flex xl:w-[450px]">
                   {product?.advantage1 && (
-                    <p className="mb-2 w-full  rounded bg-[#DCDCDC] px-3 py-2 text-t14 text-black md:text-t16 xl:mb-0 xl:text-t16 mdOnly:w-[436px]">
+                    <p className="text-t14 md:text-t16 xl:text-t16 mdOnly:w-[436px] mb-2 w-full rounded bg-[#DCDCDC] px-3 py-2 text-black xl:mb-0">
                       {product.advantage1}
                     </p>
                   )}
                   {product?.advantage2 && (
-                    <p className="mb-2 w-full  rounded bg-[#DCDCDC] px-3 py-2 text-t14 text-black md:text-t16 xl:mb-0 xl:text-t16 mdOnly:w-[436px]">
+                    <p className="text-t14 md:text-t16 xl:text-t16 mdOnly:w-[436px] mb-2 w-full rounded bg-[#DCDCDC] px-3 py-2 text-black xl:mb-0">
                       {product.advantage2}
                     </p>
                   )}
                   {product?.advantage3 && (
-                    <p className=" w-full rounded   bg-[#DCDCDC] px-3 py-2 text-t14 text-black md:text-t16 xl:text-t16 mdOnly:w-[436px]">
+                    <p className="text-t14 md:text-t16 xl:text-t16 mdOnly:w-[436px] w-full rounded bg-[#DCDCDC] px-3 py-2 text-black">
                       {product.advantage3}
                     </p>
                   )}
@@ -242,40 +226,40 @@ export const ProductModal = ({
               <div className="w-full pr-0 xl:pr-[15px]">
                 <Markdown
                   text={product.heading}
-                  className=" mb-8 text-t32 smOnly:hidden mdOnly:hidden"
+                  className="text-t32 smOnly:hidden mdOnly:hidden mb-8"
                 />
-                <table className="mb-12 xl:w-full smOnly:w-[100%] mdOnly:w-[436px]">
+                <table className="smOnly:w-[100%] mdOnly:w-[436px] mb-12 xl:w-full">
                   <thead>
                     <tr>
-                      <th className="w-2/5 py-2 text-left text-t14 italic text-[#333333] opacity-60 smOnly:w-1/5">
+                      <th className="text-t14 smOnly:w-1/5 w-2/5 py-2 text-left text-[#333333] italic opacity-60">
                         {lang === en ? "Capacity" : "Об`єм"}
                       </th>
 
-                      <th className=" w-1/5 py-2 text-left  text-t14 italic text-[#333333] opacity-60 xl:text-center smOnly:w-2/5 smOnly:text-center">
+                      <th className="text-t14 smOnly:w-2/5 smOnly:text-center w-1/5 py-2 text-left text-[#333333] italic opacity-60 xl:text-center">
                         {lang === en ? "Price" : "Ціна "}
                       </th>
-                      <th className="w-2/5 py-2 text-right text-t14 italic text-[#333333] opacity-60">
+                      <th className="text-t14 w-2/5 py-2 text-right text-[#333333] italic opacity-60">
                         {lang === en ? "Add to Cart " : " Додати у кошик "}
                       </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {product.capacity.map((item: any) => (
+                    {product.capacity.map((item) => (
                       <tr key={item.idCrm}>
-                        <td className="py-2 text-t18 leading-5 text-[#333333] ">
+                        <td className="text-t18 py-2 leading-5 text-[#333333]">
                           {item.ml}{" "}
                           {item.ml ? (lang === "uk" ? "мл" : "ml") : ""}
                         </td>
-                        <td className="py-2 text-left text-t18 leading-5 text-[#333333] xl:text-center smOnly:text-center">
+                        <td className="text-t18 smOnly:text-center py-2 text-left leading-5 text-[#333333] xl:text-center">
                           {state.products
-                            .filter((p: any) => p.id === item.idCrm)
-                            .map((p: any) => (
+                            .filter((p) => p.id === item.idCrm)
+                            .map((p) => (
                               <span key={p.id}>
                                 {lang === "en"
                                   ? convertPrice(
                                       p.price,
                                       state.currencies.find(
-                                        (currency: any) => currency.id === "EUR"
+                                        (currency) => currency.id === "EUR"
                                       )?.rate || 1
                                     )
                                   : p.price}{" "}
@@ -283,13 +267,13 @@ export const ProductModal = ({
                               </span>
                             ))}
                         </td>
-                        <td className="py-2 text-end text-t18 leading-5 text-[#333333]">
+                        <td className="text-t18 py-2 text-end leading-5 text-[#333333]">
                           <button
                             onClick={() => addToCart(item)}
                             className={`py-auto ml-auto h-10 rounded bg-black ${
                               addedToCart[item.idCrm]
-                                ? "pointer-events-none w-[172px] cursor-default px-3 py-1 text-t18 text-white smOnly:w-[120px]"
-                                : " w-[76px] px-[22.5px] py-[5px] "
+                                ? "text-t18 smOnly:w-[120px] pointer-events-none w-[172px] cursor-default px-3 py-1 text-white"
+                                : "w-[76px] px-[22.5px] py-[5px]"
                             }`}
                             disabled={addedToCart[item.idCrm]}
                           >
@@ -309,59 +293,59 @@ export const ProductModal = ({
                   </tbody>
                 </table>
 
-                <div className=" flex flex-row text-center text-t18 font-bold leading-5 smOnly:text-t14">
+                <div className="text-t18 smOnly:text-t14 flex flex-row text-center leading-5 font-bold">
                   <button
                     className={cn(
-                      "mb-4  w-full border-solid pb-1 pt-2 text-[#33333399]",
+                      "mb-4 w-full border-solid pt-2 pb-1 text-[#33333399]",
                       activeTab === "components"
                         ? "border-b-2 border-black text-black"
-                        : "border-b border-border opacity-60"
+                        : "border-border border-b opacity-60"
                     )}
                     onClick={() => showComponents()}
                   >
-                    {product.activecomp}
+                    {product.activecomp ?? ""}
                   </button>
                   <button
                     className={cn(
-                      "mb-4 w-full border-solid pb-1 pt-2 text-[#33333399]",
+                      "mb-4 w-full border-solid pt-2 pb-1 text-[#33333399]",
                       activeTab === "composition"
                         ? "border-b-2 border-black text-black"
-                        : "border-b border-border opacity-60"
+                        : "border-border border-b opacity-60"
                     )}
                     onClick={() => showComposition()}
                   >
-                    {product.composit}
+                    {product.composit ?? ""}
                   </button>
 
                   <button
                     className={cn(
-                      "mb-4 w-full border-solid pb-1 pt-2 text-[#33333399]",
+                      "mb-4 w-full border-solid pt-2 pb-1 text-[#33333399]",
                       activeTab === "usage"
                         ? "border-b-2 border-black text-black"
-                        : "border-b border-border opacity-60"
+                        : "border-border border-b opacity-60"
                     )}
                     onClick={() => showUsage()}
                   >
-                    {product.method}
+                    {product.method ?? ""}
                   </button>
                 </div>
-                <div className="list-disc pt-2 text-black md:overflow-y-auto xl:h-[320px] smOnly:overflow-hidden">
+                <div className="smOnly:overflow-hidden list-disc pt-2 text-black md:overflow-y-auto xl:h-[320px]">
                   {activeTab === "components" && (
                     <Markdown
-                      className="mb-1 ml-3 max-w-max list-disc pr-2 text-t14"
-                      text={product.activeComponents}
+                      className="text-t14 mb-1 ml-3 max-w-max list-disc pr-2"
+                      text={product.activeComponents ?? ""}
                     />
                   )}
                   {activeTab === "composition" && (
                     <Markdown
-                      className="max-w-max list-disc pr-2 text-t14"
-                      text={product.composition}
+                      className="text-t14 max-w-max list-disc pr-2"
+                      text={product.composition ?? ""}
                     />
                   )}
                   {activeTab === "usage" && (
                     <Markdown
                       className="ml-3 max-w-max list-disc pr-2"
-                      text={product.methodOfUse}
+                      text={product.methodOfUse ?? ""}
                     />
                   )}
                 </div>

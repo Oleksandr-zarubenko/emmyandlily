@@ -1,18 +1,9 @@
 import React, { useEffect } from "react";
-
-interface ErrorState {
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  phoneNumber?: string;
-  recipientFirstName?: string;
-  recipientLastName?: string;
-  recipientEmail?: string;
-  recipientPhoneNumber?: string;
-}
+import { DatoOrderData } from "@/types/dato";
+import { OrderErrorState, PersonalInfoFieldKey } from "@/types/order";
 
 interface PersonalInfoProps {
-  data: any;
+  data: DatoOrderData;
   firstName: string;
   setFirstName: React.Dispatch<React.SetStateAction<string>>;
   lastName: string;
@@ -31,8 +22,8 @@ interface PersonalInfoProps {
   setRecipientFirstName: React.Dispatch<React.SetStateAction<string>>;
   recipientLastName: string;
   setRecipientLastName: React.Dispatch<React.SetStateAction<string>>;
-  error: ErrorState;
-  setError: React.Dispatch<React.SetStateAction<ErrorState>> | any;
+  error: OrderErrorState;
+  setError: React.Dispatch<React.SetStateAction<OrderErrorState>>;
 }
 
 const FIELD_NAMES = {
@@ -44,7 +35,7 @@ const FIELD_NAMES = {
   RECIPIENT_LAST_NAME: "recipientLastName",
   RECIPIENT_EMAIL: "recipientEmail",
   RECIPIENT_PHONE_NUMBER: "recipientPhoneNumber",
-};
+} as const satisfies Record<string, PersonalInfoFieldKey>;
 
 const Personalinfo: React.FC<PersonalInfoProps> = ({
   data,
@@ -75,7 +66,7 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
       setRecipientLastName("");
       setRecipientEmail("");
       setRecipientPhoneNumber("");
-      setError((prevErrors: any) => ({
+      setError((prevErrors) => ({
         ...prevErrors,
         recipientFirstName: "",
         recipientLastName: "",
@@ -85,8 +76,8 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
     }
   }, [isRecipient]);
 
-  const validateName = (value: string, fieldName: string) => {
-    // Unicode regex to match letters from any language, including accents and special characters
+  const validateName = (value: string, fieldName: PersonalInfoFieldKey) => {
+    // Unicode regex to match letters from all languages, including accents and special characters
     const nameRegex = /^[\p{L}\s'-]+$/u;
 
     if (!value) {
@@ -162,7 +153,7 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
       : "Введіть коректний номер телефону (наприклад, +380XXXXXXXXX або +1XXXXXXXXXX)";
   };
 
-  const handleInputChange = (fieldName: string, value: string) => {
+  const handleInputChange = (fieldName: PersonalInfoFieldKey, value: string) => {
     let errorMessage = "";
 
     switch (fieldName) {
@@ -184,7 +175,7 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
         break;
     }
 
-    setError((prevErrors: any) => ({
+    setError((prevErrors) => ({
       ...prevErrors,
       [fieldName]: errorMessage,
     }));

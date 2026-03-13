@@ -1,40 +1,60 @@
-"use client";
+﻿"use client";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { convertPrice } from "@/utils/convertPrice/convertPrice";
-import { Markdown } from "@/components/Markdown";
 import { useRouter } from "next/navigation";
 
 import { BurgerCross } from "@/components/icons/BurgerCross";
 
 import { Locale, locales } from "@/i18n/routing";
-import { useAddedToCart } from "@/components/context/addedToCart";
 import CheaperTogether from "@/components/basket/cheaperTogether";
 import DropDown from "@/components/basket/DropdownButton";
 import getData from "@/utils/api/api";
+import { DatoBasketData } from "@/types/dato";
+import { SalesDriveData } from "@/types/salesdrive";
+import { useCheckoutStore } from "@/store/checkoutStore";
+import { DEFAULT_SITE_DISCOUNT_PERCENT } from "@/constants/discounts";
 
-const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
+const Basket = ({ data, lang }: { data: DatoBasketData; lang: Locale }) => {
   const en = locales[1];
-  const { addedToCart, setAddedToCart } = useAddedToCart();
+  const tovar = useCheckoutStore((state) => state.cartItems);
+  const quantities = useCheckoutStore((state) => state.quantities);
+  const totalPrice = useCheckoutStore((state) => state.totalPrice);
+  const promoCode = useCheckoutStore((state) => state.promoCode);
+  const isInputOpen = useCheckoutStore((state) => state.isInputOpen);
+  const discountAmount = useCheckoutStore((state) => state.discountAmount);
+  const isValid = useCheckoutStore((state) => state.isValid);
+  const isPromoCodeValid = useCheckoutStore((state) => state.isPromoCodeValid);
+  const setQuantities = useCheckoutStore((state) => state.setQuantities);
+  const setTotalPrice = useCheckoutStore((state) => state.setTotalPrice);
+  const setPromoCode = useCheckoutStore((state) => state.setPromoCode);
+  const setPromoCodePartner = useCheckoutStore((state) => state.setPromoCodePartner);
+  const setIsValid = useCheckoutStore((state) => state.setIsValid);
+  const setIsInputOpen = useCheckoutStore((state) => state.setIsInputOpen);
+  const setIsButtonClicked = useCheckoutStore((state) => state.setIsButtonClicked);
+  const setDiscountAmount = useCheckoutStore((state) => state.setDiscountAmount);
+  const setIsPromoCodeValid = useCheckoutStore((state) => state.setIsPromoCodeValid);
+  const removeCartItem = useCheckoutStore((state) => state.removeCartItem);
   const [isHovered, setIsHovered] = useState(false);
 
-  const [state, setState] = useState<{
-    products: { id: string; price: string; available: string; oldprice: any }[];
-    currencies: { id: string; rate: number }[];
-  }>({ products: [], currencies: [] });
-  console.log({ basketData: data });
+  const [state, setState] = useState<SalesDriveData>({ products: [], currencies: [] });
 
-  const fetchData = async () => {
-    try {
-      const data = await getData(lang);
-      setState(data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
   useEffect(() => {
-    fetchData();
-  }, []);
+    let cancelled = false;
+    void (async () => {
+      try {
+        const data = await getData(lang);
+        if (!cancelled) {
+          setState(data);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [lang]);
 
   const router = useRouter();
 
@@ -43,133 +63,63 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
       router.push(`/${lang}/order`);
     }
   };
-  const storedDatas =
-    typeof window !== "undefined" ? localStorage.getItem("storedData") : null;
 
-  const storedData = storedDatas ? JSON.parse(storedDatas) : [];
-  const [tovar, setTovar] = useState(storedData);
-
-  const [quantities, setQuantities] = useState<{ [productId: string]: number }>(
-    () => {
-      if (typeof window !== "undefined") {
-        const storedQuantities = localStorage.getItem("quantities");
-        return storedQuantities ? JSON.parse(storedQuantities) : {};
-      }
-      return {};
-    }
-  );
-
-  const [totalPrice, setTotalPrice] = useState<number>(() => {
-    if (typeof window !== "undefined") {
-      const storedTotalPrice = localStorage.getItem("totalPrice");
-      return storedTotalPrice ? parseFloat(storedTotalPrice) : 0;
-    }
-    return 0;
-  });
-  const [promoCode, setPromoCode] = useState(() => {
-    if (typeof window !== "undefined") {
-      const storedpromoCode = localStorage.getItem("promoCode");
-      return storedpromoCode || "";
-    }
-    return "";
-  });
-
-  const [promoCodePartner, setPromoCodePartner] = useState(() => {
-    if (typeof window !== "undefined") {
-      const storedpromoCodePartner = localStorage.getItem("promoCodePartner");
-      return storedpromoCodePartner || "";
-    }
-    return "";
-  });
-
-  const [isValid, setIsValid] = useState(() => {
-    if (typeof window !== "undefined") {
-      const storedIsValid = localStorage.getItem("isValid");
-      return storedIsValid ? storedIsValid === "true" : false;
-    }
-    return false;
-  });
-
-  const [isInputOpen, setIsInputOpen] = useState(() => {
-    if (typeof window !== "undefined") {
-      const storedIsInputOpen = localStorage.getItem("isInputOpen");
-      return storedIsInputOpen ? storedIsInputOpen === "true" : false;
-    }
-    return false;
-  });
-
-  const [isButtonClicked, setIsButtonClicked] = useState(() => {
-    if (typeof window !== "undefined") {
-      const storedIsButtonClicked = localStorage.getItem("isButtonClicked");
-      return storedIsButtonClicked ? storedIsButtonClicked === "true" : false;
-    }
-    return false;
-  });
-
-  const [discountAmount, setDiscountAmount] = useState(() => {
-    if (typeof window !== "undefined") {
-      const storedValue = localStorage.getItem("discountAmount");
-      return storedValue ? parseInt(storedValue, 10) : 0;
-    }
-    return 0;
-  });
-
-  const [isPromoCodeValid, setIsPromoCodeValid] = useState(() => {
-    if (typeof window !== "undefined") {
-      const storeisPromoCodeValid = localStorage.getItem("isPromoCodeValid");
-      return storeisPromoCodeValid ? storeisPromoCodeValid === "true" : false;
-    }
-    return false;
-  });
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const storedData = JSON.parse(localStorage.getItem("storedData") || "[]");
-      setTovar(storedData);
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
-  useEffect(() => {
-    localStorage.setItem("isPromoCodeValid", isPromoCodeValid.toString());
-    localStorage.setItem("discountAmount", discountAmount.toString());
-    localStorage.setItem("promoCodePartner", promoCodePartner);
-    localStorage.setItem("storedData", JSON.stringify(tovar));
-    localStorage.setItem("promoCode", promoCode);
-    localStorage.setItem("quantities", JSON.stringify(quantities));
-    localStorage.setItem("totalPrice", totalPrice.toString());
-    localStorage.setItem("isInputOpen", isInputOpen.toString());
-    localStorage.setItem("isButtonClicked", isButtonClicked.toString());
-  }, [
-    discountAmount,
-    quantities,
-    isValid,
-    isInputOpen,
-    isButtonClicked,
-    promoCode,
-    tovar,
-    totalPrice,
-    promoCodePartner,
-    isPromoCodeValid,
-  ]);
-
-  const handlePromoCodeChange = (event: any) => {
-    const inputPromoCode = event.target.value;
-    setPromoCode(inputPromoCode);
-
+  const calculateBaseTotal = () => {
     let newTotalPrice = 0;
-    tovar.forEach((item: any) => {
+
+    tovar.forEach((item) => {
       const quantity = quantities[item.id] || 1;
-      newTotalPrice += item.price * quantity;
+      newTotalPrice += Number(item.price) * quantity;
     });
 
-    setTotalPrice(newTotalPrice);
-    localStorage.setItem("totalPrice", newTotalPrice.toString());
-    const isValidPromo = data.allPromocods.some((promo: any) => {
-      return promo.promoCodName.some((code: any) => {
-        return code.promocod === inputPromoCode.trim();
-      });
-    });
+    return newTotalPrice;
+  };
+
+  const findPromoMatch = (codeValue: string) => {
+    const trimmedCode = codeValue.trim();
+
+    if (!trimmedCode) {
+      return null;
+    }
+
+    for (const promo of data.allPromocods) {
+      const matchedCode = promo.promoCodName.find(
+        (code) => code.promocod === trimmedCode
+      );
+
+      if (matchedCode) {
+        return matchedCode;
+      }
+    }
+
+    return null;
+  };
+
+  const calculateDiscountState = (discountPercent: number, baseTotal: number) => {
+    const normalizedDiscountPercent = Math.max(discountPercent, 0);
+    const nextDiscountAmount = baseTotal * (normalizedDiscountPercent / 100);
+
+    return {
+      discountAmount: nextDiscountAmount,
+      totalPrice: baseTotal - nextDiscountAmount,
+    };
+  };
+
+  const handlePromoCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const inputPromoCode = event.target.value;
+    const baseTotal = calculateBaseTotal();
+    const defaultDiscountState = calculateDiscountState(
+      DEFAULT_SITE_DISCOUNT_PERCENT,
+      baseTotal
+    );
+
+    setPromoCode(inputPromoCode);
+    setIsPromoCodeValid(false);
+    setPromoCodePartner("");
+    setDiscountAmount(defaultDiscountState.discountAmount);
+    setTotalPrice(defaultDiscountState.totalPrice);
+
+    const isValidPromo = Boolean(findPromoMatch(inputPromoCode));
 
     if (isValidPromo) {
       setIsValid(true);
@@ -181,43 +131,29 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
   };
 
   const handleVerifyPromoCode = () => {
-    const inputField = document.getElementById("promoCodeInput");
-    const isValidPromo = data.allPromocods.some((promo: any) => {
-      return promo.promoCodName.some((code: any) => {
-        if (code.promocod === promoCode.trim()) {
-          setPromoCodePartner(code.namePartner);
+    const matchedPromo = findPromoMatch(promoCode);
+    const baseTotal = calculateBaseTotal();
 
-          return true;
-        }
-        return false;
-      });
-    });
-    if (isValidPromo) {
+    if (matchedPromo) {
+      const promoDiscountState = calculateDiscountState(
+        matchedPromo.discount ?? 0,
+        baseTotal
+      );
+
+      setPromoCodePartner(matchedPromo.namePartner);
       setIsPromoCodeValid(true);
-      if (inputField) {
-        inputField.classList.add("bg-white");
-      }
-      const discountObject = data.allPromocods.find((promo: any) => {
-        return promo.promoCodName.some(
-          (code: any) => code.promocod === promoCode.trim()
-        );
-      });
-
-      const discountValue = discountObject
-        ? discountObject.promoCodName.find(
-            (code: any) => code.promocod === promoCode.trim()
-          ).discount
-        : 0;
-
-      const discountedPrice = totalPrice * (1 - discountValue / 100);
-      setDiscountAmount(totalPrice * (discountValue / 100));
-      setTotalPrice(discountedPrice);
+      setDiscountAmount(promoDiscountState.discountAmount);
+      setTotalPrice(promoDiscountState.totalPrice);
     } else {
-      if (inputField) {
-        inputField.classList.add("bg-[#C61004]/[.06]");
-      }
+      const defaultDiscountState = calculateDiscountState(
+        DEFAULT_SITE_DISCOUNT_PERCENT,
+        baseTotal
+      );
+
       setIsPromoCodeValid(false);
-      setDiscountAmount(0);
+      setPromoCodePartner("");
+      setTotalPrice(defaultDiscountState.totalPrice);
+      setDiscountAmount(defaultDiscountState.discountAmount);
     }
   };
 
@@ -226,36 +162,47 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
   };
 
   useEffect(() => {
-    let newTotalPrice = 0;
-
-    // Розрахунок нової ціни
-    tovar.forEach((item: any) => {
-      const quantity = quantities[item.id] || 1;
-      newTotalPrice += item.price * quantity;
-    });
-
-    // Пошук об'єкта знижки
-    const discountObject = data.allPromocods.find((promo: any) =>
-      promo.promoCodName.some((code: any) => code.promocod === promoCode.trim())
+    const baseTotal = calculateBaseTotal();
+    const defaultDiscountState = calculateDiscountState(
+      DEFAULT_SITE_DISCOUNT_PERCENT,
+      baseTotal
     );
 
-    // Витягування значення знижки
-    const discountValue = discountObject
-      ? discountObject.promoCodName.find(
-          (code: any) => code.promocod === promoCode.trim()
-        )?.discount || 0
-      : 0;
+    if (!isPromoCodeValid) {
+      setTotalPrice(defaultDiscountState.totalPrice);
+      setDiscountAmount(defaultDiscountState.discountAmount);
+      return;
+    }
 
-    // Розрахунок ціни зі знижкою
-    const discountedPrice = newTotalPrice * (1 - discountValue / 100);
+    const matchedPromo = findPromoMatch(promoCode);
 
-    // Оновлення станів
-    setDiscountAmount(newTotalPrice * (discountValue / 100));
-    setTotalPrice(discountedPrice);
+    if (!matchedPromo) {
+      setIsPromoCodeValid(false);
+      setPromoCodePartner("");
+      setIsValid(false);
+      setTotalPrice(defaultDiscountState.totalPrice);
+      setDiscountAmount(defaultDiscountState.discountAmount);
+      return;
+    }
 
-    // Збереження в localStorage
-    localStorage.setItem("totalPrice", newTotalPrice.toString());
-  }, [quantities, tovar, data.allPromocods, promoCode]); // Додано всі залежності
+    const promoDiscountState = calculateDiscountState(
+      matchedPromo.discount ?? 0,
+      baseTotal
+    );
+
+    setDiscountAmount(promoDiscountState.discountAmount);
+    setTotalPrice(promoDiscountState.totalPrice);
+  }, [
+    quantities,
+    tovar,
+    promoCode,
+    isPromoCodeValid,
+    setDiscountAmount,
+    setIsPromoCodeValid,
+    setIsValid,
+    setPromoCodePartner,
+    setTotalPrice,
+  ]);
 
   const handleQuantityChange = (capacity: string, value: number) => {
     const updatedQuantities = {
@@ -263,35 +210,19 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
       [capacity]: Math.max((quantities[capacity] || 1) + value, 0),
     };
     setQuantities(updatedQuantities);
-
-    localStorage.setItem("quantities", JSON.stringify(updatedQuantities));
   };
 
-  const handleRemove = (id: any) => {
-    const updatedData = tovar.filter((item: any) => item.id !== id);
-    setTovar(updatedData);
-    localStorage.setItem("storedData", JSON.stringify(updatedData));
-
-    const updatedQuantities = { ...quantities };
-    delete updatedQuantities[id];
-    setQuantities(updatedQuantities);
-    localStorage.setItem("quantities", JSON.stringify(updatedQuantities));
-
-    setAddedToCart((prevAddedToCart: any) => {
-      const updatedAddedToCart = { ...prevAddedToCart };
-      delete updatedAddedToCart[id];
-      localStorage.setItem("addedToCart", JSON.stringify(updatedAddedToCart));
-      return updatedAddedToCart;
-    });
+  const handleRemove = (id: string) => {
+    removeCartItem(id);
   };
 
   const isButtonDisabled = totalPrice === 0;
   const availableIds = ["id_28", "id_27", "id_26"];
 
-  const TogetherProducts = data.allProducts.filter((product: any) => {
-    return product.capacity.some((capacity: any) => {
+  const TogetherProducts = data.allProducts.filter((product) => {
+    return product.capacity.some((capacity) => {
       const correspondingProduct = state.products.find(
-        (p: any) => p.id === capacity.idCrm && p.available === "true"
+        (p) => p.id === capacity.idCrm && p.available === "true"
       );
       return correspondingProduct && availableIds.includes(capacity.idCrm);
     });
@@ -307,7 +238,7 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
         <div className="mb-4 border-b-[1px] border-black pb-14">
           {tovar.length === 0 ? ( // Check if tovar array is empty
             <p className="text-t16">
-              {lang === "en" ? "No items in basket" : "Не має товарів у кошику"}
+              {lang === "en" ? "No items in basket" : "Немає товарів у кошику"}
             </p>
           ) : (
             <table className="w-full ">
@@ -330,7 +261,7 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
                   </th>
                 </tr>
               </thead>
-              {tovar.map((item: any) => (
+              {tovar.map((item) => (
                 <tbody key={item.id} className="smOnly:hidden">
                   <tr className="border-b">
                     <td className="flex">
@@ -358,30 +289,30 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
                     <td className="relative py-2 text-left leading-5 text-[#333333] xl:text-t18 mdOnly:w-14 mdOnly:text-t16">
                       {state &&
                       state.products.find(
-                        (items: any) => items.id === item.id
+                        (items) => items.id === item.id
                       ) ? (
                         <>
                           {lang === "en" ? (
                             <span
-                              className={`${state.products.find((items: any) => items.id === item.id)!.oldprice ? "text-red-500" : ""}`}
+                              className={`${state.products.find((items) => items.id === item.id)!.oldprice ? "text-red-500" : ""}`}
                             >
                               {convertPrice(
                                 state.products.find(
-                                  (items: any) => items.id === item.id
+                                  (items) => items.id === item.id
                                 )!.price,
                                 state.currencies.find(
-                                  (currency: any) => currency.id === "EUR"
+                                  (currency) => currency.id === "EUR"
                                 )?.rate || 1
                               )}{" "}
                               {lang === "en" ? " UAH" : " ₴"}
                             </span>
                           ) : (
                             <span
-                              className={`${state.products.find((items: any) => items.id === item.id)!.oldprice ? "text-red-500" : ""}`}
+                              className={`${state.products.find((items) => items.id === item.id)!.oldprice ? "text-red-500" : ""}`}
                             >
                               {
                                 state.products.find(
-                                  (items: any) => items.id === item.id
+                                  (items) => items.id === item.id
                                 )!.price
                               }{" "}
                               {lang === "uk" ? " ₴" : " UAH"}
@@ -393,7 +324,7 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
                       )}
 
                       {state.products.map(
-                        (prod: any) =>
+                        (prod) =>
                           prod.id === item.id &&
                           prod.oldprice && (
                             <p
@@ -404,7 +335,7 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
                                 ? convertPrice(
                                     prod.oldprice[0],
                                     state.currencies.find(
-                                      (currency: any) => currency.id === "EUR"
+                                      (currency) => currency.id === "EUR"
                                     )?.rate || 1
                                   ) + (lang === "en" ? " UAH" : " ₴")
                                 : ""}
@@ -448,19 +379,19 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
                       {lang === "en"
                         ? state &&
                           state.products.find(
-                            (items: any) => items.id === item.id
+                            (items) => items.id === item.id
                           )
                           ? (() => {
                               const price =
                                 (parseFloat(
                                   state.products.find(
-                                    (items: any) => items.id === item.id
+                                    (items) => items.id === item.id
                                   )!.price
                                 ) || 0) * (quantities[item.id] || 1);
                               const convertedPrice = convertPrice(
                                 price,
                                 state.currencies.find(
-                                  (currency: any) => currency.id === "EUR"
+                                  (currency) => currency.id === "EUR"
                                 )?.rate || 1
                               );
                               return price === 0 ? "Preorder" : convertedPrice;
@@ -468,13 +399,13 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
                           : "N/A"
                         : state &&
                             state.products.find(
-                              (items: any) => items.id === item.id
+                              (items) => items.id === item.id
                             )
                           ? (() => {
                               const price =
                                 parseFloat(
                                   state.products.find(
-                                    (items: any) => items.id === item.id
+                                    (items) => items.id === item.id
                                   )!.price
                                 ) * (quantities[item.id] || 1);
                               return price === 0 ? "Preorder" : price;
@@ -494,7 +425,7 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
                 </tbody>
               ))}
 
-              {tovar.map((item: any) => (
+              {tovar.map((item) => (
                 <tbody key={item.id} className="md:hidden">
                   <tr className="border-b">
                     <td className="flex">
@@ -551,30 +482,30 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
                         <li className="whitespace-nowrap text-t16 md:mb-4">
                           {state &&
                           state.products.find(
-                            (items: any) => items.id === item.id
+                            (items) => items.id === item.id
                           ) ? (
                             <>
                               {lang === "en" ? (
                                 <span
-                                  className={`${state.products.find((items: any) => items.id === item.id)!.oldprice !== undefined ? "text-red-500" : ""}`}
+                                  className={`${state.products.find((items) => items.id === item.id)!.oldprice !== undefined ? "text-red-500" : ""}`}
                                 >
                                   {convertPrice(
                                     state.products.find(
-                                      (items: any) => items.id === item.id
+                                      (items) => items.id === item.id
                                     )!.price,
                                     state.currencies.find(
-                                      (currency: any) => currency.id === "EUR"
+                                      (currency) => currency.id === "EUR"
                                     )?.rate || 1
                                   )}{" "}
                                   {lang === "en" ? " UAH" : " ₴"}
                                 </span>
                               ) : (
                                 <span
-                                  className={`${state.products.find((items: any) => items.id === item.id)!.oldprice !== undefined ? "text-red-500" : ""}`}
+                                  className={`${state.products.find((items) => items.id === item.id)!.oldprice !== undefined ? "text-red-500" : ""}`}
                                 >
                                   {
                                     state.products.find(
-                                      (items: any) => items.id === item.id
+                                      (items) => items.id === item.id
                                     )!.price
                                   }{" "}
                                   {lang === "uk" ? " ₴" : " UAH"}
@@ -587,7 +518,7 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
                         </li>
 
                         {state.products.map(
-                          (prod: any) =>
+                          (prod) =>
                             prod.id === item.id &&
                             prod.oldprice && (
                               <li
@@ -598,7 +529,7 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
                                   ? convertPrice(
                                       prod.oldprice[0],
                                       state.currencies.find(
-                                        (currency: any) => currency.id === "EUR"
+                                        (currency) => currency.id === "EUR"
                                       )?.rate || 1
                                     ) + (lang === "en" ? " UAH" : " ₴")
                                   : ""}
@@ -610,26 +541,26 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
                           {lang === "en"
                             ? state &&
                               state.products.find(
-                                (items: any) => items.id === item.id
+                                (items) => items.id === item.id
                               )
                               ? convertPrice(
                                   (parseFloat(
                                     state.products.find(
-                                      (items: any) => items.id === item.id
+                                      (items) => items.id === item.id
                                     )!.price
                                   ) || 0) * (quantities[item.id] || 1),
                                   state.currencies.find(
-                                    (currency: any) => currency.id === "EUR"
+                                    (currency) => currency.id === "EUR"
                                   )?.rate || 1
                                 )
                               : "N/A"
                             : state &&
                                 state.products.find(
-                                  (items: any) => items.id === item.id
+                                  (items) => items.id === item.id
                                 )
                               ? parseFloat(
                                   state.products.find(
-                                    (items: any) => items.id === item.id
+                                    (items) => items.id === item.id
                                   )!.price
                                 ) * (quantities[item.id] || 1)
                               : "N/A"}{" "}
@@ -657,7 +588,7 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
             className="mb-6 ml-auto flex w-[225px] justify-between text-t14 text-black xl:text-t16"
             onClick={handleToggleInput}
           >
-            {lang === "en" ? "Add promo code" : "Додати промокод "}{" "}
+            {lang === "en" ? "Add promo code" : "Додати промокод"}{" "}
             <BurgerCross className="h-4 w-4 origin-center rotate-45" />
           </button>
 
@@ -673,18 +604,24 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
                     placeholder={
                       lang === "en"
                         ? "Enter the promo code "
-                        : "Введіть промокод "
+                        : "Введіть промокод"
                     }
                     className="w-[225px] border-gray-300 p-2 text-t14 xl:text-t16"
                   />
                   <button
                     onClick={() => {
-                      setTotalPrice(totalPrice + discountAmount);
-                      localStorage.removeItem("promoCode");
                       setPromoCode("");
                       setPromoCodePartner("");
+                      setIsValid(false);
+                      setIsButtonClicked(false);
                       setIsPromoCodeValid(false);
-                      setDiscountAmount(0);
+                      const baseTotal = calculateBaseTotal();
+                      const defaultDiscountState = calculateDiscountState(
+                        DEFAULT_SITE_DISCOUNT_PERCENT,
+                        baseTotal
+                      );
+                      setDiscountAmount(defaultDiscountState.discountAmount);
+                      setTotalPrice(defaultDiscountState.totalPrice);
                     }}
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
@@ -703,14 +640,16 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
                     placeholder={
                       lang === "en"
                         ? "Enter the promo code "
-                        : "Введіть промокод "
+                        : "Введіть промокод"
                     }
-                    className="w-[225px] border-gray-300 p-2 text-t14 xl:text-t16"
+                    className={`w-[225px] border-gray-300 p-2 text-t14 xl:text-t16 ${
+                      promoCode.trim() && !isValid ? "bg-[#C61004]/[.06]" : "bg-white"
+                    }`}
                   />
                   <button
                     onClick={handleVerifyPromoCode}
-                    disabled={isPromoCodeValid}
-                    className="absolute right-0 top-0 mt-[3px] w-10 border-none bg-black px-2 py-2 text-white"
+                    disabled={!isValid || isPromoCodeValid}
+                    className="absolute right-0 top-0 mt-[3px] w-10 border-none bg-black px-2 py-2 text-white disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     ➜
                   </button>
@@ -725,11 +664,13 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
             -{" "}
             {lang === "en"
               ? Math.round(
-                  convertPrice(
-                    discountAmount,
-                    state.currencies.find(
-                      (currency: any) => currency.id === "EUR"
-                    )?.rate || 1
+                  Number(
+                    convertPrice(
+                      discountAmount,
+                      state.currencies.find(
+                        (currency) => currency.id === "EUR"
+                      )?.rate || 1
+                    )
                   )
                 ).toFixed(0) + " UAH"
               : Math.round(discountAmount).toFixed(0) + " ₴"}
@@ -741,11 +682,13 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
           <p className="text-t16 font-bold">
             {lang === "en"
               ? Math.round(
-                  convertPrice(
-                    totalPrice,
-                    state.currencies.find(
-                      (currency: any) => currency.id === "EUR"
-                    )?.rate || 1
+                  Number(
+                    convertPrice(
+                      totalPrice,
+                      state.currencies.find(
+                        (currency) => currency.id === "EUR"
+                      )?.rate || 1
+                    )
                   )
                 ).toFixed(0)
               : Math.round(totalPrice).toFixed(0)}
@@ -764,6 +707,7 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
         <div className="mb-[66px] xl:hidden">
           <CheaperTogether
             data={TogetherProducts}
+            modal={data}
             state={state}
             setState={setState}
             lang={lang}
@@ -787,3 +731,8 @@ const Basket = ({ data, lang }: { data: any; lang: Locale }) => {
 };
 
 export default Basket;
+
+
+
+
+

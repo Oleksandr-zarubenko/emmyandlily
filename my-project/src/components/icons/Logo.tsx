@@ -1,4 +1,4 @@
-export const Logo = ({ color }: any) => (
+export const Logo = ({ color }: { color: string }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="60"

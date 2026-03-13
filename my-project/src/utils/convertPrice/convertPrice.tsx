@@ -1,5 +1,5 @@
 // priceUtils.ts
-export const convertPrice = (price: any, rate: any): any => {
-  const convertedPrice = parseFloat(price) / rate;
+export const convertPrice = (price: string | number, rate: number): string => {
+  const convertedPrice = Number(price) / rate;
   return convertedPrice.toFixed(2);
 };

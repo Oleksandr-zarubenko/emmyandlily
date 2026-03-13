@@ -5,8 +5,9 @@ import { Paw } from "@/components/icons/Paw";
 import { Phone } from "@/components/icons/Phone";
 import { TikTok } from "@/components/icons/TikTok";
 import Link from "next/link";
+import { DatoHomeData } from "@/types/dato";
 
-export const Contacts = ({ data }: { data: any }) => {
+export const Contacts = ({ data }: { data: DatoHomeData }) => {
   return (
     <section
       className="contacts bg-white py-12 pb-10 md:pt-24 xl:pb-20 xl:pt-48"

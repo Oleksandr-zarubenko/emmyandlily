@@ -2,7 +2,27 @@ import { Markdown } from "@/components/Markdown";
 import { convertPrice } from "@/utils/convertPrice/convertPrice";
 import { ProductModal } from "../ProductModal";
 import Image from "next/image";
-const CheaperTogether = ({ data, state, setState, lang, en, modal }: any) => {
+import { Locale } from "@/i18n/routing";
+import { DatoBasketData, DatoHomeData, DatoProduct } from "@/types/dato";
+import { SalesDriveData } from "@/types/salesdrive";
+
+interface CheaperTogetherProps {
+  data: DatoProduct[];
+  state: SalesDriveData;
+  setState: React.Dispatch<React.SetStateAction<SalesDriveData>>;
+  lang: Locale;
+  en: Locale;
+  modal: DatoBasketData | DatoHomeData;
+}
+
+const CheaperTogether = ({
+  data,
+  state,
+  setState,
+  lang,
+  en,
+  modal,
+}: CheaperTogetherProps) => {
   return (
     <div className="mt-[83px] ">
       <h3 className="mb-6 text-t18 font-bold text-black xl:text-center">
@@ -10,7 +30,7 @@ const CheaperTogether = ({ data, state, setState, lang, en, modal }: any) => {
       </h3>
       <div className="h-auto bg-white xl:w-44 smOnly:flex smOnly:w-full smOnly:overflow-x-auto smOnly:px-2 mdOnly:flex mdOnly:w-full">
         {data.length > 0 &&
-          data.map((product: any) => (
+          data.map((product) => (
             <article
               key={product.id}
               className="shadow-basket group mx-auto h-auto cursor-pointer rounded bg-white xl:mb-6 xl:w-[166px] smOnly:mb-6 smOnly:mr-1 mdOnly:w-[30%]"
@@ -40,13 +60,13 @@ const CheaperTogether = ({ data, state, setState, lang, en, modal }: any) => {
                   <ul className="mb-2 flex xl:mb-4">
                     {product.capacity &&
                       product.capacity &&
-                      product.capacity.map((item: any) => (
+                      product.capacity.map((item) => (
                         <li
                           key={item.idCrm}
                           className="mr-8 text-t14 italic text-black xl:text-t16"
                         >
                           {item.ml}{" "}
-                          {item.ml ? (lang === "ua" ? "мл" : "ml") : ""}
+                          {item.ml ? (lang === "uk" ? "мл" : "ml") : ""}
                         </li>
                       ))}
                   </ul>
@@ -58,25 +78,25 @@ const CheaperTogether = ({ data, state, setState, lang, en, modal }: any) => {
                       {lang === en
                         ? state &&
                           state.products.find(
-                            (item: any) => item.id === product.capacity[0].idCrm
+                            (item) => item.id === product.capacity[0].idCrm
                           )
                           ? convertPrice(
                               state.products.find(
-                                (item: any) =>
+                                (item) =>
                                   item.id === product.capacity[0].idCrm
                               )!.price,
                               state.currencies.find(
-                                (currency: any) => currency.id === "EUR"
+                                (currency) => currency.id === "EUR"
                               )?.rate || 1
                             )
                           : "N/A"
                         : state &&
                             state.products.find(
-                              (item: any) =>
+                              (item) =>
                                 item.id === product.capacity[0].idCrm
                             )
                           ? state.products.find(
-                              (item: any) =>
+                              (item) =>
                                 item.id === product.capacity[0].idCrm
                             )!.price
                           : "N/A"}{" "}
@@ -93,3 +113,4 @@ const CheaperTogether = ({ data, state, setState, lang, en, modal }: any) => {
 };
 
 export default CheaperTogether;
+
