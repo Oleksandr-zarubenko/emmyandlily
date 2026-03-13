@@ -208,7 +208,7 @@ export default async function BasketPage({
         dangerouslySetInnerHTML={{
           __html: `
             if (typeof window !== "undefined" && window.fbq) {
-              window.fbq('track', 'Basket Page View');
+              window.fbq('trackCustom', 'Basket Page View');
             }
           `,
         }}

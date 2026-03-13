@@ -8,7 +8,7 @@ import Mono from "../../public/mono.png";
 import { Locale, locales } from "@/i18n/routing";
 import getData from "@/utils/api/api";
 // import { convertPrice } from "@/utils/convertPrice/convertPrice";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
 import dynamic from "next/dynamic";
 import { DatoOrderData } from "@/types/dato";
 import { SalesDriveData } from "@/types/salesdrive";
@@ -368,7 +368,7 @@ const Order = ({ data, lang }: { data: DatoOrderData; lang: Locale }) => {
   const switchToPaymentTab = async () => {
     if (deliveryCompleted && afterpay === true && privacypolicy === true) {
       makeApiCall();
-      router.push(`http://emmyandlily.com/${lang}/thank-you`);
+      router.push("/thank-you");
       if (typeof window !== "undefined" && window.fbq) {
         const productDetails = updatedProducts
           .map(

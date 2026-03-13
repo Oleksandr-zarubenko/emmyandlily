@@ -85,7 +85,7 @@ export default async function OfferPage({
         dangerouslySetInnerHTML={{
           __html: `
             if (typeof window !== "undefined" && window.fbq) {
-              window.fbq('track', 'Offer Page View');
+              window.fbq('trackCustom', 'Offer Page View');
             }
           `,
         }}

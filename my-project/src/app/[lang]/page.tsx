@@ -338,7 +338,7 @@ export default async function Home({
         dangerouslySetInnerHTML={{
           __html: `
             if (typeof window !== "undefined" && window.fbq) {
-              window.fbq('track', 'Home Page View');
+              window.fbq('trackCustom', 'Home Page View');
             }
           `,
         }}

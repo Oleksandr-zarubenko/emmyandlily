@@ -88,7 +88,7 @@ export default async function PolicyPage({
         dangerouslySetInnerHTML={{
           __html: `
             if (typeof window !== "undefined" && window.fbq) {
-              window.fbq('track', 'PP Page View');
+              window.fbq('trackCustom', 'PP Page View');
             }
           `,
         }}
