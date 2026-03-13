@@ -1,35 +1,27 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
 import autoAnimate from "@formkit/auto-animate";
 
 import { Locale, locales } from "@/i18n/routing";
 import cn from "classnames";
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 
 export default function LocaleSwitcher({ lang }: { lang: Locale }) {
   const pathName = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const parent = useRef(null);
 
-  const redirectedPathName = (locale: Locale) => {
-    if (!pathName) return `/${locale}`;
-
-    const segments = pathName.split("/");
-    segments[1] = locale;
-    return segments.join("/");
-  };
-
+  const currentPath = pathName || "/";
   const langText = lang === "en" ? "Eng" : "Укр";
 
   useEffect(() => {
     if (parent.current) {
       autoAnimate(parent.current);
     }
-  }, [parent]);
+  }, []);
 
   const toggleIsOpen = () => {
-    setIsOpen(!isOpen);
+    setIsOpen((prev) => !prev);
   };
 
   return (
@@ -43,7 +35,7 @@ export default function LocaleSwitcher({ lang }: { lang: Locale }) {
 
       <div ref={parent}>
         {isOpen && (
-          <ul className="absolute top-full left-0 mt-4 w-max rounded-md py-1 backdrop-opacity-0">
+          <ul className="absolute left-0 top-full mt-4 w-max rounded-md py-1 backdrop-opacity-0">
             {locales.map((locale) => (
               <li
                 key={locale}
@@ -54,7 +46,7 @@ export default function LocaleSwitcher({ lang }: { lang: Locale }) {
               >
                 <Link
                   className="px-4 py-2"
-                  href={redirectedPathName(locale)}
+                  href={currentPath}
                   locale={locale}
                   onClick={toggleIsOpen}
                 >
