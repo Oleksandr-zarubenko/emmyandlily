@@ -8,7 +8,6 @@ import { gql } from "@apollo/client";
 import "../globals.css";
 import { Locale } from "@/i18n/routing";
 import { getClient } from "../../utils/apollo-client";
-import { AddedToCartProvider } from "@/components/context/addedToCart";
 import Header from "@/components/header/header";
 import { Suspense } from "react";
 import { FacebookPixelEvents } from "@/components/pixel-events";
@@ -17,6 +16,9 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
+import { DatoLayoutData } from "@/types/dato";
+import { cacheLife, cacheTag } from "next/cache";
+import { getSiteUrl } from "@/utils/seo";
 
 const libre = Open_Sans({
   weight: ["400"],
@@ -58,6 +60,7 @@ const queryUA = gql`
 `;
 
 export const metadata: Metadata = {
+  metadataBase: new URL(getSiteUrl()),
   title: "Emmy and Lily - dog`s shampoo brand.",
   description:
     "Emmy and Lily - dog`s shampoo brand. We need to be healthy and beautiful, so we have been looking for the best hair products for a long time to be shiny, smooth, and well-combed. However, we have never found a one-size-fits-all solution that meets our needs. That's how demanding we are! Then, we had the idea to invent our super formula for hair health. Our friends helped us a little, but they wouldn't have managed without us! So we invite you to the world of beauty! Try our formula, and let us know if you like it!",
@@ -66,27 +69,46 @@ export const metadata: Metadata = {
       rel: "icon",
       type: "image/png",
       sizes: "32x32",
-      url: `${process.env.HOSTNAME}/favicon/favicon-32x32.png`,
+      url: "/favicon/favicon-32x32.png",
     },
     {
       rel: "icon",
       type: "image/png",
       sizes: "16x16",
-      url: `${process.env.HOSTNAME}/favicon/favicon-16x16.png`,
+      url: "/favicon/favicon-16x16.png",
     },
     {
       rel: "apple-touch-icon",
       sizes: "180x180",
-      url: `${process.env.HOSTNAME}/favicon/apple-touch-icon.png`,
+      url: "/favicon/apple-touch-icon.png",
     },
   ],
 };
 
+export function generateStaticParams() {
+  return routing.locales.map((lang) => ({ lang }));
+}
+
+async function getLayoutData(lang: Locale): Promise<DatoLayoutData> {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag(`dato:layout:${lang}`);
+
+  const query = lang === "uk" ? queryUA : queryEN;
+  const { data } = await getClient().query<DatoLayoutData>({ query });
+  if (!data) {
+    throw new Error("Failed to load layout data from DatoCMS");
+  }
+  return data;
+}
+
 export default async function RootLayout({
   children,
+  modal,
   params,
 }: {
   children: React.ReactNode;
+  modal: React.ReactNode;
   params: Promise<{ lang: string }>;
 }) {
   const { lang } = await params;
@@ -95,15 +117,7 @@ export default async function RootLayout({
     notFound();
   }
   setRequestLocale(lang);
-  const query = lang == "uk" ? queryUA : queryEN;
-  const { data } = await getClient().query({
-    query,
-    context: {
-      fetchOptions: {
-        next: { revalidate: 60 },
-      },
-    },
-  });
+  const data = await getLayoutData(local);
 
   return (
     <html
@@ -112,22 +126,19 @@ export default async function RootLayout({
       data-scroll-behavior="smooth"
     >
       <body
-        className={cn(
-          libre.className,
-          "relative flex flex-grow flex-col bg-white"
-        )}
+        className={cn(libre.className, "relative flex grow flex-col bg-white")}
       >
         <NextIntlClientProvider>
-          <AddedToCartProvider>
-            <Header data={data} lang={local} />
-            <Suspense fallback={null}>
-              <FacebookPixelEvents />
-            </Suspense>
-            {children}
-            <Footer data={data} />
-          </AddedToCartProvider>
+          <Header data={data} lang={local} />
+          <Suspense fallback={null}>
+            <FacebookPixelEvents />
+          </Suspense>
+          {children}
+          {modal}
+          <Footer data={data} />
         </NextIntlClientProvider>
 
+        <div id="modal-root" />
         <Analytics />
       </body>
     </html>

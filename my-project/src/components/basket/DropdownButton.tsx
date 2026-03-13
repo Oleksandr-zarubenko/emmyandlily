@@ -7,6 +7,8 @@ import { Wallet } from "@/components/icons/Wallet";
 import { Security } from "@/components/icons/Security";
 import { Lock } from "@/components/icons/Lock";
 import { Markdown } from "../Markdown";
+import { ReactNode } from "react";
+import { DatoBasketData } from "@/types/dato";
 
 const DropdownButton = ({
   buttonText,
@@ -14,8 +16,8 @@ const DropdownButton = ({
   icon,
 }: {
   buttonText: string;
-  dropdownText: any;
-  icon: any;
+  dropdownText: string;
+  icon: ReactNode;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -50,7 +52,7 @@ const DropdownButton = ({
   );
 };
 
-const DropDown = ({ data }: any) => {
+const DropDown = ({ data }: { data: DatoBasketData }) => {
   return (
     <div>
       <h2 className="mb-8 text-t24 -tracking-5 xl:mb-10 xl:text-t32 xl:font-bold smOnly:font-bold mdOnly:font-bold ">

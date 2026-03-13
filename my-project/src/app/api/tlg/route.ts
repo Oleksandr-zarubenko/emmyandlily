@@ -1,8 +1,5 @@
-//@ts-ignore
-
 import { NextResponse } from "next/server";
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export async function POST(req: Request) {
   const tgbot = process.env.NEXT_TELEGRAM_TOKEN;
   const data = await req.json();

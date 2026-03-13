@@ -1,15 +1,14 @@
 "use client";
-import { useState, useEffect } from "react";
 import { FC } from "react";
 import cn from "classnames";
-import { useAddedToCart } from "@/components/context/addedToCart";
 import getData from "@/utils/api/api";
 import { Locale } from "@/i18n/routing";
-interface AddToCartHeroBtnProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+import { DatoHomeData } from "@/types/dato";
+import { useCheckoutStore } from "@/store/checkoutStore";
+interface AddToCartHeroBtnProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   text: string;
   className?: string;
-  data: any;
+  data: Pick<DatoHomeData, "allProducts" | "mainSection">;
   secondtext: string;
   lang: Locale;
 }
@@ -21,59 +20,35 @@ export const AddToCartHeroBtn: FC<AddToCartHeroBtnProps> = ({
   secondtext,
   lang,
 }) => {
-  const { addedToCart, setAddedToCart } = useAddedToCart();
+  const addedToCart = useCheckoutStore((state) => state.addedToCart);
+  const setAddedToCart = useCheckoutStore((state) => state.setAddedToCart);
+  const addCartItem = useCheckoutStore((state) => state.addCartItem);
   const trevelSet = data.allProducts;
-  const [state, setState] = useState<{
-    products: { id: string; price: string; available: string; oldprice: any }[];
-    currencies: { id: string; rate: number }[];
-  }>({ products: [], currencies: [] });
-
-  const fetchData = async () => {
-    try {
-      const data = await getData(lang);
-      setState(data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-  useEffect(() => {
-    fetchData();
-  }, []);
-  const productToAdd = trevelSet.find((product: any) =>
-    product.capacity.some(
-      (cap: any) => cap.idCrm === data?.mainSection?.productId
-    )
+  const productToAdd = trevelSet.find((product) =>
+    product.capacity.some((cap) => cap.idCrm === data?.mainSection?.productId)
   );
 
   const addToCart = async () => {
     try {
-      const storedDataString = localStorage.getItem("storedData");
-      const storedData = storedDataString ? JSON.parse(storedDataString) : [];
-      const storedAddedToCart = localStorage.getItem("addedToCart");
-      const parsedAddedToCart = storedAddedToCart
-        ? JSON.parse(storedAddedToCart)
-        : {};
-
-      const productToAdd = trevelSet.find((product: any) =>
+      const productToAdd = trevelSet.find((product) =>
         product.capacity.some(
-          (cap: any) => cap.idCrm === data?.mainSection?.productId
+          (cap) => cap.idCrm === data?.mainSection?.productId
         )
       );
 
       if (productToAdd) {
         const capacityToAdd = productToAdd.capacity.find(
-          (cap: any) => cap.idCrm === data?.mainSection?.productId
+          (cap) => cap.idCrm === data?.mainSection?.productId
         );
         if (capacityToAdd) {
-          // Отримуємо актуальні дані з API перед додаванням в кошик
           const response = await getData(lang);
           const updatedProducts = response.products;
 
           const { ml, idCrm } = capacityToAdd;
-          const productState = updatedProducts.find((p: any) => p.id === idCrm);
+          const productState = updatedProducts.find((p) => p.id === idCrm);
           const productPrice = productState
             ? productState.price
-            : capacityToAdd.price;
+            : String(capacityToAdd.price ?? 0);
 
           const dataToStore = {
             id: idCrm,
@@ -84,16 +59,11 @@ export const AddToCartHeroBtn: FC<AddToCartHeroBtnProps> = ({
           };
 
           const updatedAddedToCart = {
-            ...parsedAddedToCart,
+            ...addedToCart,
             [idCrm]: true,
           };
-          const updatedData = [...storedData, dataToStore];
-          localStorage.setItem("storedData", JSON.stringify(updatedData));
-          localStorage.setItem(
-            "addedToCart",
-            JSON.stringify(updatedAddedToCart)
-          );
 
+          addCartItem(dataToStore);
           setAddedToCart(updatedAddedToCart);
         } else {
           console.error("Product capacity is not available.");
@@ -104,19 +74,18 @@ export const AddToCartHeroBtn: FC<AddToCartHeroBtnProps> = ({
     }
   };
 
-  const isProductAdded =
-    productToAdd &&
-    addedToCart[
-      productToAdd.capacity.find(
-        (cap: any) => cap.idCrm === data?.mainSection?.productId
-      )?.idCrm
-    ];
+  const selectedCapacityId = productToAdd?.capacity.find(
+    (cap) => cap.idCrm === data?.mainSection?.productId
+  )?.idCrm;
+  const isProductAdded = selectedCapacityId
+    ? Boolean(addedToCart[selectedCapacityId])
+    : false;
 
   return (
     <button
       onClick={addToCart}
       className={cn(
-        "relative z-20 rounded bg-black px-6 py-3 text-center text-t18 font-bold text-white duration-300 hover:bg-white hover:text-black hover:ring-1 hover:ring-black",
+        "text-t18 relative z-20 rounded bg-black px-6 py-3 text-center font-bold text-white duration-300 hover:bg-white hover:text-black hover:ring-1 hover:ring-black",
         className
       )}
       disabled={isProductAdded}

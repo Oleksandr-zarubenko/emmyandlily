@@ -4,12 +4,13 @@ import { useEffect, useState } from "react";
 import LocaleSwitcher from "./locale-switcher";
 import { Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
+import { DatoNavigation } from "@/types/dato";
 
 export const MobileMenu = ({
   navigation,
   lang,
 }: {
-  navigation: any;
+  navigation: DatoNavigation;
   lang: Locale;
 }) => {
   const [isOpen, setIsOpen] = useState(false);

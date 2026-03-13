@@ -1,4 +1,4 @@
 // global.d.ts
 interface Window {
-  fbq: (...args: any[]) => void;
+  fbq: (...args: unknown[]) => void;
 }

@@ -8,8 +8,9 @@ import "swiper/css/pagination";
 
 import Image from "next/image";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import { DatoImageWithId } from "@/types/dato";
 
-export const Slider = ({ sliderimages }: { sliderimages: any }) => {
+export const Slider = ({ sliderimages }: { sliderimages: DatoImageWithId[] }) => {
   return (
     <Swiper
       modules={[Autoplay, Navigation, Pagination]}
@@ -39,8 +40,8 @@ export const Slider = ({ sliderimages }: { sliderimages: any }) => {
       className="h-[225px] md:h-[400px]"
     >
       {sliderimages &&
-        sliderimages.map((sliderimage: any, index: number) => (
-          <SwiperSlide key={index + sliderimage.alt} className="">
+        sliderimages.map((sliderimage, index: number) => (
+          <SwiperSlide key={`${index}-${sliderimage.id}`} className="">
             {({ isActive }) => (
               <div
                 className={cn(

@@ -1,22 +1,13 @@
 "use client";
-import { useEffect, useState } from "react";
 import { Bag } from "./icons/Bag";
 import cn from "classnames";
 import { Link } from "@/i18n/navigation";
+import { useCheckoutStore } from "@/store/checkoutStore";
 
-export const Cart = ({ color }: { color: any }) => {
+export const Cart = ({ color }: { color: "black" | "white" }) => {
   const color1 = color === "black" ? "black" : "white";
   const color2 = color === "black" ? "white" : "black";
-  const [storedDataLength, setStoredDataLength] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const storedData = JSON.parse(localStorage.getItem("storedData") || "[]");
-      setStoredDataLength(storedData.length);
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
+  const storedDataLength = useCheckoutStore((state) => state.cartItems.length);
 
   const handleCheckoutInitiate = () => {
     window.fbq("track", "InitiateCheckout");
@@ -24,7 +15,7 @@ export const Cart = ({ color }: { color: any }) => {
   return (
     <Link
       onClick={handleCheckoutInitiate}
-      className={cn(`relative z-50 duration-300`)}
+      className={cn(`relative duration-300`)}
       href={`/basket`}
     >
       <div className="relative">

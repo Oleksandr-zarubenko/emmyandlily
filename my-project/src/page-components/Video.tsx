@@ -1,8 +1,9 @@
 import { Formula } from "@/components/icons/Formula";
 import { Dog } from "@/components/icons/Dogvideo";
 import { Earth } from "@/components/icons/Earth";
+import { DatoHomeData } from "@/types/dato";
 
-const Video = ({ data }: { data: any }) => {
+const Video = ({ data }: { data: DatoHomeData }) => {
   return (
     <section className="relative w-full bg-black py-24">
       <div className="absolute bottom-24 left-0 right-0 top-24">

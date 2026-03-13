@@ -5,10 +5,11 @@ import { Cart } from "../Cart";
 import { MobileMenu } from "../MobileMenu";
 import { Link } from "@/i18n/navigation";
 import { Locale } from "@/i18n/routing";
+import { DatoLayoutData } from "@/types/dato";
 
-const Header = ({ lang, data }: { data: any; lang: Locale }) => {
+const Header = ({ lang, data }: { data: DatoLayoutData; lang: Locale }) => {
   return (
-    <header className="absolute inset-x-0 z-30 border-b-2 border-black py-2 xl:px-20 xl:pb-4 xl:pt-6">
+    <header className="fixed inset-x-0 top-0 z-30 border-b-2 border-black bg-white py-2 xl:px-20 xl:pb-4 xl:pt-6">
       <div className="container flex flex-row items-center justify-between xl:hidden">
         <Link href="/" className="relative z-50">
           <Image

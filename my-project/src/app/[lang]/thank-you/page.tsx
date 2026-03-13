@@ -2,13 +2,16 @@ import { gql } from "@apollo/client";
 import { getClient } from "@/utils/apollo-client";
 import { Locale } from "@/i18n/routing";
 import { Markdown } from "@/components/Markdown";
-import BgImg from "/public/About us2.png";
-import DogsImg from "/public/emmy-lilly-2-dogs-bg-hero.webp";
+import BgImg from "../../../../public/About us2.png";
+import DogsImg from "../../../../public/emmy-lilly-2-dogs-bg-hero.webp";
 import Image from "next/image";
 import { Logo } from "@/components/icons/Logo";
 import { ClearLocalStorage } from "@/components/ClearLocalStorage";
 import Script from "next/script";
 import { Link } from "@/i18n/navigation";
+import { cacheLife, cacheTag } from "next/cache";
+import { Metadata } from "next";
+import { getCanonicalUrl, getLanguageAlternates } from "@/utils/seo";
 
 const queryEN = gql`
   {
@@ -36,6 +39,54 @@ type Data = {
     additionaltext: string;
   };
 };
+
+async function getThankYouData(local: Locale): Promise<Data> {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag(`dato:thankyou:${local}`);
+
+  const query = local === "uk" ? queryUA : queryEN;
+  const { data } = await getClient().query<Data>({ query });
+  if (!data) {
+    throw new Error("Failed to load thank-you data from DatoCMS");
+  }
+  return data;
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const local = lang as Locale;
+  const metadataByLocale = {
+    uk: {
+      title: "Дякуємо за замовлення | Emmy & Lily",
+      description:
+        "Сторінка підтвердження замовлення Emmy & Lily. Ваше замовлення прийнято в обробку.",
+    },
+    en: {
+      title: "Thank You for Your Order | Emmy & Lily",
+      description:
+        "Emmy & Lily order confirmation page. Your order has been received and is being processed.",
+    },
+  } as const;
+
+  return {
+    title: metadataByLocale[local].title,
+    description: metadataByLocale[local].description,
+    alternates: {
+      canonical: getCanonicalUrl(local, "/thank-you"),
+      languages: getLanguageAlternates("/thank-you"),
+    },
+    robots: {
+      index: false,
+      follow: false,
+    },
+  };
+}
+
 export default async function ThankYouPage({
   params,
 }: {
@@ -43,15 +94,7 @@ export default async function ThankYouPage({
 }) {
   const { lang } = await params;
   const local = lang as Locale;
-  const query = local === "uk" ? queryUA : queryEN;
-  const { data } = await getClient().query<Data>({
-    query,
-    context: {
-      fetchOptions: {
-        next: { revalidate: 60 },
-      },
-    },
-  });
+  const data = await getThankYouData(local);
 
   return (
     <section className="relative grow">

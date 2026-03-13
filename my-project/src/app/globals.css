@@ -1,6 +1,91 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@custom-variant smOnly (@media (max-width: 767.98px));
+@custom-variant mdOnly (@media (min-width: 768px) and (max-width: 1199.98px));
+@custom-variant notXl (@media (max-width: 1199.98px));
+
+@theme {
+  --breakpoint-sm: 480px;
+  --breakpoint-md: 768px;
+  --breakpoint-xl: 1200px;
+
+  --color-grey: #292d2d;
+  --color-primary: #fad5a2;
+  --color-primary_T: #fff0ed;
+  --color-dark: #33333399;
+  --color-black: #0b0605;
+  --color-white: #fbfbfb;
+  --color-bg_primary: #ff8667;
+  --color-bg_secondary: #333333;
+  --color-border: #dcdcdc;
+  --color-bg_transparent: rgba(51, 51, 51, 0.6);
+  --color-video_overlay: rgba(11, 6, 5, 0.6);
+  --color-error: #c61004;
+
+  --font-abril: "Abril Fatface", serif;
+  --font-sans: var(--font-libre);
+  --font-playfair: Georgia;
+
+  --shadow-custom: 0px 3px 30px 0px rgba(140, 140, 140, 0.1);
+  --shadow-order: 4px 15px 40px 0px #100e0c33;
+
+  --tracking-1: 0em;
+  --tracking-2: 0.025em;
+  --tracking-3: 0.05em;
+  --tracking-4: 0.1em;
+  --tracking-5: 0.5%;
+
+  --text-t8: 8px;
+  --text-t10: 10px;
+  --text-t12: 12px;
+  --text-t14: 14px;
+  --text-t14--line-height: 18.2px;
+  --text-t16: 16px;
+  --text-t16--line-height: 20.8px;
+  --text-t16i: 16px;
+  --text-t16i--line-height: 20.8px;
+  --text-t18: 18px;
+  --text-t20: 20px;
+  --text-t24n: 24px;
+  --text-t24: 24px;
+  --text-t24--line-height: 22.8px;
+  --text-t30: 30px;
+  --text-t32: 32px;
+  --text-t32--line-height: 38.4px;
+  --text-t32n: 32px;
+  --text-t40: 40px;
+  --text-t48: 48px;
+  --text-t48--line-height: 57.6px;
+  --text-t53: 53px;
+  --text-t53--line-height: 63.6px;
+  --text-t80: 80px;
+}
+
+@utility container {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 28px;
+}
+
+@media (min-width: 480px) {
+  .container {
+    max-width: 480px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+    padding-inline: 80px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1200px;
+    padding-inline: 100px;
+  }
+}
 
 html {
   scroll-behavior: smooth;

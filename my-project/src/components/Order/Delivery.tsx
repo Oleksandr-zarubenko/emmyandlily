@@ -1,9 +1,11 @@
 import { Locale } from "@/i18n/routing";
 import Image from "next/image";
 import React from "react";
+import { DatoDeliveryMethod, DatoOrderData } from "@/types/dato";
+import { DeliveryFieldKey, OrderErrorState } from "@/types/order";
 
 interface DeliveryProps {
-  data: any;
+  data: DatoOrderData;
   selectedOption: string;
   handleOptionChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   street: string;
@@ -28,24 +30,10 @@ interface DeliveryProps {
   setNumposhtmat: React.Dispatch<React.SetStateAction<string>>;
   index: string;
   setIndex: React.Dispatch<React.SetStateAction<string>>;
-  error: any;
-  setError: React.Dispatch<React.SetStateAction<any>>;
+  error: OrderErrorState;
+  setError: React.Dispatch<React.SetStateAction<OrderErrorState>>;
   lang: Locale;
-  en: string;
-}
-
-interface ErrorState {
-  country?: string;
-  city?: string;
-  street?: string;
-  houseNumber?: string;
-  sstreet?: string;
-  zip?: string;
-  house?: string;
-  appartment?: string;
-  numnp?: string;
-  numposhtmat?: string;
-  index?: string;
+  en: Locale;
 }
 
 const Delivery: React.FC<DeliveryProps> = ({
@@ -79,7 +67,7 @@ const Delivery: React.FC<DeliveryProps> = ({
   lang,
   en,
 }) => {
-  const validateField = (fieldName: string, value: string) => {
+  const validateField = (fieldName: DeliveryFieldKey, value: string) => {
     const nameRegex = /^[\p{L}\s'-]+$/u;
     const alphanumericRegex = /^[\p{L}0-9\s\-]*$/u; // Allows letters, numbers, spaces, and hyphens
     const zipRegex = /^\d{5}(?:[-\s]\d{4})?$/;
@@ -135,10 +123,10 @@ const Delivery: React.FC<DeliveryProps> = ({
     return "";
   };
 
-  const handleInputChange = (fieldName: string, value: string) => {
+  const handleInputChange = (fieldName: DeliveryFieldKey, value: string) => {
     const errorMessage = validateField(fieldName, value);
 
-    setError((prevErrors: ErrorState) => ({
+    setError((prevErrors) => ({
       ...prevErrors,
       [fieldName]: errorMessage,
     }));
@@ -183,7 +171,7 @@ const Delivery: React.FC<DeliveryProps> = ({
   };
 
   const renderInputField = (
-    fieldName: string,
+    fieldName: DeliveryFieldKey,
     value: string,
     placeholder: string,
     className?: string,
@@ -196,8 +184,8 @@ const Delivery: React.FC<DeliveryProps> = ({
           id={fieldName}
           value={value}
           onChange={(e) => handleInputChange(fieldName, e.target.value)}
-          className={`w-full border-b-2 bg-transparent px-[15px] py-[10px] text-t14 outline-none focus:border-black ${
-            error[fieldName] ? "bg-[#C61004]/[.06]" : ""
+          className={`text-t14 w-full border-b-2 bg-transparent px-3.75 py-2.5 outline-none focus:border-black ${
+            error[fieldName] ? "bg-[#C61004]/6" : ""
           } ${className}`}
           placeholder={placeholder}
           aria-invalid={!!error[fieldName]}
@@ -207,7 +195,7 @@ const Delivery: React.FC<DeliveryProps> = ({
         {error[fieldName] && (
           <span
             id={`${fieldName}-error`}
-            className="mt-1 text-t12 text-[#C61004]"
+            className="text-t12 mt-1 text-[#C61004]"
           >
             {error[fieldName]}
           </span>
@@ -218,12 +206,12 @@ const Delivery: React.FC<DeliveryProps> = ({
 
   return (
     <div>
-      <h2 className="mb-2 text-t14 italic text-dark">
+      <h2 className="text-t14 text-dark mb-2 italic">
         {data.order.selectCountryAndCity}
       </h2>
       <div className="mb-8"></div>
       <div className="mb-6">
-        <h3 className="text-t18">{data.order.delivery_method}</h3>
+        <h3 className="text-t18">{data.order.deliveryMethod}</h3>
         <div className="mb-6 xl:flex">
           {renderInputField(
             "country",
@@ -241,7 +229,7 @@ const Delivery: React.FC<DeliveryProps> = ({
           )}
         </div>
         {lang !== "en" && (
-          <p className="mb-2 text-t14 text-[#C61004]">{data.order.freeDel}</p>
+          <p className="text-t14 mb-2 text-[#C61004]">{data.order.freeDel}</p>
         )}
 
         {selectedOption === "dhl" ||
@@ -253,11 +241,11 @@ const Delivery: React.FC<DeliveryProps> = ({
         )}
       </div>
 
-      <div className="mb-6 text-t14">
-        {data.delivery.deliveryMethod.map((method: any) => (
+      <div className="text-t14 mb-6">
+        {data.delivery.deliveryMethod.map((method: DatoDeliveryMethod) => (
           <div key={method.idD} className="py-3">
-            <div className="flex items-center notXl:grid notXl:flex-row">
-              <div className="xl:mr-4 xl:flex notXl:mb-2 notXl:flex">
+            <div className="notXl:grid notXl:flex-row flex items-center">
+              <div className="notXl:mb-2 notXl:flex xl:mr-4 xl:flex">
                 <input
                   type="radio"
                   value={method.idD}
@@ -270,7 +258,7 @@ const Delivery: React.FC<DeliveryProps> = ({
                   height={33}
                   src={method.img.url}
                   alt={method.img.alt || "Emmy and Lily"}
-                  className="product h-[33px] w-auto object-contain object-center"
+                  className="product h-8.25 w-auto object-contain object-center"
                   sizes="(max-width: 768px) 90vw, 305px"
                 />
               </div>
@@ -284,7 +272,7 @@ const Delivery: React.FC<DeliveryProps> = ({
 
       {selectedOption === "dhl" || selectedOption === "ups" ? (
         <div>
-          <p className="mb-2 text-t14 italic text-dark">
+          <p className="text-t14 text-dark mb-2 italic">
             {data.order.fillInTheDetails}
           </p>
           <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
@@ -308,7 +296,7 @@ const Delivery: React.FC<DeliveryProps> = ({
         </div>
       ) : selectedOption === "np-courier" ? (
         <div>
-          <p className="mb-4 text-t14 italic text-dark">
+          <p className="text-t14 text-dark mb-4 italic">
             {data.order.fillInTheDetails}
           </p>
           <div className="justify-between xl:flex">
@@ -330,7 +318,7 @@ const Delivery: React.FC<DeliveryProps> = ({
         </div>
       ) : selectedOption === "novaposhta-smovuviz" ? (
         <div>
-          <p className="mb-4 text-t14 italic text-dark">
+          <p className="text-t14 text-dark mb-4 italic">
             {data.order.fillInTheDetails}
           </p>
           {renderInputField(
@@ -343,7 +331,7 @@ const Delivery: React.FC<DeliveryProps> = ({
         </div>
       ) : selectedOption === "np-poshtmat" ? (
         <div>
-          <p className="mb-4 text-t14 italic text-dark">
+          <p className="text-t14 text-dark mb-4 italic">
             {data.order.fillInTheDetails}
           </p>
           {renderInputField(
@@ -356,7 +344,7 @@ const Delivery: React.FC<DeliveryProps> = ({
         </div>
       ) : selectedOption === "ukrposhta" ? (
         <div>
-          <p className="mb-4 text-t14 italic text-dark">
+          <p className="text-t14 text-dark mb-4 italic">
             {data.order.fillInTheDetails}
           </p>
           {renderInputField(
@@ -368,7 +356,7 @@ const Delivery: React.FC<DeliveryProps> = ({
           )}
         </div>
       ) : (
-        <div className="mb-4 text-t14 italic text-dark">
+        <div className="text-t14 text-dark mb-4 italic">
           {lang === "en"
             ? "Specify the delivery method"
             : "Вкажіть спосіб доставки"}

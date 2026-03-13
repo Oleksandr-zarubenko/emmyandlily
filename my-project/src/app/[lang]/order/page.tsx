@@ -3,6 +3,10 @@ import { getClient } from "@/utils/apollo-client";
 import { Locale } from "@/i18n/routing";
 import Script from "next/script";
 import Order from "@/page-components/Order";
+import { DatoOrderData } from "@/types/dato";
+import { cacheLife, cacheTag } from "next/cache";
+import { Metadata } from "next";
+import { getCanonicalUrl, getLanguageAlternates } from "@/utils/seo";
 const queryEN = gql`
   {
     order {
@@ -174,22 +178,56 @@ const queryUA = gql`
     }
   }
 `;
+
+async function getOrderData(local: Locale): Promise<DatoOrderData> {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag(`dato:order:${local}`);
+
+  const query = local === "uk" ? queryUA : queryEN;
+  const { data } = await getClient().query<DatoOrderData>({ query });
+  if (!data) {
+    throw new Error("Failed to load order data from DatoCMS");
+  }
+  return data;
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: Locale }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const metadataByLocale = {
+    uk: {
+      title: "Оформлення замовлення | Emmy & Lily",
+      description:
+        "Оформіть замовлення Emmy & Lily: перевірте кошик, виберіть доставку та оплату і завершіть покупку.",
+    },
+    en: {
+      title: "Checkout | Emmy & Lily",
+      description:
+        "Complete your Emmy & Lily order: review your basket, choose delivery and payment, and finish checkout.",
+    },
+  } as const;
+
+  return {
+    title: metadataByLocale[lang].title,
+    description: metadataByLocale[lang].description,
+    alternates: {
+      canonical: getCanonicalUrl(lang, "/order"),
+      languages: getLanguageAlternates("/order"),
+    },
+  };
+}
+
 export default async function OrderPage({
   params,
 }: {
   params: Promise<{ lang: Locale }>;
 }) {
   const { lang }: { lang: Locale } = await params;
-  // const local = lang as Locale;
-  const query = lang == "uk" ? queryUA : queryEN;
-  const { data } = await getClient().query({
-    query,
-    context: {
-      fetchOptions: {
-        next: { revalidate: 60 },
-      },
-    },
-  });
+  const data = await getOrderData(lang);
   // console.log({ datoCRM: data });
 
   return (

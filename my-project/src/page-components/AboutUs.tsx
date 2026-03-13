@@ -1,7 +1,8 @@
 import { Markdown } from "@/components/Markdown";
 import Image from "next/image";
+import { DatoHomeData } from "@/types/dato";
 
-export const AboutUs = ({ data }: { data: any }) => {
+export const AboutUs = ({ data }: { data: DatoHomeData }) => {
   return (
     <section
       className="bg-black py-7 text-white md:py-11 xl:py-14"
