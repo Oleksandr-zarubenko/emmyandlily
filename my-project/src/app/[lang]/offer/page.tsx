@@ -73,11 +73,18 @@ export default async function OfferPage({
   const { lang } = await params;
   const local = lang as Locale;
   const data = await getOfferData(local);
+  const headingByLocale = {
+    uk: "Публічна оферта",
+    en: "Public Offer",
+  } as const;
 
   return (
     <>
       <section className="grow py-32">
         <div className="container flex flex-col gap-3">
+          <h1 className="mb-8 text-t32 font-bold tracking-wider">
+            {headingByLocale[local]}
+          </h1>
           <Markdown text={data?.offer.offertext || "offer"} />
         </div>
       </section>
@@ -85,7 +92,7 @@ export default async function OfferPage({
         dangerouslySetInnerHTML={{
           __html: `
             if (typeof window !== "undefined" && window.fbq) {
-              window.fbq('trackCustom', 'Offer Page View');
+              window.fbq('trackCustom', 'OfferPageView');
             }
           `,
         }}

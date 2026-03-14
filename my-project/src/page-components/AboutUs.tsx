@@ -1,8 +1,14 @@
 import { Markdown } from "@/components/Markdown";
+import { H2 } from "@/components/H2";
 import Image from "next/image";
 import { DatoHomeData } from "@/types/dato";
 
 export const AboutUs = ({ data }: { data: DatoHomeData }) => {
+  const sectionHeading = data.aboutUsSection.heading
+    .replace(/[#*_`[\]()]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
   return (
     <section
       className="bg-black py-7 text-white md:py-11 xl:py-14"
@@ -12,7 +18,7 @@ export const AboutUs = ({ data }: { data: DatoHomeData }) => {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
           <div className="mdOnly:order-1">
             <div className="flex flex-row">
-              <Markdown text={data.aboutUsSection.heading} paw />
+              <H2 paw>{sectionHeading}</H2>
             </div>
             <Markdown text={data.aboutUsSection.text1} />
           </div>

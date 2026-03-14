@@ -8,6 +8,11 @@ import Link from "next/link";
 import { DatoHomeData } from "@/types/dato";
 
 export const Contacts = ({ data }: { data: DatoHomeData }) => {
+  const sectionHeading = data.contactssection.heading
+    .replace(/[#*_`[\]()]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
   return (
     <section
       className="contacts bg-white py-12 pb-10 md:pt-24 xl:pb-20 xl:pt-48"
@@ -17,10 +22,7 @@ export const Contacts = ({ data }: { data: DatoHomeData }) => {
         <div className="md:max-w-[50%] xl:max-w-[29rem]">
           <div className="mb-4 flex flex-row items-center gap-4 xl:mb-10">
             <Paw className="h-12 w-12 p-1 text-black" />
-            <Markdown
-              className="text-t32 text-black"
-              text={data.contactssection.heading}
-            />
+            <h2 className="text-t32 text-black">{sectionHeading}</h2>
           </div>
           <Markdown
             text={data.contactssection.text}

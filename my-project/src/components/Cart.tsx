@@ -10,7 +10,9 @@ export const Cart = ({ color }: { color: "black" | "white" }) => {
   const storedDataLength = useCheckoutStore((state) => state.cartItems.length);
 
   const handleCheckoutInitiate = () => {
-    window.fbq("trackCustom", "InitiateCheckout");
+    if (typeof window !== "undefined" && window.fbq) {
+      window.fbq("track", "InitiateCheckout");
+    }
   };
   return (
     <Link
