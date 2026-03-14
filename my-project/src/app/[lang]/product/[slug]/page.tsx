@@ -8,7 +8,7 @@ import {
   getProductBySlug,
   getSecondModalData,
 } from "@/server/dato/products";
-import { getCanonicalUrl, getLanguageAlternates } from "@/utils/seo";
+import { getCanonicalUrl } from "@/utils/seo";
 import { getProductSlug } from "@/utils/productSlug";
 
 const stripMarkdown = (text: string): string =>
@@ -44,18 +44,33 @@ export async function generateMetadata({
 
   const cleanTitle = stripMarkdown(product.heading);
   const cleanDescription = stripMarkdown(product.description).slice(0, 160);
+  const canonicalSlug = getProductSlug(product);
+  const [ukProducts, enProducts] = await Promise.all([
+    getAllProducts("uk"),
+    getAllProducts("en"),
+  ]);
+  const ukProduct = ukProducts.find((item) => item.id === product.id);
+  const enProduct = enProducts.find((item) => item.id === product.id);
+  const alternatesByLocale = {
+    uk: ukProduct
+      ? getCanonicalUrl("uk", `/product/${getProductSlug(ukProduct)}`)
+      : getCanonicalUrl("uk", `/product/${canonicalSlug}`),
+    en: enProduct
+      ? getCanonicalUrl("en", `/product/${getProductSlug(enProduct)}`)
+      : getCanonicalUrl("en", `/product/${canonicalSlug}`),
+  };
 
   return {
     title: `${cleanTitle} | Emmy and Lily`,
     description: cleanDescription,
     alternates: {
-      canonical: getCanonicalUrl(local, `/product/${slug}`),
-      languages: getLanguageAlternates(`/product/${slug}`),
+      canonical: getCanonicalUrl(local, `/product/${canonicalSlug}`),
+      languages: alternatesByLocale,
     },
     openGraph: {
       title: `${cleanTitle} | Emmy and Lily`,
       description: cleanDescription,
-      url: getCanonicalUrl(local, `/product/${slug}`),
+      url: getCanonicalUrl(local, `/product/${canonicalSlug}`),
       type: "website",
       locale: local === "uk" ? "uk_UA" : "en_US",
       images: [

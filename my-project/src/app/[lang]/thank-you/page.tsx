@@ -128,7 +128,7 @@ export default async function ThankYouPage({
       <Script
         id="facebook-pixel"
         dangerouslySetInnerHTML={{
-          __html: `if (typeof window !== "undefined" && window.fbq) { window.fbq('trackCustom', 'Thank You Page View'); }`,
+          __html: `if (typeof window !== "undefined" && window.fbq) { window.fbq('trackCustom', 'ThankYouPageView'); }`,
         }}
       />
     </section>

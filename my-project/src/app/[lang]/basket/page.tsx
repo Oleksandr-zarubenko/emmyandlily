@@ -187,6 +187,10 @@ export async function generateMetadata({
       canonical: getCanonicalUrl(lang, "/basket"),
       languages: getLanguageAlternates("/basket"),
     },
+    robots: {
+      index: false,
+      follow: false,
+    },
   };
 }
 
@@ -208,7 +212,7 @@ export default async function BasketPage({
         dangerouslySetInnerHTML={{
           __html: `
             if (typeof window !== "undefined" && window.fbq) {
-              window.fbq('trackCustom', 'Basket Page View');
+              window.fbq('trackCustom', 'BasketPageView');
             }
           `,
         }}

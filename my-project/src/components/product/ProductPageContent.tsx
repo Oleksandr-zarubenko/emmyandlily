@@ -30,6 +30,10 @@ export default function ProductPageContent({
   lang,
   secondmodal,
 }: ProductPageContentProps) {
+  const productHeading = product.heading
+    .replace(/[#*_`[\]()]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
   const router = useRouter();
   const en = locales[1];
   const addedToCart = useCheckoutStore((state) => state.addedToCart);
@@ -101,10 +105,7 @@ export default function ProductPageContent({
 
       <div className="mdOnly:px-[48px] relative mt-20 w-full bg-white px-5 py-6 xl:flex xl:min-h-[698px] xl:flex-row xl:px-[80px]">
         <div className="xl:mr-[80px] xl:flex xl:h-full xl:flex-col">
-          <Markdown
-            text={product.heading}
-            className="text-t24 mb-8 xl:hidden"
-          />
+          <h1 className="text-t24 mb-8 xl:hidden">{productHeading}</h1>
 
           <div className="notXl:flex">
             <div className="mdOnly:h-72 mdOnly:w-[436px] relative mr-4 mb-4 h-56 w-[220px] md:h-96 xl:mr-0 xl:h-[380px] xl:w-[450px] xl:flex-shrink-0">
@@ -169,10 +170,9 @@ export default function ProductPageContent({
         </div>
 
         <div className="w-full pr-0 xl:pr-[15px]">
-          <Markdown
-            text={product.heading}
-            className="text-t32 smOnly:hidden mdOnly:hidden mb-8"
-          />
+          <p className="text-t32 mb-8 smOnly:hidden mdOnly:hidden">
+            {productHeading}
+          </p>
           <table className="smOnly:w-[100%] mdOnly:w-[436px] mb-12 xl:w-full">
             <thead>
               <tr>

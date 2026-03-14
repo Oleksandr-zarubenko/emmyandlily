@@ -218,6 +218,10 @@ export async function generateMetadata({
       canonical: getCanonicalUrl(lang, "/order"),
       languages: getLanguageAlternates("/order"),
     },
+    robots: {
+      index: false,
+      follow: false,
+    },
   };
 }
 
@@ -238,7 +242,7 @@ export default async function OrderPage({
         dangerouslySetInnerHTML={{
           __html: `
             if (typeof window !== "undefined" && window.fbq) {
-              window.fbq('trackCustom', 'Order Page View');
+              window.fbq('trackCustom', 'CheckoutPageView');
             }
           `,
         }}

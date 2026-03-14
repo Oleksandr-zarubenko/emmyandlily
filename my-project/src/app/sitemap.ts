@@ -5,7 +5,7 @@ import { getAllProducts } from "@/server/dato/products";
 import { getProductSlug } from "@/utils/productSlug";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const pages = ["", "/basket", "/offer", "/order", "/privacy-policy"];
+  const pages = ["", "/offer", "/privacy-policy"];
   const now = new Date();
   const staticUrls = routing.locales.flatMap((lang) =>
     pages.map((path) => ({

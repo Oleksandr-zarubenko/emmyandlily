@@ -1,4 +1,3 @@
-import { Markdown } from "@/components/Markdown";
 import Image from "next/image";
 import HeroDog from "../../public/hero-dog.webp";
 import { AddToCartHeroBtn } from "@/components/AddToCartHeroBtn";
@@ -6,6 +5,15 @@ import { DatoHomeData } from "@/types/dato";
 import { Locale } from "@/i18n/routing";
 
 export const HeroSection = ({ data, lang }: { data: DatoHomeData; lang: Locale }) => {
+  const heroHeading = data.mainSection.heading
+    .replace(/[#*_`[\]()]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  const seoHeadingByLocale = {
+    uk: "Шампуні та догляд для собак Emmy & Lily",
+    en: "Dog Shampoos and Coat Care | Emmy & Lily",
+  } as const;
+
   return (
     <div className="hero relative bg-white text-center">
       <div className="container relative text-grey ">
@@ -15,10 +23,12 @@ export const HeroSection = ({ data, lang }: { data: DatoHomeData; lang: Locale }
           className="absolute -bottom-16 -left-28 z-20 h-[360px] w-[298px] object-contain md:-bottom-20 md:-left-0 md:h-[420px] md:w-[338px] xl:-bottom-[110px] xl:left-0 xl:h-[584px] xl:w-[476px]"
           sizes="50vw"
         />
-        <Markdown
-          text={data.mainSection.heading}
-          className="mb-10 mt-28 md:mx-auto md:max-w-[400px] xl:mb-20 xl:mr-[280px] xl:mt-36 xl:max-w-[655px]"
-        />
+        <h1 className="mb-10 mt-28 text-t32 md:mx-auto md:max-w-[400px] xl:mb-20 xl:mr-[280px] xl:mt-36 xl:max-w-[655px] xl:text-t53">
+          {seoHeadingByLocale[lang]}
+        </h1>
+        <p className="mb-4 text-t20 font-semibold leading-7 tracking-[0.16px] xl:mr-[180px] xl:text-t24">
+          {heroHeading}
+        </p>
         <p className="mb-4 font-sans  text-t24n font-bold leading-7 tracking-[0.16px] xl:mr-[180px] xl:text-t32n">
           {data.mainSection.bigtext}
         </p>

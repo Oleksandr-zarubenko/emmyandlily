@@ -77,10 +77,17 @@ export default async function PolicyPage({
   const { lang } = await params;
   const local = lang as Locale;
   const data = await getPolicyData(local);
+  const headingByLocale = {
+    uk: "Політика конфіденційності",
+    en: "Privacy Policy",
+  } as const;
 
   return (
     <section className="grow py-32">
       <div className="container flex flex-col gap-3">
+        <h1 className="mb-8 text-t32 font-bold tracking-wider">
+          {headingByLocale[local]}
+        </h1>
         <Markdown text={data?.policy.policytext || ""} />
       </div>
       <Script
@@ -88,7 +95,7 @@ export default async function PolicyPage({
         dangerouslySetInnerHTML={{
           __html: `
             if (typeof window !== "undefined" && window.fbq) {
-              window.fbq('trackCustom', 'PP Page View');
+              window.fbq('trackCustom', 'PrivacyPolicyPageView');
             }
           `,
         }}

@@ -24,6 +24,10 @@ export const ProductsSection = ({
   const [selectedProduct, setSelectedProduct] = useState<DatoProduct | null>(
     null
   );
+  const sectionHeading = data.productsSection.heading
+    .replace(/[#*_`[\]()]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
 
   useEffect(() => {
     let cancelled = false;
@@ -62,10 +66,7 @@ export const ProductsSection = ({
       <div className="container">
         <div className="xl:justify-left smOnly:justify-center mb-8 flex flex-row items-center gap-1 md:gap-4 xl:mb-10">
           <Paw className="h-8 w-8 p-[4px] text-white md:h-11 md:w-11" />
-          <Markdown
-            text={data.productsSection.heading}
-            className="text-t24 xl:text-t32 text-white"
-          />
+          <h2 className="text-t24 text-white xl:text-t32">{sectionHeading}</h2>
         </div>
         {data.productsSection.text && (
           <Markdown text={data.productsSection.text} />
