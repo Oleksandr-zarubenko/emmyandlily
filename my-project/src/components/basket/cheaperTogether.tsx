@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Locale } from "@/i18n/routing";
 import { DatoBasketData, DatoHomeData, DatoProduct } from "@/types/dato";
 import { SalesDriveData } from "@/types/salesdrive";
+import { PRODUCT_IMAGE_BLUR_DATA_URL } from "@/utils/productImageBlur";
 
 interface CheaperTogetherProps {
   data: DatoProduct[];
@@ -49,6 +50,8 @@ const CheaperTogether = ({
                     alt={product.productpicture.alt || "Emmy and Lily"}
                     className="product object-cover duration-1000 group-hover:scale-105"
                     sizes="(max-width: 768px) 90vw, 305px"
+                    placeholder="blur"
+                    blurDataURL={PRODUCT_IMAGE_BLUR_DATA_URL}
                   />
                 </div>
                 <div className="px-3 py-1 xl:px-2">

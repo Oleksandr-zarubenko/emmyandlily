@@ -9,6 +9,7 @@ import "swiper/css/pagination";
 import Image from "next/image";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { DatoImageWithId } from "@/types/dato";
+import { PRODUCT_IMAGE_BLUR_DATA_URL } from "@/utils/productImageBlur";
 
 export const Slider = ({ sliderimages }: { sliderimages: DatoImageWithId[] }) => {
   return (
@@ -55,6 +56,8 @@ export const Slider = ({ sliderimages }: { sliderimages: DatoImageWithId[] }) =>
                   fill
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, 600px"
+                  placeholder="blur"
+                  blurDataURL={PRODUCT_IMAGE_BLUR_DATA_URL}
                 />
               </div>
             )}

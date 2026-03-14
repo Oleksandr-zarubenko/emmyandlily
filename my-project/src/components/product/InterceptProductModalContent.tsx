@@ -20,6 +20,7 @@ import { useCheckoutStore } from "@/store/checkoutStore";
 import { SalesDriveData } from "@/types/salesdrive";
 import getData from "@/utils/api/api";
 import { convertPrice } from "@/utils/convertPrice/convertPrice";
+import { PRODUCT_IMAGE_BLUR_DATA_URL } from "@/utils/productImageBlur";
 
 type InterceptProductModalContentProps = {
   product: DatoProduct;
@@ -96,6 +97,8 @@ function ProductModalBody({
                 alt={product.productpicture.alt || "Emmy and Lily"}
                 className="object-cover"
                 sizes="(max-width: 768px) 80vw, (max-width: 1200px) 50vw, 550px"
+                placeholder="blur"
+                blurDataURL={PRODUCT_IMAGE_BLUR_DATA_URL}
               />
             </div>
 
@@ -121,6 +124,8 @@ function ProductModalBody({
                     alt={slide.alt ?? "Emmy and Lily"}
                     className="object-cover"
                     sizes="(max-width: 768px) 20vw, (max-width: 1200px) 20vw, 183px"
+                    placeholder="blur"
+                    blurDataURL={PRODUCT_IMAGE_BLUR_DATA_URL}
                   />
                 </div>
               ))}
