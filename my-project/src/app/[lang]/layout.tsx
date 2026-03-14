@@ -123,6 +123,12 @@ export default async function RootLayout({
       lang={lang}
       data-scroll-behavior="smooth"
     >
+      <head>
+        <meta
+          name="msvalidate.01"
+          content="4CC5472328D38C599ED3D0D8DE1788DB"
+        />
+      </head>
       <body
         className={cn(libre.className, "relative flex grow flex-col bg-white")}
       >
