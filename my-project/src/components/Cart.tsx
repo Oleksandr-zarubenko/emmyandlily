@@ -10,7 +10,7 @@ export const Cart = ({ color }: { color: "black" | "white" }) => {
   const storedDataLength = useCheckoutStore((state) => state.cartItems.length);
 
   const handleCheckoutInitiate = () => {
-    window.fbq("track", "InitiateCheckout");
+    window.fbq("trackCustom", "InitiateCheckout");
   };
   return (
     <Link
@@ -30,7 +30,7 @@ export const Cart = ({ color }: { color: "black" | "white" }) => {
         {storedDataLength ? (
           <span
             className={cn(
-              `absolute right-0 top-0 flex h-4 w-4 items-center justify-center rounded-full border border-${color1} bg-${color2} text-xs text-${color1}`
+              `absolute top-0 right-0 flex h-4 w-4 items-center justify-center rounded-full border border-${color1} bg-${color2} text-xs text-${color1}`
             )}
           >
             {storedDataLength}

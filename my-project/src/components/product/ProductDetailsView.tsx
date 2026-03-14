@@ -4,6 +4,7 @@ import { DatoProduct } from "@/types/dato";
 import { SalesDriveData } from "@/types/salesdrive";
 import { Locale } from "@/i18n/routing";
 import { convertPrice } from "@/utils/convertPrice/convertPrice";
+import { PRODUCT_IMAGE_BLUR_DATA_URL } from "@/utils/productImageBlur";
 
 type ProductDetailsViewProps = {
   product: DatoProduct;
@@ -16,9 +17,13 @@ export default function ProductDetailsView({
   lang,
   salesData,
 }: ProductDetailsViewProps) {
-  const eurRate = salesData?.currencies.find((currency) => currency.id === "EUR")?.rate || 1;
+  const eurRate =
+    salesData?.currencies.find((currency) => currency.id === "EUR")?.rate || 1;
 
-  const getPrice = (idCrm: string, fallbackPrice?: string | number | null): string => {
+  const getPrice = (
+    idCrm: string,
+    fallbackPrice?: string | number | null
+  ): string => {
     const priced = salesData?.products.find((p) => p.id === idCrm);
     if (priced) {
       return lang === "en" ? convertPrice(priced.price, eurRate) : priced.price;
@@ -42,6 +47,8 @@ export default function ProductDetailsView({
               alt={product.productpicture.alt ?? "Emmy and Lily"}
               className="object-cover"
               sizes="(max-width: 1200px) 100vw, 520px"
+              placeholder="blur"
+              blurDataURL={PRODUCT_IMAGE_BLUR_DATA_URL}
             />
           </div>
           <div className="mt-4 grid grid-cols-3 gap-3">
@@ -56,6 +63,8 @@ export default function ProductDetailsView({
                   alt={slide.alt ?? "Emmy and Lily"}
                   className="object-cover"
                   sizes="(max-width: 1200px) 33vw, 170px"
+                  placeholder="blur"
+                  blurDataURL={PRODUCT_IMAGE_BLUR_DATA_URL}
                 />
               </div>
             ))}
@@ -91,26 +100,30 @@ export default function ProductDetailsView({
             </tbody>
           </table>
 
-          {product.activeComponents && (
+          {product.activeComponents ? (
             <>
-              <h3 className="mb-2 text-t20 font-bold">{product.activecomp ?? ""}</h3>
+              <h3 className="mb-2 text-t20 font-bold">
+                {product.activecomp ?? ""}
+              </h3>
               <Markdown text={product.activeComponents} className="mb-6 text-t14" />
             </>
-          )}
+          ) : null}
 
-          {product.composition && (
+          {product.composition ? (
             <>
-              <h3 className="mb-2 text-t20 font-bold">{product.composit ?? ""}</h3>
+              <h3 className="mb-2 text-t20 font-bold">
+                {product.composit ?? ""}
+              </h3>
               <Markdown text={product.composition} className="mb-6 text-t14" />
             </>
-          )}
+          ) : null}
 
-          {product.methodOfUse && (
+          {product.methodOfUse ? (
             <>
               <h3 className="mb-2 text-t20 font-bold">{product.method ?? ""}</h3>
               <Markdown text={product.methodOfUse} className="text-t14" />
             </>
-          )}
+          ) : null}
         </div>
       </div>
     </article>

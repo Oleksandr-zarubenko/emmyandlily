@@ -1,4 +1,5 @@
 "use client";
+import InterceptProductModalContent from "@/components/product/InterceptProductModalContent";
 import { Markdown } from "@/components/Markdown";
 import { ProductCard } from "@/components/ProductCard";
 import { Paw } from "@/components/icons/Paw";
@@ -20,6 +21,9 @@ export const ProductsSection = ({
     currencies: [],
   });
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<DatoProduct | null>(
+    null
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -105,10 +109,19 @@ export const ProductsSection = ({
                 lang={lang}
                 state={state}
                 convertPrice={convertPrice}
+                onOpenProduct={setSelectedProduct}
               />
             ))}
         </div>
       </div>
+      {selectedProduct ? (
+        <InterceptProductModalContent
+          product={selectedProduct}
+          lang={lang}
+          secondmodal={data.secondmodal}
+          onRequestClose={() => setSelectedProduct(null)}
+        />
+      ) : null}
     </section>
   );
 };

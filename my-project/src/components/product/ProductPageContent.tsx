@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import cn from "classnames";
+import { useRouter } from "@/i18n/navigation";
 import { Markdown } from "@/components/Markdown";
 import { Bag } from "@/components/icons/Bag";
 import CartModal from "@/components/CartModal";
@@ -16,6 +17,7 @@ import { useCheckoutStore } from "@/store/checkoutStore";
 import { SalesDriveData } from "@/types/salesdrive";
 import getData from "@/utils/api/api";
 import { convertPrice } from "@/utils/convertPrice/convertPrice";
+import { PRODUCT_IMAGE_BLUR_DATA_URL } from "@/utils/productImageBlur";
 
 type ProductPageContentProps = {
   product: DatoProduct;
@@ -28,6 +30,7 @@ export default function ProductPageContent({
   lang,
   secondmodal,
 }: ProductPageContentProps) {
+  const router = useRouter();
   const en = locales[1];
   const addedToCart = useCheckoutStore((state) => state.addedToCart);
   const setAddedToCart = useCheckoutStore((state) => state.setAddedToCart);
@@ -59,15 +62,14 @@ export default function ProductPageContent({
     setAdditionalModalOpen(true);
     const productState = state.products.find((p) => p.id === item.idCrm);
     const productPrice = productState ? productState.price : item.price;
-    const dataToStore = {
+
+    addCartItem({
       id: item.idCrm,
       productName: product.heading,
       price: String(productPrice ?? 0),
       capacity: item.ml,
       photo: product.productSlider[0].url,
-    };
-
-    addCartItem(dataToStore);
+    });
     setAddedToCart((prevAddedToCart) => ({
       ...prevAddedToCart,
       [item.idCrm]: true,
@@ -84,14 +86,18 @@ export default function ProductPageContent({
   };
 
   return (
-    <section className="">
-      {additionalModalOpen && (
+    <section>
+      {additionalModalOpen ? (
         <CartModal
           onClose={() => setAdditionalModalOpen(false)}
+          onGoToCart={() => {
+            setAdditionalModalOpen(false);
+            router.push("/basket");
+          }}
           lang={lang}
           data={{ secondmodal }}
         />
-      )}
+      ) : null}
 
       <div className="mdOnly:px-[48px] relative mt-20 w-full bg-white px-5 py-6 xl:flex xl:min-h-[698px] xl:flex-row xl:px-[80px]">
         <div className="xl:mr-[80px] xl:flex xl:h-full xl:flex-col">
@@ -109,6 +115,8 @@ export default function ProductPageContent({
                 alt={product.productpicture.alt || "Emmy and Lily"}
                 className="object-cover"
                 sizes="(max-width: 768px) 88vw, (max-width: 1200px) 60vw, 550px"
+                placeholder="blur"
+                blurDataURL={PRODUCT_IMAGE_BLUR_DATA_URL}
               />
             </div>
 
@@ -134,27 +142,29 @@ export default function ProductPageContent({
                     alt={slide.alt ?? "Emmy and Lily"}
                     className="object-cover"
                     sizes="(max-width: 768px) 20vw, (max-width: 1200px) 20vw, 183px"
+                    placeholder="blur"
+                    blurDataURL={PRODUCT_IMAGE_BLUR_DATA_URL}
                   />
                 </div>
               ))}
             </div>
           </div>
           <div className="smOnly:flex-col mt-6 mb-8 gap-2 md:flex-wrap md:gap-3 xl:mb-0 xl:flex xl:w-[450px]">
-            {product?.advantage1 && (
+            {product.advantage1 ? (
               <p className="text-t14 md:text-t16 xl:text-t16 mdOnly:w-[436px] mb-2 w-full rounded bg-[#DCDCDC] px-3 py-2 text-black xl:mb-0">
                 {product.advantage1}
               </p>
-            )}
-            {product?.advantage2 && (
+            ) : null}
+            {product.advantage2 ? (
               <p className="text-t14 md:text-t16 xl:text-t16 mdOnly:w-[436px] mb-2 w-full rounded bg-[#DCDCDC] px-3 py-2 text-black xl:mb-0">
                 {product.advantage2}
               </p>
-            )}
-            {product?.advantage3 && (
+            ) : null}
+            {product.advantage3 ? (
               <p className="text-t14 md:text-t16 xl:text-t16 mdOnly:w-[436px] w-full rounded bg-[#DCDCDC] px-3 py-2 text-black">
                 {product.advantage3}
               </p>
-            )}
+            ) : null}
           </div>
         </div>
 
@@ -169,12 +179,11 @@ export default function ProductPageContent({
                 <th className="text-t14 smOnly:w-1/5 w-2/5 py-2 text-left text-[#333333] italic opacity-60">
                   {lang === en ? "Capacity" : "Об’єм"}
                 </th>
-
                 <th className="text-t14 smOnly:w-2/5 smOnly:text-center w-1/5 py-2 text-left text-[#333333] italic opacity-60 xl:text-center">
                   {lang === en ? "Price" : "Ціна"}
                 </th>
                 <th className="text-t14 w-2/5 py-2 text-right text-[#333333] italic opacity-60">
-                  {lang === en ? "Add to Cart " : " Додати у кошик "}
+                  {lang === en ? "Add to Cart" : "Додати у кошик"}
                 </th>
               </tr>
             </thead>
@@ -197,7 +206,7 @@ export default function ProductPageContent({
                                 )?.rate || 1
                               )
                             : p.price}{" "}
-                          {lang === "en" ? " UAH" : "₴"}
+                          {lang === "en" ? "UAH" : "₴"}
                         </span>
                       ))}
                   </td>
@@ -250,7 +259,6 @@ export default function ProductPageContent({
             >
               {product.composit ?? ""}
             </button>
-
             <button
               className={cn(
                 "mb-4 w-full border-solid pt-2 pb-1 text-[#33333399]",
@@ -264,24 +272,24 @@ export default function ProductPageContent({
             </button>
           </div>
           <div className="list-disc pt-2 text-black xl:h-[320px] xl:overflow-y-auto">
-            {activeTab === "components" && (
+            {activeTab === "components" ? (
               <Markdown
                 className="text-t14 mb-1 ml-3 max-w-max list-disc pr-2"
                 text={product.activeComponents ?? ""}
               />
-            )}
-            {activeTab === "composition" && (
+            ) : null}
+            {activeTab === "composition" ? (
               <Markdown
                 className="text-t14 max-w-max list-disc pr-2"
                 text={product.composition ?? ""}
               />
-            )}
-            {activeTab === "usage" && (
+            ) : null}
+            {activeTab === "usage" ? (
               <Markdown
                 className="ml-3 max-w-max list-disc pr-2"
                 text={product.methodOfUse ?? ""}
               />
-            )}
+            ) : null}
           </div>
         </div>
       </div>
