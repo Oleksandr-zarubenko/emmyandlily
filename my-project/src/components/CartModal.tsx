@@ -3,12 +3,15 @@ import { ModalPath } from "./icons/ModalPaw";
 import { usePathname } from "next/navigation";
 import { Locale } from "@/i18n/routing";
 import { DatoSecondModal } from "@/types/dato";
+
 const CartModal = ({
   onClose,
+  onGoToCart,
   lang,
   data,
 }: {
   onClose: () => void;
+  onGoToCart?: () => void;
   lang: Locale;
   data: { secondmodal: DatoSecondModal };
 }) => {
@@ -35,13 +38,25 @@ const CartModal = ({
             {data.secondmodal.returnToShopping}
           </button>
           {!isBasketPage ? (
-            <Link
-              className="rounded border-2 border-solid border-black bg-black px-6 py-3 text-t18 font-bold text-white"
-              href="/basket"
-              onClick={handleCheckoutInitiate}
-            >
-              {data.secondmodal.goToCart}
-            </Link>
+            onGoToCart ? (
+              <button
+                className="rounded border-2 border-solid border-black bg-black px-6 py-3 text-t18 font-bold text-white"
+                onClick={() => {
+                  handleCheckoutInitiate();
+                  onGoToCart();
+                }}
+              >
+                {data.secondmodal.goToCart}
+              </button>
+            ) : (
+              <Link
+                className="rounded border-2 border-solid border-black bg-black px-6 py-3 text-t18 font-bold text-white"
+                href="/basket"
+                onClick={handleCheckoutInitiate}
+              >
+                {data.secondmodal.goToCart}
+              </Link>
+            )
           ) : null}
         </div>
       </div>

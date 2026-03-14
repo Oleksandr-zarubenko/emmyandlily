@@ -104,11 +104,9 @@ async function getLayoutData(lang: Locale): Promise<DatoLayoutData> {
 
 export default async function RootLayout({
   children,
-  modal,
   params,
 }: {
   children: React.ReactNode;
-  modal: React.ReactNode;
   params: Promise<{ lang: string }>;
 }) {
   const { lang } = await params;
@@ -134,7 +132,6 @@ export default async function RootLayout({
             <FacebookPixelEvents />
           </Suspense>
           {children}
-          {modal}
           <Footer data={data} />
         </NextIntlClientProvider>
 

@@ -6,15 +6,13 @@ import { Markdown } from "./Markdown";
 import { DatoProduct } from "@/types/dato";
 import { Locale } from "@/i18n/routing";
 import { SalesDriveData } from "@/types/salesdrive";
-import { Link } from "@/i18n/navigation";
-import { getProductSlug } from "@/utils/productSlug";
-import { usePathname } from "next/navigation";
 
 interface ProductCardProps {
   state: SalesDriveData;
   product: DatoProduct;
   lang: Locale;
   convertPrice: (price: string | number, rate: number) => string;
+  onOpenProduct: (product: DatoProduct) => void;
 }
 
 export const ProductCard = ({
@@ -22,9 +20,8 @@ export const ProductCard = ({
   product,
   lang,
   convertPrice,
+  onOpenProduct,
 }: ProductCardProps) => {
-  const pathname = usePathname();
-  const productSlug = getProductSlug(product);
   const findProductPrice = (idCrm: string) => {
     const product = state.products.find(
       (item: { id: string }) => item.id === idCrm
@@ -49,9 +46,9 @@ export const ProductCard = ({
       key={product.id}
       className="group mx-auto h-auto w-[260px] cursor-pointer rounded duration-300 hover:shadow-custom md:w-[304px] smOnly:mb-6"
     >
-      <Link
-        href={`/product/${productSlug}?from=${encodeURIComponent(pathname)}`}
-        locale={lang}
+      <button
+        type="button"
+        onClick={() => onOpenProduct(product)}
         className="relative mb-5 block text-left"
       >
         <div className="relative mb-3 h-[300px] w-[260px] overflow-hidden rounded xl:mb-4 xl:h-[344px] xl:w-[304px] mdOnly:h-[280px] mdOnly:w-[280px]">
@@ -118,7 +115,7 @@ export const ProductCard = ({
             </p>
           )}
         </div>
-      </Link>
+      </button>
     </article>
   );
 };

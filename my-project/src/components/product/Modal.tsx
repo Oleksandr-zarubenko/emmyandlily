@@ -1,6 +1,6 @@
-﻿"use client";
+"use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { createPortal } from "react-dom";
 
 type ModalProps = {
@@ -9,28 +9,19 @@ type ModalProps = {
 };
 
 export function Modal({ children, onDismiss }: ModalProps) {
-  const dialogRef = useRef<React.ComponentRef<"dialog">>(null);
-
   useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-
-    if (!dialog.open) {
-      dialog.showModal();
-    }
-
-    const handleCancel = (event: Event) => {
-      event.preventDefault();
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
       onDismiss();
     };
 
-    dialog.addEventListener("cancel", handleCancel);
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      dialog.removeEventListener("cancel", handleCancel);
-      if (dialog.open) {
-        dialog.close();
-      }
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [onDismiss]);
 
@@ -39,16 +30,21 @@ export function Modal({ children, onDismiss }: ModalProps) {
   const target = document.getElementById("modal-root") ?? document.body;
 
   return createPortal(
-    <dialog
-      ref={dialogRef}
-      className="m-0 max-h-none max-w-none border-0 bg-transparent p-0 backdrop:bg-black/50"
-    >
-      <div className="fixed inset-0 z-110 flex items-center justify-center overflow-y-auto p-2 md:p-4">
-        <div className="w-full" onClick={(e) => e.stopPropagation()}>
-          {children}
+    <div aria-modal="true" role="dialog" className="fixed inset-0 z-110">
+      <div
+        className="fixed inset-0 overflow-y-auto bg-black/50 p-2 md:p-4"
+        onClick={onDismiss}
+      >
+        <div className="flex min-h-full items-start justify-center xl:items-center">
+          <div
+            className="flex w-full justify-center"
+            // onClick={(e) => e.stopPropagation()}
+          >
+            {children}
+          </div>
         </div>
       </div>
-    </dialog>,
+    </div>,
     target
   );
 }

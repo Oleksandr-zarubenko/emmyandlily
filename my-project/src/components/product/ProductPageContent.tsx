@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import cn from "classnames";
+import { useRouter } from "@/i18n/navigation";
 import { Markdown } from "@/components/Markdown";
 import { Bag } from "@/components/icons/Bag";
 import CartModal from "@/components/CartModal";
@@ -28,6 +29,7 @@ export default function ProductPageContent({
   lang,
   secondmodal,
 }: ProductPageContentProps) {
+  const router = useRouter();
   const en = locales[1];
   const addedToCart = useCheckoutStore((state) => state.addedToCart);
   const setAddedToCart = useCheckoutStore((state) => state.setAddedToCart);
@@ -88,6 +90,10 @@ export default function ProductPageContent({
       {additionalModalOpen && (
         <CartModal
           onClose={() => setAdditionalModalOpen(false)}
+          onGoToCart={() => {
+            setAdditionalModalOpen(false);
+            router.push("/basket");
+          }}
           lang={lang}
           data={{ secondmodal }}
         />

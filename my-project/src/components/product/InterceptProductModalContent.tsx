@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import cn from "classnames";
+import { useRouter as useIntlRouter } from "@/i18n/navigation";
 import { Markdown } from "@/components/Markdown";
 import { BurgerCross } from "@/components/icons/BurgerCross";
 import { PathModalXl } from "@/components/icons/PathModalXl";
@@ -26,6 +26,7 @@ type InterceptProductModalContentProps = {
   lang: Locale;
   secondmodal: DatoSecondModal;
   variant?: "modal" | "page";
+  onRequestClose?: () => void;
 };
 
 type ProductModalBodyProps = {
@@ -57,8 +58,16 @@ function ProductModalBody({
   onAddToCart,
   onClose,
 }: ProductModalBodyProps) {
+  const modalPanelStyle =
+    variant === "modal"
+      ? { maxHeight: "min(698px, calc(100dvh - 2rem))" }
+      : undefined;
+
   return (
-    <div className="relative my-auto w-full max-w-[1280px]">
+    <div
+      className="relative my-auto w-full max-w-[1280px]"
+      onClick={(e) => e.stopPropagation()}
+    >
       {variant === "modal" && (
         <button
           onClick={onClose}
@@ -69,10 +78,10 @@ function ProductModalBody({
       )}
 
       <div
-        className="mdOnly:px-[48px] relative w-full overflow-y-auto bg-white px-5 py-6 xl:flex xl:h-[698px] xl:flex-row xl:px-[80px]"
-        style={{ maxHeight: "calc(100dvh - 1rem)" }}
+        className="mdOnly:px-[48px] relative w-full overflow-y-auto bg-white px-5 py-6 xl:flex xl:min-h-0 xl:flex-row xl:px-[80px] xl:py-8"
+        style={modalPanelStyle}
       >
-        <div className="xl:mr-[80px] xl:flex xl:h-full xl:flex-col">
+        <div className="xl:mr-[80px] xl:flex xl:min-h-0 xl:flex-col xl:pb-2">
           <Markdown
             text={product.heading}
             className="text-t24 mb-8 xl:hidden"
@@ -118,7 +127,7 @@ function ProductModalBody({
             </div>
           </div>
 
-          <div className="smOnly:flex-col mt-6 mb-8 gap-2 md:flex-wrap md:gap-3 xl:mb-0 xl:flex xl:w-[450px]">
+          <div className="smOnly:flex-col mt-6 mb-8 gap-2 md:flex-wrap md:gap-3 xl:mb-0 xl:flex xl:w-[450px] xl:pb-2">
             {product.advantage1 ? (
               <p className="text-t14 md:text-t16 mdOnly:w-[436px] xl:text-t16 mb-2 w-full rounded bg-[#DCDCDC] px-3 py-2 text-black xl:mb-0">
                 {product.advantage1}
@@ -137,7 +146,7 @@ function ProductModalBody({
           </div>
         </div>
 
-        <div className="w-full pr-0 xl:pr-[15px]">
+        <div className="w-full pr-0 xl:min-h-0 xl:pr-[15px] xl:pb-2">
           <Markdown
             text={product.heading}
             className="text-t32 smOnly:hidden mdOnly:hidden mb-8"
@@ -242,7 +251,7 @@ function ProductModalBody({
             </button>
           </div>
 
-          <div className="smOnly:overflow-hidden list-disc pt-2 text-black md:overflow-y-auto xl:h-[320px]">
+          <div className="smOnly:overflow-hidden list-disc pt-2 text-black md:overflow-y-auto xl:h-[320px] xl:pr-2">
             {activeTab === "components" ? (
               <Markdown
                 className="text-t14 mb-1 ml-3 max-w-max list-disc pr-2"
@@ -273,8 +282,9 @@ export default function InterceptProductModalContent({
   lang,
   secondmodal,
   variant = "modal",
+  onRequestClose,
 }: InterceptProductModalContentProps) {
-  const router = useRouter();
+  const intlRouter = useIntlRouter();
   const en = locales[1];
 
   const addedToCart = useCheckoutStore((state) => state.addedToCart);
@@ -323,9 +333,25 @@ export default function InterceptProductModalContent({
 
   const closeModal = () => {
     if (variant !== "modal") return;
-    console.log("click back");
+    setAdditionalModalOpen(false);
+    onRequestClose?.();
+  };
 
-    router.back();
+  const handleContinueShopping = () => {
+    if (variant === "modal") {
+      closeModal();
+      return;
+    }
+
+    setAdditionalModalOpen(false);
+  };
+
+  const handleGoToCart = () => {
+    setAdditionalModalOpen(false);
+    if (variant === "modal") {
+      onRequestClose?.();
+    }
+    intlRouter.push("/basket");
   };
 
   const addToCart = (item: DatoProductCapacity) => {
@@ -378,18 +404,32 @@ export default function InterceptProductModalContent({
     <>
       <PathModalXl />
 
-      {additionalModalOpen ? (
-        <CartModal
-          onClose={() => setAdditionalModalOpen(false)}
-          lang={lang}
-          data={{ secondmodal }}
-        />
-      ) : null}
-
       {variant === "modal" ? (
-        <Modal onDismiss={closeModal}>{content}</Modal>
+        <Modal onDismiss={closeModal}>
+          <>
+            {content}
+            {additionalModalOpen ? (
+              <CartModal
+                onClose={handleContinueShopping}
+                onGoToCart={handleGoToCart}
+                lang={lang}
+                data={{ secondmodal }}
+              />
+            ) : null}
+          </>
+        </Modal>
       ) : (
-        <section className="container py-8 xl:py-20">{content}</section>
+        <>
+          {additionalModalOpen ? (
+            <CartModal
+              onClose={handleContinueShopping}
+              onGoToCart={handleGoToCart}
+              lang={lang}
+              data={{ secondmodal }}
+            />
+          ) : null}
+          <section className="container py-8 xl:py-20">{content}</section>
+        </>
       )}
     </>
   );
