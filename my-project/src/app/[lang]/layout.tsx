@@ -11,7 +11,6 @@ import { getClient } from "../../utils/apollo-client";
 import Header from "@/components/header/header";
 import { Suspense } from "react";
 import { FacebookPixelEvents } from "@/components/pixel-events";
-import { Analytics } from "@vercel/analytics/next";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
@@ -19,6 +18,7 @@ import { setRequestLocale } from "next-intl/server";
 import { DatoLayoutData } from "@/types/dato";
 import { cacheLife, cacheTag } from "next/cache";
 import { getSiteUrl } from "@/utils/seo";
+import AnalyticsLayout from "@/components/AnatyticsLayout";
 
 const libre = Open_Sans({
   weight: ["400"],
@@ -124,10 +124,7 @@ export default async function RootLayout({
       data-scroll-behavior="smooth"
     >
       <head>
-        <meta
-          name="msvalidate.01"
-          content="4CC5472328D38C599ED3D0D8DE1788DB"
-        />
+        <meta name="msvalidate.01" content="4CC5472328D38C599ED3D0D8DE1788DB" />
       </head>
       <body
         className={cn(libre.className, "relative flex grow flex-col bg-white")}
@@ -142,7 +139,7 @@ export default async function RootLayout({
         </NextIntlClientProvider>
 
         <div id="modal-root" />
-        <Analytics />
+        <AnalyticsLayout />
       </body>
     </html>
   );
