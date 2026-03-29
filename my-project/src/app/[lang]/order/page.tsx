@@ -1,12 +1,12 @@
 import { gql } from "@apollo/client";
 import { getClient } from "@/utils/apollo-client";
 import { Locale } from "@/i18n/routing";
-import Script from "next/script";
 import Order from "@/page-components/Order";
 import { DatoOrderData } from "@/types/dato";
 import { cacheLife, cacheTag } from "next/cache";
 import { Metadata } from "next";
 import { getCanonicalUrl, getLanguageAlternates } from "@/utils/seo";
+import { PixelPageView } from "@/components/PixelPageView";
 const queryEN = gql`
   {
     order {
@@ -237,16 +237,7 @@ export default async function OrderPage({
   return (
     <>
       <Order data={data} lang={lang} />{" "}
-      <Script
-        id="facebook-pixel-order-page"
-        dangerouslySetInnerHTML={{
-          __html: `
-            if (typeof window !== "undefined" && window.fbq) {
-              window.fbq('trackCustom', 'CheckoutPageView');
-            }
-          `,
-        }}
-      />
+      <PixelPageView eventName="CheckoutPageView" />
     </>
   );
 }

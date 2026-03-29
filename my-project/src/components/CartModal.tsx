@@ -3,6 +3,8 @@ import { ModalPath } from "./icons/ModalPaw";
 import { usePathname } from "next/navigation";
 import { Locale } from "@/i18n/routing";
 import { DatoSecondModal } from "@/types/dato";
+import { sendGAEvent } from "@next/third-parties/google";
+import { trackPixel } from "@/lib/pixel";
 
 const CartModal = ({
   onClose,
@@ -20,7 +22,11 @@ const CartModal = ({
   const isBasketPage = pathname.includes(`${lang}/basket`);
 
   const handleCheckoutInitiate = () => {
-    window.fbq("track", "InitiateCheckout");
+    trackPixel("InitiateCheckout");
+    sendGAEvent("event", "go_to_cart_click", {
+      source: "cart_modal",
+      page: isBasketPage ? "basket" : "product",
+    });
   };
 
   return (

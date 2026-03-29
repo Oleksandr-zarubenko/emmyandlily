@@ -5,6 +5,7 @@ import LocaleSwitcher from "./locale-switcher";
 import { Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { DatoNavigation } from "@/types/dato";
+import { sendGAEvent } from "@next/third-parties/google";
 
 export const MobileMenu = ({
   navigation,
@@ -17,6 +18,14 @@ export const MobileMenu = ({
 
   const setMenuClosed = () => {
     setIsOpen(false);
+  };
+
+  const handleNavClick = (target: "products" | "about_us" | "contacts") => {
+    sendGAEvent("event", "header_nav_click", {
+      target,
+      placement: "mobile_menu",
+    });
+    setMenuClosed();
   };
 
   const toggleMenu = () => {
@@ -46,21 +55,21 @@ export const MobileMenu = ({
                 <Link
                   className="border-1 w-full border-b border-border pb-4 pt-2 text-t16 text-[#0B0605]"
                   href="/#products"
-                  onClick={() => setMenuClosed()}
+                  onClick={() => handleNavClick("products")}
                 >
                   {navigation.ourproducts}
                 </Link>
                 <Link
                   className="border-1 w-full border-b border-border pb-4 pt-2 text-t16"
                   href="/#about-us"
-                  onClick={() => setMenuClosed()}
+                  onClick={() => handleNavClick("about_us")}
                 >
                   {navigation.aboutus}
                 </Link>
                 <Link
                   className="border-1 w-full border-b border-border pb-4 pt-2 text-t16"
                   href="/#contacts"
-                  onClick={() => setMenuClosed()}
+                  onClick={() => handleNavClick("contacts")}
                 >
                   {navigation.contacts}
                 </Link>

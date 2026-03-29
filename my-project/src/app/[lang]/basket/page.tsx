@@ -2,11 +2,11 @@ import { gql } from "@apollo/client";
 import Basket from "@/page-components/Basket";
 import { getClient } from "@/utils/apollo-client";
 import { Locale } from "@/i18n/routing";
-import Script from "next/script";
 import { DatoBasketData } from "@/types/dato";
 import { cacheLife, cacheTag } from "next/cache";
 import { Metadata } from "next";
 import { getCanonicalUrl, getLanguageAlternates } from "@/utils/seo";
+import { PixelPageView } from "@/components/PixelPageView";
 const queryEN = gql`
   {
     basket {
@@ -207,16 +207,7 @@ export default async function BasketPage({
   return (
     <>
       <Basket data={data} lang={lang} />
-      <Script
-        id="facebook-pixel-basket-page"
-        dangerouslySetInnerHTML={{
-          __html: `
-            if (typeof window !== "undefined" && window.fbq) {
-              window.fbq('trackCustom', 'BasketPageView');
-            }
-          `,
-        }}
-      />
+      <PixelPageView eventName="BasketPageView" />
     </>
   );
 }

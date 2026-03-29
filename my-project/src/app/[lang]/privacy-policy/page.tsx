@@ -4,10 +4,10 @@ import { gql } from "@apollo/client";
 import { getClient } from "@/utils/apollo-client";
 import { Locale } from "@/i18n/routing";
 import { Markdown } from "@/components/Markdown";
-import Script from "next/script";
 import { cacheLife, cacheTag } from "next/cache";
 import { Metadata } from "next";
 import { getCanonicalUrl, getLanguageAlternates } from "@/utils/seo";
+import { PixelPageView } from "@/components/PixelPageView";
 const queryEN = gql`
   {
     policy {
@@ -90,16 +90,7 @@ export default async function PolicyPage({
         </h1>
         <Markdown text={data?.policy.policytext || ""} />
       </div>
-      <Script
-        id="facebook-pixel-policy-page"
-        dangerouslySetInnerHTML={{
-          __html: `
-            if (typeof window !== "undefined" && window.fbq) {
-              window.fbq('trackCustom', 'PrivacyPolicyPageView');
-            }
-          `,
-        }}
-      />
+      <PixelPageView eventName="PrivacyPolicyPageView" />
     </section>
   );
 }

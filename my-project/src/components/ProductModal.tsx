@@ -17,6 +17,7 @@ import {
 } from "@/types/dato";
 import { SalesDriveData } from "@/types/salesdrive";
 import { useCheckoutStore } from "@/store/checkoutStore";
+import { trackPixel } from "@/lib/pixel";
 
 export const ProductModal = ({
   product,
@@ -54,7 +55,7 @@ export const ProductModal = ({
     const productPrice = productState ? productState.price : "N/A";
 
     setIsOpen(true);
-    window.fbq("track", "ViewContent", {
+    trackPixel("ViewContent", {
       content_name: product.heading,
       content_category: product.category,
       content_ids: content_ids,
@@ -111,7 +112,7 @@ export const ProductModal = ({
       [item.idCrm]: true,
     }));
 
-    window.fbq("track", "AddToCart", {
+    trackPixel("AddToCart", {
       content_ids: [item.idCrm],
       content_type: "product",
       value: productPrice,
