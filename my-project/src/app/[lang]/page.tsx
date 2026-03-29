@@ -11,6 +11,7 @@ import { Locale } from "@/i18n/routing";
 import { DatoHomeData } from "@/types/dato";
 import { cacheLife, cacheTag } from "next/cache";
 import { getCanonicalUrl, getLanguageAlternates } from "@/utils/seo";
+import { PixelPageView } from "@/components/PixelPageView";
 
 import Video from "@/page-components/Video";
 
@@ -334,15 +335,7 @@ export default async function Home({
       <ProductsSection data={data} lang={local} />
       <AboutUs data={data} />
       <Contacts data={data} />
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-            if (typeof window !== "undefined" && window.fbq) {
-              window.fbq('trackCustom', 'HomePageView');
-            }
-          `,
-        }}
-      />
+      <PixelPageView eventName="HomePageView" />
     </div>
   );
 }

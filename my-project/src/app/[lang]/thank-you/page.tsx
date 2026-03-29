@@ -7,11 +7,11 @@ import DogsImg from "../../../../public/emmy-lilly-2-dogs-bg-hero.webp";
 import Image from "next/image";
 import { Logo } from "@/components/icons/Logo";
 import { ClearLocalStorage } from "@/components/ClearLocalStorage";
-import Script from "next/script";
 import { Link } from "@/i18n/navigation";
 import { cacheLife, cacheTag } from "next/cache";
 import { Metadata } from "next";
 import { getCanonicalUrl, getLanguageAlternates } from "@/utils/seo";
+import { PixelPageView } from "@/components/PixelPageView";
 
 const queryEN = gql`
   {
@@ -125,12 +125,7 @@ export default async function ThankYouPage({
           </Link>
         </div>
       </div>
-      <Script
-        id="facebook-pixel"
-        dangerouslySetInnerHTML={{
-          __html: `if (typeof window !== "undefined" && window.fbq) { window.fbq('trackCustom', 'ThankYouPageView'); }`,
-        }}
-      />
+      <PixelPageView eventName="ThankYouPageView" />
     </section>
   );
 }

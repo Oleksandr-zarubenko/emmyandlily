@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import { useState, useEffect, ChangeEvent } from "react";
 import Personalinfo from "@/components/Order/Personalinfo";
 import YourOrder from "@/components/Order/YourOrder";
@@ -21,6 +21,7 @@ import {
   createMonobankInvoice,
   submitOrderToSalesDrive,
 } from "@/server/actions/checkout";
+import { trackPixel } from "@/lib/pixel";
 const Order = ({ data, lang }: { data: DatoOrderData; lang: Locale }) => {
   const en = locales[1];
   const [state, setState] = useState<SalesDriveData>({
@@ -369,22 +370,20 @@ const Order = ({ data, lang }: { data: DatoOrderData; lang: Locale }) => {
     if (deliveryCompleted && afterpay === true && privacypolicy === true) {
       makeApiCall();
       router.push("/thank-you");
-      if (typeof window !== "undefined" && window.fbq) {
-        const productDetails = updatedProducts
-          .map(
-            (product: { name: string; quantity: number }) =>
-              `${product.name} : ${product.quantity}`
-          )
-          .join(", ");
-        window.fbq("track", "Purchase", {
-          content_ids: updatedProducts.map(
-            (product: { id: string }) => product.id
-          ),
-          content_type: productDetails,
-          value: amount / 100,
-          currency: lang === "en" ? "EUR" : "UAH",
-        });
-      }
+      const productDetails = updatedProducts
+        .map(
+          (product: { name: string; quantity: number }) =>
+            `${product.name} : ${product.quantity}`
+        )
+        .join(", ");
+      trackPixel("Purchase", {
+        content_ids: updatedProducts.map(
+          (product: { id: string }) => product.id
+        ),
+        content_type: productDetails,
+        value: amount / 100,
+        currency: lang === "en" ? "EUR" : "UAH",
+      });
     } else if (
       deliveryCompleted &&
       privacypolicy === true &&
@@ -392,22 +391,20 @@ const Order = ({ data, lang }: { data: DatoOrderData; lang: Locale }) => {
     ) {
       makeApiCall();
       try {
-        if (typeof window !== "undefined" && window.fbq) {
-          const productDetails = updatedProducts
-            .map(
-              (product: { name: string; quantity: number }) =>
-                `${product.name} : ${product.quantity}`
-            )
-            .join(", ");
-          window.fbq("track", "Purchase", {
-            content_ids: updatedProducts.map(
-              (product: { id: string }) => product.id
-            ),
-            content_type: productDetails,
-            value: amount / 100,
-            currency: lang === "en" ? "EUR" : "UAH",
-          });
-        }
+        const productDetails = updatedProducts
+          .map(
+            (product: { name: string; quantity: number }) =>
+              `${product.name} : ${product.quantity}`
+          )
+          .join(", ");
+        trackPixel("Purchase", {
+          content_ids: updatedProducts.map(
+            (product: { id: string }) => product.id
+          ),
+          content_type: productDetails,
+          value: amount / 100,
+          currency: lang === "en" ? "EUR" : "UAH",
+        });
         const jsonData = await createMonobankInvoice({
           amount,
           numberValute,

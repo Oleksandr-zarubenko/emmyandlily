@@ -18,6 +18,7 @@ import { SalesDriveData } from "@/types/salesdrive";
 import getData from "@/utils/api/api";
 import { convertPrice } from "@/utils/convertPrice/convertPrice";
 import { PRODUCT_IMAGE_BLUR_DATA_URL } from "@/utils/productImageBlur";
+import { trackPixel } from "@/lib/pixel";
 
 type ProductPageContentProps = {
   product: DatoProduct;
@@ -79,14 +80,12 @@ export default function ProductPageContent({
       [item.idCrm]: true,
     }));
 
-    if (typeof window !== "undefined" && window.fbq) {
-      window.fbq("track", "AddToCart", {
-        content_ids: [item.idCrm],
-        content_type: "product",
-        value: productPrice,
-        currency: lang === en ? "EUR" : "UAH",
-      });
-    }
+    trackPixel("AddToCart", {
+      content_ids: [item.idCrm],
+      content_type: "product",
+      value: productPrice,
+      currency: lang === en ? "EUR" : "UAH",
+    });
   };
 
   return (
@@ -170,7 +169,7 @@ export default function ProductPageContent({
         </div>
 
         <div className="w-full pr-0 xl:pr-[15px]">
-          <p className="text-t32 mb-8 smOnly:hidden mdOnly:hidden">
+          <p className="text-t32 smOnly:hidden mdOnly:hidden mb-8">
             {productHeading}
           </p>
           <table className="smOnly:w-[100%] mdOnly:w-[436px] mb-12 xl:w-full">

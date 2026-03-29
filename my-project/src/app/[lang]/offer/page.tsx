@@ -1,10 +1,11 @@
 import { gql } from "@apollo/client";
 import { getClient } from "@/utils/apollo-client";
-import { Markdown } from "@/components/Markdown";
 import { Locale } from "@/i18n/routing";
 import { cacheLife, cacheTag } from "next/cache";
 import { Metadata } from "next";
 import { getCanonicalUrl, getLanguageAlternates } from "@/utils/seo";
+import { OfferTrackedContent } from "./OfferTrackedContent";
+import { PixelPageView } from "@/components/PixelPageView";
 const queryEN = gql`
   {
     offer {
@@ -85,18 +86,10 @@ export default async function OfferPage({
           <h1 className="mb-8 text-t32 font-bold tracking-wider">
             {headingByLocale[local]}
           </h1>
-          <Markdown text={data?.offer.offertext || "offer"} />
+          <OfferTrackedContent text={data?.offer.offertext || "offer"} lang={local} />
         </div>
       </section>
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-            if (typeof window !== "undefined" && window.fbq) {
-              window.fbq('trackCustom', 'OfferPageView');
-            }
-          `,
-        }}
-      />
+      <PixelPageView eventName="OfferPageView" />
     </>
   );
 }

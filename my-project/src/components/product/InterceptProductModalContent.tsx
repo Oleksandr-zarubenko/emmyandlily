@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -21,6 +21,7 @@ import { SalesDriveData } from "@/types/salesdrive";
 import getData from "@/utils/api/api";
 import { convertPrice } from "@/utils/convertPrice/convertPrice";
 import { PRODUCT_IMAGE_BLUR_DATA_URL } from "@/utils/productImageBlur";
+import { trackPixel } from "@/lib/pixel";
 
 type InterceptProductModalContentProps = {
   product: DatoProduct;
@@ -324,16 +325,14 @@ export default function InterceptProductModalContent({
     const productState = state.products.find((p) => p.id === contentIds[0]);
     const productPrice = productState ? productState.price : "N/A";
 
-    if (typeof window !== "undefined" && window.fbq) {
-      window.fbq("track", "ViewContent", {
-        content_name: product.heading,
-        content_category: product.category,
-        content_ids: contentIds,
-        content_type: "product",
-        value: productPrice,
-        currency: lang === en ? "EUR" : "UAH",
-      });
-    }
+    trackPixel("ViewContent", {
+      content_name: product.heading,
+      content_category: product.category,
+      content_ids: contentIds,
+      content_type: "product",
+      value: productPrice,
+      currency: lang === en ? "EUR" : "UAH",
+    });
   }, [lang, en, product, state.products]);
 
   const closeModal = () => {
@@ -378,14 +377,12 @@ export default function InterceptProductModalContent({
       [item.idCrm]: true,
     }));
 
-    if (typeof window !== "undefined" && window.fbq) {
-      window.fbq("track", "AddToCart", {
-        content_ids: [item.idCrm],
-        content_type: "product",
-        value: productPrice,
-        currency: lang === en ? "EUR" : "UAH",
-      });
-    }
+    trackPixel("AddToCart", {
+      content_ids: [item.idCrm],
+      content_type: "product",
+      value: productPrice,
+      currency: lang === en ? "EUR" : "UAH",
+    });
   };
 
   const content = (

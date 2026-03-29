@@ -3,16 +3,26 @@ import { Bag } from "./icons/Bag";
 import cn from "classnames";
 import { Link } from "@/i18n/navigation";
 import { useCheckoutStore } from "@/store/checkoutStore";
+import { sendGAEvent } from "@next/third-parties/google";
+import { trackPixel } from "@/lib/pixel";
 
-export const Cart = ({ color }: { color: "black" | "white" }) => {
+export const Cart = ({
+  color,
+  source = "unknown",
+}: {
+  color: "black" | "white";
+  source?: string;
+}) => {
   const color1 = color === "black" ? "black" : "white";
   const color2 = color === "black" ? "white" : "black";
   const storedDataLength = useCheckoutStore((state) => state.cartItems.length);
 
   const handleCheckoutInitiate = () => {
-    if (typeof window !== "undefined" && window.fbq) {
-      window.fbq("track", "InitiateCheckout");
-    }
+    trackPixel("InitiateCheckout");
+    sendGAEvent("event", "cart_open_click", {
+      source,
+      items_in_cart: storedDataLength,
+    });
   };
   return (
     <Link
@@ -23,7 +33,7 @@ export const Cart = ({ color }: { color: "black" | "white" }) => {
       <div className="relative">
         <Bag
           className={cn(
-            `hover:bg-${color1} h-8 w-8 rounded p-[2px] duration-300`,
+            `hover:bg-${color1} h-8 w-8 rounded p-0.5 duration-300`,
             color === "black"
               ? "fill-black hover:fill-white"
               : "fill-white hover:fill-black"
