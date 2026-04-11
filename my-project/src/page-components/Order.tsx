@@ -21,6 +21,7 @@ import {
   createMonobankInvoice,
   submitOrderToSalesDrive,
 } from "@/server/actions/checkout";
+import { sendTelegramOrderNotification } from "@/server/actions/order-telegram";
 import { trackPixel } from "@/lib/pixel";
 const Order = ({ data, lang }: { data: DatoOrderData; lang: Locale }) => {
   const en = locales[1];
@@ -287,7 +288,20 @@ const Order = ({ data, lang }: { data: DatoOrderData; lang: Locale }) => {
       selectePaymentMethod,
       externalId,
     };
+
     await submitOrderToSalesDrive(payload);
+    void sendTelegramOrderNotification(payload)
+      .then((telegramResult) => {
+        if (!telegramResult.success) {
+          console.error(
+            "Telegram order notification error:",
+            telegramResult.error
+          );
+        }
+      })
+      .catch((error: unknown) => {
+        console.error("Telegram order notification failed:", error);
+      });
   };
 
   const handleOptionChange = (e: ChangeEvent<HTMLInputElement>) => {
