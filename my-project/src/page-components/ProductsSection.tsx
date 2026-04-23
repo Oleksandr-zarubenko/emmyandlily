@@ -60,13 +60,14 @@ export const ProductsSection = ({
     return inSelectedCategory && correspondingProduct;
   });
   // console.log("availableProducts", availableProducts);
+  console.log({ data });
 
   return (
     <section className="bg-black py-14 text-center md:py-16" id="products">
       <div className="container">
         <div className="xl:justify-left smOnly:justify-center mb-8 flex flex-row items-center gap-1 md:gap-4 xl:mb-10">
-          <Paw className="h-8 w-8 p-[4px] text-white md:h-11 md:w-11" />
-          <h2 className="text-t24 text-white xl:text-t32">{sectionHeading}</h2>
+          <Paw className="h-8 w-8 p-1 text-white md:h-11 md:w-11" />
+          <h2 className="text-t24 xl:text-t32 text-white">{sectionHeading}</h2>
         </div>
         {data.productsSection.text && (
           <Markdown text={data.productsSection.text} />
@@ -80,7 +81,7 @@ export const ProductsSection = ({
             }`}
             onClick={() => setSelectedCategory(null)}
           >
-            Всі
+            {lang === "uk" ? "Всі" : "All"}
           </button>
 
           {data.allCategories.map((category) => (
