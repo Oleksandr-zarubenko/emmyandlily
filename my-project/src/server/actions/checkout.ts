@@ -82,7 +82,7 @@ export async function submitOrderToSalesDrive(
     method: "POST",
     body: JSON.stringify(requestBody),
   });
-  console.log(res);
+  // console.log(res);
 
   if (!res.ok) {
     throw new Error(`SalesDrive error: ${res.status}`);

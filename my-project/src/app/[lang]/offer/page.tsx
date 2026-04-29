@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 import { getClient } from "@/utils/apollo-client";
 import { Locale } from "@/i18n/routing";
-import { cacheLife, cacheTag } from "next/cache";
+import { cacheLife } from "next/cache";
 import { Metadata } from "next";
 import { getCanonicalUrl, getLanguageAlternates } from "@/utils/seo";
 import { OfferTrackedContent } from "./OfferTrackedContent";
@@ -22,10 +22,11 @@ const queryUA = gql`
   }
 `;
 
-async function getOfferData(local: Locale): Promise<{ offer: { offertext: string } }> {
+async function getOfferData(
+  local: Locale
+): Promise<{ offer: { offertext: string } }> {
   "use cache";
   cacheLife("minutes");
-  cacheTag(`dato:offer:${local}`);
 
   const query = local === "uk" ? queryUA : queryEN;
   const { data } = await getClient().query<{ offer: { offertext: string } }>({
@@ -83,10 +84,13 @@ export default async function OfferPage({
     <>
       <section className="grow py-32">
         <div className="container flex flex-col gap-3">
-          <h1 className="mb-8 text-t32 font-bold tracking-wider">
+          <h1 className="text-t32 mb-8 font-bold tracking-wider">
             {headingByLocale[local]}
           </h1>
-          <OfferTrackedContent text={data?.offer.offertext || "offer"} lang={local} />
+          <OfferTrackedContent
+            text={data?.offer.offertext || "offer"}
+            lang={local}
+          />
         </div>
       </section>
       <PixelPageView eventName="OfferPageView" />

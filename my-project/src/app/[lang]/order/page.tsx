@@ -3,7 +3,7 @@ import { getClient } from "@/utils/apollo-client";
 import { Locale } from "@/i18n/routing";
 import Order from "@/page-components/Order";
 import { DatoOrderData } from "@/types/dato";
-import { cacheLife, cacheTag } from "next/cache";
+import { cacheLife } from "next/cache";
 import { Metadata } from "next";
 import { getCanonicalUrl, getLanguageAlternates } from "@/utils/seo";
 import { PixelPageView } from "@/components/PixelPageView";
@@ -182,7 +182,6 @@ const queryUA = gql`
 async function getOrderData(local: Locale): Promise<DatoOrderData> {
   "use cache";
   cacheLife("minutes");
-  cacheTag(`dato:order:${local}`);
 
   const query = local === "uk" ? queryUA : queryEN;
   const { data } = await getClient().query<DatoOrderData>({ query });

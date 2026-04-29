@@ -16,7 +16,7 @@ import { routing } from "@/i18n/routing";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { DatoLayoutData } from "@/types/dato";
-import { cacheLife, cacheTag } from "next/cache";
+import { cacheLife,  } from "next/cache";
 import { getSiteUrl } from "@/utils/seo";
 import AnalyticsLayout from "@/components/AnatyticsLayout";
 
@@ -92,7 +92,6 @@ export function generateStaticParams() {
 async function getLayoutData(lang: Locale): Promise<DatoLayoutData> {
   "use cache";
   cacheLife("minutes");
-  cacheTag(`dato:layout:${lang}`);
 
   const query = lang === "uk" ? queryUA : queryEN;
   const { data } = await getClient().query<DatoLayoutData>({ query });

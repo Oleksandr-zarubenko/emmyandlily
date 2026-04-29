@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { cacheLife, cacheTag } from "next/cache";
+import { cacheLife } from "next/cache";
 import { Locale } from "@/i18n/routing";
 import { DatoProduct, DatoSecondModal } from "@/types/dato";
 import { getProductIdFromSlug } from "@/utils/productSlug";
@@ -86,9 +86,8 @@ type SecondModalResponse = {
 };
 
 export async function getAllProducts(lang: Locale): Promise<DatoProduct[]> {
-  "use cache";
+  "use cache: remote";
   cacheLife("minutes");
-  cacheTag(`dato:products:${lang}`);
 
   const query = lang === "uk" ? queryUA : queryEN;
   const { data } = await getClient().query<ProductsResponse>({ query });
@@ -128,10 +127,11 @@ const secondModalUA = gql`
   }
 `;
 
-export async function getSecondModalData(lang: Locale): Promise<DatoSecondModal> {
-  "use cache";
+export async function getSecondModalData(
+  lang: Locale
+): Promise<DatoSecondModal> {
+  "use cache: remote";
   cacheLife("minutes");
-  cacheTag(`dato:secondmodal:${lang}`);
 
   const query = lang === "uk" ? secondModalUA : secondModalEN;
   const { data } = await getClient().query<SecondModalResponse>({ query });

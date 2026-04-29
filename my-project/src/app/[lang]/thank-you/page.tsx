@@ -8,7 +8,7 @@ import Image from "next/image";
 import { Logo } from "@/components/icons/Logo";
 import { ClearLocalStorage } from "@/components/ClearLocalStorage";
 import { Link } from "@/i18n/navigation";
-import { cacheLife, cacheTag } from "next/cache";
+import { cacheLife } from "next/cache";
 import { Metadata } from "next";
 import { getCanonicalUrl, getLanguageAlternates } from "@/utils/seo";
 import { PixelPageView } from "@/components/PixelPageView";
@@ -43,7 +43,6 @@ type Data = {
 async function getThankYouData(local: Locale): Promise<Data> {
   "use cache";
   cacheLife("minutes");
-  cacheTag(`dato:thankyou:${local}`);
 
   const query = local === "uk" ? queryUA : queryEN;
   const { data } = await getClient().query<Data>({ query });

@@ -3,7 +3,7 @@ import Basket from "@/page-components/Basket";
 import { getClient } from "@/utils/apollo-client";
 import { Locale } from "@/i18n/routing";
 import { DatoBasketData } from "@/types/dato";
-import { cacheLife, cacheTag } from "next/cache";
+import { cacheLife } from "next/cache";
 import { Metadata } from "next";
 import { getCanonicalUrl, getLanguageAlternates } from "@/utils/seo";
 import { PixelPageView } from "@/components/PixelPageView";
@@ -149,9 +149,8 @@ const queryUA = gql`
 `;
 
 async function getBasketData(local: Locale): Promise<DatoBasketData> {
-  "use cache";
+  "use cache: remote";
   cacheLife("hours");
-  cacheTag(`dato:basket:${local}`);
 
   const query = local === "uk" ? queryUA : queryEN;
   const { data } = await getClient().query<DatoBasketData>({ query });

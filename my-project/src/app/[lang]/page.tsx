@@ -9,7 +9,7 @@ import { getClient } from "../../utils/apollo-client";
 import { Metadata } from "next/types";
 import { Locale } from "@/i18n/routing";
 import { DatoHomeData } from "@/types/dato";
-import { cacheLife, cacheTag } from "next/cache";
+import { cacheLife } from "next/cache";
 import { getCanonicalUrl, getLanguageAlternates } from "@/utils/seo";
 import { PixelPageView } from "@/components/PixelPageView";
 
@@ -276,7 +276,6 @@ export async function generateMetadata({
 async function getHomeData(local: Locale): Promise<DatoHomeData> {
   "use cache";
   cacheLife("minutes");
-  cacheTag(`dato:home:${local}`);
 
   const query = local === "uk" ? queryUA : queryEN;
   const { data } = await getClient().query<DatoHomeData>({ query });
@@ -294,6 +293,7 @@ export default async function Home({
   const { lang } = await params;
   const local = lang as Locale;
   const data = await getHomeData(local);
+  // console.log("home data", data);
   const siteUrl = getCanonicalUrl(local);
   const organizationSchema = {
     "@context": "https://schema.org",

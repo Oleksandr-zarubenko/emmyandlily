@@ -1,10 +1,8 @@
-// import Order from "@/page-components/Order";
-
 import { gql } from "@apollo/client";
 import { getClient } from "@/utils/apollo-client";
 import { Locale } from "@/i18n/routing";
 import { Markdown } from "@/components/Markdown";
-import { cacheLife, cacheTag } from "next/cache";
+import { cacheLife } from "next/cache";
 import { Metadata } from "next";
 import { getCanonicalUrl, getLanguageAlternates } from "@/utils/seo";
 import { PixelPageView } from "@/components/PixelPageView";
@@ -24,10 +22,11 @@ const queryUA = gql`
   }
 `;
 
-async function getPolicyData(local: Locale): Promise<{ policy: { policytext: string } }> {
+async function getPolicyData(
+  local: Locale
+): Promise<{ policy: { policytext: string } }> {
   "use cache";
   cacheLife("minutes");
-  cacheTag(`dato:policy:${local}`);
 
   const query = local === "uk" ? queryUA : queryEN;
   const { data } = await getClient().query<{ policy: { policytext: string } }>({
@@ -85,7 +84,7 @@ export default async function PolicyPage({
   return (
     <section className="grow py-32">
       <div className="container flex flex-col gap-3">
-        <h1 className="mb-8 text-t32 font-bold tracking-wider">
+        <h1 className="text-t32 mb-8 font-bold tracking-wider">
           {headingByLocale[local]}
         </h1>
         <Markdown text={data?.policy.policytext || ""} />

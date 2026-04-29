@@ -30,20 +30,15 @@ export const ProductsSection = ({
     .trim();
 
   useEffect(() => {
-    let cancelled = false;
-    void (async () => {
+    (async () => {
       try {
         const data = await getData(lang);
-        if (!cancelled) {
-          setState(data);
-        }
+        // console.log("sales drive data", data);
+        setState(data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     })();
-    return () => {
-      cancelled = true;
-    };
   }, [lang]);
 
   const availableProducts = data.allProducts.filter((product: DatoProduct) => {
@@ -60,7 +55,6 @@ export const ProductsSection = ({
     return inSelectedCategory && correspondingProduct;
   });
   // console.log("availableProducts", availableProducts);
-  console.log({ data });
 
   return (
     <section className="bg-black py-14 text-center md:py-16" id="products">

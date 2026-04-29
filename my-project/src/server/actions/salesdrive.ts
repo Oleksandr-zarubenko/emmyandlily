@@ -2,7 +2,7 @@
 import "server-only";
 import { parseString } from "xml2js";
 import { Locale } from "@/i18n/routing";
-import { cacheLife, cacheTag } from "next/cache";
+import { cacheLife } from "next/cache";
 import {
   SalesDriveCurrency,
   SalesDriveCurrencyXml,
@@ -18,20 +18,19 @@ const KEY_EN_CRM =
   "tMB0fTRX_ej-ZsQRllq-LuP_FVOBq5GlEcv79omXh60IVTAPsh22SYtj2R7Dm24RZAVd0J";
 
 export async function getSalesDriveData(lang: Locale): Promise<SalesDriveData> {
-  "use cache";
+  "use cache: remote";
   cacheLife("minutes");
-  cacheTag(`salesdrive:${lang}`);
 
   const selectedAPI = lang === "uk" ? KEY_UKR_CRM : KEY_UKR_CRM;
 
   const response = await fetch(
-    `https://emmyandlily.salesdrive.me/export/yml/export.yml?publicKey=${selectedAPI}&timestamp=${Date.now()}`,
-    { cache: "no-store" }
+    `https://emmyandlily.salesdrive.me/export/yml/export.yml?publicKey=${selectedAPI}&timestamp=${Date.now()}`
   );
   if (!response.ok) {
     throw new Error(`SalesDrive request failed: ${response.status}`);
   }
   const xmlData = await response.text();
+  // console.log({ xmlData });
 
   const parsedData = await parseXml(xmlData);
   const products = extractProducts(parsedData);
