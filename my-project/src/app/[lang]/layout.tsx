@@ -125,6 +125,10 @@ export default async function RootLayout({
     >
       <head>
         <meta name="msvalidate.01" content="4CC5472328D38C599ED3D0D8DE1788DB" />
+        <meta
+          name="google-site-verification"
+          content="Lu2TjzFBEkhCOreO4L-gJmD2AEKLguBQaWMcBhnX8_c"
+        />
       </head>
       <body
         className={cn(libre.className, "relative flex grow flex-col bg-white")}
