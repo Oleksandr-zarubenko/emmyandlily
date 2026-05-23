@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import Script from "next/script";
 import { notFound } from "next/navigation";
 import ProductPageContent from "@/components/product/ProductPageContent";
 import { Locale, routing } from "@/i18n/routing";
@@ -8,11 +7,11 @@ import {
   getProductBySlug,
   getSecondModalData,
 } from "@/server/dato/products";
+import { getSalesDriveData } from "@/server/actions/salesdrive";
 import { getCanonicalUrl } from "@/utils/seo";
 import { getProductSlug } from "@/utils/productSlug";
-
-const stripMarkdown = (text: string): string =>
-  text.replace(/[#*_`[\]()]/g, "").replace(/\s+/g, " ").trim();
+import { StructuredData } from "@/components/StructuredData";
+import { createProductPageSchema, stripSchemaText } from "@/utils/schema";
 
 export async function generateStaticParams() {
   const params = await Promise.all(
@@ -42,8 +41,8 @@ export async function generateMetadata({
     };
   }
 
-  const cleanTitle = stripMarkdown(product.heading);
-  const cleanDescription = stripMarkdown(product.description).slice(0, 160);
+  const cleanTitle = stripSchemaText(product.heading);
+  const cleanDescription = stripSchemaText(product.description).slice(0, 160);
   const canonicalSlug = getProductSlug(product);
   const [ukProducts, enProducts] = await Promise.all([
     getAllProducts("uk"),
@@ -90,36 +89,23 @@ export default async function ProductPage({
 }) {
   const { lang, slug } = await params;
   const local = lang as Locale;
-  const [product, secondmodal] = await Promise.all([
+  const [product, secondmodal, salesDriveData] = await Promise.all([
     getProductBySlug(local, slug),
     getSecondModalData(local),
+    getSalesDriveData(local).catch(() => null),
   ]);
   if (!product) notFound();
-
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: stripMarkdown(product.heading),
-    description: stripMarkdown(product.description),
-    image: product.productpicture.url,
-    sku: product.id,
-    offers: product.capacity.map((capacity) => {
-      return {
-        "@type": "Offer",
-        priceCurrency: "UAH",
-        price: capacity.price ? String(capacity.price) : "0",
-        availability: "https://schema.org/InStock",
-      };
-    }),
-  };
 
   return (
     <>
       <ProductPageContent product={product} lang={local} secondmodal={secondmodal} />
-      <Script
+      <StructuredData
         id={`product-schema-${product.id}`}
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        schema={createProductPageSchema({
+          lang: local,
+          product,
+          salesDriveProducts: salesDriveData?.products,
+        })}
       />
     </>
   );

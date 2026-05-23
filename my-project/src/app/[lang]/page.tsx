@@ -4,7 +4,7 @@ import { HeroSection } from "@/page-components/HeroSection";
 import { ProductsSection } from "@/page-components/ProductsSection";
 import FreeDelivery from "@/components/FreeDelivery";
 
-import { gql } from "@apollo/client";
+import { gql, type TypedDocumentNode } from "@apollo/client";
 import { getClient } from "../../utils/apollo-client";
 import { Metadata } from "next/types";
 import { Locale } from "@/i18n/routing";
@@ -12,6 +12,8 @@ import { DatoHomeData } from "@/types/dato";
 import { cacheLife, cacheTag } from "next/cache";
 import { getCanonicalUrl, getLanguageAlternates } from "@/utils/seo";
 import { PixelPageView } from "@/components/PixelPageView";
+import { StructuredData } from "@/components/StructuredData";
+import { createHomeSchema } from "@/utils/schema";
 
 import Video from "@/page-components/Video";
 
@@ -116,7 +118,7 @@ const queryEN = gql`
       returnToShopping
     }
   }
-`;
+` as TypedDocumentNode<DatoHomeData>;
 
 const queryUA = gql`
   {
@@ -219,7 +221,7 @@ const queryUA = gql`
       returnToShopping
     }
   }
-`;
+` as TypedDocumentNode<DatoHomeData>;
 
 export async function generateMetadata({
   params,
@@ -279,7 +281,7 @@ async function getHomeData(local: Locale): Promise<DatoHomeData> {
   cacheTag(`dato:home:${local}`);
 
   const query = local === "uk" ? queryUA : queryEN;
-  const { data } = await getClient().query<DatoHomeData>({ query });
+  const { data } = await getClient().query({ query });
   if (!data) {
     throw new Error("Failed to load homepage data from DatoCMS");
   }
@@ -294,37 +296,12 @@ export default async function Home({
   const { lang } = await params;
   const local = lang as Locale;
   const data = await getHomeData(local);
-  const siteUrl = getCanonicalUrl(local);
-  const organizationSchema = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Organization",
-        "@id": `${siteUrl}#organization`,
-        name: "Emmy & Lily",
-        url: siteUrl,
-        logo: `${siteUrl}/favicon/android-chrome-512x512.png`,
-      },
-      {
-        "@type": "WebSite",
-        "@id": `${siteUrl}#website`,
-        url: siteUrl,
-        name: "Emmy & Lily",
-        publisher: {
-          "@id": `${siteUrl}#organization`,
-        },
-        inLanguage: local,
-      },
-    ],
-  };
 
   return (
     <div className="bg-bg_secondary flex grow flex-col">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(organizationSchema),
-        }}
+      <StructuredData
+        id="home-schema"
+        schema={createHomeSchema({ lang: local, products: data.allProducts })}
       />
       <HeroSection data={data} lang={local} />
       <Video data={data} />

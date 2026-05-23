@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql, type TypedDocumentNode } from "@apollo/client";
 import Basket from "@/page-components/Basket";
 import { getClient } from "@/utils/apollo-client";
 import { Locale } from "@/i18n/routing";
@@ -76,7 +76,7 @@ const queryEN = gql`
       returnToShopping
     }
   }
-`;
+` as TypedDocumentNode<DatoBasketData>;
 
 const queryUA = gql`
   {
@@ -146,7 +146,7 @@ const queryUA = gql`
       returnToShopping
     }
   }
-`;
+` as TypedDocumentNode<DatoBasketData>;
 
 async function getBasketData(local: Locale): Promise<DatoBasketData> {
   "use cache";
@@ -154,7 +154,7 @@ async function getBasketData(local: Locale): Promise<DatoBasketData> {
   cacheTag(`dato:basket:${local}`);
 
   const query = local === "uk" ? queryUA : queryEN;
-  const { data } = await getClient().query<DatoBasketData>({ query });
+  const { data } = await getClient().query({ query });
   if (!data) {
     throw new Error("Failed to load basket data from DatoCMS");
   }

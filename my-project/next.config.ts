@@ -17,22 +17,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  // async redirects() {
-  //   return [
-  //     // Basic redirect
-  //     {
-  //       source: "/en",
-  //       destination: "/uk",
-  //       permanent: true,
-  //     },
-  //     // Wildcard path matching
-  //     {
-  //       source: "/en/:slug",
-  //       destination: "/uk/:slug",
-  //       permanent: true,
-  //     },
-  //   ];
-  // },
 };
 
 export default withNextIntl(nextConfig);

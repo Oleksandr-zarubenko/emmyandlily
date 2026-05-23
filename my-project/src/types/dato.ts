@@ -24,6 +24,7 @@ export interface DatoProductCapacity {
 
 export interface DatoProduct {
   id: string;
+  _updatedAt?: string;
   preview?: string | null;
   heading: string;
   description: string;

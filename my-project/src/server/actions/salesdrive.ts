@@ -29,11 +29,18 @@ export async function getSalesDriveData(lang: Locale): Promise<SalesDriveData> {
     { cache: "no-store" }
   );
   if (!response.ok) {
-    throw new Error(`SalesDrive request failed: ${response.status}`);
+    console.error(`SalesDrive request failed: ${response.status}`);
+    return { products: [], currencies: [] };
   }
   const xmlData = await response.text();
 
-  const parsedData = await parseXml(xmlData);
+  const parsedData = await parseXml(xmlData).catch((error) => {
+    console.error("SalesDrive XML parse failed:", error);
+    return null;
+  });
+  if (!parsedData) {
+    return { products: [], currencies: [] };
+  }
   const products = extractProducts(parsedData);
   const currencies = extractCurrencies(parsedData);
 

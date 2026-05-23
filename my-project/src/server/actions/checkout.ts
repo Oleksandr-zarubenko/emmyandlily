@@ -3,6 +3,7 @@
 import nodemailer from "nodemailer";
 import { Locale } from "@/i18n/routing";
 import { FormPostBody } from "@/types/order";
+import { getCanonicalUrl } from "@/utils/seo";
 
 type MonoInvoiceInput = {
   amount: number;
@@ -113,7 +114,7 @@ export async function createMonobankInvoice(
           comment: input.productNamesString,
           customerEmails: [],
         },
-        redirectUrl: `http://emmyandlily.com/${input.lang}/thank-you`,
+        redirectUrl: getCanonicalUrl(input.lang, "/thank-you"),
         webHookUrl:
           "https://example.com/mono/acquiring/webhook/maybesomegibberishuniquestringbutnotnecessarily",
         validity: 3600,

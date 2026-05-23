@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql, type TypedDocumentNode } from "@apollo/client";
 import { getClient } from "@/utils/apollo-client";
 import { Locale } from "@/i18n/routing";
 import { cacheLife, cacheTag } from "next/cache";
@@ -6,13 +6,35 @@ import { Metadata } from "next";
 import { getCanonicalUrl, getLanguageAlternates } from "@/utils/seo";
 import { OfferTrackedContent } from "./OfferTrackedContent";
 import { PixelPageView } from "@/components/PixelPageView";
+import { StructuredData } from "@/components/StructuredData";
+import { createContentPageSchema } from "@/utils/schema";
+
+const offerMetadataByLocale = {
+  uk: {
+    title: "Публічна оферта | Emmy & Lily",
+    description:
+      "Ознайомтеся з умовами публічної оферти Emmy & Lily для оформлення та покупки товарів на сайті.",
+  },
+  en: {
+    title: "Public Offer | Emmy & Lily",
+    description:
+      "Read the Emmy & Lily public offer with the terms and conditions for placing and completing orders on the website.",
+  },
+} as const;
+
+type OfferData = {
+  offer: {
+    offertext: string;
+  };
+};
+
 const queryEN = gql`
   {
     offer {
       offertext
     }
   }
-`;
+` as TypedDocumentNode<OfferData>;
 
 const queryUA = gql`
   {
@@ -20,15 +42,15 @@ const queryUA = gql`
       offertext
     }
   }
-`;
+` as TypedDocumentNode<OfferData>;
 
-async function getOfferData(local: Locale): Promise<{ offer: { offertext: string } }> {
+async function getOfferData(local: Locale): Promise<OfferData> {
   "use cache";
   cacheLife("minutes");
   cacheTag(`dato:offer:${local}`);
 
   const query = local === "uk" ? queryUA : queryEN;
-  const { data } = await getClient().query<{ offer: { offertext: string } }>({
+  const { data } = await getClient().query({
     query,
   });
   if (!data) {
@@ -43,22 +65,10 @@ export async function generateMetadata({
   params: Promise<{ lang: Locale }>;
 }): Promise<Metadata> {
   const { lang } = await params;
-  const metadataByLocale = {
-    uk: {
-      title: "Публічна оферта | Emmy & Lily",
-      description:
-        "Ознайомтеся з умовами публічної оферти Emmy & Lily для оформлення та покупки товарів на сайті.",
-    },
-    en: {
-      title: "Public Offer | Emmy & Lily",
-      description:
-        "Read the Emmy & Lily public offer with the terms and conditions for placing and completing orders on the website.",
-    },
-  } as const;
 
   return {
-    title: metadataByLocale[lang].title,
-    description: metadataByLocale[lang].description,
+    title: offerMetadataByLocale[lang].title,
+    description: offerMetadataByLocale[lang].description,
     alternates: {
       canonical: getCanonicalUrl(lang, "/offer"),
       languages: getLanguageAlternates("/offer"),
@@ -74,6 +84,7 @@ export default async function OfferPage({
   const { lang } = await params;
   const local = lang as Locale;
   const data = await getOfferData(local);
+  const meta = offerMetadataByLocale[local];
   const headingByLocale = {
     uk: "Публічна оферта",
     en: "Public Offer",
@@ -81,12 +92,24 @@ export default async function OfferPage({
 
   return (
     <>
+      <StructuredData
+        id="offer-schema"
+        schema={createContentPageSchema({
+          lang: local,
+          path: "/offer",
+          title: meta.title,
+          description: meta.description,
+        })}
+      />
       <section className="grow py-32">
         <div className="container flex flex-col gap-3">
           <h1 className="mb-8 text-t32 font-bold tracking-wider">
             {headingByLocale[local]}
           </h1>
-          <OfferTrackedContent text={data?.offer.offertext || "offer"} lang={local} />
+          <OfferTrackedContent
+            text={data?.offer.offertext || "offer"}
+            lang={local}
+          />
         </div>
       </section>
       <PixelPageView eventName="OfferPageView" />
