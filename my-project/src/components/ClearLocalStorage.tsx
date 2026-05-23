@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useRef, useState } from "react";
 import { Markdown } from "@/components/Markdown";
 import { useCheckoutStore } from "@/store/checkoutStore";
@@ -19,13 +20,7 @@ export function ClearLocalStorage({
   const resetCheckout = useCheckoutStore((store) => store.resetCheckout);
 
   useEffect(() => {
-    if (hasSentRef.current) {
-      return;
-    }
-
-    if (!email) {
-      setIsSuccess(false);
-      setStatus("❌ Email is missing");
+    if (hasSentRef.current || !email) {
       return;
     }
 
@@ -41,26 +36,28 @@ export function ClearLocalStorage({
         const result = await sendOrderEmail({
           to: email,
           subject: "Emmy&Lily Замовлення",
-          message: `Ваше замовлення було прийняте! 🛍️\n\n📦 Список товарів:\n${productList}`,
+          message: `Ваше замовлення було прийняте!\n\nСписок товарів:\n${productList}`,
         });
 
         if (result.success) {
           setIsSuccess(true);
-          setStatus("✅ Email sent successfully!");
+          setStatus("Email sent successfully!");
         } else {
           setIsSuccess(false);
-          setStatus("❌ Failed to send email: " + (result.error || "unknown error"));
+          setStatus(
+            "Failed to send email: " + (result.error || "unknown error")
+          );
         }
       } catch (error) {
         setIsSuccess(false);
-        setStatus("❌ Error: " + (error as Error).message);
+        setStatus("Error: " + (error as Error).message);
       } finally {
         resetCheckout();
         setLoading(false);
       }
     };
 
-    sendEmail();
+    void sendEmail();
   }, [email, cartItems, resetCheckout]);
 
   return (
@@ -73,7 +70,7 @@ export function ClearLocalStorage({
         </div>
       ) : (
         <div className="flex flex-col items-center">
-          <p>{status}</p>
+          <p>{email ? status : "Email is missing"}</p>
         </div>
       )}
     </div>

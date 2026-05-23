@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql, type TypedDocumentNode } from "@apollo/client";
 import { getClient } from "@/utils/apollo-client";
 import { Locale } from "@/i18n/routing";
 import Order from "@/page-components/Order";
@@ -91,7 +91,7 @@ const queryEN = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<DatoOrderData>;
 
 const queryUA = gql`
   {
@@ -177,7 +177,7 @@ const queryUA = gql`
       }
     }
   }
-`;
+` as TypedDocumentNode<DatoOrderData>;
 
 async function getOrderData(local: Locale): Promise<DatoOrderData> {
   "use cache";
@@ -185,7 +185,7 @@ async function getOrderData(local: Locale): Promise<DatoOrderData> {
   cacheTag(`dato:order:${local}`);
 
   const query = local === "uk" ? queryUA : queryEN;
-  const { data } = await getClient().query<DatoOrderData>({ query });
+  const { data } = await getClient().query({ query });
   if (!data) {
     throw new Error("Failed to load order data from DatoCMS");
   }

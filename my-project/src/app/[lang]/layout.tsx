@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Footer from "@/components/footer/footer";
 import { Open_Sans } from "next/font/google";
 import { Abril_Fatface } from "next/font/google";
-import { gql } from "@apollo/client";
+import { gql, type TypedDocumentNode } from "@apollo/client";
 
 import "../globals.css";
 import { Locale } from "@/i18n/routing";
@@ -44,7 +44,7 @@ const queryEN = gql`
       offer
     }
   }
-`;
+` as TypedDocumentNode<DatoLayoutData>;
 
 const queryUA = gql`
   {
@@ -57,7 +57,7 @@ const queryUA = gql`
       offer
     }
   }
-`;
+` as TypedDocumentNode<DatoLayoutData>;
 
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
@@ -95,7 +95,7 @@ async function getLayoutData(lang: Locale): Promise<DatoLayoutData> {
   cacheTag(`dato:layout:${lang}`);
 
   const query = lang === "uk" ? queryUA : queryEN;
-  const { data } = await getClient().query<DatoLayoutData>({ query });
+  const { data } = await getClient().query({ query });
   if (!data) {
     throw new Error("Failed to load layout data from DatoCMS");
   }

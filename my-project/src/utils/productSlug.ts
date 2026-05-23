@@ -12,7 +12,9 @@ const normalizeHeading = (value: string): string =>
     .replace(/-+/g, "-")
     .replace(/^-|-$/g, "");
 
-export const getProductSlug = (product: Pick<DatoProduct, "id" | "heading">): string => {
+export const getProductSlug = (
+  product: Pick<DatoProduct, "id" | "heading">
+): string => {
   const base = normalizeHeading(product.heading) || "product";
   return `${base}${SLUG_SEPARATOR}${product.id}`;
 };
