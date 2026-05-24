@@ -1,6 +1,6 @@
 ﻿"use client";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { convertPrice } from "@/utils/convertPrice/convertPrice";
 
 import { BurgerCross } from "@/components/icons/BurgerCross";
@@ -9,52 +9,64 @@ import { Link } from "@/i18n/navigation";
 import { Locale, locales } from "@/i18n/routing";
 import CheaperTogether from "@/components/basket/cheaperTogether";
 import DropDown from "@/components/basket/DropdownButton";
-import getData from "@/utils/api/api";
 import { DatoBasketData } from "@/types/dato";
 import { SalesDriveData } from "@/types/salesdrive";
 import { useCheckoutStore } from "@/store/checkoutStore";
 import { DEFAULT_SITE_DISCOUNT_PERCENT } from "@/constants/discounts";
+import { useShallow } from "zustand/react/shallow";
 
-const Basket = ({ data, lang }: { data: DatoBasketData; lang: Locale }) => {
+const Basket = ({
+  data,
+  lang,
+  salesDriveData,
+}: {
+  data: DatoBasketData;
+  lang: Locale;
+  salesDriveData: SalesDriveData;
+}) => {
   const en = locales[1];
-  const tovar = useCheckoutStore((state) => state.cartItems);
-  const quantities = useCheckoutStore((state) => state.quantities);
-  const totalPrice = useCheckoutStore((state) => state.totalPrice);
-  const promoCode = useCheckoutStore((state) => state.promoCode);
-  const isInputOpen = useCheckoutStore((state) => state.isInputOpen);
-  const discountAmount = useCheckoutStore((state) => state.discountAmount);
-  const isValid = useCheckoutStore((state) => state.isValid);
-  const isPromoCodeValid = useCheckoutStore((state) => state.isPromoCodeValid);
-  const setQuantities = useCheckoutStore((state) => state.setQuantities);
-  const setTotalPrice = useCheckoutStore((state) => state.setTotalPrice);
-  const setPromoCode = useCheckoutStore((state) => state.setPromoCode);
-  const setPromoCodePartner = useCheckoutStore((state) => state.setPromoCodePartner);
-  const setIsValid = useCheckoutStore((state) => state.setIsValid);
-  const setIsInputOpen = useCheckoutStore((state) => state.setIsInputOpen);
-  const setIsButtonClicked = useCheckoutStore((state) => state.setIsButtonClicked);
-  const setDiscountAmount = useCheckoutStore((state) => state.setDiscountAmount);
-  const setIsPromoCodeValid = useCheckoutStore((state) => state.setIsPromoCodeValid);
-  const removeCartItem = useCheckoutStore((state) => state.removeCartItem);
+  const {
+    tovar,
+    quantities,
+    totalPrice,
+    promoCode,
+    isInputOpen,
+    discountAmount,
+    isValid,
+    isPromoCodeValid,
+    setQuantities,
+    setPromoCode,
+    setPromoCodePartner,
+    setIsValid,
+    setIsInputOpen,
+    setIsButtonClicked,
+    setIsPromoCodeValid,
+    setPromoData,
+    removeCartItem,
+  } = useCheckoutStore(
+    useShallow((state) => ({
+      tovar: state.cartItems,
+      quantities: state.quantities,
+      totalPrice: state.totalPrice,
+      promoCode: state.promoCode,
+      isInputOpen: state.isInputOpen,
+      discountAmount: state.discountAmount,
+      isValid: state.isValid,
+      isPromoCodeValid: state.isPromoCodeValid,
+      setQuantities: state.setQuantities,
+      setPromoCode: state.setPromoCode,
+      setPromoCodePartner: state.setPromoCodePartner,
+      setIsValid: state.setIsValid,
+      setIsInputOpen: state.setIsInputOpen,
+      setIsButtonClicked: state.setIsButtonClicked,
+      setIsPromoCodeValid: state.setIsPromoCodeValid,
+      setPromoData: state.setPromoData,
+      removeCartItem: state.removeCartItem,
+    }))
+  );
   const [isHovered, setIsHovered] = useState(false);
 
-  const [state, setState] = useState<SalesDriveData>({ products: [], currencies: [] });
-
-  useEffect(() => {
-    let cancelled = false;
-    void (async () => {
-      try {
-        const data = await getData(lang);
-        if (!cancelled) {
-          setState(data);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [lang]);
+  const state = salesDriveData;
 
   const calculateBaseTotal = () => {
     let newTotalPrice = 0;
@@ -108,8 +120,7 @@ const Basket = ({ data, lang }: { data: DatoBasketData; lang: Locale }) => {
     setPromoCode(inputPromoCode);
     setIsPromoCodeValid(false);
     setPromoCodePartner("");
-    setDiscountAmount(defaultDiscountState.discountAmount);
-    setTotalPrice(defaultDiscountState.totalPrice);
+    setPromoData(defaultDiscountState);
 
     const isValidPromo = Boolean(findPromoMatch(inputPromoCode));
 
@@ -134,8 +145,7 @@ const Basket = ({ data, lang }: { data: DatoBasketData; lang: Locale }) => {
 
       setPromoCodePartner(matchedPromo.namePartner);
       setIsPromoCodeValid(true);
-      setDiscountAmount(promoDiscountState.discountAmount);
-      setTotalPrice(promoDiscountState.totalPrice);
+      setPromoData(promoDiscountState);
     } else {
       const defaultDiscountState = calculateDiscountState(
         DEFAULT_SITE_DISCOUNT_PERCENT,
@@ -144,8 +154,7 @@ const Basket = ({ data, lang }: { data: DatoBasketData; lang: Locale }) => {
 
       setIsPromoCodeValid(false);
       setPromoCodePartner("");
-      setTotalPrice(defaultDiscountState.totalPrice);
-      setDiscountAmount(defaultDiscountState.discountAmount);
+      setPromoData(defaultDiscountState);
     }
   };
 
@@ -161,8 +170,7 @@ const Basket = ({ data, lang }: { data: DatoBasketData; lang: Locale }) => {
     );
 
     if (!isPromoCodeValid) {
-      setTotalPrice(defaultDiscountState.totalPrice);
-      setDiscountAmount(defaultDiscountState.discountAmount);
+      setPromoData(defaultDiscountState);
       return;
     }
 
@@ -172,8 +180,7 @@ const Basket = ({ data, lang }: { data: DatoBasketData; lang: Locale }) => {
       setIsPromoCodeValid(false);
       setPromoCodePartner("");
       setIsValid(false);
-      setTotalPrice(defaultDiscountState.totalPrice);
-      setDiscountAmount(defaultDiscountState.discountAmount);
+      setPromoData(defaultDiscountState);
       return;
     }
 
@@ -182,18 +189,16 @@ const Basket = ({ data, lang }: { data: DatoBasketData; lang: Locale }) => {
       baseTotal
     );
 
-    setDiscountAmount(promoDiscountState.discountAmount);
-    setTotalPrice(promoDiscountState.totalPrice);
+    setPromoData(promoDiscountState);
   }, [
     quantities,
     tovar,
     promoCode,
     isPromoCodeValid,
-    setDiscountAmount,
     setIsPromoCodeValid,
     setIsValid,
     setPromoCodePartner,
-    setTotalPrice,
+    setPromoData,
   ]);
 
   const handleQuantityChange = (capacity: string, value: number) => {
@@ -209,16 +214,18 @@ const Basket = ({ data, lang }: { data: DatoBasketData; lang: Locale }) => {
   };
 
   const isButtonDisabled = totalPrice === 0;
-  const availableIds = ["id_28", "id_27", "id_26"];
+  const togetherProducts = useMemo(() => {
+    const availableIds = new Set(["id_28", "id_27", "id_26"]);
 
-  const TogetherProducts = data.allProducts.filter((product) => {
-    return product.capacity.some((capacity) => {
-      const correspondingProduct = state.products.find(
-        (p) => p.id === capacity.idCrm && p.available === "true"
-      );
-      return correspondingProduct && availableIds.includes(capacity.idCrm);
-    });
-  });
+    return data.allProducts.filter((product) =>
+      product.capacity.some((capacity) => {
+        const correspondingProduct = state.products.find(
+          (p) => p.id === capacity.idCrm && p.available === "true"
+        );
+        return correspondingProduct && availableIds.has(capacity.idCrm);
+      })
+    );
+  }, [data.allProducts, state.products]);
 
   return (
     <section className="container flex-grow justify-between py-40 xl:flex">
@@ -236,19 +243,19 @@ const Basket = ({ data, lang }: { data: DatoBasketData; lang: Locale }) => {
             <table className="w-full ">
               <thead>
                 <tr className="smOnly:hidden mdOnly:hidden">
-                  <th className="w-[30%] py-2 pb-6 text-left text-t14 italic text-[#333333] opacity-60 mdOnly:w-[20%]">
+                  <th scope="col" className="w-[30%] py-2 pb-6 text-left text-t14 italic text-[#333333] opacity-60 mdOnly:w-[20%]">
                     {data.basket.name}
                   </th>
-                  <th className="w-[10%] py-2 pb-6 text-left  text-t14 italic text-[#333333] opacity-60 mdOnly:w-[20%]">
+                  <th scope="col" className="w-[10%] py-2 pb-6 text-left  text-t14 italic text-[#333333] opacity-60 mdOnly:w-[20%]">
                     {data.basket.price}
                   </th>
-                  <th className="w-[25%] py-2 pb-6 text-center  text-t14 italic text-[#333333] opacity-60 mdOnly:w-[30%]">
+                  <th scope="col" className="w-[25%] py-2 pb-6 text-center  text-t14 italic text-[#333333] opacity-60 mdOnly:w-[30%]">
                     {data.basket.number}
                   </th>
-                  <th className="w-[20%]  py-2 pb-6 text-t14 italic text-[#333333] opacity-60">
+                  <th scope="col" className="w-[20%]  py-2 pb-6 text-t14 italic text-[#333333] opacity-60">
                     {data.basket.sum}
                   </th>
-                  <th className="w-[15%] py-2 pb-6 text-right  text-t14 italic text-[#333333] opacity-60 mdOnly:w-[10%]">
+                  <th scope="col" className="w-[15%] py-2 pb-6 text-right  text-t14 italic text-[#333333] opacity-60 mdOnly:w-[10%]">
                     {data.basket.delete}
                   </th>
                 </tr>
@@ -340,6 +347,8 @@ const Basket = ({ data, lang }: { data: DatoBasketData; lang: Locale }) => {
                       <div className="flex justify-evenly mdOnly:px-3">
                         <div className=" border-text-[#33333399] border-2 border-solid mdOnly:w-24">
                           <button
+                            type="button"
+                            aria-label={`${lang === "en" ? "Decrease quantity for" : "Зменшити кількість"} ${item.productName.replace(/#/g, "")}`}
                             onClick={() => handleQuantityChange(item.id, -1)}
                             className="bg-white p-[4px] px-2 text-[#33333399] hover:text-black"
                             disabled={quantities[item.id] <= 1}
@@ -347,6 +356,7 @@ const Basket = ({ data, lang }: { data: DatoBasketData; lang: Locale }) => {
                             -
                           </button>
                           <input
+                            aria-label={`${lang === "en" ? "Quantity for" : "Кількість"} ${item.productName.replace(/#/g, "")}`}
                             value={quantities[item.id] || 1}
                             onChange={(e) => {
                               const value = parseInt(e.target.value, 10) || 1;
@@ -358,6 +368,8 @@ const Basket = ({ data, lang }: { data: DatoBasketData; lang: Locale }) => {
                             className="w-10 border-gray-300 p-[4px] text-center text-[#33333399]"
                           />
                           <button
+                            type="button"
+                            aria-label={`${lang === "en" ? "Increase quantity for" : "Збільшити кількість"} ${item.productName.replace(/#/g, "")}`}
                             onClick={() => handleQuantityChange(item.id, 1)}
                             className="bg-white p-[4px] px-2 text-[#33333399] hover:text-black"
                           >
@@ -407,6 +419,8 @@ const Basket = ({ data, lang }: { data: DatoBasketData; lang: Locale }) => {
                     </td>
                     <td className="ml-auto py-2 text-right">
                       <button
+                        type="button"
+                        aria-label={`${lang === "en" ? "Remove" : "Видалити"} ${item.productName.replace(/#/g, "")}`}
                         onClick={() => handleRemove(item.id)}
                         className=" px-4 py-2 text-black "
                       >
@@ -441,6 +455,8 @@ const Basket = ({ data, lang }: { data: DatoBasketData; lang: Locale }) => {
                         <div className="flex ">
                           <div className="border-text-[#33333399] border-2 border-solid">
                             <button
+                              type="button"
+                              aria-label={`${lang === "en" ? "Decrease quantity for" : "Зменшити кількість"} ${item.productName.replace(/#/g, "")}`}
                               onClick={() => handleQuantityChange(item.id, -1)}
                               className="bg-white p-[4px] px-2 text-[#33333399] hover:text-black"
                               disabled={quantities[item.id] <= 1}
@@ -448,6 +464,7 @@ const Basket = ({ data, lang }: { data: DatoBasketData; lang: Locale }) => {
                               -
                             </button>
                             <input
+                              aria-label={`${lang === "en" ? "Quantity for" : "Кількість"} ${item.productName.replace(/#/g, "")}`}
                               value={quantities[item.id] || 1}
                               onChange={(e) => {
                                 const value = parseInt(e.target.value, 10) || 1;
@@ -459,6 +476,8 @@ const Basket = ({ data, lang }: { data: DatoBasketData; lang: Locale }) => {
                               className="w-10 border-gray-300 p-[4px] text-center text-[#33333399]"
                             />
                             <button
+                              type="button"
+                              aria-label={`${lang === "en" ? "Increase quantity for" : "Збільшити кількість"} ${item.productName.replace(/#/g, "")}`}
                               onClick={() => handleQuantityChange(item.id, 1)}
                               className="bg-white p-[4px] px-2 text-[#33333399] hover:text-black"
                             >
@@ -562,6 +581,8 @@ const Basket = ({ data, lang }: { data: DatoBasketData; lang: Locale }) => {
                     </td>
                     <td className="ml-auto py-2 text-right">
                       <button
+                        type="button"
+                        aria-label={`${lang === "en" ? "Remove" : "Видалити"} ${item.productName.replace(/#/g, "")}`}
                         onClick={() => handleRemove(item.id)}
                         className=" px-4 py-2 text-black "
                       >
@@ -577,6 +598,9 @@ const Basket = ({ data, lang }: { data: DatoBasketData; lang: Locale }) => {
 
         <div className="mb-8 text-end">
           <button
+            type="button"
+            aria-expanded={isInputOpen}
+            aria-controls="promoCodeInput"
             className="mb-6 ml-auto flex w-[225px] justify-between text-t14 text-black xl:text-t16"
             onClick={handleToggleInput}
           >
@@ -591,6 +615,7 @@ const Basket = ({ data, lang }: { data: DatoBasketData; lang: Locale }) => {
                   <input
                     id="promoCodeInput"
                     type="text"
+                    aria-label={lang === "en" ? "Promo code" : "Промокод"}
                     value={promoCode}
                     disabled={true}
                     placeholder={
@@ -601,6 +626,8 @@ const Basket = ({ data, lang }: { data: DatoBasketData; lang: Locale }) => {
                     className="w-[225px] border-gray-300 p-2 text-t14 xl:text-t16"
                   />
                   <button
+                    type="button"
+                    aria-label={lang === "en" ? "Remove promo code" : "Видалити промокод"}
                     onClick={() => {
                       setPromoCode("");
                       setPromoCodePartner("");
@@ -612,8 +639,7 @@ const Basket = ({ data, lang }: { data: DatoBasketData; lang: Locale }) => {
                         DEFAULT_SITE_DISCOUNT_PERCENT,
                         baseTotal
                       );
-                      setDiscountAmount(defaultDiscountState.discountAmount);
-                      setTotalPrice(defaultDiscountState.totalPrice);
+                      setPromoData(defaultDiscountState);
                     }}
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
@@ -627,6 +653,7 @@ const Basket = ({ data, lang }: { data: DatoBasketData; lang: Locale }) => {
                   <input
                     id="promoCodeInput"
                     type="text"
+                    aria-label={lang === "en" ? "Promo code" : "Промокод"}
                     value={promoCode}
                     onChange={handlePromoCodeChange}
                     placeholder={
@@ -639,6 +666,8 @@ const Basket = ({ data, lang }: { data: DatoBasketData; lang: Locale }) => {
                     }`}
                   />
                   <button
+                    type="button"
+                    aria-label={lang === "en" ? "Apply promo code" : "Застосувати промокод"}
                     onClick={handleVerifyPromoCode}
                     disabled={!isValid || isPromoCodeValid}
                     className="absolute right-0 top-0 mt-[3px] w-10 border-none bg-black px-2 py-2 text-white disabled:cursor-not-allowed disabled:opacity-50"
@@ -708,10 +737,9 @@ const Basket = ({ data, lang }: { data: DatoBasketData; lang: Locale }) => {
         </div>
         <div className="mb-[66px] xl:hidden">
           <CheaperTogether
-            data={TogetherProducts}
+            data={togetherProducts}
             modal={data}
             state={state}
-            setState={setState}
             lang={lang}
             en={en}
           />
@@ -720,10 +748,9 @@ const Basket = ({ data, lang }: { data: DatoBasketData; lang: Locale }) => {
       </div>
       <div className="smOnly:hidden mdOnly:hidden">
         <CheaperTogether
-          data={TogetherProducts}
+          data={togetherProducts}
           modal={data}
           state={state}
-          setState={setState}
           lang={lang}
           en={en}
         />

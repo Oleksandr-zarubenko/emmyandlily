@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import Footer from "@/components/footer/footer";
 import { Open_Sans } from "next/font/google";
 import { Abril_Fatface } from "next/font/google";
-import { gql, type TypedDocumentNode } from "@apollo/client";
 
 import "../globals.css";
 import { Locale } from "@/i18n/routing";
@@ -19,6 +18,7 @@ import { DatoLayoutData } from "@/types/dato";
 import { cacheLife, cacheTag } from "next/cache";
 import { getSiteUrl } from "@/utils/seo";
 import AnalyticsLayout from "@/components/AnatyticsLayout";
+import { layoutQueryByLocale } from "@/server/dato/queries/layout";
 
 const libre = Open_Sans({
   weight: ["400"],
@@ -32,32 +32,6 @@ const abril = Abril_Fatface({
   subsets: ["latin-ext"],
   variable: "--font-abril",
 });
-
-const queryEN = gql`
-  {
-    navigation {
-      whoweare
-      ourproducts
-      aboutus
-      contacts
-      policy
-      offer
-    }
-  }
-` as TypedDocumentNode<DatoLayoutData>;
-
-const queryUA = gql`
-  {
-    navigation(locale: uk) {
-      whoweare
-      ourproducts
-      aboutus
-      contacts
-      policy
-      offer
-    }
-  }
-` as TypedDocumentNode<DatoLayoutData>;
 
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
@@ -94,8 +68,9 @@ async function getLayoutData(lang: Locale): Promise<DatoLayoutData> {
   cacheLife("minutes");
   cacheTag(`dato:layout:${lang}`);
 
-  const query = lang === "uk" ? queryUA : queryEN;
-  const { data } = await getClient().query({ query });
+  const { data } = await getClient().query({
+    query: layoutQueryByLocale[lang],
+  });
   if (!data) {
     throw new Error("Failed to load layout data from DatoCMS");
   }
@@ -138,7 +113,7 @@ export default async function RootLayout({
           <Suspense fallback={null}>
             <FacebookPixelEvents />
           </Suspense>
-          {children}
+          <main className="flex grow flex-col">{children}</main>
           <Footer data={data} />
         </NextIntlClientProvider>
 

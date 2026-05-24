@@ -1,4 +1,3 @@
-import { gql, type TypedDocumentNode } from "@apollo/client";
 import { getClient } from "@/utils/apollo-client";
 import { Locale } from "@/i18n/routing";
 import { cacheLife, cacheTag } from "next/cache";
@@ -8,6 +7,10 @@ import { OfferTrackedContent } from "./OfferTrackedContent";
 import { PixelPageView } from "@/components/PixelPageView";
 import { StructuredData } from "@/components/StructuredData";
 import { createContentPageSchema } from "@/utils/schema";
+import {
+  offerQueryByLocale,
+  type OfferData,
+} from "@/server/dato/queries/contentPages";
 
 const offerMetadataByLocale = {
   uk: {
@@ -22,36 +25,13 @@ const offerMetadataByLocale = {
   },
 } as const;
 
-type OfferData = {
-  offer: {
-    offertext: string;
-  };
-};
-
-const queryEN = gql`
-  {
-    offer {
-      offertext
-    }
-  }
-` as TypedDocumentNode<OfferData>;
-
-const queryUA = gql`
-  {
-    offer(locale: uk) {
-      offertext
-    }
-  }
-` as TypedDocumentNode<OfferData>;
-
 async function getOfferData(local: Locale): Promise<OfferData> {
   "use cache";
   cacheLife("minutes");
   cacheTag(`dato:offer:${local}`);
 
-  const query = local === "uk" ? queryUA : queryEN;
   const { data } = await getClient().query({
-    query,
+    query: offerQueryByLocale[local],
   });
   if (!data) {
     throw new Error("Failed to load offer data from DatoCMS");

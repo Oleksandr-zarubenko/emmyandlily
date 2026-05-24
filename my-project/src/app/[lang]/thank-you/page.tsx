@@ -1,4 +1,3 @@
-import { gql, type TypedDocumentNode } from "@apollo/client";
 import { getClient } from "@/utils/apollo-client";
 import { Locale } from "@/i18n/routing";
 import { Markdown } from "@/components/Markdown";
@@ -12,42 +11,19 @@ import { cacheLife, cacheTag } from "next/cache";
 import { Metadata } from "next";
 import { getCanonicalUrl, getLanguageAlternates } from "@/utils/seo";
 import { PixelPageView } from "@/components/PixelPageView";
+import {
+  thankYouQueryByLocale,
+  type ThankYouData,
+} from "@/server/dato/queries/thankYou";
 
-type Data = {
-  thankyoupage: {
-    maintext: string;
-    buttontext: string;
-    additionaltext: string;
-  };
-};
-
-const queryEN = gql`
-  {
-    thankyoupage {
-      additionaltext
-      buttontext
-      maintext
-    }
-  }
-` as TypedDocumentNode<Data>;
-
-const queryUA = gql`
-  {
-    thankyoupage(locale: uk) {
-      additionaltext
-      buttontext
-      maintext
-    }
-  }
-` as TypedDocumentNode<Data>;
-
-async function getThankYouData(local: Locale): Promise<Data> {
+async function getThankYouData(local: Locale): Promise<ThankYouData> {
   "use cache";
   cacheLife("minutes");
   cacheTag(`dato:thankyou:${local}`);
 
-  const query = local === "uk" ? queryUA : queryEN;
-  const { data } = await getClient().query({ query });
+  const { data } = await getClient().query({
+    query: thankYouQueryByLocale[local],
+  });
   if (!data) {
     throw new Error("Failed to load thank-you data from DatoCMS");
   }

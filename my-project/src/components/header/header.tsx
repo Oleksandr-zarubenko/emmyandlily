@@ -20,7 +20,7 @@ const Header = ({ lang, data }: { data: DatoLayoutData; lang: Locale }) => {
         >
           <Image
             src={Logo}
-            alt="logo"
+            alt="Emmy & Lily"
             width={160}
             height={40}
             className="h-10 w-40 object-contain"
@@ -39,7 +39,11 @@ const Header = ({ lang, data }: { data: DatoLayoutData; lang: Locale }) => {
             eventName="header_logo_click"
             eventParams={{ placement: "desktop", page: "global" }}
           >
-            <Image src={Logo} alt="logo" className="h-10 w-40 object-contain" />
+            <Image
+              src={Logo}
+              alt="Emmy & Lily"
+              className="h-10 w-40 object-contain"
+            />
           </TrackedLink>
         </div>
         <nav className="flex flex-col items-center text-t16 md:flex-row md:gap-4 xl:gap-6">

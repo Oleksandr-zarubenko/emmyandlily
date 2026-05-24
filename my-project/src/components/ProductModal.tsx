@@ -124,6 +124,7 @@ export const ProductModal = ({
     <>
       <PathModalXl />
       <button
+        type="button"
         className="relative mb-5 text-left"
         onClick={() => setModalOpened()}
       >
@@ -144,6 +145,8 @@ export const ProductModal = ({
         >
           <div className="relative h-full w-full xl:h-auto xl:w-auto">
             <button
+              type="button"
+              aria-label={lang === en ? "Close product details" : "Закрити деталі товару"}
               onClick={() => setMenuClosed()}
               className="notXl:right-1 notXl:top-1 absolute top-1 right-10 z-10 rounded-full p-4 duration-300 xl:absolute xl:mt-[10px]"
             >
@@ -177,8 +180,7 @@ export const ProductModal = ({
                       return (
                         <div
                           className="smOnly:h-[48px] mdOnly:h-[48px] relative mb-8 h-[88px] w-full last:mr-0 xl:mr-2 xl:w-1/3"
-                          key={crypto.randomUUID()}
-                          // key={slide.id}
+                          key={slide.id}
                           onClick={() => setActiveSlideImage(slide.url)}
                         >
                           <div
@@ -232,14 +234,14 @@ export const ProductModal = ({
                 <table className="smOnly:w-[100%] mdOnly:w-[436px] mb-12 xl:w-full">
                   <thead>
                     <tr>
-                      <th className="text-t14 smOnly:w-1/5 w-2/5 py-2 text-left text-[#333333] italic opacity-60">
+                      <th scope="col" className="text-t14 smOnly:w-1/5 w-2/5 py-2 text-left text-[#333333] italic opacity-60">
                         {lang === en ? "Capacity" : "Об`єм"}
                       </th>
 
-                      <th className="text-t14 smOnly:w-2/5 smOnly:text-center w-1/5 py-2 text-left text-[#333333] italic opacity-60 xl:text-center">
+                      <th scope="col" className="text-t14 smOnly:w-2/5 smOnly:text-center w-1/5 py-2 text-left text-[#333333] italic opacity-60 xl:text-center">
                         {lang === en ? "Price" : "Ціна "}
                       </th>
-                      <th className="text-t14 w-2/5 py-2 text-right text-[#333333] italic opacity-60">
+                      <th scope="col" className="text-t14 w-2/5 py-2 text-right text-[#333333] italic opacity-60">
                         {lang === en ? "Add to Cart " : " Додати у кошик "}
                       </th>
                     </tr>
@@ -270,6 +272,8 @@ export const ProductModal = ({
                         </td>
                         <td className="text-t18 py-2 text-end leading-5 text-[#333333]">
                           <button
+                            type="button"
+                            aria-label={`${lang === en ? "Add to cart" : "Додати у кошик"} ${product.heading.replace(/[#*_`[\]()]/g, "").trim()} ${item.ml}${item.ml ? (lang === "uk" ? " мл" : " ml") : ""}`}
                             onClick={() => addToCart(item)}
                             className={`py-auto ml-auto h-10 rounded bg-black ${
                               addedToCart[item.idCrm]
@@ -296,6 +300,7 @@ export const ProductModal = ({
 
                 <div className="text-t18 smOnly:text-t14 flex flex-row text-center leading-5 font-bold">
                   <button
+                    type="button"
                     className={cn(
                       "mb-4 w-full border-solid pt-2 pb-1 text-[#33333399]",
                       activeTab === "components"
@@ -307,6 +312,7 @@ export const ProductModal = ({
                     {product.activecomp ?? ""}
                   </button>
                   <button
+                    type="button"
                     className={cn(
                       "mb-4 w-full border-solid pt-2 pb-1 text-[#33333399]",
                       activeTab === "composition"
@@ -319,6 +325,7 @@ export const ProductModal = ({
                   </button>
 
                   <button
+                    type="button"
                     className={cn(
                       "mb-4 w-full border-solid pt-2 pb-1 text-[#33333399]",
                       activeTab === "usage"

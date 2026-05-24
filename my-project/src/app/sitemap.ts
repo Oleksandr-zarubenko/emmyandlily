@@ -1,10 +1,10 @@
 import { MetadataRoute } from "next";
-import { gql, type TypedDocumentNode } from "@apollo/client";
 import { routing, type Locale } from "@/i18n/routing";
 import { getCanonicalUrl } from "@/utils/seo";
 import { getAllProducts } from "@/server/dato/products";
 import { getProductSlug } from "@/utils/productSlug";
 import { getClient } from "@/utils/apollo-client";
+import { staticPageUpdatesQueryByLocale } from "@/server/dato/queries/sitemap";
 
 type SitemapEntry = MetadataRoute.Sitemap[number];
 type StaticPath = "" | "/offer" | "/privacy-policy";
@@ -33,40 +33,6 @@ const PRODUCT_SITEMAP_META = {
   priority: 0.8,
 } as const satisfies SitemapMeta;
 
-const staticPageUpdatesQueryEN = gql`
-  {
-    mainSection {
-      _updatedAt
-    }
-    offer {
-      _updatedAt
-    }
-    policy {
-      _updatedAt
-    }
-  }
-` as TypedDocumentNode<StaticPageUpdatesResponse>;
-
-const staticPageUpdatesQueryUA = gql`
-  {
-    mainSection(locale: uk) {
-      _updatedAt
-    }
-    offer(locale: uk) {
-      _updatedAt
-    }
-    policy(locale: uk) {
-      _updatedAt
-    }
-  }
-` as TypedDocumentNode<StaticPageUpdatesResponse>;
-
-type StaticPageUpdatesResponse = {
-  mainSection?: { _updatedAt?: string | null };
-  offer?: { _updatedAt?: string | null };
-  policy?: { _updatedAt?: string | null };
-};
-
 const toLastModified = (value?: string | null): Date | undefined =>
   value ? new Date(value) : undefined;
 
@@ -84,9 +50,8 @@ const createSitemapEntry = ({
 
 async function getStaticPageUpdates(lang: Locale): Promise<StaticPageUpdates> {
   "use cache";
-  const query = lang === "uk" ? staticPageUpdatesQueryUA : staticPageUpdatesQueryEN;
   const { data } = await getClient().query({
-    query,
+    query: staticPageUpdatesQueryByLocale[lang],
   });
 
   return {

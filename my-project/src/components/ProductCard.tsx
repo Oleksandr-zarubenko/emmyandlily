@@ -23,23 +23,25 @@ export const ProductCard = ({
   convertPrice,
   onOpenProduct,
 }: ProductCardProps) => {
-  const findProductPrice = (idCrm: string) => {
-    const pricedProduct = state.products.find((item) => item.id === idCrm);
-    if (!pricedProduct) return "N/A";
-
-    return lang === "en"
+  const firstCapacity = product.capacity[0];
+  const primarySalesDriveProduct = firstCapacity
+    ? state.products.find((item) => item.id === firstCapacity.idCrm)
+    : undefined;
+  const price = primarySalesDriveProduct
+    ? lang === "en"
       ? convertPrice(
-          pricedProduct.price,
+          primarySalesDriveProduct.price,
           state.currencies.find((currency) => currency.id === "EUR")?.rate || 1
         )
-      : pricedProduct.price;
-  };
-
-  const getCurrencySymbol = () => (lang === "en" ? "UAH" : "₴");
+      : primarySalesDriveProduct.price
+    : null;
+  const currencySymbol = lang === "en" ? "UAH" : "₴";
+  const fallbackPriceText =
+    lang === "en" ? "Check availability" : "Уточнити наявність";
 
   return (
     <article
-      data-idcrm={product.capacity[0].idCrm}
+      data-idcrm={firstCapacity?.idCrm}
       key={product.id}
       className="group mx-auto h-auto w-[260px] cursor-pointer rounded duration-300 hover:shadow-custom md:w-[304px] smOnly:mb-6"
     >
@@ -59,21 +61,11 @@ export const ProductCard = ({
             blurDataURL={PRODUCT_IMAGE_BLUR_DATA_URL}
           />
 
-          {state.products.map(
-            (prod) =>
-              prod.id === product.capacity[0].idCrm && (
-                <span
-                  key={prod.id}
-                  className="absolute right-2 h-8 w-8 text-black xl:right-4"
-                >
-                  {prod.oldprice ? (
-                    <Discount className="mt-3 rounded bg-red-600 px-[3px] py-[3px] xl:mt-6" />
-                  ) : (
-                    ""
-                  )}
-                </span>
-              )
-          )}
+          {primarySalesDriveProduct?.oldprice ? (
+            <span className="absolute right-2 h-8 w-8 text-black xl:right-4">
+              <Discount className="mt-3 rounded bg-red-600 px-[3px] py-[3px] xl:mt-6" />
+            </span>
+          ) : null}
         </div>
         <div className="px-3 xl:px-4">
           <Markdown
@@ -94,7 +86,7 @@ export const ProductCard = ({
               </li>
             ))}
           </ul>
-          {product.capacity[0] ? (
+          {firstCapacity ? (
             <p className="text-t16 leading-6 text-white xl:text-t18">
               {product.preview ? (
                 lang === "en" ? (
@@ -102,13 +94,14 @@ export const ProductCard = ({
                 ) : (
                   "Скоро в доступі!"
                 )
-              ) : (
+              ) : price ? (
                 <>
                   {product.capacity.length > 1 &&
                     (lang === "en" ? "from" : "від")}
-                  {findProductPrice(product.capacity[0].idCrm)}{" "}
-                  {getCurrencySymbol()}
+                  {price} {currencySymbol}
                 </>
+              ) : (
+                fallbackPriceText
               )}
             </p>
           ) : null}
