@@ -98,7 +98,12 @@ export default async function ProductPage({
 
   return (
     <>
-      <ProductPageContent product={product} lang={local} secondmodal={secondmodal} />
+      <ProductPageContent
+        product={product}
+        lang={local}
+        secondmodal={secondmodal}
+        salesDriveData={salesDriveData ?? { products: [], currencies: [] }}
+      />
       <StructuredData
         id={`product-schema-${product.id}`}
         schema={createProductPageSchema({

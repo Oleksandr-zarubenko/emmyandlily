@@ -27,7 +27,10 @@ export default function LocaleSwitcher({ lang }: { lang: Locale }) {
   return (
     <div className="relative">
       <button
+        type="button"
         onClick={toggleIsOpen}
+        aria-label="Change language"
+        aria-expanded={isOpen}
         className="w-[56.8px] rounded-md border-2 border-black px-3 py-2 text-black duration-300 hover:border-black hover:text-black"
       >
         {langText}

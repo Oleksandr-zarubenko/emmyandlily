@@ -27,6 +27,7 @@ export const Cart = ({
   return (
     <Link
       onClick={handleCheckoutInitiate}
+      aria-label={`Basket with ${storedDataLength} item${storedDataLength === 1 ? "" : "s"}`}
       className={cn(`relative duration-300`)}
       href={`/basket`}
     >

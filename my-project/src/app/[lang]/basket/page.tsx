@@ -1,4 +1,3 @@
-import { gql, type TypedDocumentNode } from "@apollo/client";
 import Basket from "@/page-components/Basket";
 import { getClient } from "@/utils/apollo-client";
 import { Locale } from "@/i18n/routing";
@@ -7,154 +6,17 @@ import { cacheLife, cacheTag } from "next/cache";
 import { Metadata } from "next";
 import { getCanonicalUrl, getLanguageAlternates } from "@/utils/seo";
 import { PixelPageView } from "@/components/PixelPageView";
-const queryEN = gql`
-  {
-    basket {
-      additionalInformation
-      payment
-      delivery
-      guarantee
-      heading
-      name
-      number
-      payment
-      price
-      privacy
-      sum
-      delete
-      toOrder
-      total
-      dropdown
-      dropdown1
-      dropdown2
-      dropdown3
-    }
-
-    productsSection {
-      heading
-      text
-    }
-    allProducts {
-      heading
-      description
-      id
-      productpicture {
-        alt
-        url
-      }
-      method
-      composit
-      activecomp
-      advantage1
-      advantage2
-      advantage3
-      activeComponents
-      composition
-      productSlider {
-        alt
-        url
-        id
-      }
-
-      methodOfUse
-
-      capacity {
-        ml
-        idCrm
-      }
-    }
-    allPromocods {
-      promoCodName {
-        promocod
-        namePartner
-        discount
-      }
-    }
-    secondmodal {
-      goToCart
-      itemAddedToCart
-      returnToShopping
-    }
-  }
-` as TypedDocumentNode<DatoBasketData>;
-
-const queryUA = gql`
-  {
-    basket(locale: uk) {
-      additionalInformation
-      delete
-      delivery
-      guarantee
-      heading
-      name
-      number
-      payment
-      price
-      privacy
-      sum
-      dropdown
-      dropdown1
-      dropdown2
-      dropdown3
-      toOrder
-      total
-    }
-
-    productsSection(locale: uk) {
-      heading
-      text
-    }
-    allProducts(locale: uk) {
-      heading
-      description
-      id
-      productpicture {
-        alt
-        url
-      }
-      method
-      composit
-      activecomp
-      advantage1
-      advantage2
-      advantage3
-      activeComponents
-      composition
-      productSlider {
-        alt
-        url
-        id
-      }
-
-      methodOfUse
-
-      capacity {
-        ml
-        idCrm
-      }
-    }
-    allPromocods(locale: uk) {
-      promoCodName {
-        promocod
-        namePartner
-        discount
-      }
-    }
-    secondmodal(locale: uk) {
-      goToCart
-      itemAddedToCart
-      returnToShopping
-    }
-  }
-` as TypedDocumentNode<DatoBasketData>;
+import { getSalesDriveData } from "@/server/actions/salesdrive";
+import { basketQueryByLocale } from "@/server/dato/queries/basket";
 
 async function getBasketData(local: Locale): Promise<DatoBasketData> {
   "use cache";
   cacheLife("hours");
   cacheTag(`dato:basket:${local}`);
 
-  const query = local === "uk" ? queryUA : queryEN;
-  const { data } = await getClient().query({ query });
+  const { data } = await getClient().query({
+    query: basketQueryByLocale[local],
+  });
   if (!data) {
     throw new Error("Failed to load basket data from DatoCMS");
   }
@@ -201,12 +63,15 @@ export default async function BasketPage({
 }) {
   const { lang } = await params;
   const local = lang as Locale;
-  const data = await getBasketData(local);
+  const [data, salesDriveData] = await Promise.all([
+    getBasketData(local),
+    getSalesDriveData(local),
+  ]);
   // console.log({ datafromDatoCRM: data });
 
   return (
     <>
-      <Basket data={data} lang={lang} />
+      <Basket data={data} lang={lang} salesDriveData={salesDriveData} />
       <PixelPageView eventName="BasketPageView" />
     </>
   );

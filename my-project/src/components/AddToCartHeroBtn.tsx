@@ -1,9 +1,9 @@
 "use client";
 import { FC } from "react";
 import cn from "classnames";
-import getData from "@/utils/api/api";
 import { Locale } from "@/i18n/routing";
 import { DatoHomeData } from "@/types/dato";
+import { SalesDriveData } from "@/types/salesdrive";
 import { useCheckoutStore } from "@/store/checkoutStore";
 interface AddToCartHeroBtnProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   text: string;
@@ -11,6 +11,7 @@ interface AddToCartHeroBtnProps extends React.ButtonHTMLAttributes<HTMLButtonEle
   data: Pick<DatoHomeData, "allProducts" | "mainSection">;
   secondtext: string;
   lang: Locale;
+  salesDriveData: SalesDriveData;
 }
 
 export const AddToCartHeroBtn: FC<AddToCartHeroBtnProps> = ({
@@ -19,6 +20,7 @@ export const AddToCartHeroBtn: FC<AddToCartHeroBtnProps> = ({
   data,
   secondtext,
   lang,
+  salesDriveData,
 }) => {
   const addedToCart = useCheckoutStore((state) => state.addedToCart);
   const setAddedToCart = useCheckoutStore((state) => state.setAddedToCart);
@@ -41,11 +43,10 @@ export const AddToCartHeroBtn: FC<AddToCartHeroBtnProps> = ({
           (cap) => cap.idCrm === data?.mainSection?.productId
         );
         if (capacityToAdd) {
-          const response = await getData(lang);
-          const updatedProducts = response.products;
-
           const { ml, idCrm } = capacityToAdd;
-          const productState = updatedProducts.find((p) => p.id === idCrm);
+          const productState = salesDriveData.products.find(
+            (p) => p.id === idCrm
+          );
           const productPrice = productState
             ? productState.price
             : String(capacityToAdd.price ?? 0);

@@ -3,8 +3,17 @@ import HeroDog from "../../public/hero-dog.webp";
 import { AddToCartHeroBtn } from "@/components/AddToCartHeroBtn";
 import { DatoHomeData } from "@/types/dato";
 import { Locale } from "@/i18n/routing";
+import { SalesDriveData } from "@/types/salesdrive";
 
-export const HeroSection = ({ data, lang }: { data: DatoHomeData; lang: Locale }) => {
+export const HeroSection = ({
+  data,
+  lang,
+  salesDriveData,
+}: {
+  data: DatoHomeData;
+  lang: Locale;
+  salesDriveData: SalesDriveData;
+}) => {
   const heroHeading = data.mainSection.heading
     .replace(/[#*_`[\]()]/g, "")
     .replace(/\s+/g, " ")
@@ -35,6 +44,7 @@ export const HeroSection = ({ data, lang }: { data: DatoHomeData; lang: Locale }
         <AddToCartHeroBtn
           lang={lang}
           data={data}
+          salesDriveData={salesDriveData}
           secondtext={data.mainSection.inCart}
           text={data.mainSection.btn}
           className="mb-[260px] xl:mr-[180px]"

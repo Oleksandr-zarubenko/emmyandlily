@@ -42,7 +42,13 @@ export const MobileMenu = ({
 
   return (
     <div>
-      <button onClick={() => toggleMenu()} className="relative z-50 h-14 w-14">
+      <button
+        type="button"
+        onClick={() => toggleMenu()}
+        aria-label={isOpen ? "Close mobile menu" : "Open mobile menu"}
+        aria-expanded={isOpen}
+        className="relative z-50 h-14 w-14"
+      >
         <Hamburger toggled={isOpen} toggle={setIsOpen} rounded />
       </button>
       <div>

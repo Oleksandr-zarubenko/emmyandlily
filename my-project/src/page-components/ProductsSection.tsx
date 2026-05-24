@@ -1,25 +1,28 @@
 "use client";
-import InterceptProductModalContent from "@/components/product/InterceptProductModalContent";
 import { Markdown } from "@/components/Markdown";
 import { ProductCard } from "@/components/ProductCard";
 import { Paw } from "@/components/icons/Paw";
 import { Locale } from "@/i18n/routing";
-import getData from "@/utils/api/api";
 import { convertPrice } from "@/utils/convertPrice/convertPrice";
-import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+import { useState } from "react";
 import { DatoCategory, DatoHomeData, DatoProduct } from "@/types/dato";
 import { SalesDriveData } from "@/types/salesdrive";
+
+const InterceptProductModalContent = dynamic(
+  () => import("@/components/product/InterceptProductModalContent"),
+  { ssr: false }
+);
+
 export const ProductsSection = ({
   data,
   lang,
+  salesDriveData,
 }: {
   data: DatoHomeData;
   lang: Locale;
+  salesDriveData: SalesDriveData;
 }) => {
-  const [state, setState] = useState<SalesDriveData>({
-    products: [],
-    currencies: [],
-  });
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<DatoProduct | null>(
     null
@@ -28,23 +31,7 @@ export const ProductsSection = ({
     .replace(/[#*_`[\]()]/g, "")
     .replace(/\s+/g, " ")
     .trim();
-
-  useEffect(() => {
-    let cancelled = false;
-    void (async () => {
-      try {
-        const data = await getData(lang);
-        if (!cancelled) {
-          setState(data);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [lang]);
+  const hasSalesDriveProducts = salesDriveData.products.length > 0;
 
   const availableProducts = data.allProducts.filter((product: DatoProduct) => {
     const inSelectedCategory = selectedCategory
@@ -54,10 +41,14 @@ export const ProductsSection = ({
       : true;
 
     const correspondingProduct = product.capacity.some((cap) =>
-      state.products.some((p) => p.id === cap.idCrm && p.available === "true")
+      salesDriveData.products.some(
+        (p) => p.id === cap.idCrm && p.available === "true"
+      )
     );
 
-    return inSelectedCategory && correspondingProduct;
+    return (
+      inSelectedCategory && (!hasSalesDriveProducts || correspondingProduct)
+    );
   });
   // console.log("availableProducts", availableProducts);
 
@@ -108,7 +99,7 @@ export const ProductsSection = ({
                 key={product.id}
                 product={product}
                 lang={lang}
-                state={state}
+                state={salesDriveData}
                 convertPrice={convertPrice}
                 onOpenProduct={setSelectedProduct}
               />
@@ -120,6 +111,7 @@ export const ProductsSection = ({
           product={selectedProduct}
           lang={lang}
           secondmodal={data.secondmodal}
+          salesDriveData={salesDriveData}
           onRequestClose={() => setSelectedProduct(null)}
         />
       ) : null}

@@ -10,7 +10,6 @@ import { PRODUCT_IMAGE_BLUR_DATA_URL } from "@/utils/productImageBlur";
 interface CheaperTogetherProps {
   data: DatoProduct[];
   state: SalesDriveData;
-  setState: React.Dispatch<React.SetStateAction<SalesDriveData>>;
   lang: Locale;
   en: Locale;
   modal: DatoBasketData | DatoHomeData;
@@ -19,7 +18,6 @@ interface CheaperTogetherProps {
 const CheaperTogether = ({
   data,
   state,
-  setState,
   lang,
   en,
   modal,

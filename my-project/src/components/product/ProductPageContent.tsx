@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import cn from "classnames";
 import { useRouter } from "@/i18n/navigation";
 import { Markdown } from "@/components/Markdown";
@@ -15,7 +15,6 @@ import {
 import { Locale, locales } from "@/i18n/routing";
 import { useCheckoutStore } from "@/store/checkoutStore";
 import { SalesDriveData } from "@/types/salesdrive";
-import getData from "@/utils/api/api";
 import { convertPrice } from "@/utils/convertPrice/convertPrice";
 import { PRODUCT_IMAGE_BLUR_DATA_URL } from "@/utils/productImageBlur";
 import { trackPixel } from "@/lib/pixel";
@@ -24,12 +23,14 @@ type ProductPageContentProps = {
   product: DatoProduct;
   lang: Locale;
   secondmodal: DatoSecondModal;
+  salesDriveData: SalesDriveData;
 };
 
 export default function ProductPageContent({
   product,
   lang,
   secondmodal,
+  salesDriveData,
 }: ProductPageContentProps) {
   const productHeading = product.heading
     .replace(/[#*_`[\]()]/g, "")
@@ -47,25 +48,11 @@ export default function ProductPageContent({
   const [currentImageUrl, setActiveImageUrl] = useState(
     product.productSlider[0].url
   );
-  const [state, setState] = useState<SalesDriveData>({
-    products: [],
-    currencies: [],
-  });
-
-  useEffect(() => {
-    void (async () => {
-      try {
-        const data = await getData(lang);
-        setState(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    })();
-  }, [lang]);
-
   const addToCart = (item: DatoProductCapacity) => {
     setAdditionalModalOpen(true);
-    const productState = state.products.find((p) => p.id === item.idCrm);
+    const productState = salesDriveData.products.find(
+      (p) => p.id === item.idCrm
+    );
     const productPrice = productState ? productState.price : item.price;
 
     addCartItem({
@@ -175,13 +162,13 @@ export default function ProductPageContent({
           <table className="smOnly:w-[100%] mdOnly:w-[436px] mb-12 xl:w-full">
             <thead>
               <tr>
-                <th className="text-t14 smOnly:w-1/5 w-2/5 py-2 text-left text-[#333333] italic opacity-60">
+                <th scope="col" className="text-t14 smOnly:w-1/5 w-2/5 py-2 text-left text-[#333333] italic opacity-60">
                   {lang === en ? "Capacity" : "Об’єм"}
                 </th>
-                <th className="text-t14 smOnly:w-2/5 smOnly:text-center w-1/5 py-2 text-left text-[#333333] italic opacity-60 xl:text-center">
+                <th scope="col" className="text-t14 smOnly:w-2/5 smOnly:text-center w-1/5 py-2 text-left text-[#333333] italic opacity-60 xl:text-center">
                   {lang === en ? "Price" : "Ціна"}
                 </th>
-                <th className="text-t14 w-2/5 py-2 text-right text-[#333333] italic opacity-60">
+                <th scope="col" className="text-t14 w-2/5 py-2 text-right text-[#333333] italic opacity-60">
                   {lang === en ? "Add to Cart" : "Додати у кошик"}
                 </th>
               </tr>
@@ -193,14 +180,14 @@ export default function ProductPageContent({
                     {item.ml} {item.ml ? (lang === "uk" ? "мл" : "ml") : ""}
                   </td>
                   <td className="text-t18 smOnly:text-center py-2 text-left leading-5 text-[#333333] xl:text-center">
-                    {state.products
+                    {salesDriveData.products
                       .filter((p) => p.id === item.idCrm)
                       .map((p) => (
                         <span key={p.id}>
                           {lang === "en"
                             ? convertPrice(
                                 p.price,
-                                state.currencies.find(
+                                salesDriveData.currencies.find(
                                   (currency) => currency.id === "EUR"
                                 )?.rate || 1
                               )
@@ -211,6 +198,8 @@ export default function ProductPageContent({
                   </td>
                   <td className="text-t18 py-2 text-end leading-5 text-[#333333]">
                     <button
+                      type="button"
+                      aria-label={`${lang === en ? "Add to cart" : "Додати у кошик"} ${productHeading} ${item.ml}${item.ml ? (lang === "uk" ? " мл" : " ml") : ""}`}
                       onClick={() => addToCart(item)}
                       className={`py-auto ml-auto h-10 rounded bg-black ${
                         addedToCart[item.idCrm]
@@ -237,6 +226,7 @@ export default function ProductPageContent({
 
           <div className="text-t18 smOnly:text-t14 flex flex-row text-center leading-5 font-bold">
             <button
+              type="button"
               className={cn(
                 "mb-4 w-full border-solid pt-2 pb-1 text-[#33333399]",
                 activeTab === "components"
@@ -248,6 +238,7 @@ export default function ProductPageContent({
               {product.activecomp ?? ""}
             </button>
             <button
+              type="button"
               className={cn(
                 "mb-4 w-full border-solid pt-2 pb-1 text-[#33333399]",
                 activeTab === "composition"
@@ -259,6 +250,7 @@ export default function ProductPageContent({
               {product.composit ?? ""}
             </button>
             <button
+              type="button"
               className={cn(
                 "mb-4 w-full border-solid pt-2 pb-1 text-[#33333399]",
                 activeTab === "usage"

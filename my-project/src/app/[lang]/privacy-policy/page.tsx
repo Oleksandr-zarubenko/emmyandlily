@@ -1,4 +1,3 @@
-import { gql, type TypedDocumentNode } from "@apollo/client";
 import { getClient } from "@/utils/apollo-client";
 import { Locale } from "@/i18n/routing";
 import { Markdown } from "@/components/Markdown";
@@ -8,6 +7,10 @@ import { getCanonicalUrl, getLanguageAlternates } from "@/utils/seo";
 import { PixelPageView } from "@/components/PixelPageView";
 import { StructuredData } from "@/components/StructuredData";
 import { createContentPageSchema } from "@/utils/schema";
+import {
+  policyQueryByLocale,
+  type PolicyData,
+} from "@/server/dato/queries/contentPages";
 
 const policyMetadataByLocale = {
   uk: {
@@ -22,36 +25,13 @@ const policyMetadataByLocale = {
   },
 } as const;
 
-type PolicyData = {
-  policy: {
-    policytext: string;
-  };
-};
-
-const queryEN = gql`
-  {
-    policy {
-      policytext
-    }
-  }
-` as TypedDocumentNode<PolicyData>;
-
-const queryUA = gql`
-  {
-    policy(locale: uk) {
-      policytext
-    }
-  }
-` as TypedDocumentNode<PolicyData>;
-
 async function getPolicyData(local: Locale): Promise<PolicyData> {
   "use cache";
   cacheLife("minutes");
   cacheTag(`dato:policy:${local}`);
 
-  const query = local === "uk" ? queryUA : queryEN;
   const { data } = await getClient().query({
-    query,
+    query: policyQueryByLocale[local],
   });
   if (!data) {
     throw new Error("Failed to load policy data from DatoCMS");

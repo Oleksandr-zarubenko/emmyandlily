@@ -1,4 +1,3 @@
-import { gql, type TypedDocumentNode } from "@apollo/client";
 import { getClient } from "@/utils/apollo-client";
 import { Locale } from "@/i18n/routing";
 import Order from "@/page-components/Order";
@@ -7,185 +6,17 @@ import { cacheLife, cacheTag } from "next/cache";
 import { Metadata } from "next";
 import { getCanonicalUrl, getLanguageAlternates } from "@/utils/seo";
 import { PixelPageView } from "@/components/PixelPageView";
-const queryEN = gql`
-  {
-    order {
-      order
-      confirmTheOrder
-      confirmTheOrderBtn
-      delivery
-      deliveryMethod
-      deliveryTime
-      deliveryTime2
-      discount
-      eMail
-      enterYourDetails
-      fillInTheDetails
-      freeDel
-      heading
-      lastName
-      next
-      noDelivery
-      payment
-      personalData
-      phoneNumber
-      receiver
-      recipientData
-      selectCountryAndCity
-      total
-      totalAmountToBePaid
-      wantToReceive
-      yourName
-      yourOrder
-    }
-    productsSection {
-      heading
-      text
-    }
-    allProducts {
-      heading
-      description
-      id
-      productpicture {
-        alt
-        url
-      }
-      advantage1
-      advantage2
-      advantage3
-      activeComponents
-      composition
-      productSlider {
-        alt
-        url
-        id
-      }
-
-      methodOfUse
-
-      capacity {
-        ml
-        idCrm
-      }
-    }
-    delivery {
-      deliveryMethod {
-        description
-        id
-        idD
-        name
-        price
-        img {
-          alt
-          url
-          width
-        }
-      }
-    }
-
-    allPromocods {
-      promoCodName {
-        promocod
-        namePartner
-        discount
-      }
-    }
-  }
-` as TypedDocumentNode<DatoOrderData>;
-
-const queryUA = gql`
-  {
-    order(locale: uk) {
-      order
-      confirmTheOrder
-      confirmTheOrderBtn
-      delivery
-      deliveryMethod
-      deliveryTime
-      deliveryTime2
-      discount
-      eMail
-      enterYourDetails
-      fillInTheDetails
-      freeDel
-      heading
-      lastName
-      next
-      noDelivery
-      payment
-      personalData
-      phoneNumber
-      receiver
-      recipientData
-      selectCountryAndCity
-      total
-      totalAmountToBePaid
-      wantToReceive
-      yourName
-      yourOrder
-    }
-    productsSection(locale: uk) {
-      heading
-      text
-    }
-    allProducts(locale: uk) {
-      heading
-      description
-      id
-      productpicture {
-        alt
-        url
-      }
-      advantage1
-      advantage2
-      advantage3
-      activeComponents
-      composition
-      productSlider {
-        alt
-        url
-        id
-      }
-
-      methodOfUse
-
-      capacity {
-        ml
-        idCrm
-      }
-    }
-    delivery(locale: uk) {
-      deliveryMethod {
-        description
-        id
-        idD
-        name
-        price
-        img {
-          alt
-          url
-          width
-        }
-      }
-    }
-
-    allPromocods(locale: uk) {
-      promoCodName {
-        promocod
-        namePartner
-        discount
-      }
-    }
-  }
-` as TypedDocumentNode<DatoOrderData>;
+import { getSalesDriveData } from "@/server/actions/salesdrive";
+import { orderQueryByLocale } from "@/server/dato/queries/order";
 
 async function getOrderData(local: Locale): Promise<DatoOrderData> {
   "use cache";
   cacheLife("minutes");
   cacheTag(`dato:order:${local}`);
 
-  const query = local === "uk" ? queryUA : queryEN;
-  const { data } = await getClient().query({ query });
+  const { data } = await getClient().query({
+    query: orderQueryByLocale[local],
+  });
   if (!data) {
     throw new Error("Failed to load order data from DatoCMS");
   }
@@ -231,12 +62,15 @@ export default async function OrderPage({
   params: Promise<{ lang: Locale }>;
 }) {
   const { lang }: { lang: Locale } = await params;
-  const data = await getOrderData(lang);
+  const [data, salesDriveData] = await Promise.all([
+    getOrderData(lang),
+    getSalesDriveData(lang),
+  ]);
   // console.log({ datoCRM: data });
 
   return (
     <>
-      <Order data={data} lang={lang} />{" "}
+      <Order data={data} lang={lang} salesDriveData={salesDriveData} />{" "}
       <PixelPageView eventName="CheckoutPageView" />
     </>
   );

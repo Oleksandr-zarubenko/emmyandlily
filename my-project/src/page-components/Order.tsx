@@ -1,15 +1,13 @@
 "use client";
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, ChangeEvent } from "react";
 import Personalinfo from "@/components/Order/Personalinfo";
 import YourOrder from "@/components/Order/YourOrder";
 import Delivery from "@/components/Order/Delivery";
 import Image from "next/image";
 import Mono from "../../public/mono.png";
 import { Locale, locales } from "@/i18n/routing";
-import getData from "@/utils/api/api";
 // import { convertPrice } from "@/utils/convertPrice/convertPrice";
 import { useRouter } from "@/i18n/navigation";
-import dynamic from "next/dynamic";
 import { DatoOrderData } from "@/types/dato";
 import { SalesDriveData } from "@/types/salesdrive";
 import { DatoDeliveryMethod } from "@/types/dato";
@@ -23,29 +21,18 @@ import {
 } from "@/server/actions/checkout";
 import { sendTelegramOrderNotification } from "@/server/actions/order-telegram";
 import { trackPixel } from "@/lib/pixel";
-const Order = ({ data, lang }: { data: DatoOrderData; lang: Locale }) => {
+const Order = ({
+  data,
+  lang,
+  salesDriveData,
+}: {
+  data: DatoOrderData;
+  lang: Locale;
+  salesDriveData: SalesDriveData;
+}) => {
   const en = locales[1];
-  const [state, setState] = useState<SalesDriveData>({
-    products: [],
-    currencies: [],
-  });
+  const state = salesDriveData;
   const router = useRouter();
-  useEffect(() => {
-    let cancelled = false;
-    void (async () => {
-      try {
-        const data = await getData(lang);
-        if (!cancelled) {
-          setState(data);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [lang]);
 
   const checkout = useCheckoutStore(
     useShallow((store) => ({
@@ -646,5 +633,4 @@ const Order = ({ data, lang }: { data: DatoOrderData; lang: Locale }) => {
   );
 };
 
-// export default Order;
-export default dynamic(() => Promise.resolve(Order), { ssr: false });
+export default Order;
