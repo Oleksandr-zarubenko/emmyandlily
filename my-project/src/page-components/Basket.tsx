@@ -1,6 +1,6 @@
 ﻿"use client";
 import Image from "next/image";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { convertPrice } from "@/utils/convertPrice/convertPrice";
 
 import { BurgerCross } from "@/components/icons/BurgerCross";
@@ -68,7 +68,7 @@ const Basket = ({
 
   const state = salesDriveData;
 
-  const calculateBaseTotal = useCallback(() => {
+  const calculateBaseTotal = () => {
     let newTotalPrice = 0;
 
     tovar.forEach((item) => {
@@ -77,30 +77,27 @@ const Basket = ({
     });
 
     return newTotalPrice;
-  }, [tovar, quantities]);
+  };
 
-  const findPromoMatch = useCallback(
-    (codeValue: string) => {
-      const trimmedCode = codeValue.trim();
+  const findPromoMatch = (codeValue: string) => {
+    const trimmedCode = codeValue.trim();
 
-      if (!trimmedCode) {
-        return null;
-      }
-
-      for (const promo of data.allPromocods) {
-        const matchedCode = promo.promoCodName.find(
-          (code) => code.promocod === trimmedCode
-        );
-
-        if (matchedCode) {
-          return matchedCode;
-        }
-      }
-
+    if (!trimmedCode) {
       return null;
-    },
-    [data.allPromocods]
-  );
+    }
+
+    for (const promo of data.allPromocods) {
+      const matchedCode = promo.promoCodName.find(
+        (code) => code.promocod === trimmedCode
+      );
+
+      if (matchedCode) {
+        return matchedCode;
+      }
+    }
+
+    return null;
+  };
 
   const calculateDiscountState = (discountPercent: number, baseTotal: number) => {
     const normalizedDiscountPercent = Math.max(discountPercent, 0);
@@ -193,6 +190,10 @@ const Basket = ({
     );
 
     setPromoData(promoDiscountState);
+    // calculateBaseTotal/findPromoMatch read only values already listed below
+    // (tovar, quantities, data.allPromocods); React Compiler keeps them stable,
+    // so they are intentionally omitted to avoid a re-render loop.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     quantities,
     tovar,
@@ -202,8 +203,6 @@ const Basket = ({
     setIsValid,
     setPromoCodePartner,
     setPromoData,
-    calculateBaseTotal,
-    findPromoMatch,
   ]);
 
   const handleQuantityChange = (capacity: string, value: number) => {
@@ -219,18 +218,16 @@ const Basket = ({
   };
 
   const isButtonDisabled = totalPrice === 0;
-  const togetherProducts = useMemo(() => {
-    const availableIds = new Set(["id_28", "id_27", "id_26"]);
+  const availableIds = new Set(["id_28", "id_27", "id_26"]);
 
-    return data.allProducts.filter((product) =>
-      product.capacity.some((capacity) => {
-        const correspondingProduct = state.products.find(
-          (p) => p.id === capacity.idCrm && p.available === "true"
-        );
-        return correspondingProduct && availableIds.has(capacity.idCrm);
-      })
-    );
-  }, [data.allProducts, state.products]);
+  const togetherProducts = data.allProducts.filter((product) =>
+    product.capacity.some((capacity) => {
+      const correspondingProduct = state.products.find(
+        (p) => p.id === capacity.idCrm && p.available === "true"
+      );
+      return correspondingProduct && availableIds.has(capacity.idCrm);
+    })
+  );
 
   return (
     <section className="container flex-grow justify-between py-40 xl:flex">

@@ -39,7 +39,6 @@ export const ProductModal = ({
   const setAddedToCart = useCheckoutStore((state) => state.setAddedToCart);
   const addCartItem = useCheckoutStore((state) => state.addCartItem);
   const [isOpen, setIsOpen] = useState(false);
-  const [, setCartModalOpen] = useState(false);
   const [additionalModalOpen, setAdditionalModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<
     "components" | "composition" | "usage"
@@ -94,7 +93,6 @@ export const ProductModal = ({
   }, [isOpen]);
 
   const addToCart = (item: DatoProductCapacity) => {
-    setCartModalOpen(true);
     setAdditionalModalOpen(true);
     const productState = state.products.find((p) => p.id === item.idCrm);
     const productPrice = productState ? productState.price : item.price;
