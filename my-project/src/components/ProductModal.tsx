@@ -39,7 +39,7 @@ export const ProductModal = ({
   const setAddedToCart = useCheckoutStore((state) => state.setAddedToCart);
   const addCartItem = useCheckoutStore((state) => state.addCartItem);
   const [isOpen, setIsOpen] = useState(false);
-  const [cartModalOpen, setCartModalOpen] = useState(false);
+  const [, setCartModalOpen] = useState(false);
   const [additionalModalOpen, setAdditionalModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<
     "components" | "composition" | "usage"

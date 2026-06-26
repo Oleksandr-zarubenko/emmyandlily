@@ -78,11 +78,9 @@ const Order = ({
 
   const checkoutActions = useCheckoutStore(
     useShallow((store) => ({
-      setDeliveryCompleted: store.setDeliveryCompleted,
       setOrderData: store.setOrderData,
       setError: store.setError,
       setStreet: store.setStreet,
-      setExternalId: store.setExternalId,
       setHouseNumber: store.setHouseNumber,
       setCity: store.setCity,
       setCountry: store.setCountry,
@@ -96,11 +94,6 @@ const Order = ({
       setIsRecipient: store.setIsRecipient,
       setIsDiscountsAndNews: store.setIsDiscountsAndNews,
       setPrivacypolicy: store.setPrivacypolicy,
-      setDeliveryActive: store.setDeliveryActive,
-      setPaymentActive: store.setPaymentActive,
-      setPersonActive: store.setPersonActive,
-      setSelectedOption: store.setSelectedOption,
-      setDeliveryPrice: store.setDeliveryPrice,
       setFirstName: store.setFirstName,
       setLastName: store.setLastName,
       setEmail: store.setEmail,
@@ -153,11 +146,9 @@ const Order = ({
   } = checkout;
 
   const {
-    setDeliveryCompleted,
     setOrderData,
     setError,
     setStreet,
-    setExternalId,
     setHouseNumber,
     setCity,
     setCountry,
@@ -171,11 +162,6 @@ const Order = ({
     setIsRecipient,
     setIsDiscountsAndNews,
     setPrivacypolicy,
-    setDeliveryActive,
-    setPaymentActive,
-    setPersonActive,
-    setSelectedOption,
-    setDeliveryPrice,
     setFirstName,
     setLastName,
     setEmail,
@@ -188,8 +174,8 @@ const Order = ({
 
   const productName = cartItems;
 
-  const [paymentMonobank, setPaymentMonobank] = useState<boolean>(true);
-  const [afterpay, setAfterpay] = useState<boolean>(false);
+  const [paymentMonobank] = useState<boolean>(true);
+  const [afterpay] = useState<boolean>(false);
 
   const recipientData = `Дані отримувача ${recipientFirstName} ${recipientLastName} ${recipientEmail} ${recipientPhoneNumber}`;
 

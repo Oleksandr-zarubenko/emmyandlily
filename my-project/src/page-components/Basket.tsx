@@ -1,6 +1,6 @@
 ﻿"use client";
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { convertPrice } from "@/utils/convertPrice/convertPrice";
 
 import { BurgerCross } from "@/components/icons/BurgerCross";
@@ -68,7 +68,7 @@ const Basket = ({
 
   const state = salesDriveData;
 
-  const calculateBaseTotal = () => {
+  const calculateBaseTotal = useCallback(() => {
     let newTotalPrice = 0;
 
     tovar.forEach((item) => {
@@ -77,27 +77,30 @@ const Basket = ({
     });
 
     return newTotalPrice;
-  };
+  }, [tovar, quantities]);
 
-  const findPromoMatch = (codeValue: string) => {
-    const trimmedCode = codeValue.trim();
+  const findPromoMatch = useCallback(
+    (codeValue: string) => {
+      const trimmedCode = codeValue.trim();
 
-    if (!trimmedCode) {
-      return null;
-    }
-
-    for (const promo of data.allPromocods) {
-      const matchedCode = promo.promoCodName.find(
-        (code) => code.promocod === trimmedCode
-      );
-
-      if (matchedCode) {
-        return matchedCode;
+      if (!trimmedCode) {
+        return null;
       }
-    }
 
-    return null;
-  };
+      for (const promo of data.allPromocods) {
+        const matchedCode = promo.promoCodName.find(
+          (code) => code.promocod === trimmedCode
+        );
+
+        if (matchedCode) {
+          return matchedCode;
+        }
+      }
+
+      return null;
+    },
+    [data.allPromocods]
+  );
 
   const calculateDiscountState = (discountPercent: number, baseTotal: number) => {
     const normalizedDiscountPercent = Math.max(discountPercent, 0);
@@ -199,6 +202,8 @@ const Basket = ({
     setIsValid,
     setPromoCodePartner,
     setPromoData,
+    calculateBaseTotal,
+    findPromoMatch,
   ]);
 
   const handleQuantityChange = (capacity: string, value: number) => {

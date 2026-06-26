@@ -74,7 +74,14 @@ const Personalinfo: React.FC<PersonalInfoProps> = ({
         recipientPhoneNumber: "",
       }));
     }
-  }, [isRecipient]);
+  }, [
+    isRecipient,
+    setError,
+    setRecipientEmail,
+    setRecipientFirstName,
+    setRecipientLastName,
+    setRecipientPhoneNumber,
+  ]);
 
   const validateName = (value: string, fieldName: PersonalInfoFieldKey) => {
     // Unicode regex to match letters from all languages, including accents and special characters
