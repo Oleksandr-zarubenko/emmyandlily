@@ -79,6 +79,12 @@ export async function generateMetadata({
         },
       ],
     },
+    twitter: {
+      card: "summary_large_image",
+      title: `${cleanTitle} | Emmy and Lily`,
+      description: cleanDescription,
+      images: [product.productpicture.url],
+    },
   };
 }
 

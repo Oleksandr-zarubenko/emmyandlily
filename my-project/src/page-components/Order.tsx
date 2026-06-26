@@ -73,17 +73,14 @@ const Order = ({
       allTotal: store.allTotal,
       discountAmount: store.discountAmount,
       totalPrice: store.totalPrice,
-      totalPriceEn: store.totalPriceEn,
     }))
   );
 
   const checkoutActions = useCheckoutStore(
     useShallow((store) => ({
-      setDeliveryCompleted: store.setDeliveryCompleted,
       setOrderData: store.setOrderData,
       setError: store.setError,
       setStreet: store.setStreet,
-      setExternalId: store.setExternalId,
       setHouseNumber: store.setHouseNumber,
       setCity: store.setCity,
       setCountry: store.setCountry,
@@ -97,11 +94,6 @@ const Order = ({
       setIsRecipient: store.setIsRecipient,
       setIsDiscountsAndNews: store.setIsDiscountsAndNews,
       setPrivacypolicy: store.setPrivacypolicy,
-      setDeliveryActive: store.setDeliveryActive,
-      setPaymentActive: store.setPaymentActive,
-      setPersonActive: store.setPersonActive,
-      setSelectedOption: store.setSelectedOption,
-      setDeliveryPrice: store.setDeliveryPrice,
       setFirstName: store.setFirstName,
       setLastName: store.setLastName,
       setEmail: store.setEmail,
@@ -151,15 +143,12 @@ const Order = ({
     allTotal,
     discountAmount,
     totalPrice,
-    totalPriceEn,
   } = checkout;
 
   const {
-    setDeliveryCompleted,
     setOrderData,
     setError,
     setStreet,
-    setExternalId,
     setHouseNumber,
     setCity,
     setCountry,
@@ -173,11 +162,6 @@ const Order = ({
     setIsRecipient,
     setIsDiscountsAndNews,
     setPrivacypolicy,
-    setDeliveryActive,
-    setPaymentActive,
-    setPersonActive,
-    setSelectedOption,
-    setDeliveryPrice,
     setFirstName,
     setLastName,
     setEmail,
@@ -190,8 +174,8 @@ const Order = ({
 
   const productName = cartItems;
 
-  const [paymentMonobank, setPaymentMonobank] = useState<boolean>(true);
-  const [afterpay, setAfterpay] = useState<boolean>(false);
+  const [paymentMonobank] = useState<boolean>(true);
+  const [afterpay] = useState<boolean>(false);
 
   const recipientData = `Дані отримувача ${recipientFirstName} ${recipientLastName} ${recipientEmail} ${recipientPhoneNumber}`;
 
@@ -360,11 +344,10 @@ const Order = ({
       behavior: "smooth",
     });
   };
-  const numberValute = lang === "en" ? 978 : 980;
-  const normalizedCheckoutTotal =
-    lang === "en"
-      ? Number(totalPriceEn.toFixed(2))
-      : Number(allTotal.toFixed(2));
+  // Both language versions share one UAH-priced database, so Monobank is
+  // always charged the UAH total (ccy 980) regardless of the display language.
+  const numberValute = 980;
+  const normalizedCheckoutTotal = Number(allTotal.toFixed(2));
   const amount = Math.round(normalizedCheckoutTotal * 100);
 
   const switchToPaymentTab = async () => {
@@ -383,7 +366,7 @@ const Order = ({
         ),
         content_type: productDetails,
         value: amount / 100,
-        currency: lang === "en" ? "EUR" : "UAH",
+        currency: "UAH",
       });
     } else if (
       deliveryCompleted &&
@@ -404,7 +387,7 @@ const Order = ({
           ),
           content_type: productDetails,
           value: amount / 100,
-          currency: lang === "en" ? "EUR" : "UAH",
+          currency: "UAH",
         });
         const jsonData = await createMonobankInvoice({
           amount,

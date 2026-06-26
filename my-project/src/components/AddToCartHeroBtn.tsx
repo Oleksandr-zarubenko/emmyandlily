@@ -19,7 +19,6 @@ export const AddToCartHeroBtn: FC<AddToCartHeroBtnProps> = ({
   className,
   data,
   secondtext,
-  lang,
   salesDriveData,
 }) => {
   const addedToCart = useCheckoutStore((state) => state.addedToCart);

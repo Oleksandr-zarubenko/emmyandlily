@@ -1,6 +1,6 @@
 ﻿"use client";
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { convertPrice } from "@/utils/convertPrice/convertPrice";
 
 import { BurgerCross } from "@/components/icons/BurgerCross";
@@ -190,6 +190,10 @@ const Basket = ({
     );
 
     setPromoData(promoDiscountState);
+    // calculateBaseTotal/findPromoMatch read only values already listed below
+    // (tovar, quantities, data.allPromocods); React Compiler keeps them stable,
+    // so they are intentionally omitted to avoid a re-render loop.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     quantities,
     tovar,
@@ -214,18 +218,16 @@ const Basket = ({
   };
 
   const isButtonDisabled = totalPrice === 0;
-  const togetherProducts = useMemo(() => {
-    const availableIds = new Set(["id_28", "id_27", "id_26"]);
+  const availableIds = new Set(["id_28", "id_27", "id_26"]);
 
-    return data.allProducts.filter((product) =>
-      product.capacity.some((capacity) => {
-        const correspondingProduct = state.products.find(
-          (p) => p.id === capacity.idCrm && p.available === "true"
-        );
-        return correspondingProduct && availableIds.has(capacity.idCrm);
-      })
-    );
-  }, [data.allProducts, state.products]);
+  const togetherProducts = data.allProducts.filter((product) =>
+    product.capacity.some((capacity) => {
+      const correspondingProduct = state.products.find(
+        (p) => p.id === capacity.idCrm && p.available === "true"
+      );
+      return correspondingProduct && availableIds.has(capacity.idCrm);
+    })
+  );
 
   return (
     <section className="container flex-grow justify-between py-40 xl:flex">

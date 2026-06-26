@@ -65,7 +65,6 @@ const Delivery: React.FC<DeliveryProps> = ({
   error,
   setError,
   lang,
-  en,
 }) => {
   const validateField = (fieldName: DeliveryFieldKey, value: string) => {
     const nameRegex = /^[\p{L}\s'-]+$/u;

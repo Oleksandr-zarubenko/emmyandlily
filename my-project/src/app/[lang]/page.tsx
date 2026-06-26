@@ -67,6 +67,12 @@ export async function generateMetadata({
       locale: local === "uk" ? "uk_UA" : "en_US",
       type: "website",
     },
+    twitter: {
+      card: "summary_large_image",
+      title: meta.title,
+      description: meta.description,
+      images: ["/favicon/android-chrome-512x512.png"],
+    },
   };
 }
 
