@@ -73,7 +73,6 @@ const Order = ({
       allTotal: store.allTotal,
       discountAmount: store.discountAmount,
       totalPrice: store.totalPrice,
-      totalPriceEn: store.totalPriceEn,
     }))
   );
 
@@ -151,7 +150,6 @@ const Order = ({
     allTotal,
     discountAmount,
     totalPrice,
-    totalPriceEn,
   } = checkout;
 
   const {
@@ -360,11 +358,10 @@ const Order = ({
       behavior: "smooth",
     });
   };
-  const numberValute = lang === "en" ? 978 : 980;
-  const normalizedCheckoutTotal =
-    lang === "en"
-      ? Number(totalPriceEn.toFixed(2))
-      : Number(allTotal.toFixed(2));
+  // Both language versions share one UAH-priced database, so Monobank is
+  // always charged the UAH total (ccy 980) regardless of the display language.
+  const numberValute = 980;
+  const normalizedCheckoutTotal = Number(allTotal.toFixed(2));
   const amount = Math.round(normalizedCheckoutTotal * 100);
 
   const switchToPaymentTab = async () => {
@@ -383,7 +380,7 @@ const Order = ({
         ),
         content_type: productDetails,
         value: amount / 100,
-        currency: lang === "en" ? "EUR" : "UAH",
+        currency: "UAH",
       });
     } else if (
       deliveryCompleted &&
@@ -404,7 +401,7 @@ const Order = ({
           ),
           content_type: productDetails,
           value: amount / 100,
-          currency: lang === "en" ? "EUR" : "UAH",
+          currency: "UAH",
         });
         const jsonData = await createMonobankInvoice({
           amount,
