@@ -34,7 +34,7 @@ export default function ProductDetailsView({
     return String(fallbackPrice);
   };
 
-  const currency = lang === "en" ? "UAH" : "₴";
+  const currency = lang === "en" ? "€" : "₴";
 
   return (
     <article className="container py-20 xl:py-28">

@@ -86,7 +86,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
           <p className="text-t14 xl:text-t16">{data.order.total}</p>
           <p className="text-t16 xl:text-t18">
             {lang === "en"
-              ? `${subtotalBeforeDiscountEn} UAH`
+              ? `${subtotalBeforeDiscountEn} €`
               : `${formatAmount(subtotalBeforeDiscount)} ₴`}
           </p>
         </li>
@@ -94,7 +94,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
           <p className="text-t14 xl:text-t16">{data.order.discount}</p>
           <p className="text-t16 xl:text-t18">
             {lang === "en"
-              ? `- ${totalDiscountAmountEn} UAH`
+              ? `- ${totalDiscountAmountEn} €`
               : `- ${formatAmount(totalDiscountAmount)} ₴`}
           </p>
         </li>
@@ -102,7 +102,7 @@ const YourOrder: React.FC<YourOrderProps> = ({
       <div className="mb-8 flex justify-between">
         <p className="text-t12 xl:text-t18">{data.order.totalAmountToBePaid}</p>
         <p className="text-t16 xl:text-t18 smOnly:font-bold mdOnly:font-bold xl:font-bold">
-          {lang === "en" ? `${allTotalEn.toFixed(2)} UAH` : `${formatAmount(allTotal)} ₴`}
+          {lang === "en" ? `${allTotalEn.toFixed(2)} €` : `${formatAmount(allTotal)} ₴`}
         </p>
       </div>
       {personActive && (

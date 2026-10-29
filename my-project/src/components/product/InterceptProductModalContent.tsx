@@ -193,7 +193,7 @@ function ProductModalBody({
                                 )?.rate || 1
                               )
                             : p.price}{" "}
-                          {lang === "en" ? "UAH" : "₴"}
+                          {lang === "en" ? "€" : "₴"}
                         </span>
                       ))}
                   </td>
