@@ -14,8 +14,8 @@ import {
 
 const KEY_UKR_CRM =
   "JAvWTZJQXYHA15-Adae5O-JRlHOuDA97l1SBWVXpy_Okn3WEsPjQKZmcbiOGYCfWYNC6_M42GBn5";
-// const KEY_EN_CRM =
-//   "tMB0fTRX_ej-ZsQRllq-LuP_FVOBq5GlEcv79omXh60IVTAPsh22SYtj2R7Dm24RZAVd0J";
+const KEY_EN_CRM =
+  "tMB0fTRX_ej-ZsQRllq-LuP_FVOBq5GlEcv79omXh60IVTAPsh22SYtj2R7Dm24RZAVd0J";
 
 export async function getSalesDriveData(lang: Locale): Promise<SalesDriveData> {
   "use cache";
@@ -24,7 +24,7 @@ export async function getSalesDriveData(lang: Locale): Promise<SalesDriveData> {
 
   // English SalesDrive feed is not ready yet, so both locales intentionally use
   // the Ukrainian export key. Switch /en to KEY_EN_CRM once admins prepare it.
-  const selectedAPI = lang === "uk" ? KEY_UKR_CRM : KEY_UKR_CRM;
+  const selectedAPI = lang === "uk" ? KEY_UKR_CRM : KEY_EN_CRM;
 
   const response = await fetch(
     `https://emmyandlily.salesdrive.me/export/yml/export.yml?publicKey=${selectedAPI}`

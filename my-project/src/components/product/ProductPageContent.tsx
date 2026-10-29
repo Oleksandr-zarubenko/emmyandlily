@@ -192,7 +192,7 @@ export default function ProductPageContent({
                                 )?.rate || 1
                               )
                             : p.price}{" "}
-                          {lang === "en" ? "UAH" : "₴"}
+                          {lang === "en" ? "€" : "₴"}
                         </span>
                       ))}
                   </td>

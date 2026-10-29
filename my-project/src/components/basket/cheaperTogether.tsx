@@ -101,7 +101,7 @@ const CheaperTogether = ({
                                 item.id === product.capacity[0].idCrm
                             )!.price
                           : "N/A"}{" "}
-                      {lang === en ? " UAH" : "₴"}
+                      {lang === en ? " €" : "₴"}
                     </p>
                   )}
                 </div>

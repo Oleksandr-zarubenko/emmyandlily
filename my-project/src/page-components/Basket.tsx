@@ -305,7 +305,7 @@ const Basket = ({
                                   (currency) => currency.id === "EUR"
                                 )?.rate || 1
                               )}{" "}
-                              {lang === "en" ? " UAH" : " ₴"}
+                              {lang === "en" ? " €" : " ₴"}
                             </span>
                           ) : (
                             <span
@@ -316,7 +316,7 @@ const Basket = ({
                                   (items) => items.id === item.id
                                 )!.price
                               }{" "}
-                              {lang === "uk" ? " ₴" : " UAH"}
+                              {lang === "uk" ? " ₴" : " €"}
                             </span>
                           )}
                         </>
@@ -338,7 +338,7 @@ const Basket = ({
                                     state.currencies.find(
                                       (currency) => currency.id === "EUR"
                                     )?.rate || 1
-                                  ) + (lang === "en" ? " UAH" : " ₴")
+                                  ) + (lang === "en" ? " €" : " ₴")
                                 : ""}
                             </p>
                           )
@@ -417,7 +417,7 @@ const Basket = ({
                               return price === 0 ? "Preorder" : price;
                             })()
                           : "N/A"}{" "}
-                      {lang === "en" ? " UAH" : " ₴"}
+                      {lang === "en" ? " €" : " ₴"}
                     </td>
                     <td className="ml-auto py-2 text-right">
                       <button
@@ -510,7 +510,7 @@ const Basket = ({
                                       (currency) => currency.id === "EUR"
                                     )?.rate || 1
                                   )}{" "}
-                                  {lang === "en" ? " UAH" : " ₴"}
+                                  {lang === "en" ? " €" : " ₴"}
                                 </span>
                               ) : (
                                 <span
@@ -521,7 +521,7 @@ const Basket = ({
                                       (items) => items.id === item.id
                                     )!.price
                                   }{" "}
-                                  {lang === "uk" ? " ₴" : " UAH"}
+                                  {lang === "uk" ? " ₴" : " €"}
                                 </span>
                               )}
                             </>
@@ -544,7 +544,7 @@ const Basket = ({
                                       state.currencies.find(
                                         (currency) => currency.id === "EUR"
                                       )?.rate || 1
-                                    ) + (lang === "en" ? " UAH" : " ₴")
+                                    ) + (lang === "en" ? " €" : " ₴")
                                   : ""}
                               </li>
                             )
@@ -577,7 +577,7 @@ const Basket = ({
                                   )!.price
                                 ) * (quantities[item.id] || 1)
                               : "N/A"}{" "}
-                          {lang === "en" ? " UAH" : " ₴"}
+                          {lang === "en" ? " €" : " ₴"}
                         </li>
                       </ul>
                     </td>
@@ -695,7 +695,7 @@ const Basket = ({
                       )?.rate || 1
                     )
                   )
-                ).toFixed(0) + " UAH"
+                ).toFixed(0) + " €"
               : Math.round(discountAmount).toFixed(0) + " ₴"}
           </p>
         </div>
@@ -715,7 +715,7 @@ const Basket = ({
                   )
                 ).toFixed(0)
               : Math.round(totalPrice).toFixed(0)}
-            {lang === "en" ? " UAH" : " ₴"}
+            {lang === "en" ? " €" : " ₴"}
           </p>
         </div>
 

@@ -35,7 +35,7 @@ export const ProductCard = ({
         )
       : primarySalesDriveProduct.price
     : null;
-  const currencySymbol = lang === "en" ? "UAH" : "₴";
+  const currencySymbol = lang === "en" ? "€" : "₴";
   const fallbackPriceText =
     lang === "en" ? "Check availability" : "Уточнити наявність";
 

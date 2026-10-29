@@ -71,6 +71,7 @@ const Order = ({
       recipientEmail: store.recipientEmail,
       recipientPhoneNumber: store.recipientPhoneNumber,
       allTotal: store.allTotal,
+      totalPriceEn: store.totalPriceEn,
       discountAmount: store.discountAmount,
       totalPrice: store.totalPrice,
     }))
@@ -141,6 +142,7 @@ const Order = ({
     recipientEmail,
     recipientPhoneNumber,
     allTotal,
+    totalPriceEn,
     discountAmount,
     totalPrice,
   } = checkout;
@@ -349,6 +351,10 @@ const Order = ({
   const numberValute = 980;
   const normalizedCheckoutTotal = Number(allTotal.toFixed(2));
   const amount = Math.round(normalizedCheckoutTotal * 100);
+  // Pixel reports the total in the currency the customer saw.
+  const pixelCurrency = lang === en ? "EUR" : "UAH";
+  const pixelValue =
+    lang === en ? Number(totalPriceEn.toFixed(2)) : amount / 100;
 
   const switchToPaymentTab = async () => {
     if (deliveryCompleted && afterpay === true && privacypolicy === true) {
@@ -365,8 +371,8 @@ const Order = ({
           (product: { id: string }) => product.id
         ),
         content_type: productDetails,
-        value: amount / 100,
-        currency: "UAH",
+        value: pixelValue,
+        currency: pixelCurrency,
       });
     } else if (
       deliveryCompleted &&
@@ -386,8 +392,8 @@ const Order = ({
             (product: { id: string }) => product.id
           ),
           content_type: productDetails,
-          value: amount / 100,
-          currency: "UAH",
+          value: pixelValue,
+          currency: pixelCurrency,
         });
         const jsonData = await createMonobankInvoice({
           amount,
